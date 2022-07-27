@@ -18,6 +18,7 @@ namespace BloodBankApp.Controllers
             _logger = logger;
         }
 
+        //My first commit comment
         public IActionResult Index()
         {
             return View();
