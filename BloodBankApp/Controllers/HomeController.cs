@@ -17,7 +17,7 @@ namespace BloodBankApp.Controllers
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -27,7 +27,7 @@ namespace BloodBankApp.Controllers
         {
             return View();
         }
-
+        // Test
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
