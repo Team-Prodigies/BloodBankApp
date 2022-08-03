@@ -31,12 +31,6 @@
             text-decoration:none;
         }
 
-        #header .logo img {
-            max-height: 40px;
-        }
-
-
-
 @media (max-width: 768px) {
     .appointment-btn {
         margin: 0 15px 0 0;
@@ -213,6 +207,8 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
+  padding-top: 10px;
+  margin-top: 20px;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
@@ -220,7 +216,7 @@ body {
 a:hover {
     text-decoration:none;
 }
-
+/*1 rem = 10px fontSize i html tag*/
 ul li {
     list-style: none;
 }
