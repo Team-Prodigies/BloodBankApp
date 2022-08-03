@@ -44,6 +44,17 @@
     }
 }
 
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 10px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+  
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -194,17 +205,24 @@ html {
 }
 
 body {
-
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
 
+a:hover {
+    text-decoration:none;
+}
 
+ul li {
+    list-style: none;
+}
 
-
-
-
-
-
-
-
-
+}
