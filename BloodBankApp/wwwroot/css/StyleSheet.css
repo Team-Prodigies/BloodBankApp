@@ -1,5 +1,7 @@
 ﻿
-
+.footer {
+    background: #f5f3f4;
+}
 ul li {
     list-style: none;
 }
