@@ -49,6 +49,10 @@ namespace BloodBankApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "SuperAdmin",
+                    pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
