@@ -17,7 +17,6 @@ namespace BloodBankApp.Controllers
         {
             _logger = logger;
         }
-//test commit
         public IActionResult Index()
         {
             return View();
