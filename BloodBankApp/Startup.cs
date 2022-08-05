@@ -31,11 +31,15 @@ namespace BloodBankApp
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User,IdentityRole<Guid>>()
+            services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                  .AddSignInManager<SignInManager<User>>()
-               .AddRoleManager<RoleManager<IdentityRole<Guid>>>(); 
+                 .AddUserManager<UserManager<User>>()
+               .AddRoleManager<RoleManager<IdentityRole<Guid>>>();
 
+            services.AddRazorPages();
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,10 +61,15 @@ namespace BloodBankApp
 
             app.UseRouting();
 
+
+
             app.UseAuthorization();
 
+          
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
+
                 endpoints.MapControllerRoute(
                     name: "SuperAdmin",
                     pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}");
