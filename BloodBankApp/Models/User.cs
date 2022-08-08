@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Models
 {
     public class User : IdentityUser<Guid>
     {
+        [Required]
+        [StringLength(100)]
         public String Name { get; set; }
 
+        [Required]
+        [StringLength(100)]
         public String Surname { get; set; }
 
+        [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
 
         public virtual SuperAdmin SuperAdmin { get; set; }
