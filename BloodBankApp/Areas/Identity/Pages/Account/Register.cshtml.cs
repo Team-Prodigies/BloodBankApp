@@ -47,6 +47,21 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            public string Name { get; set; }
+
+            [Required]
+            public string Surname { get; set; }
+
+            [Required]
+            public string UserName { get; set; }
+
+            [Required]
+            public DateTime DateOfBirth { get; set; }
+
+            [Required]
+            public string PhoneNumber { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -75,7 +90,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { Name = Input.Name, Surname = Input.Surname, UserName = Input.UserName, DateOfBirth = Input.DateOfBirth, PhoneNumber = Input.PhoneNumber, Email = Input.Email,  };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
