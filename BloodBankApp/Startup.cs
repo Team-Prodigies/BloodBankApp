@@ -35,7 +35,8 @@ namespace BloodBankApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                  .AddSignInManager<SignInManager<User>>()
                  .AddUserManager<UserManager<User>>()
-               .AddRoleManager<RoleManager<IdentityRole<Guid>>>();
+               .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
+               .AddDefaultUI().AddDefaultTokenProviders();
 
             services.AddRazorPages();
 
