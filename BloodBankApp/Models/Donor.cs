@@ -13,7 +13,7 @@ namespace BloodBankApp.Models
         public virtual User User { get; set; }
         public long PersonalNumber { get; set; }
 
-        public Guid HealthFormQuestionnaireId { get; set; }
+        public Guid? HealthFormQuestionnaireId { get; set; }
 
         public HealthFormQuestionnaire HealthFormQuestionnaire { get; set; }
 
