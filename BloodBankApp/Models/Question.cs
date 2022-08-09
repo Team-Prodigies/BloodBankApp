@@ -8,6 +8,8 @@ namespace BloodBankApp.Models
         [Key]
         public Guid QuestionId { get; set; }
 
+        [Required]
+        [StringLength(500)]
         public String Description { get; set; }
 
         public Guid HealthFormQuestionnaireId { get; set; }

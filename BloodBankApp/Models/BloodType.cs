@@ -9,6 +9,9 @@ namespace BloodBankApp.Models
         [Key]
         public Guid BloodTypeId { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Blood type")]
         public String BloodTypeName { get; set; }
         public ICollection<BloodReserve> BloodReserves { get; set; } = new List<BloodReserve>();
 
