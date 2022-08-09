@@ -16,9 +16,8 @@ namespace BloodBankApp.Models
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
 
+        public Guid? HealthFormQuestionnaireId { get; set; }
         public Gender Gender { get; set; }
-
-        public Guid HealthFormQuestionnaireId { get; set; }
 
         public HealthFormQuestionnaire HealthFormQuestionnaire { get; set; }
 
