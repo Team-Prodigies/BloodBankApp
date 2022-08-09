@@ -51,3 +51,16 @@ a:hover {
 }
 
 /* Register end */
+
+.login-card {
+    color: #f5f3f4;
+    background-color: #740707;
+    -webkit-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+    -moz-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+    box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+}
+
+#btn-login {
+    color: #740707;
+    background-color: #f5f3f4;
+}

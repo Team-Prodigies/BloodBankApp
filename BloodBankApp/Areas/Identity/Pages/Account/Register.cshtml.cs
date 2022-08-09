@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using BloodBankApp.Enums;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -79,6 +80,21 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            // Donor Fields
+            [Required]
+            public long PersonalNumber { get; set; }
+
+            [Required]
+            public Gender Gender { get; set; }
+
+            [Required]
+            public BloodType BloodType { get; set; }
+
+            [Required]
+            public City City { get; set; }
+
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
