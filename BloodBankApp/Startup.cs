@@ -34,15 +34,18 @@ namespace BloodBankApp
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                 .AddRoles<IdentityRole<Guid>>()
+               .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
                  .AddSignInManager<SignInManager<User>>()
                  .AddUserManager<UserManager<User>>()
-               .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
-               .AddDefaultUI().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultUI()
+               .AddDefaultTokenProviders();
 
             services.AddRazorPages();
 
-            var mapperConfig = new MapperConfiguration(mapper => {
+            var mapperConfig = new MapperConfiguration(mapper =>
+            {
                 mapper.AddProfile(new MappingProfile());
             });
 
@@ -71,11 +74,8 @@ namespace BloodBankApp
 
             app.UseRouting();
 
-
-
             app.UseAuthorization();
 
-          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
