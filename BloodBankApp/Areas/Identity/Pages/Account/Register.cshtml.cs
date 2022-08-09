@@ -53,12 +53,15 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             public string Surname { get; set; }
 
             [Required]
+            [Display(Name = "Username")]
             public string UserName { get; set; }
 
             [Required]
+            [Display(Name = "Date of birth")]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
+            [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
             [Required]
