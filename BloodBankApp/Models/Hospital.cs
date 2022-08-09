@@ -9,8 +9,14 @@ namespace BloodBankApp.Models
         [Key]
         public Guid HospitalId { get; set; }
 
+        [Required]
+        [Display(Name = "Name")]
+        [StringLength(200)]
         public String HospitalName { get; set; }
 
+        [Required]
+        [Display(Name = "Contact number")]
+        [StringLength(20)]
         public String ContactNumber { get; set; }
 
         public Guid LocationId { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BloodBankApp.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,11 @@ namespace BloodBankApp.Models
         public Guid DonorId { get; set; }
 
         public virtual User User { get; set; }
+
+        [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
+
+        public Gender Gender { get; set; }
 
         public Guid HealthFormQuestionnaireId { get; set; }
 

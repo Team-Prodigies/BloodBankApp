@@ -8,8 +8,11 @@ namespace BloodBankApp.Models
         [Key]
         public Guid MessageId { get; set; }
 
+        [Display(Name = "Date sent")]
         public DateTime DateSent { get; set; }
 
+        [Required]
+        [StringLength(2000)]
         public String Content { get; set; }
 
         public Guid DonorId { get; set; }
