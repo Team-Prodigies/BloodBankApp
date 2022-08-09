@@ -1,4 +1,6 @@
+using AutoMapper;
 using BloodBankApp.Data;
+using BloodBankApp.Mapping;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +42,14 @@ namespace BloodBankApp
 
             services.AddRazorPages();
 
-          
+            var mapperConfig = new MapperConfiguration(mapper => {
+                mapper.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
