@@ -1,0 +1,106 @@
+﻿@model List<BloodType>
+
+    <div class="d-flex justify-content-center">
+
+   
+        <div class="col-lg-6 ">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">All blood types</h5>
+
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#AddBloodType">
+                        Add Blood Type
+                    </button>
+
+                    <ul class="list-group">
+                        @foreach (var bloodType in Model) {
+                            var idName = "#Edit" + bloodType.BloodTypeName.Replace('+', 'a');
+                            <li class="list-group-item d-flex justify-content-between">
+                                <h3>@bloodType.BloodTypeName</h3>
+                                
+                                <div class="d-flex justify-content-end">
+
+                                    <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="@idName">
+                                        Edit
+                                    </button>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="AddBloodType" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new blood type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form asp-controller="BloodTypes" asp-action="AddNewBloodType" method="post">
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <div class="row mb-3">
+
+                                        <div class="col-sm-12">
+                                            <input type="text" placeholder="Blood type name" class="form-control" name="BloodTypeName">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+
+                                        <div class="col-sm-12">
+                                            <input type="submit" class="form-control btn btn-outline-primary" value="submit">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var bloodType in Model) {
+        var idName = "Edit" + bloodType.BloodTypeName.Replace('+', 'a');
+        <div class="modal fade" id="@idName" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new blood type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Horizontal Form -->
+                        <form asp-controller="BloodTypes" asp-action="EditBloodType" method="post">
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <div class="row mb-3">
+                                        <input value="@bloodType.BloodTypeId" name="BloodTypeID" style="display: none" />
+                                        <div class="col-sm-12">
+                                            <input type="text" placeholder="@bloodType.BloodTypeName" class="form-control" name="BloodTypeName">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+
+                                        <div class="col-sm-12">
+                                            <input type="submit" class="form-control btn btn-primary mb-3" value="Save Changes">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
