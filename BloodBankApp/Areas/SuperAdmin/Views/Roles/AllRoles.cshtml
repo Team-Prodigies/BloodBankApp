@@ -1,16 +1,16 @@
 ﻿@model List<IdentityRole<Guid>>
 
-
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Links and buttons</h5>
+        <h5 class="card-title">List All Roles</h5>
 
         <div class="list-group">
-            @foreach (var role in Model)
-            {
-                <button type="button" class="list-group-item list-group-item-action">@role.Name</button>
+            @foreach (var role in Model) {
+                <div class="list-group-item list-group-item-action">
+                    @role.Name
+                    <a class="btn btn-info" asp-action="EditRole" asp-route-Id="@role.Id">Edit</a>
+                </div>
             }
         </div>
-
     </div>
 </div>

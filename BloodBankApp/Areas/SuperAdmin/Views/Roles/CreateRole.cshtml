@@ -1,0 +1,16 @@
+﻿@model RoleModel
+
+<div class="container col-7 card">
+    <div class="card-body">
+        <h5 class="card-title">Create Role</h5>
+        <form class="row g-3" asp-controller="Roles" asp-action="CreateRole">
+            <div class="container col-8">
+                <label asp-for="RoleName" class="form-label"></label>
+                <input asp-for="RoleName" class="form-control" id="inputNanme4">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
