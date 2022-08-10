@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "ManageCities";
+}
+<div class="text-end" style="width:83%;margin-top:2%;">
+   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+     Add new City
+   </button>
+   <div class="modal fade" id="basicModal" tabindex="-1">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Add new City</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+           <div class="modal-body">
+               <form class="row g-3" style="display:flex;align-items:center;justify-content:center;flex-direction:column">
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="inputCity" placeholder="City Name">
+                  </div>
+               </form>
+           </div>
+            <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary">Add City</button>
+            </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div style="width:100%;align-items:center;justify-content:center;display:flex;margin-top:5%;">
+     <table class="table table-striped w-auto table-bordered">
+           <thead>
+              <tr>
+                  <th scope="col" style="padding-right:200px;padding-left:40px;">Id</th>
+                  <th scope="col" style="padding-right:200px;">City Name</th> 
+                  <th>Actions</th>
+              </tr>
+           </thead>
+              <tbody>
+                  <tr>
+                    <th scope="row" style="padding-left:40px;">1</th>
+                    <td>Gjilan</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="padding-left:40px;">2</th>
+                    <td>Prishtine</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="padding-left:40px;">3</th>
+                    <td>Ferizaj</td> 
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="padding-left:40px;">4</th>
+                    <td>Mitrovice</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="padding-left:40px;">5</th>
+                    <td>Gjakove</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                    </td>
+                  </tr>
+              </tbody>
+     </table>
+</div>
+
+
+
+
+
+                    
