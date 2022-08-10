@@ -12,7 +12,14 @@
         <ul class="list-group">
             @foreach (var bloodType in Model)
             {
-                <li class="list-group-item">@bloodType.BloodTypeName</li>
+                var idName = "#Edit" + bloodType.BloodTypeName;
+                <li class="list-group-item">
+                    @bloodType.BloodTypeName
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="@idName">
+                        Edit
+                    </button>
+                </li>
+
             }
         </ul>
     </div>
@@ -31,13 +38,13 @@
                 <!-- Horizontal Form -->
                 <form asp-controller="BloodTypes" asp-action="AddNewBloodType" method="post">
                     <div class="row mb-3">
-                        
+
                         <div class="col-sm-10">
                             <input type="text" placeholder="Blood type name" class="form-control" name="BloodTypeName">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        
+
                         <div class="col-sm-10">
                             <input type="submit" class="form-control" value="submit">
                         </div>
@@ -48,3 +55,36 @@
         </div>
     </div>
 </div>
+
+@foreach (var bloodType in Model)
+{
+    var idName = "Edit" + bloodType.BloodTypeName;
+    <div class="modal fade" id="@idName" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new blood type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Horizontal Form -->
+                    <form asp-controller="BloodTypes" asp-action="EditBloodType" method="post">
+                        <div class="row mb-3">
+                            <input value="@bloodType.BloodTypeId" name="BloodTypeID" style="display: none" />
+                            <div class="col-sm-10">
+                                <input type="text" placeholder="@bloodType.BloodTypeName" class="form-control" name="BloodTypeName">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-sm-10">
+                                <input type="submit" class="form-control" value="Save Changes">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

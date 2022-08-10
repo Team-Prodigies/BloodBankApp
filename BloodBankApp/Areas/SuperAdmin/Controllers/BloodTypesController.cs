@@ -31,6 +31,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
             return RedirectToAction("BloodTypes");
         }
 
+        [HttpPost]
+        public IActionResult EditBloodType(Guid BloodTypeID, string BloodTypeName)
+        {
+            var bloodTypeExists = context.BloodTypes.Where(b => b.BloodTypeName.ToUpper() == BloodTypeName.ToUpper()).FirstOrDefault();
+            if (bloodTypeExists == null)
+            {
+                var BloodType = context.BloodTypes.Find(BloodTypeID);
+                if(BloodType != null)
+                {
+                    BloodType.BloodTypeName = BloodTypeName;
+                    context.Update(BloodType);
+                    context.SaveChanges();
+                }
+            }
+            return RedirectToAction("BloodTypes");
+        }
+
         public IActionResult BloodTypes() {
 
             var bloodTypes = context.BloodTypes.ToList();
