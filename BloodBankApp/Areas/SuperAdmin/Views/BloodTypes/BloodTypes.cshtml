@@ -1,14 +1,50 @@
 ﻿@model List<BloodType>
 
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">All blood types</h5>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">All blood types</h5>
 
-            <ul class="list-group">
-                @foreach (var bloodType in Model) {
-                    <li class="list-group-item">@bloodType.BloodTypeName</li>            
-                }
-            </ul>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddBloodType">
+            Add Blood Type
+        </button>
+
+        <ul class="list-group">
+            @foreach (var bloodType in Model)
+            {
+                <li class="list-group-item">@bloodType.BloodTypeName</li>
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="AddBloodType" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new blood type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Horizontal Form -->
+                <form asp-controller="BloodTypes" asp-action="AddNewBloodType" method="post">
+                    <div class="row mb-3">
+                        
+                        <div class="col-sm-10">
+                            <input type="text" placeholder="Blood type name" class="form-control" name="BloodTypeName">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        
+                        <div class="col-sm-10">
+                            <input type="submit" class="form-control" value="submit">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         </div>
     </div>
+</div>
