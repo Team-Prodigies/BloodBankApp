@@ -13,5 +13,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             return View();
         }
+
+        public IActionResult ManageCities()
+        {
+            return View();
+        }
     }
 }
