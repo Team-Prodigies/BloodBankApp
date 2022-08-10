@@ -1,0 +1,14 @@
+﻿@model List<BloodType>
+
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">All blood types</h5>
+
+            <ul class="list-group">
+                @foreach (var bloodType in Model) {
+                    <li class="list-group-item">@bloodType.BloodTypeName</li>            
+                }
+            </ul>
+        </div>
+    </div>
