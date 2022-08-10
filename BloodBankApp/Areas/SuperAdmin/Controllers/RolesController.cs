@@ -64,8 +64,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid roleId) {
-            if (role.Id == null || roleId == null || role.Id != roleId) {
+        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id) {
+            if (role.Id == null || Id == null || role.Id != Id) {
                 return NotFound();
             }
             

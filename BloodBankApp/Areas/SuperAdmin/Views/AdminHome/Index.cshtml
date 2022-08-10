@@ -1,2 +1,38 @@
-﻿
-<h1>Welcome to Admin</h1>
+﻿<h1>Welcome to Admin</h1>
+
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Doughnut Chart</h5>
+
+            <!-- Doughnut Chart -->
+            <canvas id="doughnutChart" style="max-height: 400px;"></canvas>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#doughnutChart'), {
+                    type: 'doughnut',
+                    data: {
+                      labels: [
+                        'Donors',
+                        'Staff',
+                        'SuperAdmins'
+                      ],
+                      datasets: [{
+                          label: 'My First Dataset',
+                          data: [@ViewBag.Donors, 20, @ViewBag.SuperAdmins],
+                        backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(54, 162, 235)',
+                          'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                      }]
+                    }
+                  });
+                });
+            </script>
+            <!-- End Doughnut CHart -->
+
+        </div>
+    </div>
+</div>
