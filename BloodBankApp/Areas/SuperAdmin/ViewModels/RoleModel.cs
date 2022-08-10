@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
@@ -6,6 +7,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
     {
         public Guid Id { get; set; }
 
+        [Display(Name = "Role Name")]
         public string RoleName { get; set; }
     }
 }

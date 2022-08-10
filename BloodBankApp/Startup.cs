@@ -34,13 +34,13 @@ namespace BloodBankApp
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole<Guid>>()
-                 .AddRoles<IdentityRole<Guid>>()
-               .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
-                 .AddSignInManager<SignInManager<User>>()
-                 .AddUserManager<UserManager<User>>()
+                .AddRoles<IdentityRole<Guid>>()
+                .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
+                .AddSignInManager<SignInManager<User>>()
+                .AddUserManager<UserManager<User>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-               .AddDefaultUI()
-               .AddDefaultTokenProviders();
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
             services.AddRazorPages();
 
