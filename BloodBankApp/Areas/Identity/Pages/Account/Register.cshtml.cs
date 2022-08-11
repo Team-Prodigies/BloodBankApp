@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using BloodBankApp.Enums;
+using AutoMapper;
+using BloodBankApp.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -25,27 +28,31 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,IMapper mapper, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _mapper = mapper;
+            _context = context;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public RegisterInputModel Input { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set;  }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public class InputModel
+        public class RegisterInputModel
         {
             [Required]
             public string Name { get; set; }
@@ -58,7 +65,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             public string UserName { get; set; }
 
             [Required]
-            [Display(Name = "Date of birth")]
+            [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
+            [Display(Name = "Date of Birthday")]
+            [DataType(DataType.Date)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -89,17 +98,22 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             public Gender Gender { get; set; }
 
             [Required]
-            public BloodType BloodType { get; set; }
+            [Display(Name = "Blood Type")]
+            public Guid BloodTypeId { get; set; }
 
             [Required]
-            public City City { get; set; }
-
-
+            [Display(Name = "City")]
+            public Guid CityId { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+
+            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+
             ReturnUrl = returnUrl;
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -109,39 +123,66 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { Name = Input.Name, Surname = Input.Surname, UserName = Input.UserName, DateOfBirth = Input.DateOfBirth, PhoneNumber = Input.PhoneNumber, Email = Input.Email,  };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                using (var transaction = _context.Database.BeginTransaction())
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var user = _mapper.Map<User>(Input);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    user.Id = Guid.NewGuid();
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var donor = _mapper.Map<Donor>(Input);
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    try
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        var result = await _userManager.CreateAsync(user, Input.Password);
+
+                        await _userManager.AddToRoleAsync(user, "Donor");
+
+                        if (result.Succeeded)
+                        {
+                            donor.DonorId = user.Id;
+
+                            await _context.Donors.AddAsync(donor);
+
+                            await _context.SaveChangesAsync();
+
+                            transaction.Commit();
+
+                            _logger.LogInformation("User created a new account with password.");
+
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+
+                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                            }
+                            else
+                            {
+                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                return LocalRedirect(returnUrl);
+                            }
+                        }
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        transaction.Rollback();
                     }
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }
