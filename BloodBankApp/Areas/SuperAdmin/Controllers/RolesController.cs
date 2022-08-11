@@ -4,6 +4,7 @@ using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,8 +22,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
             this.mapper = mapper;
         }
 
-        public IActionResult AllRoles() {
-            var roles = context.Roles.ToList();
+        public async Task<IActionResult> AllRoles() {
+            var roles = await roleManager.Roles.ToListAsync();
             return View(roles);
         }
 
@@ -51,21 +52,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> EditRole(Guid Id) {
-            if (Id == null) {
+            var role = await roleManager.FindByIdAsync(Id.ToString());
+            if (role == null) {
                 return NotFound();
             }
 
-            var getRoleId = await roleManager.FindByIdAsync(Id.ToString());
-            if (getRoleId == null) {
-                return NotFound();
-            }
-
-            return View(getRoleId);
+            return View(role);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id) {
-            if (role.Id == null || Id == null || role.Id != Id) {
+            if (role.Id != Id) {
                 return NotFound();
             }
             
