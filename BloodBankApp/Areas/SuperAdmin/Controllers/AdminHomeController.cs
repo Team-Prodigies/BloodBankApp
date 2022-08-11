@@ -16,12 +16,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         public IActionResult Index() {
+            /*
             var getDonorRole = context.Roles.Where(x => x.Name == "User").FirstOrDefault();
             ViewBag.Donors = context.UserRoles.Where(x => x.RoleId == getDonorRole.Id).Count();
 
             var getSuperAdminRole = context.Roles.Where(x => x.Name == "SuperAdmin").FirstOrDefault();
             ViewBag.SuperAdmins = context.UserRoles.Where(x => x.RoleId == getSuperAdminRole.Id).Count();
-
+            */
             return View();
         }
 
