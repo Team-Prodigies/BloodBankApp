@@ -38,6 +38,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return RedirectToAction("Cities");
         }
 
+        [HttpGet]
+        public IActionResult AddNewCity()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult EditCity(Guid cityId, String cityName)
@@ -54,6 +60,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 }
             }
             return RedirectToAction("Cities");
+        }
+
+        [HttpGet]
+        public IActionResult EditCity(Guid cityID)
+        {
+            var editCity = _context.Cities.Find(cityID);
+
+            if (editCity == null)
+            {
+                return RedirectToAction("Cities");
+            }
+
+            return View(editCity);
         }
     }
 }
