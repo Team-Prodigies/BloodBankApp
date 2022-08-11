@@ -3,101 +3,17 @@
 @{
     ViewData["Title"] = "Cities";
 }
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all cities</h5>
 
-
-<div class="text-end" style="width:83%;margin-top:2%;">
-   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
-     Add new City
-   </button>
-   <div class="modal fade" id="basicModal" tabindex="-1">
-       <div class="modal-dialog">
-           <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title">Add new City</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-           <div class="modal-body">
-                <form  asp-controller="Cities" asp-action="AddNewCity" method="post">
-                      <div class="d-flex justify-content-center">
-                           <div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                            <input type="text" placeholder="City Name" class="form-control" name="CityName">
-                                    </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                            <input type="submit" class="form-control btn btn-outline-primary" value="submit">
-                                    </div>
-                                </div>
-                           </div>
-                      </div>
-                </form>
-           </div>
-           </div>
-       </div>
-   </div>
-</div>
-
-<div style="width:100%;align-items:center;justify-content:center;display:flex;margin-top:5%;">
-     <table class="table table-striped w-auto table-bordered">
-           <thead>
-              <tr>
-                  <th scope="col" style="padding-right:200px;padding-left:40px;">Id</th>
-                  <th scope="col" style="padding-right:200px;">City Name</th> 
-                  <th>Actions</th>
-              </tr>
-           </thead>
-              <tbody>
-            @foreach(var item in Model)
-            {
-                 var idName = "#Edit" + item.CityName;
-                  <tr>
-                    <th scope="row" style="padding-left:40px;">@item.CityId</th>
-                    <td>@item.CityName</td>
-                    <td>
-                         <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="@idName">
-                            Edit
-                          </button>
-                    </td>
-                  </tr>
+        <ul class="list-group list-group-flush container col-6">
+            @foreach (var city in Model) {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @city.CityName
+                <span class="badge"><a class="btn btn-info" asp-controller="Cities" asp-action="EditCity" asp-route-cityId="@city.CityId" method="post" >Edit</a></span>
+            </li>
             }
-              </tbody>
-     </table>
+        </ul>
+    </div>
 </div>
-
-
-@foreach (var item in Model) {
-        var idName = "Edit" + item.CityName;
-        <div class="modal fade" id="@idName" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add new blood type</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form asp-controller="Cities" asp-action="EditCity" method="post">
-                            <div class="d-flex justify-content-center">
-                                <div>
-                                    <div class="row mb-3">
-                                        <input value="@item.CityId" name="CityId" style="display: none" />
-                                        <div class="col-sm-12">
-                                            <input type="text" placeholder="@item.CityName" class="form-control" name="CityName">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-
-                                        <div class="col-sm-12">
-                                            <input type="submit" class="form-control btn btn-primary mb-3" value="Save Changes">
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-

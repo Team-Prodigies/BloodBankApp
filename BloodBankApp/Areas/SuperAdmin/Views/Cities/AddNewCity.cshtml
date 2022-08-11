@@ -1,0 +1,19 @@
+﻿@model City 
+
+<div class="container col-7 card">
+    <div class="card-body">
+        <h5 class="card-title">Add City</h5>
+        <form class="row g-3" asp-controller="Cities" asp-action="AddNewCity" method="post">
+            <div class="container col-8">
+                <div class="mb-2">
+                    <label class="form-label">City Name</label>
+                    <input asp-for="@Model.CityName" class="form-control" id="inputNanme4" />
+                </div>
+                <div class="text-start mt-2">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
