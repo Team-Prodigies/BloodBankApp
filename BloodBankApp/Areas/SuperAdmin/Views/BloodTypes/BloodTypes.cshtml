@@ -1,37 +1,19 @@
 ﻿@model List<BloodType>
 
-    <div class="d-flex justify-content-center">
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all roles</h5>
 
-   
-        <div class="col-lg-6 ">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">All blood types</h5>
-
-                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#AddBloodType">
-                        Add Blood Type
-                    </button>
-
-                    <ul class="list-group">
-                        @foreach (var bloodType in Model) {
-                            var idName = "#Edit" + bloodType.BloodTypeName.Replace('+', 'a');
-                            <li class="list-group-item d-flex justify-content-between">
-                                <h3>@bloodType.BloodTypeName</h3>
-                                
-                                <div class="d-flex justify-content-end">
-
-                                    <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="@idName">
-                                        Edit
-                                    </button>
-                                </div>
-                            </li>
-
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <ul class="list-group list-group-flush container col-6">
+            @foreach (var bloodType in Model) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @bloodType.BloodTypeName
+                    <span class="badge"><a class="btn btn-info" asp-controller="BloodTypes" asp-action="EditBloodType" asp-route-BloodTypeID="@bloodType.BloodTypeId">Edit</a></span>
+                </li>
+            }
+        </ul>
     </div>
+</div>
 
 
     <div class="modal fade" id="AddBloodType" tabindex="-1">

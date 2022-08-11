@@ -16,6 +16,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
             this.context = context;
         }
 
+        public IActionResult CreateBloodType() {
+
+            return View();
+        }
+
         [HttpPost]
         public IActionResult AddNewBloodType(string BloodTypeName) 
         {
@@ -32,20 +37,31 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpPost]
-        public IActionResult EditBloodType(Guid BloodTypeID, string BloodTypeName)
+        public IActionResult EditBloodType(BloodType editBloodType)
         {
-            var bloodTypeExists = context.BloodTypes.Where(b => b.BloodTypeName.ToUpper() == BloodTypeName.ToUpper()).FirstOrDefault();
+            var bloodTypeExists = context.BloodTypes.Where(b => b.BloodTypeName.ToUpper() == editBloodType.BloodTypeName.ToUpper()).FirstOrDefault();
             if (bloodTypeExists == null)
             {
-                var BloodType = context.BloodTypes.Find(BloodTypeID);
+                var BloodType = context.BloodTypes.Find(editBloodType.BloodTypeId);
                 if(BloodType != null)
                 {
-                    BloodType.BloodTypeName = BloodTypeName;
+                    BloodType.BloodTypeName = editBloodType.BloodTypeName;
                     context.Update(BloodType);
                     context.SaveChanges();
                 }
             }
             return RedirectToAction("BloodTypes");
+        }
+
+        [HttpGet]
+        public IActionResult EditBloodType(Guid BloodTypeID) {
+            var editBloodType = context.BloodTypes.Find(BloodTypeID);
+
+            if(editBloodType == null) {
+                return RedirectToAction("BloodTypes");
+            }
+
+            return View(editBloodType);
         }
 
         public IActionResult BloodTypes() {

@@ -321,27 +321,32 @@
 
 
             <li class="nav-item">
-                <a class="nav-link collapsed" asp-controller="BloodTypes" asp-action="BloodTypes">
-                   Blood Types
+                <a class="nav-link collapsed" data-bs-target="#bloodtype-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>BloodTypes</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="blood-types-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="bloodtype-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-controller="BloodTypes" asp-action="BloodTypes">
-                            <i class="bi bi-circle"></i><span>Manage blood types</span>
+                        <a asp-controller="BloodTypes" asp-action="BloodTypes" asp-area="SuperAdmin">
+                            <i class="bi bi-circle"></i><span>Blood types</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="CreateBloodType" asp-controller="BloodTypes" asp-area="SuperAdmin">
+                            <i class="bi bi-circle"></i><span>Create blood type</span>
                         </a>
                     </li>
                 </ul>
             </li>
 
 
-             <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#cities-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Cities</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="cities-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                 
+
                     <li>
-                         <a  asp-controller="Cities" asp-action="Cities">
+                        <a asp-controller="Cities" asp-action="Cities">
                             <i class="bi bi-circle"></i><span>Manage Cities</span>
                         </a>
                     </li>
