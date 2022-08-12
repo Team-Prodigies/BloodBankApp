@@ -10,7 +10,7 @@ namespace BloodBankApp.Data
     {
         public static async Task SeedData(ApplicationDbContext context)
         {
-            if (!context.Cities.Any())
+            if (!context.Cities.Any() && !context.BloodTypes.Any())
             {
                 var cities = new List<City>
                 {
@@ -68,7 +68,7 @@ namespace BloodBankApp.Data
                 },
                   new BloodType {
                     BloodTypeName = "AB-"
-                },
+                }
             };
                 context.Cities.AddRange(cities);
                 context.BloodTypes.AddRange(bloodTypes);
