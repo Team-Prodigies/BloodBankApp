@@ -3,6 +3,68 @@
     var userRolesData = @ViewBag.UserRolesData;
 }
 <h1>Welcome to Admin</h1>
+
+<div class="row">
+    <div class="col-xxl-4 col-md-6">
+        <div class="card info-card sales-card">
+
+            <div class="card-body">
+                <h5 class="card-title">Donors this year</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:#4154f1;">
+                        <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="ps-3">
+                        <h6>@ViewBag.DonorCount</h6>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-xxl-4 col-md-6">
+        <div class="card info-card revenue-card">
+
+            <div class="card-body">
+                <h5 class="card-title">Blood donated this year</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:#4154f1;">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                        <h6>@ViewBag.BloodAmount</h6>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-xxl-4 col-xl-12">
+
+        <div class="card info-card customers-card">
+
+            <div class="card-body">
+                <h5 class="card-title">Customers <span>| This Year</span></h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"  style="color:#4154f1;">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                        <h6>1244</h6>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-6">
         <div class="card">

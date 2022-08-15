@@ -20,10 +20,24 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
         public async Task<IActionResult> Index()
         {
-
             await GetUserRoleDataAsync();
             await GetUserBloodData();
+            await GetDonorCount();
+            await GetAmountOfBloodDonated();
             return View();
+        }
+
+        private async Task GetAmountOfBloodDonated()
+        {
+            var bloodAmount = 0.0D;
+            await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).ForEachAsync(x => bloodAmount += x.Amount);
+            ViewData["BloodAmount"] = bloodAmount;
+        }
+
+        private async Task GetDonorCount()
+        {
+            var count = await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
+            ViewData["DonorCount"] = count;
         }
 
         private async Task GetUserRoleDataAsync()
