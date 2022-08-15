@@ -68,6 +68,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
             [Display(Name = "Date of Birthday")]
             [DataType(DataType.Date)]
+            [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
