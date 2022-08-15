@@ -191,9 +191,10 @@ html {
     .navbar-mobile .getstarted:focus {
         margin: 15px;
     }
-html {
-    font-size: 14px;
-}
+
+    html {
+        font-size: 14px;
+    }
 
 @media (min-width: 768px) {
     html {
