@@ -2,6 +2,7 @@
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers {
     [Area("SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public class RolesController : Controller {
         private readonly RoleManager<IdentityRole<Guid>> roleManager;
         private readonly ApplicationDbContext context;
