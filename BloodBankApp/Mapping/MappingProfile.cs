@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace BloodBankApp.Mapping {
                 opts=>opts.MapFrom(src=>src.CityId))
                 .ForMember(dest => dest.BloodTypeId,
                 opts => opts.MapFrom(src => src.BloodTypeId));
+
+            CreateMap<SuperAdminModel, User>();
         }
     }
 }
