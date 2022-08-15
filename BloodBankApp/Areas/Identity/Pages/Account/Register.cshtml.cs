@@ -43,12 +43,17 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _mapper = mapper;
             _context = context;
+
+            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            BloodTypeList = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
         }
 
         [BindProperty]
         public RegisterInputModel Input { get; set; }
 
         public string ReturnUrl { get; set;  }
+        private SelectList CityList { get; set;  } 
+        private SelectList BloodTypeList { get; set;  }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -109,9 +114,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-
-            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
 
             ReturnUrl = returnUrl;
 
@@ -186,9 +190,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             }
             // If we got this far, something failed, redisplay form
 
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-
-            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
             
             return Page();
         }
