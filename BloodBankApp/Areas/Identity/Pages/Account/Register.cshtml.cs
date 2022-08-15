@@ -184,6 +184,11 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
             }
             // If we got this far, something failed, redisplay form
+
+            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+
+            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            
             return Page();
         }
     }
