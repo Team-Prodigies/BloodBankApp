@@ -1,18 +1,19 @@
-﻿<h1>Welcome to Admin</h1>
-
+﻿@{
+    var bloodTypeData = @ViewBag.BloodTypeData;
+    var userRolesData = @ViewBag.UserRolesData;
+}
+<h1>Welcome to Admin</h1>
 <div class="row">
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Donut Chart</h5>
+                <h5 class="card-title">User Roles</h5>
 
-                <!-- Donut Chart -->
                 <div id="donutChart"></div>
-
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
                       new ApexCharts(document.querySelector("#donutChart"), {
-                        series: [@ViewBag.Donor, @ViewBag.SuperAdmin, @ViewBag.HospitalAdmin],
+                        series: [@userRolesData["Donor"], @userRolesData["SuperAdmin"], @userRolesData["HospitalAdmin"]],
                         chart: {
                           height: 350,
                           type: 'donut'
@@ -21,7 +22,6 @@
                       }).render();
                     });
                 </script>
-                <!-- End Donut Chart -->
 
             </div>
         </div>
@@ -30,16 +30,15 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Bar Chart</h5>
+                <h5 class="card-title">Donors Blood Types</h5>
 
-                <!-- Bar Chart -->
                 <div id="barChart"></div>
-
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
                       new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
-                          data: [@ViewBag.aPositive, @ViewBag.aNegative, @ViewBag.bPositive, @ViewBag.bNegative, @ViewBag.aBPositive, @ViewBag.aBNegative, @ViewBag.oPositive, @ViewBag.oNegative]
+                            name:"Number of donors",
+                          data: [@bloodTypeData["A+"], @bloodTypeData["A-"], @bloodTypeData["B+"], @bloodTypeData["B-"], @bloodTypeData["AB+"], @bloodTypeData["AB-"], @bloodTypeData["O+"], @bloodTypeData["O-"]]
                         }],
                         chart: {
                           type: 'bar',
@@ -48,7 +47,6 @@
                         show: false
                           }
                         },
-
                         plotOptions: {
                           bar: {
                             borderRadius: 4,
@@ -64,7 +62,6 @@
                       }).render();
                     });
                 </script>
-                <!-- End Bar Chart -->
 
             </div>
         </div>
