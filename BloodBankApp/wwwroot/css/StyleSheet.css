@@ -35,32 +35,9 @@ a:hover {
     }
 /* Footer end */
 
-/* Register start */
-
-.sign-up {
-    color: #f5f3f4;
-    background-color: #740707;
-    -webkit-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
-    -moz-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
-    box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+/* Register, Login start */
+.bg-custom {
+    background-color: #FEFBF3;
+    color: black;
 }
-
-#btn-sign-up {
-    color: #740707;
-    background-color: #f5f3f4;
-}
-
-/* Register end */
-
-.login-card {
-    color: #f5f3f4;
-    background-color: #740707;
-    -webkit-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
-    -moz-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
-    box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
-}
-
-#btn-login {
-    color: #740707;
-    background-color: #f5f3f4;
-}
+/*Register, Login end*/
