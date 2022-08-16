@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.Data;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Linq;
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public class CitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -38,6 +40,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return RedirectToAction("Cities");
         }
 
+        [HttpGet]
+        public IActionResult AddNewCity()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult EditCity(Guid cityId, String cityName)
@@ -54,6 +62,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 }
             }
             return RedirectToAction("Cities");
+        }
+
+        [HttpGet]
+        public IActionResult EditCity(Guid cityID)
+        {
+            var editCity = _context.Cities.Find(cityID);
+
+            if (editCity == null)
+            {
+                return RedirectToAction("Cities");
+            }
+
+            return View(editCity);
         }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using BloodBankApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    public class AdminHomeController : Controller
-    {
+    //[Authorize(Roles = "SuperAdmin")]
+    public class AdminHomeController : Controller {
 
         private readonly ApplicationDbContext context;
         public AdminHomeController(ApplicationDbContext context)
