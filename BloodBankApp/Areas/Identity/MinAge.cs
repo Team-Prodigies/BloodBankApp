@@ -18,13 +18,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             DateTime bday = DateTime.Parse(value.ToString());
             DateTime now = DateTime.Today;
             int age = now.Year - bday.Year;
-            if (now < bday.AddYears(-age))
+            
+            if ((age >= 18) && ((now.Month < bday.Month) || (now.Month == bday.Month && now.Day < bday.Day)))
             {
                 age--;
             }
             if (age < _Limit)
             {
-                var result = new ValidationResult("Sorry you are not old enough");
+                var result = new ValidationResult("You must meet the minimum age required!");
                 return result;
             }
 
