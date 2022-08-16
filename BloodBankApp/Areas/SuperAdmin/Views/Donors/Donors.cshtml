@@ -1,0 +1,41 @@
+﻿@model List<DonorModel> 
+
+@{
+    ViewData["Title"] = "Donors";
+}
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all donors</h5>
+        
+        <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Personal No.</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Blood Type</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach(var donor in Model)
+                {
+                    <tr>
+                    <td>@donor.Name</td>
+                    <td>@donor.Surname</td>
+                    <td>@donor.DateOfBirth.ToShortDateString()</td>
+                    <td>@donor.PersonalNumber</td>
+                    <td>@donor.Gender</td>
+                    <td>@donor.BloodTypeName</td>
+                    <td>@donor.CityName</td>
+                    <td><span class="badge">
+                        <a class="btn btn-danger" asp-controller="Donors" asp-action="DonorLockout"  asp-route-donorId="@donor.DonorId">Lockout</a></span></td>
+                  </tr>
+                }
+                </tbody>
+              </table>
+    </div>
+</div>
