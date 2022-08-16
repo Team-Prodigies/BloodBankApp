@@ -7,7 +7,7 @@ namespace BloodBankApp.Models
     public class City
     {
         [Key]
-        public Guid CityId { get; set; }
+        public Guid CityId { get; set; } 
 
         [Required]
         [StringLength(100)]

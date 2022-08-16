@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.Identity.Pages.Account.Manage;
+using BloodBankApp.Areas.Identity.Pages.Account.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using System;
@@ -24,6 +26,12 @@ namespace BloodBankApp.Mapping {
                 opts => opts.MapFrom(src => src.BloodTypeId));
 
             CreateMap<SuperAdminModel, User>();
+
+            CreateMap<Donor, DonorDto>()
+                .ForPath(dest => dest.CityName,
+                opts => opts.MapFrom(src => src.City.CityName))
+                .ForPath(dest => dest.BloodTypeName,
+                opts => opts.MapFrom(src => src.BloodType.BloodTypeName));
         }
     }
 }
