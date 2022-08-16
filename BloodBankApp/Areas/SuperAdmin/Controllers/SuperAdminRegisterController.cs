@@ -3,6 +3,7 @@ using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +15,7 @@ using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers {
     [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminRegisterController : Controller {
 
         private readonly ApplicationDbContext context;
