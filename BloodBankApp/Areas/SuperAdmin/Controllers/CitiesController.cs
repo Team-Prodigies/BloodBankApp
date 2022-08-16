@@ -9,7 +9,7 @@ using System.Linq;
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class CitiesController : Controller
     {
         private readonly ApplicationDbContext _context;

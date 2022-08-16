@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers {
     [Area("SuperAdmin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class RolesController : Controller {
         private readonly RoleManager<IdentityRole<Guid>> roleManager;
         private readonly ApplicationDbContext context;
