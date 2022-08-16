@@ -7,61 +7,53 @@
 <div class="row">
     <div class="col-xxl-4 col-md-6">
         <div class="card info-card sales-card">
-
             <div class="card-body">
-                <h5 class="card-title">Donors this year</h5>
+                <h5 class="card-title">Donors <span>| this year</span></h5>
 
                 <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:#4154f1;">
-                        <i class="bi bi-cart"></i>
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <img src="~/Images/donor.png"/>
                     </div>
-                    <div class="ps-3">
+                    <div class="ps-3 pt-2">
                         <h6>@ViewBag.DonorCount</h6>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div class="col-xxl-4 col-md-6">
         <div class="card info-card revenue-card">
-
             <div class="card-body">
-                <h5 class="card-title">Blood donated this year</h5>
+                <h5 class="card-title">Blood donated  <span>| this year</span></h5>
 
                 <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:#4154f1;">
-                        <i class="bi bi-currency-dollar"></i>
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <img src="~/Images/blood-donation.png"/>
                     </div>
-                    <div class="ps-3">
+                    <div class="ps-3 pt-2">
                         <h6>@ViewBag.BloodAmount</h6>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div class="col-xxl-4 col-xl-12">
-
         <div class="card info-card customers-card">
-
             <div class="card-body">
-                <h5 class="card-title">Customers <span>| This Year</span></h5>
+                <h5 class="card-title">Donation posts <span>| this year</span></h5>
 
                 <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"  style="color:#4154f1;">
-                        <i class="bi bi-people"></i>
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <img src="~/Images/blog.png"/>
                     </div>
-                    <div class="ps-3">
-                        <h6>1244</h6>
+                    <div class="ps-3 pt-2">
+                        <h6>@ViewBag.DonationPostsCount</h6>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 </div>
 
@@ -84,7 +76,6 @@
                       }).render();
                     });
                 </script>
-
             </div>
         </div>
     </div>
@@ -124,7 +115,6 @@
                       }).render();
                     });
                 </script>
-
             </div>
         </div>
     </div>

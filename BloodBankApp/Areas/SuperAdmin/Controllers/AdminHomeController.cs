@@ -24,7 +24,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             await GetUserBloodData();
             await GetDonorCount();
             await GetAmountOfBloodDonated();
+            await GetNumberOfDonationPosts();
             return View();
+        }
+
+        private async Task GetNumberOfDonationPosts()
+        {
+            ViewData["DonationPostsCount"] = await context.DonationPosts.Where(x => x.DateRequired.Year == DateTime.Now.Year).CountAsync();
         }
 
         private async Task GetAmountOfBloodDonated()
@@ -36,8 +42,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
         private async Task GetDonorCount()
         {
-            var count = await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
-            ViewData["DonorCount"] = count;
+            ViewData["DonorCount"] = await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
         }
 
         private async Task GetUserRoleDataAsync()
