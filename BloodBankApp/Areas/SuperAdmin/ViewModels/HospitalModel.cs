@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BloodBankApp.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-
-namespace BloodBankApp.Models
+namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
-    public class Hospital
+    public class HospitalModel
     {
-        [Key]
+
         public Guid HospitalId { get; set; }
 
         [Required]
@@ -19,24 +17,23 @@ namespace BloodBankApp.Models
         [Required]
         [Display(Name = "Contact number")]
         [StringLength(20)]
+        [DataType(DataType.PhoneNumber)]
         public String ContactNumber { get; set; }
 
         [Required]
-        [Display(Name = "Hospital Code")]
-        [StringLength(50)]
+        [Display(Name = "Hospital code")]
+        [StringLength(50,MinimumLength = 2)]
         public String HospitalCode { get; set; }
 
+
+        [Required]
+        [Display(Name = "Location")]
         public Guid LocationId { get; set; }
 
         public Location Location { get; set; }
 
+        [Required]
+        [Display(Name = "City")]
         public Guid CityId { get; set; }
-
-        public City City { get; set; }
-        public ICollection<MedicalStaff> MedicalStaff { get; set; } = new List<MedicalStaff>();
-
-        public ICollection<BloodReserve> BloodReserves { get; set; } = new List<BloodReserve>();
-
-        public ICollection<DonationPost> DonationPosts { get; set; } = new List<DonationPost>();
     }
 }
