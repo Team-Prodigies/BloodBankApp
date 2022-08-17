@@ -8,6 +8,8 @@ namespace BloodBankApp.Models
 {
     public class Donor
     {
+        internal static object CityName;
+
         [Key]
         public Guid DonorId { get; set; }
 

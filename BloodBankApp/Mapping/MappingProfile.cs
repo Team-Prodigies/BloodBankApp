@@ -28,8 +28,6 @@ namespace BloodBankApp.Mapping {
             CreateMap<SuperAdminModel, User>();
 
             CreateMap<Donor, DonorDto>()
-                .ForPath(dest => dest.CityName,
-                opts => opts.MapFrom(src => src.City.CityName))
                 .ForPath(dest => dest.BloodTypeName,
                 opts => opts.MapFrom(src => src.BloodType.BloodTypeName));
         }

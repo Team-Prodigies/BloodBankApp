@@ -7,7 +7,5 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.ViewModels
         [Display(Name = "BloodType")]
         public string BloodTypeName { get; set; }
 
-        [Display(Name = "City")]
-        public string CityName { get; set; }
     }
 }
