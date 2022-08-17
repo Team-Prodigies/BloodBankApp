@@ -182,7 +182,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         transaction.Rollback();
                     }
