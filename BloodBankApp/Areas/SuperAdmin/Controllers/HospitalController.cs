@@ -30,9 +30,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View();
         }
 
-        public IActionResult ManageHospitals()
+        public IActionResult ManageHospitals(int pageNumber = 1)
         {
-            return View();
+            var skipRows = (pageNumber - 1) * 10;
+            var hospitals = context.Hospitals.Include(c => c.City).Skip(skipRows).Take(10).ToList();
+
+            ViewBag.pageNumber = pageNumber;
+
+            return View(hospitals);
         }
 
         [HttpPost]
@@ -66,5 +71,39 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             return RedirectToAction(nameof(ManageHospitals));
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditHospital(Guid hospitalId) {
+
+            var hospital = await context.Hospitals.Include(l => l.Location).Include(c => c.City).Where(h => h.HospitalId == hospitalId).FirstOrDefaultAsync();
+
+            if(hospital == null)
+            {
+                return RedirectToAction(nameof(ManageHospitals));
+            }
+
+            ViewData["CityId"] = cityList;
+            var editHospital = mapper.Map<HospitalModel>(hospital);
+            return View(editHospital);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditHospital(HospitalModel hospital) {
+
+            if(!ModelState.IsValid)
+            {
+                return View(hospital.HospitalId);
+            }
+
+            var editHospital = mapper.Map<Hospital>(hospital);
+
+            context.Update(editHospital.Location);
+            context.Update(editHospital);
+
+            await context.SaveChangesAsync();    
+            return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
+        }
+
     }
 }

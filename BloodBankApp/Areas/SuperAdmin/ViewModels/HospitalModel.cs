@@ -7,6 +7,8 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
     public class HospitalModel
     {
 
+        public Guid HospitalId { get; set; }
+
         [Required]
         [Display(Name = "Name")]
         [StringLength(200)]

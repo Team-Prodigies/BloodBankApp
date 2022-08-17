@@ -26,6 +26,8 @@ namespace BloodBankApp.Mapping {
             CreateMap<SuperAdminModel, User>();
 
             CreateMap<HospitalModel, Hospital>();
+            CreateMap<Hospital, HospitalModel>();
+
             CreateMap<HospitalModel, Location>()
                 .ForMember(dest => dest.Longitude,
                 opts => opts.MapFrom(src => src.Location.Longitude))
