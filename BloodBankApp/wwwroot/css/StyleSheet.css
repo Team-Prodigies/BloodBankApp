@@ -41,3 +41,31 @@ a:hover {
     color: black;
 }
 /*Register, Login end*/
+
+/*Home Page, Start*/
+.drk:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+}
+
+@media only screen and (max-width: 768px) {
+    .image-slider {
+        width: 100%;
+        height: auto !important;
+    }
+}
+
+/*Home Page, end*/
+
