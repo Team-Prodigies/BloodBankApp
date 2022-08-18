@@ -79,5 +79,21 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             return View(donorLockout);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UnlockDonor(Guid donorId)
+        {
+            var donor = await _context.Users.FindAsync(donorId);
+            if (donor == null)
+            {
+                return NotFound();
+            }
+            donor.Locked = false;
+            _context.Update(donor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Donors");
+        }
     }
+
 }
