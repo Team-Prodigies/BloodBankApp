@@ -43,12 +43,17 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _mapper = mapper;
             _context = context;
+
+            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            BloodTypeList = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
         }
 
         [BindProperty]
         public RegisterInputModel Input { get; set; }
 
         public string ReturnUrl { get; set;  }
+        private SelectList CityList { get; set;  } 
+        private SelectList BloodTypeList { get; set;  }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -68,6 +73,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
             [Display(Name = "Date of Birthday")]
             [DataType(DataType.Date)]
+            [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -108,9 +114,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-
-            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
 
             ReturnUrl = returnUrl;
 
@@ -170,7 +175,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         transaction.Rollback();
                     }
@@ -178,9 +183,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             }
             // If we got this far, something failed, redisplay form
 
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-
-            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
             
             return Page();
         }

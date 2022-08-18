@@ -154,6 +154,9 @@ namespace BloodBankApp.Data
             .HasConstraintName("CityHospitals")
             .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Hospital>()
+            .HasIndex(u => u.HospitalCode).IsUnique();
+
             builder.Entity<MedicalStaff>()
             .HasOne(b => b.Hospital)
             .WithMany(d => d.MedicalStaff)
