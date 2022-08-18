@@ -43,12 +43,17 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _mapper = mapper;
             _context = context;
+
+            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            BloodTypeList = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
         }
 
         [BindProperty]
         public RegisterInputModel Input { get; set; }
 
         public string ReturnUrl { get; set;  }
+        private SelectList CityList { get; set;  } 
+        private SelectList BloodTypeList { get; set;  }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -68,6 +73,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
             [Display(Name = "Date of Birthday")]
             [DataType(DataType.Date)]
+            [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -108,9 +114,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-
-            ViewData["BloodType"] = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
 
             ReturnUrl = returnUrl;
 
@@ -129,10 +134,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
                     user.Id = Guid.NewGuid();
 
+                    user.LockoutEnabled = false;
+
                     var donor = _mapper.Map<Donor>(Input);
 
                     try
                     {
+
                         var result = await _userManager.CreateAsync(user, Input.Password);
 
                         await _userManager.AddToRoleAsync(user, "Donor");
@@ -161,29 +169,23 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
                             await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                            {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                            }
-                            else
-                            {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
-                            }
                         }
                         foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         transaction.Rollback();
                     }
                 }
             }
             // If we got this far, something failed, redisplay form
+
+            ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
+            
             return Page();
         }
     }
