@@ -36,6 +36,14 @@
         margin: 0 15px 0 0;
         padding: 6px 18px;
     }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
+
+    .navbar ul {
+        display: none;
+    }
 }
 
 /* Sticky footer styles
@@ -183,9 +191,10 @@ html {
     .navbar-mobile .getstarted:focus {
         margin: 15px;
     }
-html {
-    font-size: 14px;
-}
+
+    html {
+        font-size: 14px;
+    }
 
 @media (min-width: 768px) {
     html {
