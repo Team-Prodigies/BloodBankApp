@@ -60,6 +60,10 @@ a:hover {
     z-index: 2;
 }
 
+.bg-custom1 {
+    background-color: #f5f3f4;
+}
+
 @media only screen and (max-width: 1000px) {
     .image-slider {
         width: 100%;
