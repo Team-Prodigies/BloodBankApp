@@ -43,6 +43,11 @@ a:hover {
 /*Register, Login end*/
 
 /*Home Page, Start*/
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .drk:after {
     content: "";
     display: block;
@@ -67,6 +72,12 @@ a:hover {
 @media only screen and (max-width: 1000px) {
     .image-slider {
         width: 100%;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .image-card {
         height: auto !important;
     }
 }
