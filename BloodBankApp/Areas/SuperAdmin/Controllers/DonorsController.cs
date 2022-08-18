@@ -26,31 +26,49 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
         {
             var skipRows = (pageNumber - 1) * 10;
-            var users = new List<Donor>();
+            var donors = new List<Donor>();
 
             switch (filterBy)
             {
                 case "A-Z":
-                    users = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
                     break;
 
                 case "Z-A":
-                    users = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderByDescending(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderByDescending(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
                     break;
 
                 case "Locked":
-                    users = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Locked == true).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Locked == true).Skip(skipRows).Take(10).ToListAsync();
                     break;
 
                 default:
-                    users = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
                     break;
             }
             
-            var result = _mapper.Map<List<DonorModel>>(users);
+            var result = _mapper.Map<List<DonorModel>>(donors);
 
             ViewBag.FilterBy = filterBy;
             ViewBag.PageNumber = pageNumber;
+
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DonorSearchResults(string searchTerm, int pageNumber = 1)
+        {
+            if(searchTerm == null || searchTerm.Trim() == "")
+            {
+                return RedirectToAction(nameof(Donors));
+            }
+
+            var skipRows = (pageNumber - 1) * 10;
+            var donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Name.Contains(searchTerm) || donor.User.Surname.Contains(searchTerm)).Skip(skipRows).Take(10).ToListAsync();
+            var result = _mapper.Map< List<DonorModel>>(donors);
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.SearchTerm = searchTerm;
 
             return View(result);
         }

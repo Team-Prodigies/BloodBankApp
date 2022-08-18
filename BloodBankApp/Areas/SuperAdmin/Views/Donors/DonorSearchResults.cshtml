@@ -3,67 +3,11 @@
 @{
     ViewData["Title"] = "Donors";
 }
-<header>
-    <style>
 
-        .dropbtn {
-            background-color: #7790b4;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #7790b4;
-            border-radius: 5px;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-            }
-
-                .dropdown-content a:hover {
-                    background-color: #ddd;
-                }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-            border-radius: 5px;
-        }
-
-        .dropdown:hover {
-            background-color: #3e8e41;
-        }
-    </style>
-    
-</header>
-
-<div class="dropdown">
-    <button class="dropbtn">@ViewBag.FilterBy</button>
-    <div class="dropdown-content">
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="A-Z">A-Z</a>
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Z-A">Z-A</a>
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Locked">Locked</a>
-    </div>
-</div>
-
+<h1>Search results for "@ViewBag.SearchTerm"</h1>
+<a asp-controller="Donors" asp-action="Donors">Back to all</a>
 <div class="d-flex justify-content-end">
-
-    <div class="search-bar row g-3">
+   <div class="search-bar row g-3">
         <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Donors" asp-action="DonorSearchResults">
             <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
             <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
@@ -198,7 +142,7 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         <li class="page-item">
-            <a class="page-link" asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="1" asp-route-filterBy="@ViewBag.FilterBy">First Page</a>
+            <a class="page-link" asp-controller="Donors" asp-action="DonorSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
         </li>
 
         @if (ViewBag.pageNumber < 6) {
@@ -206,12 +150,12 @@
                 if (i == ViewBag.pageNumber) {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                           asp-action="ViewBag.SearchTerm" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
                 } else {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Donors" asp-action="Donors"
-                           asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                        <a class="page-link" asp-controller="Donors" asp-action="DonorSearchResults"
+                           asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
                 }
             }
@@ -221,12 +165,12 @@
                     (i == ViewBag.pageNumber) {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                           asp-controller="Donors" asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 } else {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                           asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 }
             }
