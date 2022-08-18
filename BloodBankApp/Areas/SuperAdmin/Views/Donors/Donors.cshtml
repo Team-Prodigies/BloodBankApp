@@ -1,0 +1,84 @@
+﻿@model List<DonorModel>
+
+@{
+    ViewData["Title"] = "Donors";
+}
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all donors</h5>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Personal No.</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Blood Type</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donor in Model)
+                {
+                    <tr>
+                        <td>@donor.Name</td>
+                        <td>@donor.Surname</td>
+                        <td>@donor.DateOfBirth.ToShortDateString()</td>
+                        <td>@donor.PersonalNumber</td>
+                        <td>@donor.Gender</td>
+                        <td>@donor.BloodTypeName</td>
+                        <td>@donor.CityName</td>
+                        <td>
+                            @{
+                                var idName = "lockUser" + donor.PersonalNumber + "a";
+                                var lockButton = "#lockUser" + donor.PersonalNumber + "a";
+                            }
+                            @if (!donor.Locked)
+                            {
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@lockButton">
+                                    Lockout
+                                </button>
+
+                                <div class="modal fade" id="@idName" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Lockout User</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <form class="row g-3" asp-controller="Donors" asp-action="LockoutDonor" method="post">
+                                                    <div class="container col-8">
+                                                        <div class="mb-3 mt-2">
+                                                            <label style="margin-top:1%;" class="form-label">Are you sure you want to lockout this User? </label>
+                                                            <input type="hidden" name="donorId" value="@donor.DonorId" />
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal">
+                                    Unlock
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -8,6 +8,7 @@
                 <div class="mb-2">
                     <label class="form-label">City Name</label>
                     <input asp-for="@Model.CityName" class="form-control" id="inputNanme4" />
+                     <span asp-validation-for="@Model.CityName" class="text-danger"></span>
                 </div>
                 <div class="text-start mt-2">
                     <button type="submit" class="btn btn-info">Submit</button>

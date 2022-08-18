@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220817085308_LockedAttributeAdded")]
+    partial class LockedAttributeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,11 +198,6 @@ namespace BloodBankApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("HospitalCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("HospitalName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -213,9 +210,6 @@ namespace BloodBankApp.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("HospitalCode")
-                        .IsUnique();
-
                     b.HasIndex("LocationId");
 
                     b.ToTable("Hospitals");
@@ -226,16 +220,6 @@ namespace BloodBankApp.Migrations
                     b.Property<Guid>("LocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Latitude")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Longitude")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("LocationId");
 
