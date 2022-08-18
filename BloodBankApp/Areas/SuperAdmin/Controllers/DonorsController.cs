@@ -44,28 +44,26 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> LockoutDonor(Guid donorId)
         {
             var donor = await _context.Users.FindAsync(donorId);
-            if(donor != null)
+            if (donor == null)
             {
-                donor.LockoutEnabled = true;
-                donor.LockoutEnd = DateTime.Now.AddMinutes(10); // DateTime.MaxValue if we want to lock a user forever
-                _context.Update(donor);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+           donor.Locked = true;
+            _context.Update(donor);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Donors");
         }
 
         [HttpGet]
         public async Task<IActionResult> DonorLockout(Guid donorId)
         {
-            var donorLockout =await _context.Donors.FindAsync(donorId);
+            var donorLockout = await _context.Donors.FindAsync(donorId);
 
             if (donorLockout == null)
             {
-                return RedirectToAction("Donors");
+                return NotFound();
             }
             return View(donorLockout);
         }
-
-
     }
 }

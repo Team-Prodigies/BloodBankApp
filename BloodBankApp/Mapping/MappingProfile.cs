@@ -27,6 +27,8 @@ namespace BloodBankApp.Mapping
             CreateMap<SuperAdminModel, User>();
 
             CreateMap<Donor, DonorModel>()
+                 .ForPath(dest => dest.Locked,
+                opts => opts.MapFrom(src => src.User.Locked))
                 .ForPath(dest => dest.Name,
                 opts => opts.MapFrom(src => src.User.Name))
                 .ForPath(dest => dest.Surname,

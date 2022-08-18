@@ -129,10 +129,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
                     user.Id = Guid.NewGuid();
 
+                    user.LockoutEnabled = false;
+
                     var donor = _mapper.Map<Donor>(Input);
 
                     try
                     {
+
                         var result = await _userManager.CreateAsync(user, Input.Password);
 
                         await _userManager.AddToRoleAsync(user, "Donor");

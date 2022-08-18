@@ -6,6 +6,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
     public class DonorModel
     {
+        public virtual bool Locked { get; set; }
         public Guid DonorId { get; set; }
         public String Name { get; set; }
 
