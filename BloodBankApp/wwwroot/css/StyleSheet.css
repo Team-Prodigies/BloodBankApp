@@ -44,7 +44,7 @@ a:hover {
 
 /*Home Page, Start*/
 
-body {
+* {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -67,6 +67,13 @@ body {
 
 .bg-custom1 {
     background-color: #f5f3f4;
+}
+.bg-custom2 {
+    background-color: #d1001f;
+}
+
+h1 {
+    font-weight: 800;
 }
 
 @media only screen and (max-width: 1000px) {
