@@ -151,7 +151,7 @@ namespace BloodBankApp.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("HealthFormQuestionnaireId")
+                    b.Property<Guid?>("HealthFormQuestionnaireId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("PersonalNumber")
@@ -196,6 +196,11 @@ namespace BloodBankApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("HospitalCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("HospitalName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -208,6 +213,9 @@ namespace BloodBankApp.Migrations
 
                     b.HasIndex("CityId");
 
+                    b.HasIndex("HospitalCode")
+                        .IsUnique();
+
                     b.HasIndex("LocationId");
 
                     b.ToTable("Hospitals");
@@ -218,6 +226,16 @@ namespace BloodBankApp.Migrations
                     b.Property<Guid>("LocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("LocationId");
 
@@ -317,6 +335,9 @@ namespace BloodBankApp.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Locked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -509,7 +530,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.DonationPost", "DonationPost")
                         .WithMany("BloodDonations")
                         .HasForeignKey("DonationPostId")
-                        .HasConstraintName("DonationsPosts")
+                        .HasConstraintName("PostDonations")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -551,14 +572,14 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.BloodType", "BloodType")
                         .WithMany("DonationPosts")
                         .HasForeignKey("BloodTypeId")
-                        .HasConstraintName("PostTypes")
+                        .HasConstraintName("TypePosts")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BloodBankApp.Models.Hospital", "Hospital")
                         .WithMany("DonationPosts")
                         .HasForeignKey("HospitalId")
-                        .HasConstraintName("HospitalDonations")
+                        .HasConstraintName("HospitalPosts")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -572,7 +593,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.BloodType", "BloodType")
                         .WithMany("Donors")
                         .HasForeignKey("BloodTypeId")
-                        .HasConstraintName("DonorsTypes")
+                        .HasConstraintName("DonorsBloodTypes")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -585,7 +606,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.User", "User")
                         .WithOne("Donor")
                         .HasForeignKey("BloodBankApp.Models.Donor", "DonorId")
-                        .HasConstraintName("UserDonorr")
+                        .HasConstraintName("UserDonor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -601,7 +622,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.Donor", "Donor")
                         .WithOne("HealthFormQuestionnaire")
                         .HasForeignKey("BloodBankApp.Models.HealthFormQuestionnaire", "HealthFormQuestionnaireId")
-                        .HasConstraintName("DonorrForms")
+                        .HasConstraintName("DonorForms")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -620,7 +641,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.Location", "Location")
                         .WithMany("Hospitals")
                         .HasForeignKey("LocationId")
-                        .HasConstraintName("DonorsLocationn")
+                        .HasConstraintName("LocationHospitals")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -634,14 +655,14 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.Hospital", "Hospital")
                         .WithMany("MedicalStaff")
                         .HasForeignKey("HospitalId")
-                        .HasConstraintName("MedicalHospital")
+                        .HasConstraintName("MedicalStaffHospital")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BloodBankApp.Models.User", "User")
                         .WithOne("MedicalStaff")
                         .HasForeignKey("BloodBankApp.Models.MedicalStaff", "MedicalStaffId")
-                        .HasConstraintName("UserMedicalStafff")
+                        .HasConstraintName("UserMedicalStaff")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -655,7 +676,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.DonationPost", "DonationPost")
                         .WithMany("Notifications")
                         .HasForeignKey("DonationPostId")
-                        .HasConstraintName("donationnotif")
+                        .HasConstraintName("DonationNotifications")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -667,7 +688,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.HealthFormQuestionnaire", "HealthFormQuestionnaire")
                         .WithMany("Questions")
                         .HasForeignKey("HealthFormQuestionnaireId")
-                        .HasConstraintName("formqst")
+                        .HasConstraintName("FormQuestions")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -679,7 +700,7 @@ namespace BloodBankApp.Migrations
                     b.HasOne("BloodBankApp.Models.User", "User")
                         .WithOne("SuperAdmin")
                         .HasForeignKey("BloodBankApp.Models.SuperAdmin", "SuperAdminId")
-                        .HasConstraintName("UserSuperAdminn")
+                        .HasConstraintName("UserSuperAdmin")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

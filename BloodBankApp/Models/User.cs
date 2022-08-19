@@ -14,6 +14,9 @@ namespace BloodBankApp.Models
         public String Surname { get; set; }
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
+
+        public bool Locked { get; set; }
+
         public virtual SuperAdmin SuperAdmin { get; set; }
         public virtual Donor Donor { get; set; }
         public virtual MedicalStaff MedicalStaff { get; set; }

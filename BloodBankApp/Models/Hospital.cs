@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace BloodBankApp.Models
 {
@@ -11,11 +13,18 @@ namespace BloodBankApp.Models
         [Required]
         [Display(Name = "Name")]
         [StringLength(200)]
-        public string HospitalName { get; set; }
+        public String HospitalName { get; set; }
+
         [Required]
         [Display(Name = "Contact number")]
         [StringLength(20)]
-        public string ContactNumber { get; set; }
+        public String ContactNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Hospital Code")]
+        [StringLength(50)]
+        public String HospitalCode { get; set; }
+
         public Guid LocationId { get; set; }
         public Location Location { get; set; }
         public Guid CityId { get; set; }

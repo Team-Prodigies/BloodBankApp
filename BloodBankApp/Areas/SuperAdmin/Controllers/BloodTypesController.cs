@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.Data;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers {
     [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class BloodTypesController : Controller {
 
         private readonly ApplicationDbContext context;
