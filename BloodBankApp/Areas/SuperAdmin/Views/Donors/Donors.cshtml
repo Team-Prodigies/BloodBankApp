@@ -107,11 +107,9 @@
                                 .append(
                                     $('<option value="' + value + '"></option>')
                                 );
-
                         });
                     }
                 });
-
         }
 
     </script>
@@ -137,7 +135,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var donor in Model) {
+                @foreach (var donor in Model)
+                {
                     <tr>
                         <td>@donor.Name</td>
                         <td>@donor.Surname</td>
@@ -149,9 +148,12 @@
                         <td>
                             @{
                                 var idName = "lockUser" + donor.PersonalNumber + "a";
+                                var idUnlockName = "unlockUser" + donor.PersonalNumber + "a";
                                 var lockButton = "#lockUser" + donor.PersonalNumber + "a";
+                                var unlockButton = "#unlockUser" + donor.PersonalNumber + "a";
                             }
-                            @if (!donor.Locked) {
+                            @if (!donor.Locked)
+                            {
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@lockButton">
                                     Lockout
                                 </button>
@@ -182,10 +184,39 @@
                                         </div>
                                     </div>
                                 </div>
-                            } else {
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal">
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="@unlockButton">
                                     Unlock
                                 </button>
+
+                                <div class="modal fade" id="@idUnlockName" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Unlock User</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <form class="row g-3" asp-controller="Donors" asp-action="UnlockDonor" method="post">
+                                                    <div class="container col-8">
+                                                        <div class="mb-3 mt-2">
+                                                            <label style="margin-top:1%;" class="form-label">Are you sure you want to unlock this User? </label>
+                                                            <input type="hidden" name="donorId" value="@donor.DonorId"/>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             }
                         </td>
                     </tr>
@@ -201,32 +232,43 @@
             <a class="page-link" asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="1" asp-route-filterBy="@ViewBag.FilterBy">First Page</a>
         </li>
 
-        @if (ViewBag.pageNumber < 6) {
-            for (int i = 1; i <= 6; i++) {
-                if (i == ViewBag.pageNumber) {
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors" asp-action="Donors"
-                           asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
             }
-        } else {
-            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++) {
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
                 if
-                    (i == ViewBag.pageNumber) {
+                (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
             }

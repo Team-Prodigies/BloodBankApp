@@ -62,9 +62,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return RedirectToAction(nameof(Donors));
             }
-
             var skipRows = (pageNumber - 1) * 10;
-            var donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Name.Contains(searchTerm) || donor.User.Surname.Contains(searchTerm)).Skip(skipRows).Take(10).ToListAsync();
+            var donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => (donor.User.Name + donor.User.Surname.ToUpper()).Contains(searchTerm.Replace(" ", "").ToUpper())).Skip(skipRows).Take(10).ToListAsync();
             var result = _mapper.Map< List<DonorModel>>(donors);
 
             ViewBag.PageNumber = pageNumber;
@@ -97,5 +96,21 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             return View(donorLockout);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UnlockDonor(Guid donorId)
+        {
+            var donor = await _context.Users.FindAsync(donorId);
+            if (donor == null)
+            {
+                return NotFound();
+            }
+            donor.Locked = false;
+            _context.Update(donor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Donors");
+        }
     }
+
 }
