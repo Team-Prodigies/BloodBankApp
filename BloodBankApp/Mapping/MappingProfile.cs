@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static BloodBankApp.Areas.Identity.Pages.Account.Manage.PersonalProfileIndexModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
 namespace BloodBankApp.Mapping {
@@ -30,6 +31,14 @@ namespace BloodBankApp.Mapping {
             CreateMap<Donor, DonorDto>()
                 .ForPath(dest => dest.BloodTypeName,
                 opts => opts.MapFrom(src => src.BloodType.BloodTypeName));
+
+            CreateMap<ProfileInputModel, User>();
+
+            CreateMap<ProfileInputModel, Donor>()
+                .ForMember(dest => dest.CityId,
+                opts => opts.MapFrom(src => src.CityId));
+
+
         }
     }
 }

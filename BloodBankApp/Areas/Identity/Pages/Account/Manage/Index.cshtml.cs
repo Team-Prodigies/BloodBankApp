@@ -33,6 +33,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _context = context;
             _mapper = mapper;
+
+            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
         }
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
@@ -40,7 +42,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
         public Gender Gender { get; set; }
 
         [Display(Name = "Blood Type")]
-        public string BloodTypeName{ get; set; }
+        public string BloodTypeName { get; set; }
 
         public string Name { get; set; }
 
@@ -49,15 +51,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
 
-      
-
         [TempData]
         public string StatusMessage { get; set; }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public ProfileInputModel Input { get; set; }
+        private SelectList CityList { get; set; }
 
-        public class InputModel
+        public class ProfileInputModel
         {
             [Phone]
             [Display(Name = "Phone number")]
@@ -68,24 +69,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "City")]
             public Guid CityId { get; set; }
-
-
         }
 
         private async Task LoadAsync(User user)
         {
             var donor = await _context.Donors
-                .Select(d => new Donor
-                {
-                    DonorId = d.DonorId,
-                    User = d.User,
-                    PersonalNumber = d.PersonalNumber,
-                    Gender = d.Gender,
-                    BloodType = d.BloodType,
-                    City = d.City
-                }).FirstOrDefaultAsync(x => x.DonorId == user.Id);
-           
-            var donorDto = _mapper.Map<DonorDto>(donor);
+                .Include(c => c.City)
+                .Include(b => b.BloodType)
+                .Where(x => x.DonorId == user.Id).FirstOrDefaultAsync();
 
             var userName = user.UserName;
 
@@ -93,7 +84,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             var gender = donor.Gender;
 
-            var bloodTypeName = donorDto.BloodTypeName;
+            var bloodTypeName = donor.BloodType.BloodTypeName;
 
             var name = user.Name;
 
@@ -103,23 +94,21 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             var phoneNumber = user.PhoneNumber;
 
-             var cityId = donor.CityId;
+            var cityId = donor.CityId;
 
-           
             PersonalNumber = personalNumber;
             Gender = gender;
             BloodTypeName = bloodTypeName;
             Name = name;
             Surname = surname;
             DateOfBirth = dOB;
-           
 
-            Input = new InputModel
+            Input = new ProfileInputModel
             {
                 PhoneNumber = phoneNumber,
                 UserName = userName,
                 CityId = cityId
-        };
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -129,12 +118,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            ViewData["City"] = CityList;
+
             await LoadAsync(user);
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(User userModel)
+        public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -145,14 +136,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
+
                 return Page();
             }
+
             var donor = await _context.Donors.FindAsync(user.Id);
             var phoneNumber = user.PhoneNumber;
             var userName = user.UserName;
             var cityId = donor.CityId;
-
-            var result = _userManager.UpdateAsync(userModel);
 
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -176,11 +167,12 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 await _context.SaveChangesAsync();
             }
 
-
             await _signInManager.RefreshSignInAsync(user);
+
             StatusMessage = "Your profile has been updated";
 
             ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+
             return RedirectToPage();
         }
     }
