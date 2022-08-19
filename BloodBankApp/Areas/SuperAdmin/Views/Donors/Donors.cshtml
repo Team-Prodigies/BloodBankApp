@@ -48,8 +48,8 @@
         .dropdown:hover {
             background-color: #3e8e41;
         }
-
     </style>
+    
 </header>
 
 <div class="dropdown">
@@ -64,11 +64,55 @@
 <div class="d-flex justify-content-end">
 
     <div class="search-bar row g-3">
-        <form class="search-form d-flex align-items-center mb-2" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword" class="form-control">
+        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Donors" asp-action="DonorSearchResults">
+            <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
             <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
         </form>
+
+        <datalist id="donorSuggestions"></datalist>
     </div>
+
+
+    <script>
+
+        var typingTimer;                
+        var doneTypingInterval = 1000;  
+        var $input = $('#searchDonors');
+
+        //on keyup, start the countdown
+        $input.on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+         
+        });
+
+        //on keydown, clear the countdown
+        $input.on('keydown', function () {
+            clearTimeout(typingTimer);
+         
+        });
+
+        function doneTyping() {
+            
+            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function (data, status) {
+
+                    if (status == 'success') {
+
+                        $("#donorSuggestions").empty();
+
+                        $.each(data, function (index, value) {
+                            console.log('<option value="' + value + '"></option>');
+
+                            $("#donorSuggestions")
+                                .append(
+                                    $('<option value="' + value + '"></option>')
+                                );
+                        });
+                    }
+                });
+        }
+
+    </script>
 
 </div>
 
