@@ -1,28 +1,28 @@
-﻿using System;
+using AutoMapper;
+using BloodBankApp.Data;
+using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using BloodBankApp.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using BloodBankApp.Enums;
-using AutoMapper;
-using BloodBankApp.Data;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterModel : PageModel
+    public class RegisterMedicalStaffModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
@@ -31,7 +31,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
 
-        public RegisterModel(
+        public RegisterMedicalStaffModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
@@ -45,18 +45,17 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             _mapper = mapper;
             _context = context;
 
-            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-            BloodTypeList = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            HospitalList = new SelectList(_context.Hospitals.ToList(), "HospitalId", "HospitalName");
         }
 
         [BindProperty]
-        public RegisterInputModel Input { get; set; }
+        public RegisterMedicalStaffInputModel Input { get; set; }
         public string ReturnUrl { get; set; }
-        private SelectList CityList { get; set; }
-        private SelectList BloodTypeList { get; set; }
+        private SelectList HospitalList { get; set; }
+
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public class RegisterInputModel
+        public class RegisterMedicalStaffInputModel
         {
             [Required]
             public string Name { get; set; }
@@ -95,26 +94,18 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            // Donor Fields
-            [Required]
-            public long PersonalNumber { get; set; }
+            // MedicalStaff Field
 
             [Required]
-            public Gender Gender { get; set; }
+            [Display(Name = "Hospital")]
+            public Guid HospitalId { get; set; }
 
-            [Required]
-            [Display(Name = "Blood Type")]
-            public Guid BloodTypeId { get; set; }
-
-            [Required]
-            [Display(Name = "City")]
-            public Guid CityId { get; set; }
+            public String HospitalCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["City"] = CityList;
-            ViewData["BloodType"] = BloodTypeList;
+            ViewData["Hospital"] = HospitalList;
 
             ReturnUrl = returnUrl;
 
@@ -129,26 +120,32 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
+                    var hospitalCode = Input.HospitalCode;
+
+                    var hospital = await _context.Hospitals
+                               .Where(x => x.HospitalId == Input.HospitalId).FirstOrDefaultAsync();
+
+                    if (!hospital.HospitalCode.Equals(Input.HospitalCode))
+                    {
+                        return BadRequest("This code doesnt belong to the hospital you entered");
+                    }
                     var user = _mapper.Map<User>(Input);
 
                     user.Id = Guid.NewGuid();
 
-                    user.LockoutEnabled = false;
-
-                    var donor = _mapper.Map<Donor>(Input);
+                    var medicalStaff = _mapper.Map<MedicalStaff>(Input);
 
                     try
                     {
-
                         var result = await _userManager.CreateAsync(user, Input.Password);
 
-                        await _userManager.AddToRoleAsync(user, "Donor");
+                        await _userManager.AddToRoleAsync(user, "MedicalStaff");
 
                         if (result.Succeeded)
                         {
-                            donor.DonorId = user.Id;
+                            medicalStaff.MedicalStaffId = user.Id;
 
-                            await _context.Donors.AddAsync(donor);
+                            await _context.MedicalStaffs.AddAsync(medicalStaff);
 
                             await _context.SaveChangesAsync();
 
@@ -185,10 +182,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
             }
             // If we got this far, something failed, redisplay form
-
-            ViewData["City"] = CityList;
-            ViewData["BloodType"] = BloodTypeList;
-
+            ViewData["Hospital"] = HospitalList;
             return Page();
         }
     }
