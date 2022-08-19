@@ -1,8 +1,7 @@
 ﻿@page
-@using BloodBankApp.Enums
-@model RegisterModel
+@model RegisterMedicalStaffModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "RegisterMedicalStaff";
 }
 
 <head>
@@ -77,49 +76,26 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label asp-for="Input.PersonalNumber" class="mb-1 mt-2">Personal Number</label>
-                        <input asp-for="Input.PersonalNumber" class="form-control" />
-                        <span asp-validation-for="Input.PersonalNumber" class="text-danger"></span>
+                        <label asp-for="Input.HospitalCode" class="mb-1 mt-2"></label>
+                        <input asp-for="Input.HospitalCode" class="form-control" />
+                        <span asp-validation-for="Input.HospitalCode" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-3">
                 <div class="col">
                     <div class="form-group">
-                        <label asp-for="Input.Gender" class="mb-1 mt-2"></label>
-                        <div class="d-flex align-items-center justify-content-evenly">
-                            @foreach (var c in System.Enum.GetValues(typeof(Gender)))
-                            {
-                                <div class="form-check">
-                                    <label class="form-check-label me-2" asp-for="Input.Gender">@c</label>
-                                    <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" />
-                                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="Input.BloodTypeId" class="mb-1 mt-2"></label>
-                        <select class="form-select" asp-items="ViewBag.BloodType" asp-for="Input.BloodTypeId" aria-label="Default select example">
+                        <label asp-for="Input.HospitalId" class="mb-1 mt-2"></label>
+                        <select class="form-select" asp-items="ViewBag.Hospital" asp-for="Input.HospitalId" aria-label="Default select example">
                         </select>
-                        <span asp-validation-for="Input.BloodTypeId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="Input.CityId" class="mb-1 mt-2"></label>
-                        <select class="form-select" asp-items="ViewBag.City" asp-for="Input.CityId" aria-label="Default select example">
-                        </select>
-                        <span asp-validation-for="Input.CityId" class="text-danger"></span>
+                        <span asp-validation-for="Input.HospitalId" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-3">
                 <button type="submit" class="btn btn-danger">Register</button>
             </div>
-            <p class="small mb-0"> <a asp-area="Identity" asp-page="/Account/RegisterMedicalStaff">Register as Medical Staff</a></p>
+            <p class="small mb-0"> <a asp-area="Identity" asp-page="/Account/RegisterMedicalStaff">Register as Donor</a></p>
         </form>
     </div>
 </div>
