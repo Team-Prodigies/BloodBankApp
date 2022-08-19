@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,45 +11,39 @@ using System.Threading.Tasks;
 namespace BloodBankApp.API_s {
     [Route("api/[controller]")]
     [ApiController]
-    public class SuggestionsController : ControllerBase {
+    public class SuggestionsController : ControllerBase
+    {
         private readonly ApplicationDbContext context;
 
-        public SuggestionsController(ApplicationDbContext context) {
+        public SuggestionsController(ApplicationDbContext context)
+        {
             this.context = context;
         }
 
-        // GET: api/<SuggestionsController>
         [HttpGet]
         [Route("GetDonorsSuggestions")]
-        public IEnumerable<string> GetDonorsSuggestions(string search) {
+        public async Task<IEnumerable<string>> GetDonorsSuggestionsAsync(string search)
+        {
 
             if(search == null || search.Trim() == "") {
                 return null;
             }
-            var suggestions = context.Donors.Where(donor => donor.User.Name.ToUpper().Contains(search.ToUpper()) || donor.User.Surname.ToUpper().Contains(search.ToUpper())).Select(donor => donor.User.Name +" "+donor.User.Surname).Take(5).ToList<string>();
+            var suggestions = await context.Donors.Where(donor => donor.User.Name.ToUpper().Contains(search.ToUpper()) || donor.User.Surname.ToUpper().Contains(search.ToUpper())).Select(donor => donor.User.Name +" "+donor.User.Surname).Take(5).ToListAsync<string>();
 
             return suggestions;
         }
 
-        // GET api/<SuggestionsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id) {
-            return "value";
-        }
+        [HttpGet]
+        [Route("GetHospitalsSuggestions")]
+        public async Task<IEnumerable<string>> GetHospitalsSuggestionsAsync(string search)
+        {
 
-        // POST api/<SuggestionsController>
-        [HttpPost]
-        public void Post([FromBody] string value) {
-        }
+            if (search == null || search.Trim() == "") {
+                return null;
+            }
+            var suggestions = await context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(search.ToUpper())).Select(hospital => hospital.HospitalName).Take(5).ToListAsync<string>();
 
-        // PUT api/<SuggestionsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) {
-        }
-
-        // DELETE api/<SuggestionsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id) {
+            return suggestions;
         }
     }
 }

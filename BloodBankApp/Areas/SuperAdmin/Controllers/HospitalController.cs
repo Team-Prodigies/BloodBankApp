@@ -105,5 +105,21 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> HospitalSearchResults(string searchTerm, int pageNumber = 1) {
+            if (searchTerm == null || searchTerm.Trim() == "") {
+                return RedirectToAction(nameof(ManageHospitals));
+            }
+            var skipRows = (pageNumber - 1) * 10;
+            var hospitals = await context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(searchTerm.ToUpper())).Skip(skipRows).Take(10).ToListAsync();
+            
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.SearchTerm = searchTerm;
+
+            return View(hospitals);
+        }
+
+
     }
 }
