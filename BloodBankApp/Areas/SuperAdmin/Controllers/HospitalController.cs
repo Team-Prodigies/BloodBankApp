@@ -74,8 +74,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> EditHospital(Guid hospitalId) {
-
+        public async Task<IActionResult> EditHospital(Guid hospitalId) 
+        {
             var hospital = await context.Hospitals.Include(l => l.Location).Include(c => c.City).Where(h => h.HospitalId == hospitalId).FirstOrDefaultAsync();
 
             if(hospital == null)
@@ -89,11 +89,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditHospital(HospitalModel hospital) {
-
+        public async Task<IActionResult> EditHospital(HospitalModel hospital) 
+        {
             if(!ModelState.IsValid)
             {
-                return View(hospital.HospitalId);
+                return View(hospital);
             }
 
             var editHospital = mapper.Map<Hospital>(hospital);
@@ -106,20 +106,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> HospitalSearchResults(string searchTerm, int pageNumber = 1) {
+        public async Task<IActionResult> HospitalSearchResults(string searchTerm, int pageNumber = 1) 
+        {
             if (searchTerm == null || searchTerm.Trim() == "") {
                 return RedirectToAction(nameof(ManageHospitals));
             }
             var skipRows = (pageNumber - 1) * 10;
             var hospitals = await context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(searchTerm.ToUpper())).Skip(skipRows).Take(10).ToListAsync();
             
-
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 
             return View(hospitals);
         }
-
-
     }
 }
