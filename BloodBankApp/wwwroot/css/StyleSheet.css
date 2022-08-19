@@ -82,5 +82,15 @@ body {
     }
 }
 
+/* donors-organization start */
+
+#donors-organization h1 {
+    color: #0f0f0f;
+    font-size:2.6rem;
+    font-weight: 800;
+}
+
+/* donors-organization end */
+
 /*Home Page, end*/
 
