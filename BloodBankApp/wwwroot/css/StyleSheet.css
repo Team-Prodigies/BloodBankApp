@@ -76,3 +76,9 @@ a:hover {
     color: #740707;
     background-color: #f5f3f4;
 }
+/*Register, Login end*/
+
+*{
+    margin: 0;
+    padding: 0;
+}

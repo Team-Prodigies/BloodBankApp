@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Models;
+﻿using BloodBankApp.Data;
+using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +13,12 @@ namespace BloodBankApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            this.context = context;
         }
         public IActionResult Index()
         {
@@ -24,6 +27,12 @@ namespace BloodBankApp.Controllers
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+        public IActionResult AboutUs() {
+            ViewData["UsersCount"] = context.Users.Count();
+            ViewData["HospitalCount"] = context.Hospitals.Count();
+            ViewData["BloodDonatedCount"] = context.BloodDonations.Count();
             return View();
         }
 
