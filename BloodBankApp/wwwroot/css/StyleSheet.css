@@ -89,6 +89,12 @@ h1 {
     }
 }
 
+@media (max-width: 576px) {
+    .order-sm-last {
+        order: 6 !important;
+    }
+}
+
 /* donors-organization start */
 
 #donors-organization h1 {
