@@ -35,7 +35,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,IMapper mapper, ApplicationDbContext context)
+            IEmailSender emailSender, IMapper mapper,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -50,11 +51,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public RegisterInputModel Input { get; set; }
-
-        public string ReturnUrl { get; set;  }
-        private SelectList CityList { get; set;  } 
-        private SelectList BloodTypeList { get; set;  }
-
+        public string ReturnUrl { get; set; }
+        private SelectList CityList { get; set; }
+        private SelectList BloodTypeList { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class RegisterInputModel
@@ -134,10 +133,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
                     user.Id = Guid.NewGuid();
 
+                    user.LockoutEnabled = false;
+
                     var donor = _mapper.Map<Donor>(Input);
 
                     try
                     {
+
                         var result = await _userManager.CreateAsync(user, Input.Password);
 
                         await _userManager.AddToRoleAsync(user, "Donor");
@@ -167,22 +169,16 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                             await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                            {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                            }
-                            else
-                            {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
-                            }
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+
+                            return LocalRedirect(returnUrl);
                         }
                         foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         transaction.Rollback();
                     }
@@ -192,7 +188,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
-            
+
             return Page();
         }
     }

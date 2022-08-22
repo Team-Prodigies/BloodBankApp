@@ -85,10 +85,5 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             ViewData["BloodTypeData"] = data;
         }
-
-        public IActionResult ManageCities()
-        {
-            return View();
-        }
     }
 }

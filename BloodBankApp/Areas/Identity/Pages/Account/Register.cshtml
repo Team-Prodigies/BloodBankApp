@@ -8,7 +8,6 @@
 <head>
     <link rel="stylesheet" href="~/css//StyleSheet.css" />
 </head>
-
 <div class="container-fluid d-flex bg-custom justify-content-center">
     <div class="container ms-2 me-2 w-75 mt-4 mb-4 shadow bg-white rounded p-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -120,10 +119,10 @@
             <div class="d-flex justify-content-center mt-3">
                 <button type="submit" class="btn btn-danger">Register</button>
             </div>
+            <p class="small mb-0"> <a asp-area="Identity" asp-page="/Account/RegisterMedicalStaff">Register as Medical Staff</a></p>
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

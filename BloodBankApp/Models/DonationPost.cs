@@ -9,29 +9,19 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid NotificationId { get; set; }
-
         public DateTime DateRequired { get; set; }
-
         [Required]
         [StringLength(2000)]
-        public String Description { get; set; }
-
+        public string Description { get; set; }
         [Display(Name = "Amount requested")]
         public double AmountRequested { get; set; }
-
         [Display(Name = "Status")]
         public PostStatus PostStatus { get; set; }
-
         public Guid HospitalId { get; set; }
-
         public Hospital Hospital { get; set; }
-
         public Guid BloodTypeId { get; set; }
-
         public BloodType BloodType { get; set; }
-
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
-
         public ICollection<BloodDonation> BloodDonations { get; set; } = new List<BloodDonation>();
     }
 }
