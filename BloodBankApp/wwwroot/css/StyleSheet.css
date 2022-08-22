@@ -41,3 +41,8 @@ a:hover {
     color: black;
 }
 /*Register, Login end*/
+
+*{
+    margin: 0;
+    padding: 0;
+}
