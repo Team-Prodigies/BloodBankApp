@@ -35,6 +35,14 @@ namespace BloodBankApp.Mapping
                 .ForMember(dest => dest.HospitalId,
                 opts => opts.MapFrom(src => src.HospitalId));
 
+            CreateMap<HospitalModel, Hospital>().ReverseMap();
+
+            CreateMap<HospitalModel, Location>()
+              .ForMember(dest => dest.Longitude,
+              opts => opts.MapFrom(src => src.Location.Longitude))
+              .ForMember(dest => dest.Latitude,
+              opts => opts.MapFrom(src => src.Location.Latitude));
+
             CreateMap<SuperAdminModel, User>();
         }
     }

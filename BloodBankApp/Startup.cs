@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
 using BloodBankApp.Models;
@@ -42,6 +43,8 @@ namespace BloodBankApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IHospitalService, HospitalService>();
 
            services.AddRazorPages();
 
