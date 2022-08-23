@@ -13,6 +13,5 @@ namespace BloodBankApp.Models
         [StringLength(256)]
         [EmailAddress]
         public string EmailContact { get; set; }
-
     }
 }

@@ -42,34 +42,33 @@ namespace BloodBankApp.Data
                         CityName="Prizren"
                     }
                 };
-                
                 var bloodTypes = new List<BloodType>
-            {
-                new BloodType {
-                    BloodTypeName = "A+"
-                },
-                new BloodType {
-                    BloodTypeName = "A-"
-                },
-                new BloodType {
-                    BloodTypeName = "B+"
-                },
-                new BloodType {
-                    BloodTypeName = "B-"
-                },
-                 new BloodType {
-                    BloodTypeName = "O+"
-                },
-                  new BloodType {
-                    BloodTypeName = "O-"
-                },
-                  new BloodType {
-                    BloodTypeName = "AB+"
-                },
-                  new BloodType {
-                    BloodTypeName = "AB-"
-                }
-            };
+                {
+                     new BloodType {
+                        BloodTypeName = "A+"
+                    },
+                     new BloodType {
+                        BloodTypeName = "A-"
+                    },
+                     new BloodType {
+                        BloodTypeName = "B+"
+                    },
+                     new BloodType {
+                        BloodTypeName = "B-"
+                    },
+                     new BloodType {
+                        BloodTypeName = "O+"
+                    },
+                     new BloodType {
+                        BloodTypeName = "O-"
+                    },
+                     new BloodType {
+                       BloodTypeName = "AB+"
+                    },
+                     new BloodType {
+                       BloodTypeName = "AB-"
+                    }
+                };
                 context.Cities.AddRange(cities);
                 context.BloodTypes.AddRange(bloodTypes);
                 await context.SaveChangesAsync();

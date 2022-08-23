@@ -13,124 +13,120 @@
                 <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="hospitalsSuggestions" id="searchHospital">
                 <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
             </form>
-
             <datalist id="hospitalsSuggestions"></datalist>
         </div>
     </div>
-  </div>
-    <section class="section">
-        <div class="row">
+</div>
+<section class="section">
+    <div class="row">
+        @foreach (var hospital in Model)
+        {
 
-            @foreach (var hospital in Model) {
-
-                <div class="col-lg-6">
-
-                    <div class="card">
-                        <div class="card-body p-3">
-
-                            <div class="d-flex">
-                                <div class="icon mx-2">
-                                    <i class="bi bi-building"></i>
-                                </div>
-
-                                <h5 class="text-primary">@hospital.HospitalName</h5>
-
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="d-flex">
+                            <div class="icon mx-2">
+                                <i class="bi bi-building"></i>
                             </div>
-
-                            <div class="m-4">
-                                <p>Contact number: @hospital.ContactNumber</p>
-                                <p>Hospital code: @hospital.HospitalCode</p>
-                                <p>Location: @hospital.City.CityName</p>
-
-                                <a class="btn btn-outline-info" asp-controller="Hospital" asp-action="EditHospital" asp-route-hospitalId="@hospital.HospitalId">Edit</a>
-
-                            </div>
+                            <h5 class="text-primary">@hospital.HospitalName</h5>
+                        </div>
+                        <div class="m-4">
+                            <p>Contact number: @hospital.ContactNumber</p>
+                            <p>Hospital code: @hospital.HospitalCode</p>
+                            <p>Location: @hospital.City.CityName</p>
+                            <a class="btn btn-outline-info" asp-controller="Hospital" asp-action="EditHospital" asp-route-hospitalId="@hospital.HospitalId">Edit</a>
                         </div>
                     </div>
-
                 </div>
+            </div>
+        }
 
+        <script>
+            var typingTimer;
+            var doneTypingInterval = 1000;
+            var $input = $('#searchHospital');
+
+            //on keyup, start the countdown
+            $input.on('keyup', function() {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            //on keydown, clear the countdown
+            $input.on('keydown', function() {
+                clearTimeout(typingTimer);
+            });
+
+            function doneTyping() {
+                $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function(data, status) {
+
+                    if (status == 'success') {
+                        $("#hospitalsSuggestions").empty();
+
+                        $.each(data, function(index, value) {
+                            console.log('<option value="' + value + '"></option>');
+
+                            $("#hospitalsSuggestions")
+                                .append(
+                                    $('<option value="' + value + '"></option>')
+                                );
+                        });
+                    }
+                });
             }
 
-            <script>
+        </script>
 
-                var typingTimer;
-                var doneTypingInterval = 1000;
-                var $input = $('#searchHospital');
+    </div>
+</section>
 
-                //on keyup, start the countdown
-                $input.on('keyup', function () {
-                    clearTimeout(typingTimer);
-                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
+        </li>
 
-                });
-
-                //on keydown, clear the countdown
-                $input.on('keydown', function () {
-                    clearTimeout(typingTimer);
-
-                });
-
-                function doneTyping() {
-
-                    $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
-
-                        if (status == 'success') {
-
-                            $("#hospitalsSuggestions").empty();
-
-                            $.each(data, function (index, value) {
-                                console.log('<option value="' + value + '"></option>');
-
-                                $("#hospitalsSuggestions")
-                                    .append(
-                                        $('<option value="' + value + '"></option>')
-                                    );
-                            });
-                        }
-                    });
+        @if (ViewBag.pageNUmber < 6)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNUmber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="Hospital"
+               asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
                 }
-
-            </script>
-
-        </div>
-    </section>
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-            <li class="page-item">
-                <a class="page-link" asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
-            </li>
-
-            @if (ViewBag.pageNUmber < 6) {
-                for (int i = 1; i <= 6; i++) {
-                    if (i == ViewBag.pageNUmber) {
-                        <li class="page-item active">
-                            <a class="page-link" asp-controller="Hospital"
-                               asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
-                        </li>
-                    } else {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
-                        </li>
-                    }
-                }
-            } else {
-                for (int i = ViewBag.pageNUmber - 3, j = 1; j <= 6; i++, j++) {
-                    if
-                        (i == ViewBag.pageNUmber) {
-                        <li class="page-item active">
-                            <a class="page-link"
-                               asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
-                        </li>
-                    } else {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Hospital"
-                               asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
-                        </li>
-                    }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
                 }
             }
-        </ul>
-    </nav>
+        }
+        else
+        {
+            for (int i = ViewBag.pageNUmber - 3, j = 1; j <= 6; i++, j++)
+            {
+                if
+                (i == ViewBag.pageNUmber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+               asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Hospital"
+               asp-action="HospitalSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>
 

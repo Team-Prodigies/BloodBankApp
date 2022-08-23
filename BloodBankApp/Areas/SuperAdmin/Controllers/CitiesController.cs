@@ -22,19 +22,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public IActionResult Cities()
         {
             var Cities = _context.Cities.ToList();
-
             return View(Cities);
         }
 
         [HttpPost]
-        public IActionResult AddNewCity(City city) 
+        public IActionResult AddNewCity(City city)
         {
             if (ModelState.IsValid)
             {
                 _context.Cities.Add(city);
-
                 _context.SaveChanges();
-
                 return RedirectToAction("Cities");
             }
             return RedirectToAction("Cities");
@@ -50,17 +47,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public IActionResult EditCity(Guid cityId, String cityName)
         {
-            var cityExists = _context.Cities.Where(b => b.CityName.ToUpper() == cityName.ToUpper()).FirstOrDefault();
-            if (cityExists == null)
-            {
-                var city = _context.Cities.Find(cityId);
-                if (city != null)
-                {
-                    city.CityName = cityName;
-                    _context.Update(city);
-                    _context.SaveChanges();
-                }
-            }
+            var city = _context.Cities.FirstOrDefault(c => c.CityId == cityId);
+            if (city == null) return NotFound();
+            city.CityName = cityName;
+            _context.Update(city);
+            _context.SaveChanges();
             return RedirectToAction("Cities");
         }
 
@@ -68,12 +59,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public IActionResult EditCity(Guid cityID)
         {
             var editCity = _context.Cities.Find(cityID);
-
-            if (editCity == null)
-            {
-                return RedirectToAction("Cities");
-            }
-
+            if (editCity == null) return RedirectToAction("Cities");
             return View(editCity);
         }
     }

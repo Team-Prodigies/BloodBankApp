@@ -12,7 +12,5 @@ namespace BloodBankApp.Models
         public Hospital Hospital { get; set; }
         public Guid BloodTypeId { get; set; }
         public BloodType BloodType { get; set; }
-
-      
     }
 }

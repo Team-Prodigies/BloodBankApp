@@ -7,57 +7,56 @@
 <h1>Search results for "@ViewBag.SearchTerm"</h1>
 
 <div class="d-flex justify-content-between">
-<div class=" justify-content-start pt-2">
-<a asp-controller="Donors" asp-action="Donors">Back to all</a>
-</div>
-<div class="justify-content-end">
-   <div class="search-bar row g-3">
-        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Donors" asp-action="DonorSearchResults">
-            <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
-            <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
-        </form>
-
-        <datalist id="donorSuggestions"></datalist>
+    <div class=" justify-content-start pt-2">
+        <a asp-controller="Donors" asp-action="Donors">Back to all</a>
     </div>
-</div>
+    <div class="justify-content-end">
+        <div class="search-bar row g-3">
+            <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Donors" asp-action="DonorSearchResults">
+                <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
+                <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+            </form>
+            <datalist id="donorSuggestions"></datalist>
+        </div>
+    </div>
 
     <script>
 
-        var typingTimer;                
-        var doneTypingInterval = 1000;  
+        var typingTimer;
+        var doneTypingInterval = 1000;
         var $input = $('#searchDonors');
 
         //on keyup, start the countdown
-        $input.on('keyup', function () {
+        $input.on('keyup', function() {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
-         
+
         });
 
         //on keydown, clear the countdown
-        $input.on('keydown', function () {
+        $input.on('keydown', function() {
             clearTimeout(typingTimer);
-         
+
         });
 
         function doneTyping() {
-            
-            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function (data, status) {
 
-                    if (status == 'success') {
+            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function(data, status) {
 
-                        $("#donorSuggestions").empty();
+                if (status == 'success') {
 
-                        $.each(data, function (index, value) {
-                            console.log('<option value="' + value + '"></option>');
+                    $("#donorSuggestions").empty();
 
-                            $("#donorSuggestions")
-                                .append(
-                                    $('<option value="' + value + '"></option>')
-                                );
-                        });
-                    }
-                });
+                    $.each(data, function(index, value) {
+                        console.log('<option value="' + value + '"></option>');
+
+                        $("#donorSuggestions")
+                            .append(
+                                $('<option value="' + value + '"></option>')
+                            );
+                    });
+                }
+            });
         }
 
     </script>
@@ -68,7 +67,6 @@
 <div class="card container">
     <div class="card-body">
         <h5 class="card-title">List of all donors</h5>
-
         <table class="table">
             <thead>
                 <tr>
@@ -83,7 +81,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var donor in Model) {
+                @foreach (var donor in Model)
+                {
                     <tr>
                         <td>@donor.Name</td>
                         <td>@donor.Surname</td>
@@ -99,7 +98,8 @@
                                 var lockButton = "#lockUser" + donor.PersonalNumber + "a";
                                 var unlockButton = "#unlockUser" + donor.PersonalNumber + "a";
                             }
-                            @if (!donor.Locked) {
+                            @if (!donor.Locked)
+                            {
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@lockButton">
                                     Lockout
                                 </button>
@@ -112,7 +112,6 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-
                                                 <form class="row g-3" asp-controller="Donors" asp-action="LockoutDonor" method="post">
                                                     <div class="container col-8">
                                                         <div class="mb-3 mt-2">
@@ -126,16 +125,15 @@
                                                     </div>
                                                 </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                            } else
+                            }
+                            else
                             {
                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="@unlockButton">
                                     Unlock
                                 </button>
-
                                 <div class="modal fade" id="@idUnlockName" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -144,12 +142,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-
                                                 <form class="row g-3" asp-controller="Donors" asp-action="UnlockDonor" method="post">
                                                     <div class="container col-8">
                                                         <div class="mb-3 mt-2">
                                                             <label style="margin-top:1%;" class="form-label">Are you sure you want to unlock this User? </label>
-                                                            <input type="hidden" name="donorId" value="@donor.DonorId"/>
+                                                            <input type="hidden" name="donorId" value="@donor.DonorId" />
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -158,7 +155,6 @@
                                                     </div>
                                                 </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -176,33 +172,43 @@
         <li class="page-item">
             <a class="page-link" asp-controller="Donors" asp-action="DonorSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
         </li>
-
-        @if (ViewBag.pageNumber < 6) {
-            for (int i = 1; i <= 6; i++) {
-                if (i == ViewBag.pageNumber) {
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="ViewBag.SearchTerm" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+               asp-action="ViewBag.SearchTerm" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors" asp-action="DonorSearchResults"
-                           asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+               asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
                 }
             }
-        } else {
-            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++) {
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
                 if
-                    (i == ViewBag.pageNumber) {
+                (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Donors" asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+               asp-controller="Donors" asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+               asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 }
             }

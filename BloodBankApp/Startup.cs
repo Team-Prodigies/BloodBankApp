@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
@@ -12,9 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp
 {
@@ -32,7 +28,7 @@ namespace BloodBankApp
         {
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddRoles<IdentityRole<Guid>>()
@@ -43,17 +39,14 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-           services.AddRazorPages();
+            services.AddRazorPages();
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {
                 mapper.AddProfile(new MappingProfile());
             });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
