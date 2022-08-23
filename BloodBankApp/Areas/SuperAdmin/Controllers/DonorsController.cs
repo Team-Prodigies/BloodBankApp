@@ -82,7 +82,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
            donor.Locked = true;
             _context.Update(donor);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Donors");
+            return RedirectToAction(nameof(Donors));
         }
 
         [HttpGet]
@@ -109,7 +109,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _context.Update(donor);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Donors");
+            return RedirectToAction(nameof(Donors));
         }
     }
 

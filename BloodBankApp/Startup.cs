@@ -46,6 +46,7 @@ namespace BloodBankApp
 
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IBloodTypesService, BloodTypesService>();
+            services.AddScoped<ICitiesService, CitiesService>();
 
             services.AddRazorPages();
 

@@ -27,14 +27,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> AddNewBloodType(string bloodTypeName)
         {
             await _bloodTypesService.AddNewBloodType(bloodTypeName);
-            return RedirectToAction("BloodTypes");
+            return RedirectToAction(nameof(BloodTypes));
         }
 
         [HttpPost]
         public async Task<IActionResult> EditBloodType(BloodType editBloodType)
         {
             await _bloodTypesService.EditBloodType(editBloodType);
-            return RedirectToAction("BloodTypes");
+            return RedirectToAction(nameof(BloodTypes));
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var bloodType = await _bloodTypesService.GetBloodType(bloodTypeID);
             if (bloodType == null)
             {
-                return RedirectToAction("BloodTypes");
+                return RedirectToAction(nameof(BloodTypes));
             }
             return View(bloodType);
         }
