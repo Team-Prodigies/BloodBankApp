@@ -47,35 +47,72 @@
             @RenderBody()
         </main>
     </div>
-    <footer class="border-top text-muted">
-        <div class="container text-center">
-            <div class="footer-row row justify-content-around">
-                <div class="col-4">
-                    <div>
-                        <img src="~/Images/logo.png" />
-                    </div>
-                    <div class="social-links">
-                        <a href="mailto: example@gmail.com"><i class="bi bi-envelope footer-icon"></i></a>
-                        <a href="#"><i class="bi bi-facebook footer-icon"></i></a>
-                        <a href="#"><i class="bi bi-linkedin footer-icon"></i></a>
-                        <a href="#"><i class="bi bi-twitter footer-icon"></i></a>
-                    </div>
+    <div class="container-fluid" style="background-color: #f5f3f4">
+        <div class="container">
+            <footer class="row row-cols-1 row-cols-sm-4 row-cols-md-5 border-top py-5 my-5">
+                <div class="col mb-3 text-center">
+                    <img src="~/Images/logo.png" class="img-thumbnail border-0" style="background-color: #f5f3f4" />
+                    <p class="text-muted mt-3 d-none d-sm-block">
+                        &copy; 2022 - BloodBankApp
+                    </p>
                 </div>
-                <div class="col-4 ">
-                    <h2>Important links</h2>
-                    <div class="footer-links">
-                        <ul>
-                            <li> <i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-                            <li> <i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-                        </ul>
-                    </div>
+                <div class="col mb-3 d-none d-md-block">
+
                 </div>
-            </div>
+                <div class="col mb-3 text-center text-md-start">
+                    <h5>Section</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Home</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Hospital</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="/Home/AboutUs" class="nav-link p-0 text-muted">About Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Profile</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col mb-3 text-center text-md-start">
+                    <h5>Blogs</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Donation Process</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Why Give Donate</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted">Benefits</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col mb-3 text-center text-md-start">
+                    <h5>Contact</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a href="mailto:info@wesell.com" class="nav-link p-0 ms-md-4 text-muted"><i class="fas fa-envelope mr-3 "></i></a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted ms-md-4"><i class="bi bi-facebook"></i></a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted ms-md-4"><i class="bi bi-instagram"></i></a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted ms-md-4"><i class="bi bi-linkedin"></i></a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="" class="nav-link p-0 text-muted ms-md-4"><i class="bi bi-twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
         </div>
-        <div class="container d-flex justify-content-center">
-            &copy; 2022 - BloodBankApp
-        </div>
-    </footer>
+    </div>
     <script src="~/Medilab/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="~/Medilab/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/Medilab/assets/vendor/glightbox/js/glightbox.min.js"></script>
