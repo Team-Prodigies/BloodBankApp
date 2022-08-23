@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
+using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers {
@@ -15,7 +17,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
         public RolesController(RoleManager<IdentityRole<Guid>> roleManager, ApplicationDbContext context, IMapper mapper) {
+    
             this._roleManager = roleManager;
+       
         }
 
         public async Task<IActionResult> AllRoles() {
