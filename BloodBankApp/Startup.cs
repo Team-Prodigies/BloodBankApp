@@ -45,8 +45,9 @@ namespace BloodBankApp
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IBloodTypesService, BloodTypesService>();
 
-           services.AddRazorPages();
+            services.AddRazorPages();
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {

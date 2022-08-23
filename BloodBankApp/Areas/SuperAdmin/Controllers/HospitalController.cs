@@ -15,27 +15,27 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Area("SuperAdmin")]
     public class HospitalController : Controller
     {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
-        private readonly SelectList cityList;
-        private readonly IHospitalService hospitalService;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly SelectList _cityList;
+        private readonly IHospitalService _hospitalService;
         public HospitalController(ApplicationDbContext context, IMapper mapper, IHospitalService hospitalService)
         {
-            this.context = context;
-            this.mapper = mapper;
-            cityList = new SelectList(context.Cities.ToList(), "CityId", "CityName");
-            this.hospitalService = hospitalService;
+            _context = context;
+            _mapper = mapper;
+            _cityList = new SelectList(context.Cities.ToList(), "CityId", "CityName");
+            _hospitalService = hospitalService;
         }
 
         public IActionResult CreateHospital()
         {
-            ViewData["CityId"] = cityList;
+            ViewData["CityId"] = _cityList;
             return View();
         }
 
         public async Task<IActionResult> ManageHospitals(int pageNumber = 1)
         {
-            var hospitals = await hospitalService.GetHospitals(pageNumber);
+            var hospitals = await _hospitalService.GetHospitals(pageNumber);
             ViewBag.pageNumber = pageNumber;
 
             return View(hospitals);
@@ -46,22 +46,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["CityId"] = cityList;
+                ViewData["CityId"] = _cityList;
                 return View();
             }
-            using (var transaction = context.Database.BeginTransaction())
+            var result = await _hospitalService.CreateHospital(model);
+            if (!result)
             {
-                try
-                {
-                    await hospitalService.CreateHospital(model);
-                    await transaction.CommitAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    ViewData["CityId"] = cityList;
-                    return View();
-                }
+                ViewData["CityId"] = _cityList;
+                return View();
             }
             return RedirectToAction(nameof(ManageHospitals));
         }
@@ -70,15 +62,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditHospital(Guid hospitalId) 
         {
-            var hospital = await context.Hospitals.Include(l => l.Location).Include(c => c.City).Where(h => h.HospitalId == hospitalId).FirstOrDefaultAsync();
+            var hospital = await _hospitalService.GetHospital(hospitalId);
 
             if(hospital == null)
             {
                 return RedirectToAction(nameof(ManageHospitals));
             }
 
-            ViewData["CityId"] = cityList;
-            var editHospital = mapper.Map<HospitalModel>(hospital);
+            ViewData["CityId"] = _cityList;
+            var editHospital = _mapper.Map<HospitalModel>(hospital);
             return View(editHospital);
         }
 
@@ -89,7 +81,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View(hospital);
             }
-            await hospitalService.EditHospital(hospital);
+            await _hospitalService.EditHospital(hospital);
 
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
@@ -100,7 +92,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             if (searchTerm == null || searchTerm.Trim() == "") {
                 return RedirectToAction(nameof(ManageHospitals));
             }
-            var hospitals = await hospitalService.HospitalSearchResults(searchTerm, pageNumber);
+            var hospitals = await _hospitalService.HospitalSearchResults(searchTerm, pageNumber);
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 

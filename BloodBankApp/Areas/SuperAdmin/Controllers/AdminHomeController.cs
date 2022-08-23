@@ -13,10 +13,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class AdminHomeController : Controller {
 
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
         public AdminHomeController(ApplicationDbContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -31,19 +31,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
         private async Task GetNumberOfDonationPosts()
         {
-            ViewData["DonationPostsCount"] = await context.DonationPosts.Where(x => x.DateRequired.Year == DateTime.Now.Year).CountAsync();
+            ViewData["DonationPostsCount"] = await _context.DonationPosts.Where(x => x.DateRequired.Year == DateTime.Now.Year).CountAsync();
         }
 
         private async Task GetAmountOfBloodDonated()
         {
             var bloodAmount = 0.0D;
-            await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).ForEachAsync(x => bloodAmount += x.Amount);
+            await _context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).ForEachAsync(x => bloodAmount += x.Amount);
             ViewData["BloodAmount"] = bloodAmount;
         }
 
         private async Task GetDonorCount()
         {
-            ViewData["DonorCount"] = await context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
+            ViewData["DonorCount"] = await _context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
         }
 
         private async Task GetUserRoleDataAsync()
@@ -51,8 +51,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var data = new Dictionary<String, int>();
 
             var userCountByRole =
-                from role in await context.Roles.ToListAsync()
-                join user in await context.UserRoles.ToListAsync() on role.Id equals user.RoleId into users
+                from role in await _context.Roles.ToListAsync()
+                join user in await _context.UserRoles.ToListAsync() on role.Id equals user.RoleId into users
                 select new
                 {
                     Role = role.Name,
@@ -71,8 +71,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var data = new Dictionary<String, int>();
 
             var donorCountByBloodType =
-                from bloodType in await context.BloodTypes.ToListAsync()
-                join donor in await context.Donors.ToListAsync() on bloodType.BloodTypeId equals donor.BloodTypeId into donors
+                from bloodType in await _context.BloodTypes.ToListAsync()
+                join donor in await _context.Donors.ToListAsync() on bloodType.BloodTypeId equals donor.BloodTypeId into donors
                 select new
                 {
                     BloodType = bloodType.BloodTypeName,

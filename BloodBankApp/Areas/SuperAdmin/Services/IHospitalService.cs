@@ -10,8 +10,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     public interface IHospitalService
     {
         Task<List<Hospital>> GetHospitals(int pageNumber);
-        Task CreateHospital(HospitalModel model);
+        Task<bool> CreateHospital(HospitalModel model);
         Task EditHospital(HospitalModel hospital);
+        Task<Hospital> GetHospital(Guid hospitalId);
         Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber);
     }
 }

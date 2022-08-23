@@ -1,74 +1,56 @@
-﻿using BloodBankApp.Data;
+﻿using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Controllers {
+namespace BloodBankApp.Areas.SuperAdmin.Controllers
+{
     [Area("SuperAdmin")]
     [Authorize(Roles = "SuperAdmin")]
-    public class BloodTypesController : Controller {
+    public class BloodTypesController : Controller
+    {
+        private readonly IBloodTypesService _bloodTypesService;
 
-        private readonly ApplicationDbContext context;
-
-        public BloodTypesController(ApplicationDbContext context) {
-            this.context = context;
+        public BloodTypesController(IBloodTypesService bloodTypesService)
+        {
+            _bloodTypesService = bloodTypesService;
         }
 
-        public IActionResult CreateBloodType() {
-
+        public IActionResult CreateBloodType()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddNewBloodType(string BloodTypeName) 
+        public async Task<IActionResult> AddNewBloodType(string bloodTypeName)
         {
-            var bloodTypeExists = context.BloodTypes.Where(b => b.BloodTypeName.ToUpper() == BloodTypeName.ToUpper()).FirstOrDefault();
-            if (bloodTypeExists == null) 
-            {
-                BloodType newBloodType = new BloodType();
-                newBloodType.BloodTypeName = BloodTypeName;
-
-                context.Add(newBloodType);
-                context.SaveChanges();
-            }
+            await _bloodTypesService.AddNewBloodType(bloodTypeName);
             return RedirectToAction("BloodTypes");
         }
 
         [HttpPost]
-        public IActionResult EditBloodType(BloodType editBloodType)
+        public async Task<IActionResult> EditBloodType(BloodType editBloodType)
         {
-            var bloodTypeExists = context.BloodTypes.Where(b => b.BloodTypeName.ToUpper() == editBloodType.BloodTypeName.ToUpper()).FirstOrDefault();
-            if (bloodTypeExists == null)
-            {
-                var BloodType = context.BloodTypes.Find(editBloodType.BloodTypeId);
-                if(BloodType != null)
-                {
-                    BloodType.BloodTypeName = editBloodType.BloodTypeName;
-                    context.Update(BloodType);
-                    context.SaveChanges();
-                }
-            }
+            await _bloodTypesService.EditBloodType(editBloodType);
             return RedirectToAction("BloodTypes");
         }
 
         [HttpGet]
-        public IActionResult EditBloodType(Guid BloodTypeID) {
-            var editBloodType = context.BloodTypes.Find(BloodTypeID);
-
-            if(editBloodType == null) {
+        public async Task<IActionResult> EditBloodType(Guid bloodTypeID)
+        {
+            var bloodType = await _bloodTypesService.GetBloodType(bloodTypeID);
+            if (bloodType == null)
+            {
                 return RedirectToAction("BloodTypes");
             }
-
-            return View(editBloodType);
+            return View(bloodType);
         }
 
-        public IActionResult BloodTypes() {
-
-            var bloodTypes = context.BloodTypes.ToList();
+        public async Task<IActionResult> BloodTypes()
+        {
+            var bloodTypes = await _bloodTypesService.GetAllBloodTypes();
             return View(bloodTypes);
         }
     }

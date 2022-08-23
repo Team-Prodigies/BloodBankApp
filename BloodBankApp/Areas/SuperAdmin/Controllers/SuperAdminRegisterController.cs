@@ -13,54 +13,59 @@ using System.Linq;
 using System.Threading.Tasks;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
-namespace BloodBankApp.Areas.SuperAdmin.Controllers {
+namespace BloodBankApp.Areas.SuperAdmin.Controllers
+{
     [Area("SuperAdmin")]
     [Authorize(Roles = "SuperAdmin")]
-    public class SuperAdminRegisterController : Controller {
-
-        private readonly ApplicationDbContext context;
-        private readonly SignInManager<User> signInManager;
-        private readonly UserManager<User> userManager;
-        private readonly IMapper mapper;
+    public class SuperAdminRegisterController : Controller
+    {
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
         public List<AuthenticationScheme> ExternalLogins { get; private set; }
 
-        public SuperAdminRegisterController(ApplicationDbContext context, SignInManager<User> signInManager,
-           UserManager<User> userManager, IMapper mapper) {
+        public SuperAdminRegisterController(SignInManager<User> signInManager,
+           UserManager<User> userManager, IMapper mapper)
+        {
 
-            this.context = context;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.mapper = mapper;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _mapper = mapper;
 
         }
 
-        public IActionResult CreateSuperAdmin() {
+        public IActionResult CreateSuperAdmin()
+        {
             return View();
         }
-        public IActionResult AccountCreatedSuccessfully() {
+        public IActionResult AccountCreatedSuccessfully()
+        {
             return View();
         }
 
         [HttpPost]
-            public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user) {
-          
-            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user)
+        {
 
-            if (ModelState.IsValid) {
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-                 User superAdminAccount = mapper.Map<User>(user);
-                  
-                 var result = await userManager.CreateAsync(superAdminAccount, user.Password);
+            if (ModelState.IsValid)
+            {
 
-                 await userManager.AddToRoleAsync(superAdminAccount, "SuperAdmin");
+                User superAdminAccount = _mapper.Map<User>(user);
 
-                if (result.Succeeded) {
+                var result = await _userManager.CreateAsync(superAdminAccount, user.Password);
+
+                await _userManager.AddToRoleAsync(superAdminAccount, "SuperAdmin");
+
+                if (result.Succeeded)
+                {
                     return RedirectToAction("AccountCreatedSuccessfully");
                 }
 
             }
 
-             return RedirectToAction("CreateSuperAdmin");
+            return RedirectToAction("CreateSuperAdmin");
 
         }
 
