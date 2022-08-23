@@ -21,16 +21,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        private readonly ApplicationDbContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<User> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<User> userManager, ApplicationDbContext context)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
-            _context = context;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -87,7 +85,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-                var user = await _context.Users.Where(u => u.UserName == Input.UserName).FirstOrDefaultAsync();
+                var user = await _userManager.Users.Where(u => u.UserName == Input.UserName).FirstOrDefaultAsync();
 
                 if (result.Succeeded)
                 {

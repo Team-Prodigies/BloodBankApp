@@ -1,4 +1,5 @@
 using AutoMapper;
+using BloodBankApp.Areas.Identity.Services;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -29,6 +30,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
+        private readonly IMedicalStaffService _medicalStaffService;
         private readonly ApplicationDbContext _context;
 
         public RegisterMedicalStaffModel(
@@ -36,6 +38,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, IMapper mapper,
+            IMedicalStaffService medicalStaffService,
             ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -43,6 +46,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _mapper = mapper;
+            _medicalStaffService = medicalStaffService;
             _context = context;
 
             HospitalList = new SelectList(_context.Hospitals.ToList(), "HospitalId", "HospitalName");
@@ -139,15 +143,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     {
                         var result = await _userManager.CreateAsync(user, Input.Password);
 
-                        await _userManager.AddToRoleAsync(user, "MedicalStaff");
+                        await _userManager.AddToRoleAsync(user, "HospitalAdmin");
 
                         if (result.Succeeded)
                         {
                             medicalStaff.MedicalStaffId = user.Id;
 
-                            await _context.MedicalStaffs.AddAsync(medicalStaff);
-
-                            await _context.SaveChangesAsync();
+                            await _medicalStaffService.AddMedicalStaff(medicalStaff);
 
                             transaction.Commit();
 

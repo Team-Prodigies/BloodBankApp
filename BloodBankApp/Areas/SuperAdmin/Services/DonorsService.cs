@@ -20,6 +20,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _mapper = mapper;
         }
 
+        public async Task AddDonor(Donor donor)
+        {
+            await _context.Donors.AddAsync(donor);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<DonorModel>> DonorSearchResults(string searchTerm, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
@@ -27,13 +33,27 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<List<DonorModel>>(donors);
         }
 
+        public async Task EditDonor(Donor donor)
+        {
+            _context.Update(donor);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Donor> GetDonor(Guid donorId)
+        {
+            var donor= await _context.Donors
+                .Include(c => c.City)
+                .Include(b => b.BloodType).FirstOrDefaultAsync(x => x.DonorId == donorId);
+            return donor;
+        }
+
         public async Task<List<DonorModel>> GetDonors(int pageNumber = 1, string filterBy = "A-Z")
         {
-
             var skipRows = (pageNumber - 1) * 10;
             var donors = new List<Donor>();
 
-            switch (filterBy) {
+            switch (filterBy)
+            {
                 case "A-Z":
                     donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
                     break;

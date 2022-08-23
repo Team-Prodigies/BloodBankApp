@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -10,40 +11,53 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Controllers {
+namespace BloodBankApp.Areas.SuperAdmin.Controllers
+{
     [Area("SuperAdmin")]
     [Authorize(Roles = "SuperAdmin")]
-    public class RolesController : Controller {
+    public class RolesController : Controller
+    {
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IRolesService _rolesService;
 
-        public RolesController(RoleManager<IdentityRole<Guid>> roleManager, ApplicationDbContext context, IMapper mapper) {
-    
-            this._roleManager = roleManager;
-       
+        public RolesController(RoleManager<IdentityRole<Guid>> roleManager,
+            ApplicationDbContext context,
+            IMapper mapper,
+            IRolesService rolesService)
+        {
+
+            _roleManager = roleManager;
+            _rolesService = rolesService;
         }
 
-        public async Task<IActionResult> AllRoles() {
+        public async Task<IActionResult> AllRoles()
+        {
             var roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
 
         [HttpGet]
-        public IActionResult CreateRole() {
+        public IActionResult CreateRole()
+        {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRole(RoleModel model) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> CreateRole(RoleModel model)
+        {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest();
             }
 
-            var role = new IdentityRole<Guid>() {
+            var role = new IdentityRole<Guid>()
+            {
                 Name = model.RoleName
             };
 
             var check = await _roleManager.CreateAsync(role);
-            if (!check.Succeeded) {
+            if (!check.Succeeded)
+            {
                 return BadRequest();
             }
 
@@ -51,9 +65,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditRole(Guid Id) {
+        public async Task<IActionResult> EditRole(Guid Id)
+        {
             var role = await _roleManager.FindByIdAsync(Id.ToString());
-            if (role == null) {
+            if (role == null)
+            {
                 return NotFound();
             }
 
@@ -61,19 +77,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id) {
-            if (role.Id != Id) {
+        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id)
+        {
+            if (role.Id != Id)
+            {
                 return NotFound();
             }
-            
+
             var dbRole = await _roleManager.FindByIdAsync(role.Id.ToString());
-            if (dbRole == null) {
+            if (dbRole == null)
+            {
                 return NotFound();
             }
 
             dbRole.Name = role.Name;
             var result = await _roleManager.UpdateAsync(dbRole);
-            if (!result.Succeeded) {
+            if (!result.Succeeded)
+            {
                 return NotFound();
             }
 

@@ -37,7 +37,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             }
         }
 
-        public async Task<List<City>> GetCities()
+        public async Task<IEnumerable<City>> GetCities()
         {
             return  await _context.Cities.ToListAsync();
         }

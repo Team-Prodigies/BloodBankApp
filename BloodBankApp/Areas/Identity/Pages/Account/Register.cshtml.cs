@@ -18,6 +18,7 @@ using BloodBankApp.Enums;
 using AutoMapper;
 using BloodBankApp.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BloodBankApp.Areas.SuperAdmin.Services;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -30,19 +31,22 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
+        private readonly IDonorsService _donorsService;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, IMapper mapper,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IDonorsService donorsService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _mapper = mapper;
+            _donorsService = donorsService;
             _context = context;
 
             CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
@@ -148,9 +152,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                         {
                             donor.DonorId = user.Id;
 
-                            await _context.Donors.AddAsync(donor);
-
-                            await _context.SaveChangesAsync();
+                            await _donorsService.AddDonor(donor);
 
                             transaction.Commit();
 

@@ -13,9 +13,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         Task<List<DonorModel>> DonorSearchResults(string searchTerm, int pageNumber = 1);
         Task LockoutDonor(User user);
         Task UnlockDonor(User user);
-
-        
-
+        Task<Donor> GetDonor(Guid donorId);
+        Task EditDonor(Donor donor);
+        Task AddDonor(Donor donor);
     }
-
 }

@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using BloodBankApp.Areas.Identity.Services;
 using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
@@ -48,6 +49,8 @@ namespace BloodBankApp
             services.AddScoped<IBloodTypesService, BloodTypesService>();
             services.AddScoped<ICitiesService, CitiesService>();
             services.AddScoped<IDonorsService, DonorsService>();
+            services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<IMedicalStaffService, MedicalStaffService>();
 
             services.AddRazorPages();
 

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BloodBankApp.Areas.Identity.Pages.Account.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -20,21 +22,24 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ICitiesService _citiesService;
+        private readonly IDonorsService _donorsService;
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
         public PersonalProfileIndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
+            ICitiesService citiesService,
+            IDonorsService donorsService,
             ApplicationDbContext context,
             IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _citiesService = citiesService;
+            _donorsService = donorsService;
             _context = context;
-            _mapper = mapper;
-
-            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
         }
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
@@ -73,41 +78,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(User user)
         {
-            var donor = await _context.Donors
-                .Include(c => c.City)
-                .Include(b => b.BloodType)
-                .Where(x => x.DonorId == user.Id).FirstOrDefaultAsync();
+            var donor = await _donorsService.GetDonor(user.Id);
 
-            var userName = user.UserName;
-
-            var personalNumber = donor.PersonalNumber;
-
-            var gender = donor.Gender;
-
-            var bloodTypeName = donor.BloodType.BloodTypeName;
-
-            var name = user.Name;
-
-            var surname = user.Surname;
-
-            var dOB = user.DateOfBirth;
-
-            var phoneNumber = user.PhoneNumber;
-
-            var cityId = donor.CityId;
-
-            PersonalNumber = personalNumber;
-            Gender = gender;
-            BloodTypeName = bloodTypeName;
-            Name = name;
-            Surname = surname;
-            DateOfBirth = dOB;
+            PersonalNumber = donor.PersonalNumber;
+            Gender = donor.Gender;
+            BloodTypeName = donor.BloodType.BloodTypeName;
+            Name = user.Name;
+            Surname = user.Surname;
+            DateOfBirth = user.DateOfBirth;
 
             Input = new ProfileInputModel
             {
-                PhoneNumber = phoneNumber,
-                UserName = userName,
-                CityId = cityId
+                PhoneNumber = user.PhoneNumber,
+                UserName = user.UserName,
+                CityId = donor.CityId
             };
         }
 
@@ -140,7 +124,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var donor = await _context.Donors.FindAsync(user.Id);
+            var donor = await _donorsService.GetDonor(user.Id);
             var phoneNumber = user.PhoneNumber;
             var userName = user.UserName;
             var cityId = donor.CityId;
@@ -156,22 +140,24 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             }
             if (Input.UserName != userName)
             {
-                user.UserName = Input.UserName;
-                _context.Update(user);
-                await _context.SaveChangesAsync();
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.UserName);
+                if (!setUserNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set username.";
+                    return RedirectToPage();
+                }
             }
             if (Input.CityId != cityId)
             {
                 donor.CityId = Input.CityId;
-                _context.Update(donor);
-                await _context.SaveChangesAsync();
+                await _donorsService.EditDonor(donor);
             }
 
             await _signInManager.RefreshSignInAsync(user);
 
             StatusMessage = "Your profile has been updated";
 
-            ViewData["City"] = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
+            ViewData["City"] = CityList;
 
             return RedirectToPage();
         }
