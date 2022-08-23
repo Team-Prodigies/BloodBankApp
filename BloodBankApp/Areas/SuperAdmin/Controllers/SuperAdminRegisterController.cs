@@ -60,12 +60,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("AccountCreatedSuccessfully");
+                    return RedirectToAction(nameof(AccountCreatedSuccessfully));
                 }
 
             }
 
-            return RedirectToAction("CreateSuperAdmin");
+            return RedirectToAction(nameof(CreateSuperAdmin));
 
         }
 

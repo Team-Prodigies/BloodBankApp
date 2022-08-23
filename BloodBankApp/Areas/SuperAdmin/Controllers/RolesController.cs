@@ -47,7 +47,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
                 return BadRequest();
             }
 
-            return RedirectToAction("AllRoles");
+            return RedirectToAction(nameof(AllRoles));
         }
 
         [HttpGet]
@@ -77,7 +77,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
                 return NotFound();
             }
 
-            return RedirectToAction("AllRoles");
+            return RedirectToAction(nameof(AllRoles));
         }
     }
 }

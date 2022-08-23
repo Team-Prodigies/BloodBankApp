@@ -37,6 +37,20 @@ namespace BloodBankApp.Mapping
 
             CreateMap<HospitalModel, Hospital>().ReverseMap();
 
+            CreateMap<Donor, DonorModel>()
+               .ForPath(dest => dest.Locked,
+              opts => opts.MapFrom(src => src.User.Locked))
+              .ForPath(dest => dest.Name,
+              opts => opts.MapFrom(src => src.User.Name))
+              .ForPath(dest => dest.Surname,
+              opts => opts.MapFrom(src => src.User.Surname))
+              .ForPath(dest => dest.DateOfBirth,
+              opts => opts.MapFrom(src => src.User.DateOfBirth))
+              .ForPath(dest => dest.BloodTypeName,
+              opts => opts.MapFrom(src => src.BloodType.BloodTypeName))
+              .ForPath(dest => dest.CityName,
+              opts => opts.MapFrom(src => src.City.CityName));
+
             CreateMap<HospitalModel, Location>()
               .ForMember(dest => dest.Longitude,
               opts => opts.MapFrom(src => src.Location.Longitude))
