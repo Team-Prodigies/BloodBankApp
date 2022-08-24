@@ -206,11 +206,6 @@ html {
         min-height: 100%;
     }
 
-    body {
-        /* Margin bottom by footer height */
-        margin-bottom: 60px;
-    }
-
     .aboutUsPage .imageContent {
         border-radius: 14px;
         box-shadow: 3px 12px 20px #b1b1b1;
