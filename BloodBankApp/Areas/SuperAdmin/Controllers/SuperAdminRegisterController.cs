@@ -34,8 +34,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
 
         }
 
-        public IActionResult CreateSuperAdmin(string? message) {
-            ViewBag.Message = message;
+        public IActionResult CreateSuperAdmin() {
             return View();
         }
         public IActionResult AccountCreatedSuccessfully() {

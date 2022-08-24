@@ -2,6 +2,7 @@
 .footer {
     background: #f5f3f4;
 }
+
 ul li {
     list-style: none;
 }
@@ -15,9 +16,9 @@ a:hover {
 }
 
 .social-links {
-    display:flex;
-    justify-content:center;
-    gap:1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .footer-links {
@@ -25,14 +26,29 @@ a:hover {
     justify-content: center;
     flex-direction: column;
 }
-    .footer-links li {
-        font-size: 1.4rem;
-        text-align: left;
-        padding-left:1rem;
+
+.footer-links li {
+    font-size: 1.4rem;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.footer-links ul {
+    margin: 0;
+}
+@media (max-width: 768px){
+    
+    .footer-row {
+        flex-direction:column;
+        align-items: center;
+        gap: 2rem;
+        margin-left: 0rem;
+        margin-right: 0rem;
     }
-    .footer-links ul{
-        margin:0;
-    }
+
+
+}
+
 /* Footer end */
 
 /* Register, Login start */
@@ -107,3 +123,29 @@ h1 {
 
 /*Home Page, end*/
 
+
+#btn-sign-up {
+    color: #740707;
+    background-color: #f5f3f4;
+}
+
+/* Register end */
+
+.login-card {
+    color: #f5f3f4;
+    background-color: #740707;
+    -webkit-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+    -moz-box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+    box-shadow: 10px 10px 20px 3px rgba(120,120,120,0.72);
+}
+
+#btn-login {
+    color: #740707;
+    background-color: #f5f3f4;
+}
+/*Register, Login end*/
+
+*{
+    margin: 0;
+    padding: 0;
+}

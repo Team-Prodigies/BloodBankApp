@@ -7,7 +7,6 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid SuperAdminId { get; set; }
-
         public virtual User User { get; set; }
         [Required]
         [Display(Name = "Email address")]

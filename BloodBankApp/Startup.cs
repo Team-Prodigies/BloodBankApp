@@ -1,3 +1,4 @@
+
 using AutoMapper;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
@@ -42,7 +43,7 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-            services.AddRazorPages();
+           services.AddRazorPages();
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {
