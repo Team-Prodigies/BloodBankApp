@@ -56,6 +56,73 @@ a:hover {
     background-color: #FEFBF3;
     color: black;
 }
+/*Register, Login end*/
+
+/*Home Page, Start*/
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.drk:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+}
+
+.bg-custom1 {
+    background-color: #f5f3f4;
+}
+.bg-custom2 {
+    background-color: #d1001f;
+}
+
+h1 {
+    font-weight: 800;
+}
+
+@media only screen and (max-width: 1000px) {
+    .image-slider {
+        width: 100%;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .image-card {
+        height: auto !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .order-sm-last {
+        order: 6 !important;
+    }
+}
+
+/* donors-organization start */
+
+#donors-organization h1 {
+    color: #0f0f0f;
+    font-size:2.6rem;
+    font-weight: 800;
+}
+
+/* donors-organization end */
+
+/*Home Page, end*/
+
 
 #btn-sign-up {
     color: #740707;
