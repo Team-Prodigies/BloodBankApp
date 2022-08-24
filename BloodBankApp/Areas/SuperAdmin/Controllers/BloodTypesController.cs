@@ -1,4 +1,4 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

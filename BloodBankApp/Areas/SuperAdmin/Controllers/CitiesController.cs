@@ -1,4 +1,4 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +14,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class CitiesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly ICitiesService _citiesService;
 
-        public CitiesController(ApplicationDbContext context, ICitiesService citiesService)
+        public CitiesController(ICitiesService citiesService)
         {
-            _context = context;
             _citiesService = citiesService;
         }
 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BloodBankApp.Areas.Identity.Pages.Account.ViewModels;
-using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;

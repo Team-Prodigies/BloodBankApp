@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -19,19 +20,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminRegisterController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
+        private readonly IUsersService _usersService;
+        private readonly ISignInService _signInService;
         public List<AuthenticationScheme> ExternalLogins { get; private set; }
 
-        public SuperAdminRegisterController(SignInManager<User> signInManager,
-           UserManager<User> userManager, IMapper mapper)
+        public SuperAdminRegisterController(IUsersService usersService,
+            ISignInService signInService)
         {
-
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _mapper = mapper;
-
+            _usersService = usersService;
+            _signInService = signInService;
         }
 
         public IActionResult CreateSuperAdmin()
@@ -46,28 +43,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user)
         {
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
-
-                User superAdminAccount = _mapper.Map<User>(user);
-
-                var result = await _userManager.CreateAsync(superAdminAccount, user.Password);
-
-                await _userManager.AddToRoleAsync(superAdminAccount, "SuperAdmin");
+                var result = await _usersService.AddSuperAdmin(user);
 
                 if (result.Succeeded)
                 {
                     return RedirectToAction(nameof(AccountCreatedSuccessfully));
                 }
-
             }
-
             return RedirectToAction(nameof(CreateSuperAdmin));
-
         }
-
     }
 }

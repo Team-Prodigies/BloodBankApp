@@ -1,5 +1,7 @@
-﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,19 +10,35 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 {
     public class RolesService : IRolesService
     {
-        public Task<IdentityResult> CreateRole(RoleModel model)
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+
+        public RolesService(RoleManager<IdentityRole<Guid>> roleManager)
         {
-            throw new NotImplementedException();
+            _roleManager = roleManager;
         }
 
-        public Task<List<IdentityRole<Guid>>> GetAllRoles()
+        public async Task<IdentityResult> CreateRole(RoleModel model)
         {
-            throw new NotImplementedException();
+            var role = new IdentityRole<Guid>()
+            {
+                Name = model.RoleName
+            };
+            return await _roleManager.CreateAsync(role);
         }
 
-        public Task<IdentityRole<Guid>> GetRole(Guid id)
+        public async Task<List<IdentityRole<Guid>>> GetAllRoles()
         {
-            throw new NotImplementedException();
+            return await _roleManager.Roles.ToListAsync();
+        }
+
+        public async Task<IdentityRole<Guid>> GetRole(Guid id)
+        {
+            return await _roleManager.FindByIdAsync(id.ToString());
+        }
+
+        public async Task<IdentityResult> UpdateRole(IdentityRole<Guid> role)
+        {
+            return await _roleManager.UpdateAsync(role);
         }
     }
 }

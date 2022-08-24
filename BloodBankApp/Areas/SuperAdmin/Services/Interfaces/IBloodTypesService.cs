@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services
+namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
     public interface IBloodTypesService
     {

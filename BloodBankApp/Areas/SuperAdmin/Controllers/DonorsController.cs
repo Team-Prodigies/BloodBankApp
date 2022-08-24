@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -19,13 +19,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     public class DonorsController : Controller
     {
         private readonly IDonorsService _donorsService;
-        private readonly UserManager<User> _userManager;
+        private readonly IUsersService _usersService;
 
         public DonorsController(IDonorsService donorsService,
-            UserManager<User> userManager)
+            IUsersService usersService)
         {   
             _donorsService = donorsService;
-            _userManager = userManager;
+            _usersService = usersService;
         }
         [HttpGet]
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
@@ -51,7 +51,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> LockoutDonor(Guid donorId)
         {
-            var donor = await _userManager.FindByIdAsync(donorId.ToString());
+            var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
                 return NotFound();
@@ -63,7 +63,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> UnlockDonor(Guid donorId)
         {
-            var donor = await _userManager.FindByIdAsync(donorId.ToString());
+            var donor =  await _usersService.GetUser(donorId);
             if (donor == null)
             {
                 return NotFound();

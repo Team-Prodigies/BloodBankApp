@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Data;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

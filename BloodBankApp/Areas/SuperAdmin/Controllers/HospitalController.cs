@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -15,15 +15,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Area("SuperAdmin")]
     public class HospitalController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICitiesService _citiesService;
         private readonly IMapper _mapper;
         private readonly SelectList _cityList;
         private readonly IHospitalService _hospitalService;
-        public HospitalController(ApplicationDbContext context, IMapper mapper, IHospitalService hospitalService)
+        public HospitalController(ICitiesService citiesService,
+            IMapper mapper,
+            IHospitalService hospitalService)
         {
-            _context = context;
+            _citiesService = citiesService;
             _mapper = mapper;
-            _cityList = new SelectList(context.Cities.ToList(), "CityId", "CityName");
+            _cityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
             _hospitalService = hospitalService;
         }
 

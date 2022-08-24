@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -17,22 +17,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class RolesController : Controller
     {
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IRolesService _rolesService;
 
-        public RolesController(RoleManager<IdentityRole<Guid>> roleManager,
-            ApplicationDbContext context,
-            IMapper mapper,
-            IRolesService rolesService)
+        public RolesController(IRolesService rolesService)
         {
-
-            _roleManager = roleManager;
             _rolesService = rolesService;
         }
 
         public async Task<IActionResult> AllRoles()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _rolesService.GetAllRoles();
             return View(roles);
         }
 
@@ -49,30 +43,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return BadRequest();
             }
-
-            var role = new IdentityRole<Guid>()
-            {
-                Name = model.RoleName
-            };
-
-            var check = await _roleManager.CreateAsync(role);
+            var check = await _rolesService.CreateRole(model);
             if (!check.Succeeded)
             {
                 return BadRequest();
             }
-
             return RedirectToAction(nameof(AllRoles));
         }
 
         [HttpGet]
         public async Task<IActionResult> EditRole(Guid Id)
         {
-            var role = await _roleManager.FindByIdAsync(Id.ToString());
+            var role = await _rolesService.GetRole(Id);
+
             if (role == null)
             {
                 return NotFound();
             }
-
             return View(role);
         }
 
@@ -84,19 +71,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var dbRole = await _roleManager.FindByIdAsync(role.Id.ToString());
+            var dbRole = await _rolesService.GetRole(Id);
+
             if (dbRole == null)
             {
                 return NotFound();
             }
-
             dbRole.Name = role.Name;
-            var result = await _roleManager.UpdateAsync(dbRole);
+
+            var result = await _rolesService.UpdateRole(dbRole);
             if (!result.Succeeded)
             {
                 return NotFound();
             }
-
             return RedirectToAction(nameof(AllRoles));
         }
     }
