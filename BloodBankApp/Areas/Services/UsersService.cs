@@ -161,5 +161,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 }
             }
         }
+
+        public async Task<bool> UserIsInRole(User user,string role)
+        {
+            return await _userManager.IsInRoleAsync(user, role);
+        }
     }
 }

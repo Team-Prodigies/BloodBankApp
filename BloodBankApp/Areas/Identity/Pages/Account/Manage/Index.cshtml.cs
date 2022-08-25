@@ -103,6 +103,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
+                ViewData["City"] = CityList;
                 return Page();
             }
             var donor = await _donorsService.GetDonor(user.Id);

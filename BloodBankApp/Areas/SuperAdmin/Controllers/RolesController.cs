@@ -61,6 +61,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             if (role.Id != Id)
             {
                 return NotFound();
@@ -75,6 +79,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             dbRole.Name = role.Name;
 
             var result = await _rolesService.UpdateRole(dbRole);
+           
             if (!result.Succeeded)
             {
                 return NotFound();

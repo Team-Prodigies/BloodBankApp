@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
+
     public class HospitalController : Controller
     {
         private readonly ICitiesService _citiesService;
@@ -75,6 +78,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if(!ModelState.IsValid)
             {
+                ViewData["CityId"] = _cityList;
                 return View(hospital);
             }
             await _hospitalService.EditHospital(hospital);

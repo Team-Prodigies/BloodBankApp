@@ -21,26 +21,17 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
         private readonly IBloodTypesService _bloodTypesService;
-        private readonly IEmailSender _emailSender;
-        private readonly IMapper _mapper;
         private readonly ICitiesService _citiesService;
-        private readonly IDonorsService _donorsService;
 
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
             IBloodTypesService bloodTypesService,
-            IEmailSender emailSender,
-            IMapper mapper,
-            ICitiesService citiesService,
-            IDonorsService donorsService)
+            ICitiesService citiesService)
         {
             _usersService = usersService;
             _signInService = signInService;
             _bloodTypesService = bloodTypesService;
-            _emailSender = emailSender;
-            _mapper = mapper;
-            _donorsService = donorsService;
             _citiesService = citiesService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
             BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");

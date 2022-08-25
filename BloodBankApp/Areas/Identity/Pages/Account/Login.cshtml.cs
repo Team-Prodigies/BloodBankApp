@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using System;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -80,7 +81,15 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                         await _signInService.SignOutAsync();
                         return RedirectToPage("./Lockout");
                     }
-                        return LocalRedirect(returnUrl);
+                    if (await _usersService.UserIsInRole(user, "SuperAdmin"))
+                    {
+                        return RedirectToAction("Index", "AdminHome", new {area = "SuperAdmin"});
+                    }
+                    if (await _usersService.UserIsInRole(user, "HospitalAdmin"))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
+                    }
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
