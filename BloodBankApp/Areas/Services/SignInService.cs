@@ -21,5 +21,20 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             return await _signInManager.GetExternalAuthenticationSchemesAsync();
         }
+
+        public async Task<SignInResult> PasswordSignInAsync(string username, string password, bool rememberMe, bool lockoutOnFailure)
+        {
+            return await _signInManager.PasswordSignInAsync(username,password,rememberMe,lockoutOnFailure);
+        }
+
+        public async Task RefreshSignInAsync(User user)
+        {
+            await _signInManager.RefreshSignInAsync(user);
+        }
+
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
     }
 }

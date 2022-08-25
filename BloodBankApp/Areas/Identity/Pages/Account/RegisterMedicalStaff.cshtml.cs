@@ -1,5 +1,6 @@
 using AutoMapper;
 using BloodBankApp.Areas.Identity.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -25,28 +26,24 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterMedicalStaffModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
+        private readonly ISignInService _signInService;
         private readonly IMedicalStaffService _medicalStaffService;
+        private readonly IUsersService _usersService;
         private readonly ApplicationDbContext _context;
 
         public RegisterMedicalStaffModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender, IMapper mapper,
+            IEmailSender emailSender, 
+            IMapper mapper,
+            ISignInService signInService,
             IMedicalStaffService medicalStaffService,
+            IUsersService usersService,
             ApplicationDbContext context)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
             _mapper = mapper;
+            _signInService = signInService;
             _medicalStaffService = medicalStaffService;
+            _usersService = usersService;
             _context = context;
 
             HospitalList = new SelectList(_context.Hospitals.ToList(), "HospitalId", "HospitalName");
@@ -113,74 +110,23 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                using (var transaction = _context.Database.BeginTransaction())
+                var result = await _usersService.AddHospitalAdmin(Input);
+                if (result.Succeeded)
                 {
-                    var hospitalCode = Input.HospitalCode;
-
-                    var hospital = await _context.Hospitals
-                               .Where(x => x.HospitalId == Input.HospitalId).FirstOrDefaultAsync();
-
-                    if (!hospital.HospitalCode.Equals(Input.HospitalCode))
-                    {
-                        return BadRequest("This code doesnt belong to the hospital you entered");
-                    }
-                    var user = _mapper.Map<User>(Input);
-
-                    user.Id = Guid.NewGuid();
-
-                    var medicalStaff = _mapper.Map<MedicalStaff>(Input);
-
-                    try
-                    {
-                        var result = await _userManager.CreateAsync(user, Input.Password);
-
-                        await _userManager.AddToRoleAsync(user, "HospitalAdmin");
-
-                        if (result.Succeeded)
-                        {
-                            medicalStaff.MedicalStaffId = user.Id;
-
-                            await _medicalStaffService.AddMedicalStaff(medicalStaff);
-
-                            transaction.Commit();
-
-                            _logger.LogInformation("User created a new account with password.");
-
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
-
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-
-                            return LocalRedirect(returnUrl);
-                        }
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                    }
+                    return LocalRedirect(returnUrl);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             // If we got this far, something failed, redisplay form

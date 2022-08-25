@@ -20,27 +20,24 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 {
     public partial class PersonalProfileIndexModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IUsersService _usersService;
+        private readonly ISignInService _signInService;
         private readonly ICitiesService _citiesService;
         private readonly IDonorsService _donorsService;
-        private readonly ApplicationDbContext _context;
 
         public PersonalProfileIndexModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            IUsersService usersService,
+            ISignInService signInService,
             ICitiesService citiesService,
-            IDonorsService donorsService,
-            ApplicationDbContext context,
-            IMapper mapper)
+            IDonorsService donorsService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _usersService = usersService;
+            _signInService = signInService;
             _citiesService = citiesService;
             _donorsService = donorsService;
-            _context = context;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
         }
+
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
 
@@ -97,33 +94,28 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _usersService.GetUser(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{_usersService.GetUserId(User)}'.");
             }
             ViewData["City"] = CityList;
-
             await LoadAsync(user);
-
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _usersService.GetUser(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{_usersService.GetUserId(User)}'.");
             }
-
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
-
                 return Page();
             }
-
             var donor = await _donorsService.GetDonor(user.Id);
             var phoneNumber = user.PhoneNumber;
             var userName = user.UserName;
@@ -131,7 +123,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await _usersService.SetPhoneNumber(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
@@ -140,7 +132,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             }
             if (Input.UserName != userName)
             {
-                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.UserName);
+                var setUserNameResult = await _usersService.SetUserName(user, Input.UserName);
                 if (!setUserNameResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set username.";
@@ -153,12 +145,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 await _donorsService.EditDonor(donor);
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-
+            await _signInService.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
-
             ViewData["City"] = CityList;
-
             return RedirectToPage();
         }
     }
