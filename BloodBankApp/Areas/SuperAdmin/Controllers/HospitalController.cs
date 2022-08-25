@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
@@ -14,27 +15,29 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Area("SuperAdmin")]
     public class HospitalController : Controller
     {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
-        private readonly SelectList cityList;
-        public HospitalController(ApplicationDbContext context, IMapper mapper)
+        private readonly ICitiesService _citiesService;
+        private readonly IMapper _mapper;
+        private readonly SelectList _cityList;
+        private readonly IHospitalService _hospitalService;
+        public HospitalController(ICitiesService citiesService,
+            IMapper mapper,
+            IHospitalService hospitalService)
         {
-            this.context = context;
-            this.mapper = mapper;
-            cityList = new SelectList(context.Cities.ToList(), "CityId", "CityName");
+            _citiesService = citiesService;
+            _mapper = mapper;
+            _cityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
+            _hospitalService = hospitalService;
         }
 
         public IActionResult CreateHospital()
         {
-            ViewData["CityId"] = cityList;
+            ViewData["CityId"] = _cityList;
             return View();
         }
 
-        public IActionResult ManageHospitals(int pageNumber = 1)
+        public async Task<IActionResult> ManageHospitals(int pageNumber = 1)
         {
-            var skipRows = (pageNumber - 1) * 10;
-            var hospitals = context.Hospitals.Include(c => c.City).Skip(skipRows).Take(10).ToList();
-
+            var hospitals = await _hospitalService.GetHospitals(pageNumber);
             ViewBag.pageNumber = pageNumber;
 
             return View(hospitals);
@@ -45,29 +48,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["CityId"] = cityList;
+                ViewData["CityId"] = _cityList;
                 return View();
             }
-            using (var transaction = context.Database.BeginTransaction())
+            var result = await _hospitalService.CreateHospital(model);
+            if (!result)
             {
-                var location = mapper.Map<Location>(model);
-                await context.AddAsync(location);
-                try
-                {
-                    await context.SaveChangesAsync();
-
-                    var hospital = mapper.Map<Hospital>(model);
-                    hospital.LocationId = location.LocationId;
-                    await context.AddAsync(hospital);
-                    await context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    ViewData["CityId"] = cityList;
-                    return View();
-                }
+                ViewData["CityId"] = _cityList;
+                return View();
             }
             return RedirectToAction(nameof(ManageHospitals));
         }
@@ -76,15 +64,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditHospital(Guid hospitalId) 
         {
-            var hospital = await context.Hospitals.Include(l => l.Location).Include(c => c.City).Where(h => h.HospitalId == hospitalId).FirstOrDefaultAsync();
+            var hospital = await _hospitalService.GetHospital(hospitalId);
 
             if(hospital == null)
             {
                 return RedirectToAction(nameof(ManageHospitals));
             }
 
-            ViewData["CityId"] = cityList;
-            var editHospital = mapper.Map<HospitalModel>(hospital);
+            ViewData["CityId"] = _cityList;
+            var editHospital = _mapper.Map<HospitalModel>(hospital);
             return View(editHospital);
         }
 
@@ -95,13 +83,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View(hospital);
             }
+            await _hospitalService.EditHospital(hospital);
 
-            var editHospital = mapper.Map<Hospital>(hospital);
-
-            context.Update(editHospital.Location);
-            context.Update(editHospital);
-
-            await context.SaveChangesAsync();    
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
 
@@ -111,9 +94,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             if (searchTerm == null || searchTerm.Trim() == "") {
                 return RedirectToAction(nameof(ManageHospitals));
             }
-            var skipRows = (pageNumber - 1) * 10;
-            var hospitals = await context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(searchTerm.ToUpper())).Skip(skipRows).Take(10).ToListAsync();
-            
+            var hospitals = await _hospitalService.HospitalSearchResults(searchTerm, pageNumber);
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 

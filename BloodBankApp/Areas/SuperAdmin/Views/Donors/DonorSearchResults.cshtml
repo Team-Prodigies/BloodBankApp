@@ -182,7 +182,7 @@
                 if (i == ViewBag.pageNumber) {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="ViewBag.SearchTerm" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                           asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
                 } else {
                     <li class="page-item">
@@ -197,12 +197,12 @@
                     (i == ViewBag.pageNumber) {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Donors" asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+                           asp-controller="Donors" asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 } else {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+                           asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 }
             }

@@ -1,5 +1,8 @@
 
 using AutoMapper;
+using BloodBankApp.Areas.Identity.Services;
+using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
 using BloodBankApp.Models;
@@ -43,7 +46,17 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-           services.AddRazorPages();
+            services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IBloodTypesService, BloodTypesService>();
+            services.AddScoped<ICitiesService, CitiesService>();
+            services.AddScoped<IDonorsService, DonorsService>();
+            services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<IMedicalStaffService, MedicalStaffService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<ISignInService, SignInService>();
+
+            services.AddRazorPages();
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {
