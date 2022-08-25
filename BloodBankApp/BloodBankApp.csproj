@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\HospitalAdmin\Models\" />
+    <Folder Include="Areas\SuperAdmin\NewFolder\" />
   </ItemGroup>
 
 </Project>

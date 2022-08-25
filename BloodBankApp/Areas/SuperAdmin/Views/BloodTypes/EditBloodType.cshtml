@@ -6,9 +6,10 @@
         <form class="row g-3" asp-controller="BloodTypes" asp-action="EditBloodType" method="post">
             <div class="container col-8">
                 <div class="mb-3 mt-2">
-                    <input asp-for="@Model.BloodTypeId" style="display: none" />
+                    <input asp-for="BloodTypeId" style="display: none" />
                     <label class="form-label">Edit name</label>
-                    <input type="text" asp-for="@Model.BloodTypeName" class="form-control">
+                    <input type="text" asp-for="BloodTypeName" class="form-control">
+                    <span asp-validation-for="BloodTypeName" class="text-danger"></span>
                 </div>
                 <div class="text-start mt-2 mb-2">
                     <button type="submit" class="btn btn-info">Submit</button>

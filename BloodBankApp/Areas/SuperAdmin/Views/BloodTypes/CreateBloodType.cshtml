@@ -1,12 +1,13 @@
-﻿
+﻿@model BloodTypeModel
 <div class="container col-7 card">
     <div class="card-body">
         <h5 class="card-title">Create BloodType</h5>
         <form class="row g-3" asp-controller="BloodTypes" asp-action="AddNewBloodType" method="post">
             <div class="container col-8">
                 <div class="mb-2">
-                    <label class="form-label">Name</label>
-                    <input  class="form-control" placeholder="Blood type name" name="BloodTypeName">
+                    <label asp-for="BloodTypeName" class="form-label"></label>
+                    <input asp-for="@Model.BloodTypeName" class="form-control">
+                    <span asp-validation-for="BloodTypeName" class="text-danger"></span>
                 </div>
                 <div class="text-start mt-2">
                     <button type="submit" class="btn btn-info">Submit</button>

@@ -28,12 +28,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewCity(City city) 
+        public async Task<IActionResult> AddNewCity(City city)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _citiesService.AddCity(city);
+                return View();
             }
+            await _citiesService.AddCity(city);
             return RedirectToAction(nameof(Cities));
         }
 
@@ -44,9 +45,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCity(Guid cityId, string cityName)
+        public async Task<IActionResult> EditCity(Guid cityId, City city)
         {
-            await _citiesService.EditCity(cityId, cityName);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            if (cityId != city.CityId)
+            {
+                return NotFound();
+            }
+            await _citiesService.EditCity(city.CityId, city.CityName);
             return RedirectToAction(nameof(Cities));
         }
 

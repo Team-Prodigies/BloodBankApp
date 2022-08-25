@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+﻿using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,10 +14,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     public class RolesController : Controller
     {
         private readonly IRolesService _rolesService;
+        private readonly IMapper _mapper;
 
-        public RolesController(IRolesService rolesService)
+        public RolesController(IRolesService rolesService, IMapper mapper)
         {
             _rolesService = rolesService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> AllRoles()
@@ -36,7 +39,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return View();
             }
             var check = await _rolesService.CreateRole(model);
             if (!check.Succeeded)
@@ -55,11 +58,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            return View(role);
+            var roleModel = _mapper.Map<RoleModel>(role);
+            return View(roleModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id)
+        public async Task<IActionResult> EditRole(RoleModel role, Guid Id)
         {
             if (!ModelState.IsValid)
             {
@@ -76,7 +80,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            dbRole.Name = role.Name;
+            dbRole.Name = role.RoleName;
 
             var result = await _rolesService.UpdateRole(dbRole);
            
