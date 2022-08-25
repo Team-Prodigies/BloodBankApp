@@ -2,6 +2,333 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active drk">
+            <img class="d-block w-100 vh-100 image-slider" src="~/Images/s1.jpg" alt="First slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center  h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Your Blood Can Bring Smile</h1>
+                <h1 style="font-weight: 800">In Any One Person Face</h1>
+                <div class="mt-3">
+                    <a href="#" style="background-color: #d1001f" class="btn rounded-0 text-white me-3">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item drk">
+            <img class="d-block w-100 vh-100 image-slider" id="img-slider" src="~/Images/s2.jpg" alt="Second slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Your Blood Can Bring Smile</h1>
+                <h1 style="font-weight: 800">In Any One Person Face</h1>
+                <div class="mt-3">
+                    <a href="#" style="background-color: #d1001f" class="btn rounded-0 text-white me-3">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item drk">
+            <img class="d-block w-100 vh-100 image-slider" src="~/Images/s3.jpg" alt="Third slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center  h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Your Blood Can Bring Smile</h1>
+                <h1 style="font-weight: 800">In Any One Person Face</h1>
+                <div class="mt-3">
+                    <a href="#" style="background-color: #d1001f" class="btn rounded-0 text-white me-3">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </a>
 </div>
+
+<div class="container-fluid w-100 p-0 bg-custom1 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-4 mb-4">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-4">
+            <div class="col d-flex justify-content-center">
+                <div class="flex-column align-items-center">
+                    <div class="d-flex justify-content-center">
+                        <h5 style="font-weight: 800">Become a Donor</h5>
+                    </div>
+                    <p style="color: gray">
+                        Save millions of lives around the world with your contribution,
+                        and enjoy the feeling that your blood is preventing someone from death.
+                    </p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-center">
+                <div class="flex-column align-items-center">
+                    <div class="d-flex justify-content-center">
+                        <h5 style="font-weight: 800">Why Give Blood?</h5>
+                    </div>
+                    <p style="color: gray">
+                        Blood is essential to help patients survive surgeries, cancer treatment, chronic illnesses,
+                        and traumatic injuries. This lifesaving care starts with one person making a generous donation.
+                    </p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-center">
+                <div class="flex-column align-items-center">
+                    <div class="d-flex justify-content-center">
+                        <h5 style="font-weight: 800">How Donations Helps</h5>
+                    </div>
+                    <p style="color: gray">
+                        Every day, blood donors help patients of all ages: accident and burn victims, heart surgery and organ transplant patients,
+                        and those battling cancer. In fact, every two seconds, someone in the U.S. needs blood.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="donors-organization" class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-4">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+            <div class="col">
+                <img src="~/Images/doctor-ipad(1).png" class="img-fluid" />
+            </div>
+            <div class="col">
+                <iv class="container col-9">
+                    <h6 style="color:rgba(239,41,74,255);">HELP THE PEOPLE IN NEED</h6>
+                    <h1 class="h1 mt-1">Welcome to Blood Donors Organization</h1>
+                    <p class="mt-3">
+                        This application is intended to make it easier for blood donors to donate blood and also for
+                        medical staff to find potencial donors easier and faster in case of emergencies, to
+                        manage the blood rezerves.
+                    </p>
+                    <div class="row row-cols-2 row-cols-sm-2 justify-content-start fs-6">
+                        <div class="col">
+                            <p><span></span><strong>Good Service</strong></p>
+                            <p><span></span><strong>Help People</strong></p>
+                            <p><span></span><strong>Hygine Tools</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span></span><strong>24h Service</strong></p>
+                            <p><span></span><strong>Health Check</strong></p>
+                            <p><span></span><strong>Blood Bank</strong></p>
+                        </div>
+                    </div>
+                    <a href="#" style="background-color: #d1001f" class="btn rounded-0 text-white me-3">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid w-100 p-0 bg-custom2 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5 container-sm">
+        <div class="row row-cols-1 row-cols-md-4 row-cols-sm-1 gy-4 text-uppercase text-white text-center">
+            <div class="cols">
+                <h1>25</h1>
+                <h5>Years of Experience</h5>
+            </div>
+            <div class="cols">
+                <h1>430</h1>
+                <h5>Blood Donations</h5>
+            </div>
+            <div class="cols">
+                <h1>90</h1>
+                <h5>Total Awards</h5>
+            </div>
+            <div class="cols">
+                <h1>35</h1>
+                <h5>Blood Cooperations</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid w-100 p-0 bg-custom1 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <h6 class="d-flex justify-content-center" style="color: #d1001f">Benefits</h6>
+        <h1 class="d-flex justify-content-center mb-5" style="font-weight:800">Best Benefits From Donation</h1>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-4">
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Blood cell production</h5>
+                        <p class="card-text">After a person donates blood, the body will replenish the blood loss by stimulating the production of new blood cells. The new blood cells would help in maintaining a person’s good health. </p>
+
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/card2.jpg" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Lowering cancer risk</h5>
+                        <p class="card-text">Donating blood helps lower the risk of cancer as the iron stores in the blood are maintained at healthy levels. When there is a reduced iron level in the body, it is linked to lower cancer risk.</p>
+
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/card3.jpg" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Prevents hemochromatosis</h5>
+                        <p class="card-text">Donating blood would reduce the risk of developing hemochromatosis. This health condition could be inherited at our cost due to alcoholism, anaemia and various other disorders.</p>
+
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <h6 class="d-flex justify-content-center" style="color: #d1001f">What We Do</h6>
+        <h1 class="d-flex justify-content-center mb-5" style="font-weight:800">Donation Process</h1>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            <div class="col">
+                <img src="~/Images/dp1.jpg" class="img-thumbnail" alt="..." />
+            </div>
+            <div class="col ps-5">
+                <h1 class="text-muted">01</h1>
+                <h1>Registration</h1>
+                <p>
+                    When you arrive at the blood bank or blood drive, you’ll sign in for your appointment and show your ID.
+                    Then you’ll complete paperwork that includes general information like your name, address, and phone number.
+                </p>
+                <div class="card-footer border-0 bg-white">
+                    <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4 mt-5">
+            <div class="col text-end pe-5 order-sm-last order-md-first">
+                <h1 class="text-muted">02</h1>
+                <h1>Medical history and mini-physical</h1>
+                <p>
+                    Before you donate, an employee from the blood bank will ask you some confidential questions about your health and lifestyle.
+                    You’ll also get a short health exam or “mini-physical.” An employee will take your pulse, blood pressure,
+                    and temperature, and take a small amount of blood for testing.
+                </p>
+                <div class="card-footer border-0 bg-white">
+                    <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                </div>
+            </div>
+            <div class="col">
+                <img src="~/Images/dp2.jpg" class="img-thumbnail" alt="..." />
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4 mt-5">
+            <div class="col">
+                <img src="~/Images/dp3.jpg" class="img-thumbnail" alt="..." />
+            </div>
+            <div class="col ps-5">
+                <h1 class="text-muted">03</h1>
+                <h1>Donation</h1>
+                <p>
+                    When it’s time to donate, here’s what will happen:
+                    <ol>
+                        <li>
+                            You’ll go into a donor room where you’ll lie down on a cot.
+                        </li>
+                        <li>
+                            A phlebotomist (an employee who draws blood) will clean your arm and insert a new, sterile needle into your vein.
+                        </li>
+                        <li>
+                            You’ll donate about 1 pint (one unit) of blood. The process should take less than 10 minutes.
+                        </li>
+                        <li>
+                            When you’re done, you’ll raise your donation arm and put a little bit of pressure on it, which helps your blood clot.
+                        </li>
+                    </ol>
+                </p>
+                <div class="card-footer border-0 bg-white">
+                    <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4 mt-5">
+            <div class="col text-end pe-5 order-sm-last order-md-first">
+                <h1 class="text-muted">04</h1>
+                <h1>Refreshments</h1>
+                <p>
+                    After you’re finished, you’ll be given snacks and a drink to help your body get back to normal since you lost some fluids.
+                    You’ll want to sit and relax for at least 10 minutes to restore your strength and get some energy back before you leave.
+                </p>
+                <div class="card-footer border-0 bg-white">
+                    <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                </div>
+            </div>
+            <div class="col">
+                <img src="~/Images/dp4.jpg" class="img-thumbnail" alt="..." />
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="News" class="container-fluid w-100 p-0 bg-custom1 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <h6 class="d-flex justify-content-center" style="color: #d1001f">OUR NEWS</h6>
+        <h1 class="d-flex justify-content-center mb-5" style="font-weight:800">Checkout News & Updates</h1>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-4">
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/image-2.jpeg" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Side effects of donating blood</h5>
+                        <p class="card-text">
+                            Some people may feel nauseous, lightheaded, or dizzy after donating blood. If this happens, it should only last a few minutes.
+                            You can lie down with your feet up at the until you feel better.
+                        </p>
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/image-1.jpeg" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Requirements by Donation Type</h5>
+                        <p class="card-text">
+                            To ensure the safety of both patients and donors, these are some of the requirements donors must meet to be eligible to donate blood based on their donation type.
+                        </p>
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-center h-100">
+                    <img src="~/Images/image-3.png" class="card-img-top h-50 image-card" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 800">Facts About Blood and Blood Types</h5>
+                        <p class="card-text">
+                            Blood types are determined by the presence or absence of certain antigens – substances that can trigger an immune response if they are foreign to the body.
+                        </p>
+                    </div>
+                    <div class="card-footer border-0 bg-white">
+                        <a href="#" class="btn text-white" style="background-color: #d1001f">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

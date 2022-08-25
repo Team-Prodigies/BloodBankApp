@@ -8,10 +8,10 @@ namespace BloodBankApp.Models
 {
     public class Donor
     {
-        internal static object CityName;
         [Key]
         public Guid DonorId { get; set; }
         public virtual User User { get; set; }
+
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
         public Guid? HealthFormQuestionnaireId { get; set; }

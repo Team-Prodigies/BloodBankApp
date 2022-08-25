@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -28,8 +25,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 var result = new ValidationResult("You must meet the minimum age required!");
                 return result;
             }
-
-
             return null;
 
         }

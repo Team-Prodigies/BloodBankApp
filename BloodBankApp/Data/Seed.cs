@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace BloodBankApp.Data
     {
         public static async Task SeedData(ApplicationDbContext context)
         {
-            if (!context.Cities.Any() && !context.BloodTypes.Any())
+            if (!context.Cities.Any())
             {
                 var cities = new List<City>
                 {
@@ -42,6 +43,29 @@ namespace BloodBankApp.Data
                         CityName="Prizren"
                     }
                 };
+                context.Cities.AddRange(cities);
+            }
+            if (!context.Roles.Any())
+            {
+                var roles = new List<IdentityRole<Guid>>
+                {
+                    new IdentityRole<Guid>
+                    {
+                        Name = "Donor"
+                    },
+                    new IdentityRole<Guid>
+                    {
+                        Name = "HospitalAdmin"
+                    },
+                    new IdentityRole<Guid>
+                    {
+                        Name = "SuperAdmin"
+                    }
+                };
+                context.Roles.AddRange(roles);
+            }
+            if (!context.BloodTypes.Any())
+            {
                 var bloodTypes = new List<BloodType>
                 {
                      new BloodType {
@@ -69,10 +93,9 @@ namespace BloodBankApp.Data
                        BloodTypeName = "AB-"
                     }
                 };
-                context.Cities.AddRange(cities);
                 context.BloodTypes.AddRange(bloodTypes);
-                await context.SaveChangesAsync();
             }
+            await context.SaveChangesAsync();
         }
     }
 }

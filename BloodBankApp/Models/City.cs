@@ -8,6 +8,7 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid CityId { get; set; } 
+
         [Required]
         [StringLength(100)]
         [Display(Name = "City")]

@@ -1,21 +1,17 @@
-﻿using BloodBankApp.Models;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IStatisticsService _statisticsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IStatisticsService statisticsService)
         {
-            _logger = logger;
+            _statisticsService = statisticsService;
         }
         public IActionResult Index()
         {
@@ -24,6 +20,12 @@ namespace BloodBankApp.Controllers
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+        public IActionResult AboutUs()
+        {
+            ViewData["UsersCount"] = _statisticsService.GetUsersCountAsync();
+            ViewData["HospitalCount"] = _statisticsService.GetUsersCountAsync();
             return View();
         }
 

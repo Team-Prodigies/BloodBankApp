@@ -2,51 +2,48 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using BloodBankApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using BloodBankApp.Enums;
 using AutoMapper;
-using BloodBankApp.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly IUsersService _usersService;
+        private readonly ISignInService _signInService;
+        private readonly IBloodTypesService _bloodTypesService;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context;
+        private readonly ICitiesService _citiesService;
+        private readonly IDonorsService _donorsService;
 
         public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender, IMapper mapper,
-            ApplicationDbContext context)
+            IUsersService usersService,
+            ISignInService signInService,
+            IBloodTypesService bloodTypesService,
+            IEmailSender emailSender,
+            IMapper mapper,
+            ICitiesService citiesService,
+            IDonorsService donorsService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
+            _usersService = usersService;
+            _signInService = signInService;
+            _bloodTypesService = bloodTypesService;
             _emailSender = emailSender;
             _mapper = mapper;
-            _context = context;
-
-            CityList = new SelectList(_context.Cities.ToList(), "CityId", "CityName");
-            BloodTypeList = new SelectList(_context.BloodTypes.ToList(), "BloodTypeId", "BloodTypeName");
+            _donorsService = donorsService;
+            _citiesService = citiesService;
+            CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
+            BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
         }
 
         [BindProperty]
@@ -55,7 +52,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private SelectList CityList { get; set; }
         private SelectList BloodTypeList { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public class RegisterInputModel
         {
             [Required]
@@ -118,70 +114,23 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                using (var transaction = _context.Database.BeginTransaction())
+                var result = await _usersService.AddDonor(Input);
+                if (result.Succeeded)
                 {
-                    var user = _mapper.Map<User>(Input);
-
-                    user.Id = Guid.NewGuid();
-
-                    user.LockoutEnabled = false;
-
-                    var donor = _mapper.Map<Donor>(Input);
-
-                    try
-                    {
-
-                        var result = await _userManager.CreateAsync(user, Input.Password);
-
-                        await _userManager.AddToRoleAsync(user, "Donor");
-
-                        if (result.Succeeded)
-                        {
-                            donor.DonorId = user.Id;
-
-                            await _context.Donors.AddAsync(donor);
-
-                            await _context.SaveChangesAsync();
-
-                            transaction.Commit();
-
-                            _logger.LogInformation("User created a new account with password.");
-
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
-
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-
-                            return LocalRedirect(returnUrl);
-                        }
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                    }
+                    return LocalRedirect(returnUrl);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             // If we got this far, something failed, redisplay form

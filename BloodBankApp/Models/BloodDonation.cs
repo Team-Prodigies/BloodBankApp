@@ -7,6 +7,7 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid BloodDonationId { get; set; }
+
         [Display(Name = "Donation date")]
         public DateTime DonationDate { get; set; }
         public double Amount { get; set; }

@@ -3,18 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Donor> Donors { get; set; }
         public DbSet<BloodDonation> BloodDonations { get; set; }
@@ -26,10 +20,8 @@ namespace BloodBankApp.Data
         public DbSet<Hospital> Hospitals { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<MedicalStaff> MedicalStaffs { get; set; }
-        //  public DbSet<Message> Messages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<SuperAdmin> SuperAdmins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -49,6 +41,7 @@ namespace BloodBankApp.Data
                .HasConstraintName("PostDonations")
                .OnDelete(DeleteBehavior.Cascade);
             });
+
             builder.Entity<BloodReserve>(br =>
             {
                 br.HasOne(b => b.Hospital)
@@ -63,6 +56,7 @@ namespace BloodBankApp.Data
                .HasConstraintName("TypeReserves")
                .OnDelete(DeleteBehavior.Cascade);
             });
+
             builder.Entity<DonationPost>(dp =>
             {
                 dp.HasOne(b => b.Hospital)
@@ -77,6 +71,7 @@ namespace BloodBankApp.Data
                .HasConstraintName("TypePosts")
                .OnDelete(DeleteBehavior.Cascade);
             });
+
             builder.Entity<Donor>(d =>
             {
                 d.HasOne(b => b.HealthFormQuestionnaire)
@@ -103,12 +98,6 @@ namespace BloodBankApp.Data
                .HasConstraintName("DonorsBloodTypes")
                .OnDelete(DeleteBehavior.Cascade);
             });
-            builder.Entity<SuperAdmin>()
-               .HasOne(d => d.User)
-               .WithOne(p => p.SuperAdmin)
-               .HasForeignKey<SuperAdmin>(d => d.SuperAdminId)
-               .HasConstraintName("UserSuperAdmin")
-               .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<MedicalStaff>(ms =>
             {
@@ -124,6 +113,7 @@ namespace BloodBankApp.Data
                .HasConstraintName("MedicalStaffHospital")
                .OnDelete(DeleteBehavior.Cascade);
             });
+
             builder.Entity<HealthFormQuestionnaire>()
              .HasOne(b => b.Donor)
              .WithOne(d => d.HealthFormQuestionnaire)
@@ -147,21 +137,7 @@ namespace BloodBankApp.Data
 
                 h.HasIndex(u => u.HospitalCode).IsUnique();
             });
-            /*
-               builder.Entity<Message>()
-                        .HasOne(b => b.Donor)
-                        .WithMany(d => d.Messages)
-                        .HasForeignKey(fk => fk.DonorId)
-                        .HasConstraintName("DonorsMessage")
-                        .OnDelete(DeleteBehavior.Cascade);
 
-                        builder.Entity<Message>()
-                        .HasOne(b => b.MedicalStaff)
-                        .WithMany(d => d.Messages)
-                        .HasForeignKey(fk => fk.MedicalStaffId)
-                        .HasConstraintName("MessageMedical")
-                        .OnDelete(DeleteBehavior.Cascade);
-             */
             builder.Entity<Notification>()
            .HasOne(b => b.DonationPost)
            .WithMany(d => d.Notifications)

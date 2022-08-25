@@ -1,7 +1,12 @@
 using AutoMapper;
+using BloodBankApp.Areas.Identity.Services;
+using BloodBankApp.Areas.SuperAdmin.Services;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
 using BloodBankApp.Models;
+using BloodBankApp.Services;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +44,17 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IBloodTypesService, BloodTypesService>();
+            services.AddScoped<ICitiesService, CitiesService>();
+            services.AddScoped<IDonorsService, DonorsService>();
+            services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<IMedicalStaffService, MedicalStaffService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<ISuggestionsService, SuggestionsService>();
+
             services.AddRazorPages();
 
             var mapperConfig = new MapperConfiguration(mapper =>
@@ -65,9 +81,7 @@ namespace BloodBankApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

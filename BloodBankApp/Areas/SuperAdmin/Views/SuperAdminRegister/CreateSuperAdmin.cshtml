@@ -1,74 +1,66 @@
 ﻿@model SuperAdminModel
 
-    <div class="d-flex justify-content-center">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body p-4">
-                    <h5 class="card-title">Create Super Admin</h5>
-                    <form method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.Name" required>
-                                <span asp-validation-for="@Model.Name" class="text-danger"></span>
-                            </div>
+<div class="d-flex justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">Create Super Admin</h5>
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.Name" required>
+                            <span asp-validation-for="@Model.Name" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Surname</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.Surname" required>
-                                <span asp-validation-for="@Model.Surname" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Surname</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.Surname" required>
+                            <span asp-validation-for="@Model.Surname" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Date of birth</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.DateOfBirth" required>
-                                <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Date of birth</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.DateOfBirth" required>
+                            <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">UserName</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.UserName" required>
-                                <span asp-validation-for="@Model.UserName" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">UserName</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.UserName" required>
+                            <span asp-validation-for="@Model.UserName" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.Email" required>
-                                <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.Email" required>
+                            <span asp-validation-for="@Model.Email" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Password</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.Password" required>
-                                <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.Password" required>
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
                         </div>
-
-                        <div class="row mb-3">
-                            <label for="inputText" class="col-sm-2 col-form-label">Confirm Password</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" asp-for="@Model.ConfirmPassword" required>
-                                <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Confirm Password</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" asp-for="@Model.ConfirmPassword" required>
+                            <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
                         </div>
-
-                        <div class="d-flex justify-content-center">
-                            <input type="submit" value="Create" class="btn btn-info" />
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="Create" class="btn btn-info" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>

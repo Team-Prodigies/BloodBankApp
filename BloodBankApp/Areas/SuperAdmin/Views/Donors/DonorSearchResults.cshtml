@@ -3,9 +3,7 @@
 @{
     ViewData["Title"] = "Donors";
 }
-
 <h1>Search results for "@ViewBag.SearchTerm"</h1>
-
 <div class="d-flex justify-content-between">
     <div class=" justify-content-start pt-2">
         <a asp-controller="Donors" asp-action="Donors">Back to all</a>
@@ -16,12 +14,11 @@
                 <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
                 <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
             </form>
+
             <datalist id="donorSuggestions"></datalist>
         </div>
     </div>
-
     <script>
-
         var typingTimer;
         var doneTypingInterval = 1000;
         var $input = $('#searchDonors');
@@ -60,10 +57,7 @@
         }
 
     </script>
-
 </div>
-
-
 <div class="card container">
     <div class="card-body">
         <h5 class="card-title">List of all donors</h5>
@@ -103,7 +97,6 @@
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@lockButton">
                                     Lockout
                                 </button>
-
                                 <div class="modal fade" id="@idName" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -166,7 +159,6 @@
         </table>
     </div>
 </div>
-
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         <li class="page-item">
@@ -180,7 +172,7 @@
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-               asp-action="ViewBag.SearchTerm" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+               asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
                     </li>
                 }
                 else
@@ -201,14 +193,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link"
-               asp-controller="Donors" asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+               asp-controller="Donors" asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-               asp-action="DonorSearchResults" asp-route-filterBy="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
+               asp-action="DonorSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm=@ViewBag.SearchTerm>@i</a>
                     </li>
                 }
             }

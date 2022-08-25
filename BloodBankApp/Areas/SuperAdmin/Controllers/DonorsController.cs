@@ -1,116 +1,69 @@
-﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class DonorsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IDonorsService _donorsService;
+        private readonly IUsersService _usersService;
 
-        public DonorsController(ApplicationDbContext context, IMapper mapper)
+        public DonorsController(IDonorsService donorsService,
+            IUsersService usersService)
         {
-            _context = context;
-            _mapper = mapper;
+            _donorsService = donorsService;
+            _usersService = usersService;
         }
         [HttpGet]
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
         {
-            var skipRows = (pageNumber - 1) * 10;
-            var donors = new List<Donor>();
-
-            switch (filterBy)
-            {
-                case "A-Z":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
-                    break;
-
-                case "Z-A":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderByDescending(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
-                    break;
-
-                case "Locked":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Locked == true).Skip(skipRows).Take(10).ToListAsync();
-                    break;
-
-                default:
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
-                    break;
-            }
-            
-            var result = _mapper.Map<List<DonorModel>>(donors);
-
+            var donors = await _donorsService.GetDonors(pageNumber, filterBy);
             ViewBag.FilterBy = filterBy;
             ViewBag.PageNumber = pageNumber;
-
-            return View(result);
+            return View(donors);
         }
 
         [HttpGet]
         public async Task<IActionResult> DonorSearchResults(string searchTerm, int pageNumber = 1)
         {
-            if(searchTerm == null || searchTerm.Trim() == "")
+            if (searchTerm == null || searchTerm.Trim() == "")
             {
                 return RedirectToAction(nameof(Donors));
             }
-            var skipRows = (pageNumber - 1) * 10;
-            var donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => (donor.User.Name + donor.User.Surname.ToUpper()).Contains(searchTerm.Replace(" ", "").ToUpper())).Skip(skipRows).Take(10).ToListAsync();
-            var result = _mapper.Map< List<DonorModel>>(donors);
+            var donors = await _donorsService.DonorSearchResults(searchTerm, pageNumber);
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 
-            return View(result);
+            return View(donors);
         }
         [HttpPost]
         public async Task<IActionResult> LockoutDonor(Guid donorId)
         {
-            var donor = await _context.Users.FindAsync(donorId);
+            var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
                 return NotFound();
             }
-           donor.Locked = true;
-            _context.Update(donor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Donors");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> DonorLockout(Guid donorId)
-        {
-            var donorLockout = await _context.Donors.FindAsync(donorId);
-
-            if (donorLockout == null)
-            {
-                return NotFound();
-            }
-            return View(donorLockout);
+            await _donorsService.LockoutDonor(donor);
+            return RedirectToAction(nameof(Donors));
         }
 
         [HttpPost]
         public async Task<IActionResult> UnlockDonor(Guid donorId)
         {
-            var donor = await _context.Users.FindAsync(donorId);
+            var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
                 return NotFound();
             }
-            donor.Locked = false;
-            _context.Update(donor);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Donors");
+            await _donorsService.UnlockDonor(donor);
+            return RedirectToAction(nameof(Donors));
         }
     }
-
 }

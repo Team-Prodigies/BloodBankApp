@@ -8,12 +8,14 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid LocationId { get; set; }
+
         [Required]
         [StringLength(50)]
-        public String Longitude { get; set; }
+        public string Longitude { get; set; }
+
         [Required]
         [StringLength(50)]
-        public String Latitude { get; set; }
+        public string Latitude { get; set; }
         public ICollection<Hospital> Hospitals { get; set; } = new List<Hospital>();
     }
 }

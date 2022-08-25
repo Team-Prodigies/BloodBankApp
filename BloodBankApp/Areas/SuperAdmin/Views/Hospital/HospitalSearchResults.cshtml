@@ -1,8 +1,6 @@
 ﻿@model List<Hospital>
 
 <h3>Search results for "@ViewBag.SearchTerm"</h3>
-
-
 <div class="d-flex justify-content-between">
     <div class=" justify-content-start pt-2">
         <a asp-controller="Hospital" asp-action="ManageHospitals">Back to all</a>
@@ -21,7 +19,6 @@
     <div class="row">
         @foreach (var hospital in Model)
         {
-
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body p-3">
@@ -41,7 +38,6 @@
                 </div>
             </div>
         }
-
         <script>
             var typingTimer;
             var doneTypingInterval = 1000;
@@ -77,16 +73,13 @@
             }
 
         </script>
-
     </div>
 </section>
-
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         <li class="page-item">
             <a class="page-link" asp-controller="Hospital" asp-action="HospitalSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
         </li>
-
         @if (ViewBag.pageNUmber < 6)
         {
             for (int i = 1; i <= 6; i++)
@@ -129,4 +122,3 @@
         }
     </ul>
 </nav>
-
