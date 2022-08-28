@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BloodBankApp.CustomValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,10 +9,12 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
     {
         [Required]
         [StringLength(100)]
+        [Numbers]
         public string Name { get; set; }
 
         [Required]
         [StringLength(100)]
+        [Numbers]
         public string Surname { get; set; }
 
         [Display(Name = "Date of birth")]
@@ -22,6 +25,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 
         [Required]
         [Display(Name = "Username")]
+        [StringLength(30, ErrorMessage = "Username cannot be longer than 20 characters")]
         public string UserName { get; set; }
 
         [Required]

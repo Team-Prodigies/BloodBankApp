@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Models;
+﻿using BloodBankApp.CustomValidation;
+using BloodBankApp.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,6 +12,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Required]
         [Display(Name = "Name")]
         [StringLength(200)]
+        [Numbers]
         public string HospitalName { get; set; }
 
         [Required]

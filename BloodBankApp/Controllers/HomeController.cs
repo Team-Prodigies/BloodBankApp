@@ -2,6 +2,7 @@
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace BloodBankApp.Controllers
 {
@@ -22,10 +23,10 @@ namespace BloodBankApp.Controllers
         {
             return View();
         }
-        public IActionResult AboutUs()
+        public async Task<IActionResult> AboutUs()
         {
-            ViewData["UsersCount"] = _statisticsService.GetUsersCountAsync();
-            ViewData["HospitalCount"] = _statisticsService.GetUsersCountAsync();
+            ViewData["UsersCount"] =await _statisticsService.GetUsersCountAsync();
+            ViewData["HospitalCount"] =await _statisticsService.GetHospitalsCountAsync();
             return View();
         }
 

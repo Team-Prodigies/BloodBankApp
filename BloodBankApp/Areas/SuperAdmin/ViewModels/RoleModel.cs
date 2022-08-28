@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BloodBankApp.CustomValidation;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Areas.SuperAdmin.ViewModels
@@ -9,6 +10,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 
         [Required]
         [Display(Name = "Role Name")]
+        [Numbers]
         public string RoleName { get; set; }
     }
 }

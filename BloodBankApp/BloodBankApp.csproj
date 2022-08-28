@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\HospitalAdmin\Models\**" />
+    <Compile Remove="Areas\SuperAdmin\NewFolder\**" />
+    <Content Remove="Areas\HospitalAdmin\Models\**" />
+    <Content Remove="Areas\SuperAdmin\NewFolder\**" />
+    <EmbeddedResource Remove="Areas\HospitalAdmin\Models\**" />
+    <EmbeddedResource Remove="Areas\SuperAdmin\NewFolder\**" />
+    <None Remove="Areas\HospitalAdmin\Models\**" />
+    <None Remove="Areas\SuperAdmin\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
@@ -16,11 +27,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\HospitalAdmin\Models\" />
-    <Folder Include="Areas\SuperAdmin\NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -5,13 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BloodBankApp.Enums;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.CustomValidation;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -46,20 +45,23 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class RegisterInputModel
         {
             [Required]
+            [Numbers]
             public string Name { get; set; }
 
+            [Numbers]
             [Required]
             public string Surname { get; set; }
 
             [Required]
             [Display(Name = "Username")]
+            [StringLength(30,ErrorMessage ="Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
             [Display(Name = "Date of Birthday")]
             [DataType(DataType.Date)]
-            [MinAge(18)]
+            [MinAgeAttribute(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -84,6 +86,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             // Donor Fields
             [Required]
+            [PersonalNumberAttribute]
             public long PersonalNumber { get; set; }
 
             [Required]
@@ -124,8 +127,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            // If we got this far, something failed, redisplay form
-
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
 

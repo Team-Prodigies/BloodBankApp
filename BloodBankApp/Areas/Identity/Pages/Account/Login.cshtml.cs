@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using System;
+using BloodBankApp.CustomValidation;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -36,6 +37,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
+            [StringLength(30, ErrorMessage = "Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
