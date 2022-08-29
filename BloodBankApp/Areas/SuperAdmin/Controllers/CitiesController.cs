@@ -24,7 +24,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Cities()
         {
             var cities = await _citiesService.GetCities();
-            return View(cities);
+            return View(cities.ToList());
         }
 
         [HttpPost]
