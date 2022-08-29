@@ -8,6 +8,8 @@ namespace BloodBankApp.CustomValidation
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+                return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
             var name = value.ToString();
 
             if (name.Any(x => char.IsDigit(x)))

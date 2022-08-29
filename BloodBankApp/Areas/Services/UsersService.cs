@@ -55,7 +55,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             {
                 return await _userManager.AddToRoleAsync(superAdminAccount, "SuperAdmin");
             }
-            return IdentityResult.Failed();
+            return result;
         }
 
         public async Task<User> GetUser(ClaimsPrincipal principal)

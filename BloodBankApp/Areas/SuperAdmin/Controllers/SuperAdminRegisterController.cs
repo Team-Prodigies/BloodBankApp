@@ -46,8 +46,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 {
                     return RedirectToAction(nameof(AccountCreatedSuccessfully));
                 }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            return RedirectToAction(nameof(CreateSuperAdmin));
+            return View();
         }
     }
 }
