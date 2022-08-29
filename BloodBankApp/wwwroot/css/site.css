@@ -246,7 +246,7 @@ html {
     }
 
         .mainContet .title {
-            background: linear-gradient(170deg,#F93642, #dd424b 40%);
+            background-color: #d1001f;
             border-radius: 5px;
             position: absolute;
             bottom: -100px;
@@ -271,7 +271,7 @@ html {
     }
 
     .countStats {
-        background: linear-gradient(170deg,#F93642, #F40D45 );
+        background-color: #d1001f;
         color: white;
         padding: 87px 0;
     }
