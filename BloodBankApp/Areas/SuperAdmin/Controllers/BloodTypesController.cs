@@ -31,6 +31,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View(nameof(CreateBloodType));
             }
+            
             await _bloodTypesService.AddNewBloodType(bloodType.BloodTypeName);
             return RedirectToAction(nameof(BloodTypes));
         }

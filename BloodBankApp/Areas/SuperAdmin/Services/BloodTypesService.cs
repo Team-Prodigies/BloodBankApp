@@ -1,6 +1,7 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
+using BloodBankApp.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
-    public class BloodTypesService : IBloodTypesService
+    public class BloodTypesService : GenericService<BloodType>, IBloodTypesService
     {
         private readonly ApplicationDbContext _context;
 
-        public BloodTypesService(ApplicationDbContext context)
+        public BloodTypesService(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
