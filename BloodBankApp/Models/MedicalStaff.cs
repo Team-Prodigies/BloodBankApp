@@ -11,7 +11,5 @@ namespace BloodBankApp.Models
         public virtual User User { get; set; }
         public Guid HospitalId { get; set; }
         public Hospital Hospital { get; set; }
-
-        //  public ICollection<Message> Messages { get; set; } = new List<Message>();
     }
 }

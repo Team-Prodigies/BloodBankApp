@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
@@ -18,10 +14,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     public class RolesController : Controller
     {
         private readonly IRolesService _rolesService;
+        private readonly IMapper _mapper;
 
-        public RolesController(IRolesService rolesService)
+        public RolesController(IRolesService rolesService, IMapper mapper)
         {
             _rolesService = rolesService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> AllRoles()
@@ -41,7 +39,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return View();
             }
             var check = await _rolesService.CreateRole(model);
             if (!check.Succeeded)
@@ -60,12 +58,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            return View(role);
+            var roleModel = _mapper.Map<RoleModel>(role);
+            return View(roleModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditRole(IdentityRole<Guid> role, Guid Id)
+        public async Task<IActionResult> EditRole(RoleModel role, Guid Id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             if (role.Id != Id)
             {
                 return NotFound();
@@ -77,9 +80,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            dbRole.Name = role.Name;
+            dbRole.Name = role.RoleName;
 
             var result = await _rolesService.UpdateRole(dbRole);
+           
             if (!result.Succeeded)
             {
                 return NotFound();

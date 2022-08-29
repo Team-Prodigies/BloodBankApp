@@ -1,23 +1,16 @@
-﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
-    [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Area("SuperAdmin")]/*
+    [Authorize(Roles = "SuperAdmin")]*/
     public class SuperAdminRegisterController : Controller
     {
         private readonly IUsersService _usersService;

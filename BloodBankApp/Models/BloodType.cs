@@ -8,6 +8,7 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid BloodTypeId { get; set; }
+
         [Required]
         [StringLength(50)]
         [Display(Name = "Blood type")]

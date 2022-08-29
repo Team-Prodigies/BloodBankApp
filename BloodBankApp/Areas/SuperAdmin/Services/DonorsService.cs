@@ -30,7 +30,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<List<DonorModel>> DonorSearchResults(string searchTerm, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
-            var donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => (donor.User.Name + donor.User.Surname.ToUpper()).Contains(searchTerm.Replace(" ", "").ToUpper())).Skip(skipRows).Take(10).ToListAsync();
+            var donors = await _context.Donors
+                .Include(user => user.User)
+                .Include(blood => blood.BloodType)
+                .Include(city => city.City)
+                .Where(donor => (donor.User.Name + donor.User.Surname.ToUpper())
+                .Contains(searchTerm.Replace(" ", "").ToUpper()))
+                .Skip(skipRows)
+                .Take(10)
+                .ToListAsync();
+
             return _mapper.Map<List<DonorModel>>(donors);
         }
 
@@ -42,9 +51,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<Donor> GetDonor(Guid donorId)
         {
-            var donor= await _context.Donors
+            var donor = await _context.Donors
                 .Include(c => c.City)
-                .Include(b => b.BloodType).FirstOrDefaultAsync(x => x.DonorId == donorId);
+                .Include(b => b.BloodType)
+                .FirstOrDefaultAsync(x => x.DonorId == donorId);
+
             return donor;
         }
 
@@ -56,22 +67,51 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             switch (filterBy)
             {
                 case "A-Z":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors
+                        .Include(user => user.User)
+                        .Include(blood => blood.BloodType)
+                        .Include(city => city.City)
+                        .OrderBy(donor => donor.User.Name)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToListAsync();
                     break;
 
                 case "Z-A":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderByDescending(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors
+                        .Include(user => user.User)
+                        .Include(blood => blood.BloodType)
+                        .Include(city => city.City)
+                        .OrderByDescending(donor => donor.User.Name)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToListAsync();
                     break;
 
                 case "Locked":
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).Where(donor => donor.User.Locked == true).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors
+                        .Include(user => user.User)
+                        .Include(blood => blood.BloodType)
+                        .Include(city => city.City)
+                        .Where(donor => donor.User.Locked == true)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToListAsync();
                     break;
 
                 default:
-                    donors = await _context.Donors.Include(user => user.User).Include(blood => blood.BloodType).Include(city => city.City).OrderBy(donor => donor.User.Name).Skip(skipRows).Take(10).ToListAsync();
+                    donors = await _context.Donors
+                        .Include(user => user.User)
+                        .Include(blood => blood.BloodType)
+                        .Include(city => city.City)
+                        .OrderBy(donor => donor.User.Name)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToListAsync();
                     break;
             }
             var result = _mapper.Map<List<DonorModel>>(donors);
+
             return result;
         }
 

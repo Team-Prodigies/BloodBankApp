@@ -2,53 +2,35 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using BloodBankApp.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using BloodBankApp.Enums;
-using AutoMapper;
-using BloodBankApp.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.CustomValidation;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly ILogger<RegisterModel> _logger;
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
         private readonly IBloodTypesService _bloodTypesService;
-        private readonly IEmailSender _emailSender;
-        private readonly IMapper _mapper;
         private readonly ICitiesService _citiesService;
-        private readonly IDonorsService _donorsService;
 
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
             IBloodTypesService bloodTypesService,
-            IEmailSender emailSender, 
-            IMapper mapper,
-            ICitiesService citiesService,
-            IDonorsService donorsService)
+            ICitiesService citiesService)
         {
             _usersService = usersService;
             _signInService = signInService;
             _bloodTypesService = bloodTypesService;
-            _emailSender = emailSender;
-            _mapper = mapper;
-            _donorsService = donorsService;
             _citiesService = citiesService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
             BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
@@ -60,24 +42,26 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private SelectList CityList { get; set; }
         private SelectList BloodTypeList { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public class RegisterInputModel
         {
             [Required]
+            [Numbers]
             public string Name { get; set; }
 
+            [Numbers]
             [Required]
             public string Surname { get; set; }
 
             [Required]
             [Display(Name = "Username")]
+            [StringLength(30,ErrorMessage ="Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
             [Display(Name = "Date of Birthday")]
             [DataType(DataType.Date)]
-            [MinAge(18)]
+            [MinAgeAttribute(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -102,6 +86,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             // Donor Fields
             [Required]
+            [PersonalNumberAttribute]
             public long PersonalNumber { get; set; }
 
             [Required]
@@ -133,7 +118,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var result = await _usersService.AddDonor(Input);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);
                 }
@@ -142,8 +127,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            // If we got this far, something failed, redisplay form
-
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
 

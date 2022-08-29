@@ -10,7 +10,6 @@
     box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
 }
 
-
     #header.header-scrolled {
         top: 0;
         background: red !important;
@@ -234,32 +233,32 @@ html {
         font-weight: 500;
     }
 
-.aboutUsPage .mainImage {
-   width: 100%;
-   position: relative;
-   margin: 0;
-   opacity: 0.9;
-}
-
-.mainContet {
-   position: relative;
-   margin: 0;
-}
-
-    .mainContet .title {
-        background: linear-gradient(170deg,#F93642, #dd424b 40%);
-        border-radius: 5px;
-        position: absolute;
-        bottom: -100px;
-        margin-left: auto;
-        margin-right: auto;
-        left: 0;
-        right: 0;
-        text-align: center;
-        padding: 100px 20px;
-        box-shadow: -10px 7px 20px #16151B;
-        color: white
+    .aboutUsPage .mainImage {
+        width: 100%;
+        position: relative;
+        margin: 0;
+        opacity: 0.9;
     }
+
+    .mainContet {
+        position: relative;
+        margin: 0;
+    }
+
+        .mainContet .title {
+            background: linear-gradient(170deg,#F93642, #dd424b 40%);
+            border-radius: 5px;
+            position: absolute;
+            bottom: -100px;
+            margin-left: auto;
+            margin-right: auto;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 100px 20px;
+            box-shadow: -10px 7px 20px #16151B;
+            color: white
+        }
 
     .aboutUsPage h1 {
         font-weight: 400;
@@ -273,7 +272,7 @@ html {
 
     .countStats {
         background: linear-gradient(170deg,#F93642, #F40D45 );
-        color:white;
+        color: white;
         padding: 87px 0;
     }
 
@@ -284,10 +283,10 @@ html {
         color: white;
     }
 
-    .backgroundImage{
-        background-image: url(../Images/pexels-fauxels-3184418.jpg); 
+    .backgroundImage {
+        background-image: url(../Images/pexels-fauxels-3184418.jpg);
         background-repeat: no-repeat;
-        background-size:cover;  
+        background-size: cover;
         position: absolute;
         z-index: -1;
         top: 0;
@@ -304,24 +303,23 @@ html {
         left: 0;
         width: 100%;
         height: 100%;
-        padding: 50px 0 ;
+        padding: 50px 0;
     }
 
-    .articleTitle{
+    .articleTitle {
         margin: 50px 0;
         padding: 50px 0;
     }
 
-    .valuesBox h1{
+    .valuesBox h1 {
         font-weight: 700;
-        letter-spacing:1px;
+        letter-spacing: 1px;
     }
 
     .valuesBox h2, .valuesBox h5 {
         margin: 15px 0;
         letter-spacing: 1px;
     }
-    
 
     .footer {
         position: absolute;

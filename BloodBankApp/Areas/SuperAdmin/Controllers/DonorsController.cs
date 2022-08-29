@@ -1,15 +1,7 @@
-﻿using AutoMapper;
-using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
@@ -23,14 +15,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
         public DonorsController(IDonorsService donorsService,
             IUsersService usersService)
-        {   
+        {
             _donorsService = donorsService;
             _usersService = usersService;
         }
         [HttpGet]
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
         {
-            var donors = await _donorsService.GetDonors(pageNumber, filterBy);     
+            var donors = await _donorsService.GetDonors(pageNumber, filterBy);
             ViewBag.FilterBy = filterBy;
             ViewBag.PageNumber = pageNumber;
             return View(donors);
@@ -39,13 +31,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> DonorSearchResults(string searchTerm, int pageNumber = 1)
         {
-            if(searchTerm == null || searchTerm.Trim() == "")
+            if (searchTerm == null || searchTerm.Trim() == "")
             {
                 return RedirectToAction(nameof(Donors));
             }
             var donors = await _donorsService.DonorSearchResults(searchTerm, pageNumber);
+
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
+
             return View(donors);
         }
         [HttpPost]
@@ -56,14 +50,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            await _donorsService.LockoutDonor(donor);   
+            await _donorsService.LockoutDonor(donor);
             return RedirectToAction(nameof(Donors));
         }
 
         [HttpPost]
         public async Task<IActionResult> UnlockDonor(Guid donorId)
         {
-            var donor =  await _usersService.GetUser(donorId);
+            var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
                 return NotFound();

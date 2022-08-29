@@ -27,26 +27,25 @@ a:hover {
     flex-direction: column;
 }
 
-.footer-links li {
-    font-size: 1.4rem;
-    text-align: left;
-    padding-left: 1rem;
-}
+    .footer-links li {
+        font-size: 1.4rem;
+        text-align: left;
+        padding-left: 1rem;
+    }
 
-.footer-links ul {
-    margin: 0;
-}
-@media (max-width: 768px){
-    
+    .footer-links ul {
+        margin: 0;
+    }
+
+@media (max-width: 768px) {
+
     .footer-row {
-        flex-direction:column;
+        flex-direction: column;
         align-items: center;
         gap: 2rem;
         margin-left: 0rem;
         margin-right: 0rem;
     }
-
-
 }
 
 /* Footer end */
@@ -84,6 +83,7 @@ a:hover {
 .bg-custom1 {
     background-color: #f5f3f4;
 }
+
 .bg-custom2 {
     background-color: #d1001f;
 }
@@ -115,7 +115,7 @@ h1 {
 
 #donors-organization h1 {
     color: #0f0f0f;
-    font-size:2.6rem;
+    font-size: 2.6rem;
     font-weight: 800;
 }
 
@@ -145,7 +145,7 @@ h1 {
 }
 /*Register, Login end*/
 
-*{
+* {
     margin: 0;
     padding: 0;
 }

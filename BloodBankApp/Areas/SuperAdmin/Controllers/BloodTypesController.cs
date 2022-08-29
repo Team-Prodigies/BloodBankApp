@@ -1,4 +1,5 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,15 +25,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewBloodType(string bloodTypeName)
+        public async Task<IActionResult> AddNewBloodType(BloodTypeModel bloodType)
         {
-            await _bloodTypesService.AddNewBloodType(bloodTypeName);
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(CreateBloodType));
+            }
+            await _bloodTypesService.AddNewBloodType(bloodType.BloodTypeName);
             return RedirectToAction(nameof(BloodTypes));
         }
 
         [HttpPost]
         public async Task<IActionResult> EditBloodType(BloodType editBloodType)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             await _bloodTypesService.EditBloodType(editBloodType);
             return RedirectToAction(nameof(BloodTypes));
         }

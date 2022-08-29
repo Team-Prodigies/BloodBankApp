@@ -3,28 +3,27 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace BloodBankApp.Models
 {
     public class Hospital
     {
         [Key]
         public Guid HospitalId { get; set; }
+
         [Required]
         [Display(Name = "Name")]
         [StringLength(200)]
-        public String HospitalName { get; set; }
+        public string HospitalName { get; set; }
 
         [Required]
         [Display(Name = "Contact number")]
         [StringLength(20)]
-        public String ContactNumber { get; set; }
-
+        public string ContactNumber { get; set; }
+        
         [Required]
         [Display(Name = "Hospital Code")]
         [StringLength(50)]
-        public String HospitalCode { get; set; }
-
+        public string HospitalCode { get; set; }
         public Guid LocationId { get; set; }
         public Location Location { get; set; }
         public Guid CityId { get; set; }

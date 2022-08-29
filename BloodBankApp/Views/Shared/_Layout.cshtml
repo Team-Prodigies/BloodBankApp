@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -38,7 +37,6 @@
                 <ul>
                     <li><a class="nav-link scrollto active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a class="nav-link scrollto" asp-area="" asp-controller="Home" asp-action="AboutUs">About</a></li>
-                    <li><a class="nav-link scrollto" asp-area="" asp-controller="Home" asp-action="Index">Hospitals</a></li>
                     <partial name="_LoginPartial" />
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
@@ -60,7 +58,6 @@
                     </p>
                 </div>
                 <div class="col mb-3 d-none d-md-block">
-
                 </div>
                 <div class="col mb-3 text-center text-md-start">
                     <h5>Section</h5>
@@ -116,6 +113,7 @@
             </footer>
         </div>
     </div>
+
     <script src="~/Medilab/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="~/Medilab/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/Medilab/assets/vendor/glightbox/js/glightbox.min.js"></script>
@@ -125,9 +123,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

@@ -1,49 +1,33 @@
-﻿using BloodBankApp.Data;
+﻿using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace BloodBankApp.API_s {
+namespace BloodBankApp.API_s
+{
     [Route("api/[controller]")]
     [ApiController]
     public class SuggestionsController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly ISuggestionsService _suggestionsService;
 
-        public SuggestionsController(ApplicationDbContext context)
+        public SuggestionsController(ISuggestionsService suggestionsService)
         {
-            this.context = context;
+            _suggestionsService = suggestionsService;
         }
 
         [HttpGet]
         [Route("GetDonorsSuggestions")]
         public async Task<IEnumerable<string>> GetDonorsSuggestionsAsync(string search)
         {
-
-            if(search == null || search.Trim() == "") {
-                return null;
-            }
-            var suggestions = await context.Donors.Where(donor => donor.User.Name.ToUpper().Contains(search.ToUpper()) || donor.User.Surname.ToUpper().Contains(search.ToUpper())).Select(donor => donor.User.Name +" "+donor.User.Surname).Take(5).ToListAsync<string>();
-
-            return suggestions;
+            return await _suggestionsService.GetDonorsSuggestionsAsync(search);
         }
 
         [HttpGet]
         [Route("GetHospitalsSuggestions")]
         public async Task<IEnumerable<string>> GetHospitalsSuggestionsAsync(string search)
         {
-
-            if (search == null || search.Trim() == "") {
-                return null;
-            }
-            var suggestions = await context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(search.ToUpper())).Select(hospital => hospital.HospitalName).Take(5).ToListAsync<string>();
-
-            return suggestions;
+            return await _suggestionsService.GetHospitalsSuggestionsAsync(search);
         }
     }
 }

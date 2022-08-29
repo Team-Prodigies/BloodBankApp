@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using BloodBankApp.Areas.Identity.Pages.Account.Manage;
-using BloodBankApp.Areas.Identity.Pages.Account.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
@@ -14,7 +10,6 @@ namespace BloodBankApp.Mapping
 {
     public class MappingProfile : Profile
     {
-
         public MappingProfile()
         {
             CreateMap<RegisterInputModel, User>()
@@ -58,6 +53,10 @@ namespace BloodBankApp.Mapping
               opts => opts.MapFrom(src => src.Location.Latitude));
 
             CreateMap<SuperAdminModel, User>();
+
+            CreateMap<RoleModel, IdentityRole<Guid>>()
+                .ForMember(dest => dest.Name,
+                 opts => opts.MapFrom(src => src.RoleName)).ReverseMap();
         }
     }
 }

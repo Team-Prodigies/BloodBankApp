@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using BloodBankApp.Areas.Identity.Pages.Account.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 {
@@ -40,15 +32,12 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
         [Display(Name = "Personal number")]
         public long PersonalNumber { get; set; }
-
         public Gender Gender { get; set; }
 
         [Display(Name = "Blood Type")]
         public string BloodTypeName { get; set; }
-
         public string Name { get; set; }
-
-        public String Surname { get; set; }
+        public string Surname { get; set; }
 
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
@@ -114,6 +103,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
+                ViewData["City"] = CityList;
                 return Page();
             }
             var donor = await _donorsService.GetDonor(user.Id);

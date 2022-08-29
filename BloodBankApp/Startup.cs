@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using BloodBankApp.Areas.Identity.Services;
 using BloodBankApp.Areas.SuperAdmin.Services;
@@ -6,6 +5,8 @@ using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Mapping;
 using BloodBankApp.Models;
+using BloodBankApp.Services;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,9 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp
 {
@@ -35,7 +33,7 @@ namespace BloodBankApp
         {
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddRoles<IdentityRole<Guid>>()
@@ -55,6 +53,7 @@ namespace BloodBankApp
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<ISuggestionsService, SuggestionsService>();
 
             services.AddRazorPages();
 
@@ -62,11 +61,8 @@ namespace BloodBankApp
             {
                 mapper.AddProfile(new MappingProfile());
             });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,9 +81,7 @@ namespace BloodBankApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

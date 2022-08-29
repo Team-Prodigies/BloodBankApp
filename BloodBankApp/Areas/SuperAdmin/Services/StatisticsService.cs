@@ -20,18 +20,30 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<double> GetAmountOfBloodDonatedAsync()
         {
             var bloodAmount = 0.0D;
-            await _context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).ForEachAsync(x => bloodAmount += x.Amount);
+            await _context.BloodDonations
+                .Where(x => x.DonationDate.Year == DateTime.Now.Year)
+                .ForEachAsync(x => bloodAmount += x.Amount);
+
             return bloodAmount;
         }
 
         public async Task<int> GetDonorCountAsync()
         {
-           return await _context.BloodDonations.Where(x => x.DonationDate.Year == DateTime.Now.Year).CountAsync();
+           return await _context.BloodDonations
+                .Where(x => x.DonationDate.Year == DateTime.Now.Year)
+                .CountAsync();
+        }
+
+        public async Task<int> GetHospitalsCountAsync()
+        {
+            return await _context.Hospitals.CountAsync();
         }
 
         public async Task<int> GetNumberOfDonationPostsAsync()
         {
-          return await _context.DonationPosts.Where(x => x.DateRequired.Year == DateTime.Now.Year).CountAsync();
+          return await _context.DonationPosts
+                .Where(x => x.DateRequired.Year == DateTime.Now.Year)
+                .CountAsync();
         }
 
         public async Task<Dictionary<string, int>> GetUserBloodDataAsync()
@@ -40,7 +52,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
             var donorCountByBloodType =
                 from bloodType in await _context.BloodTypes.ToListAsync()
-                join donor in await _context.Donors.ToListAsync() on bloodType.BloodTypeId equals donor.BloodTypeId into donors
+                join donor in await _context.Donors.ToListAsync()
+                on bloodType.BloodTypeId equals donor.BloodTypeId into donors
                 select new
                 {
                     BloodType = bloodType.BloodTypeName,
@@ -60,7 +73,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
             var userCountByRole =
                 from role in await _context.Roles.ToListAsync()
-                join user in await _context.UserRoles.ToListAsync() on role.Id equals user.RoleId into users
+                join user in await _context.UserRoles.ToListAsync() 
+                on role.Id equals user.RoleId into users
                 select new
                 {
                     Role = role.Name,
@@ -72,6 +86,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 data.Add(entry.Role, entry.UserCount);
             }
             return data;
+        }
+
+        public async Task<int> GetUsersCountAsync()
+        {
+            return await _context.Users.CountAsync();
         }
     }
 }

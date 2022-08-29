@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
+
     public class HospitalController : Controller
     {
         private readonly ICitiesService _citiesService;
@@ -39,7 +38,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             var hospitals = await _hospitalService.GetHospitals(pageNumber);
             ViewBag.pageNumber = pageNumber;
-
             return View(hospitals);
         }
 
@@ -70,7 +68,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return RedirectToAction(nameof(ManageHospitals));
             }
-
             ViewData["CityId"] = _cityList;
             var editHospital = _mapper.Map<HospitalModel>(hospital);
             return View(editHospital);
@@ -81,10 +78,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
             if(!ModelState.IsValid)
             {
+                ViewData["CityId"] = _cityList;
                 return View(hospital);
             }
             await _hospitalService.EditHospital(hospital);
-
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
 
@@ -95,6 +92,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 return RedirectToAction(nameof(ManageHospitals));
             }
             var hospitals = await _hospitalService.HospitalSearchResults(searchTerm, pageNumber);
+          
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 

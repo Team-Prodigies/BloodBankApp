@@ -80,7 +80,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<User> GetUserByUsername(string username)
         {
-            return await _userManager.Users.Where(u => u.UserName == username).FirstOrDefaultAsync();
+            return await _userManager.Users
+                .Where(u => u.UserName == username)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IdentityResult> AddDonor(RegisterModel.RegisterInputModel input)
@@ -121,9 +123,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
-                var hospitalCode = input.HospitalCode;
                 var hospital = await _context.Hospitals
-                           .Where(x => x.HospitalId == input.HospitalId).FirstOrDefaultAsync();
+                           .Where(x => x.HospitalId == input.HospitalId)
+                           .FirstOrDefaultAsync();
 
                 if (!hospital.HospitalCode.Equals(input.HospitalCode))
                 {
@@ -158,6 +160,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                     return IdentityResult.Failed();
                 }
             }
+        }
+
+        public async Task<bool> UserIsInRole(User user,string role)
+        {
+            return await _userManager.IsInRoleAsync(user, role);
         }
     }
 }

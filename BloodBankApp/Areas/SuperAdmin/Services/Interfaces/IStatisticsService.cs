@@ -8,6 +8,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task<int> GetNumberOfDonationPostsAsync();
         Task<double> GetAmountOfBloodDonatedAsync();
         Task<int> GetDonorCountAsync();
+        Task<int> GetUsersCountAsync();
+        Task<int> GetHospitalsCountAsync();
         Task<Dictionary<string, int>> GetUserRoleDataAsync();
         Task<Dictionary<string, int>> GetUserBloodDataAsync();
     }

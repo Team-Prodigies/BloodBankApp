@@ -6,11 +6,9 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
     public class DonorModel
     {
-        public virtual bool Locked { get; set; }
         public Guid DonorId { get; set; }
-        public String Name { get; set; }
-
-        public String Surname { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
 
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
@@ -25,5 +23,6 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 
         [Display(Name = "City")]
         public string CityName { get; set; }
+        public bool Locked { get; set; }
     }
 }

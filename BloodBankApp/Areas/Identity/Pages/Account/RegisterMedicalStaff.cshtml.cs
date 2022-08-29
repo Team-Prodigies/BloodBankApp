@@ -1,24 +1,14 @@
-using AutoMapper;
-using BloodBankApp.Areas.Identity.Services;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
-using BloodBankApp.Models;
+using BloodBankApp.CustomValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
@@ -26,27 +16,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterMedicalStaffModel : PageModel
     {
-        private readonly IMapper _mapper;
         private readonly ISignInService _signInService;
-        private readonly IMedicalStaffService _medicalStaffService;
         private readonly IUsersService _usersService;
-        private readonly ApplicationDbContext _context;
+        private readonly IHospitalService _hospitalService;
 
         public RegisterMedicalStaffModel(
-            IEmailSender emailSender, 
-            IMapper mapper,
             ISignInService signInService,
-            IMedicalStaffService medicalStaffService,
             IUsersService usersService,
-            ApplicationDbContext context)
+            IHospitalService hospitalService)
         {
-            _mapper = mapper;
             _signInService = signInService;
-            _medicalStaffService = medicalStaffService;
             _usersService = usersService;
-            _context = context;
+            _hospitalService = hospitalService;
 
-            HospitalList = new SelectList(_context.Hospitals.ToList(), "HospitalId", "HospitalName");
+            HospitalList = new SelectList(_hospitalService.GetAllHospitals().Result, "HospitalId", "HospitalName");
         }
 
         [BindProperty]
@@ -100,7 +83,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Hospital")]
             public Guid HospitalId { get; set; }
-
             public String HospitalCode { get; set; }
         }
 
@@ -129,7 +111,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            // If we got this far, something failed, redisplay form
             ViewData["Hospital"] = HospitalList;
             return Page();
         }

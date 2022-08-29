@@ -25,6 +25,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             var location = mapper.Map<Location>(model);
             await _context.AddAsync(location);
+
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -55,22 +56,39 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<Hospital>> GetAllHospitals()
+        {
+            return await _context.Hospitals.ToListAsync();
+        }
+
         public async Task<Hospital> GetHospital(Guid hospitalId)
         {
-            return await _context.Hospitals.Include(l => l.Location).Include(c => c.City).Where(h => h.HospitalId == hospitalId).FirstOrDefaultAsync();
+            return await _context.Hospitals
+                .Include(l => l.Location)
+                .Include(c => c.City)
+                .Where(h => h.HospitalId == hospitalId)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Hospital>> GetHospitals(int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;
-            return await _context.Hospitals.Include(c => c.City).Skip(skipRows).Take(10).ToListAsync();
+            return await _context.Hospitals
+                .Include(c => c.City)
+                .Skip(skipRows)
+                .Take(10)
+                .ToListAsync();
         }
 
         public async Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;
-            return await _context.Hospitals.Where(hospital => hospital.HospitalName.ToUpper().Contains(searchTerm.ToUpper())).Skip(skipRows).Take(10).ToListAsync();
+            return await _context.Hospitals
+                .Where(hospital => hospital.HospitalName.ToUpper()
+                .Contains(searchTerm.ToUpper()))
+                .Skip(skipRows)
+                .Take(10)
+                .ToListAsync();
         }
     }
 }
-

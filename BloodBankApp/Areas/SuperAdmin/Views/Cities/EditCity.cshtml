@@ -6,10 +6,10 @@
         <form class="row g-3" asp-controller="Cities" asp-action="EditCity" method="post">
             <div class="container col-8">
                 <div class="mb-3 mt-2">
-                    <input asp-for="@Model.CityId" type="hidden" class="form-control">
-
-                    <label class="form-label">Edit City name</label>
-                    <input asp-for="@Model.CityName" class="form-control">
+                    <input asp-for="CityId" type="hidden" class="form-control">
+                    <label class="form-label" asp-for="CityName"></label>
+                    <input asp-for="CityName" class="form-control">
+                    <span asp-validation-for="CityName" class="text-danger"></span>
                 </div>
                 <div class="text-start mt-2 mb-2">
                     <button type="submit" class="btn btn-info">Submit</button>

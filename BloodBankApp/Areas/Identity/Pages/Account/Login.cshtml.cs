@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using BloodBankApp.Data;
-using Microsoft.EntityFrameworkCore;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using System;
+using BloodBankApp.CustomValidation;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -34,17 +29,16 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [TempData]
         public string ErrorMessage { get; set; }
-
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
+            [StringLength(30, ErrorMessage = "Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
@@ -64,7 +58,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -80,8 +73,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInService.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 var user = await _usersService.GetUserByUsername(Input.UserName);
@@ -93,7 +84,15 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                         await _signInService.SignOutAsync();
                         return RedirectToPage("./Lockout");
                     }
-                        return LocalRedirect(returnUrl);
+                    if (await _usersService.UserIsInRole(user, "SuperAdmin"))
+                    {
+                        return RedirectToAction("Index", "AdminHome", new {area = "SuperAdmin"});
+                    }
+                    if (await _usersService.UserIsInRole(user, "HospitalAdmin"))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
+                    }
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -105,7 +104,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

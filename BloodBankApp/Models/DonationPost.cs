@@ -10,11 +10,14 @@ namespace BloodBankApp.Models
         [Key]
         public Guid NotificationId { get; set; }
         public DateTime DateRequired { get; set; }
+
         [Required]
         [StringLength(2000)]
         public string Description { get; set; }
+
         [Display(Name = "Amount requested")]
         public double AmountRequested { get; set; }
+
         [Display(Name = "Status")]
         public PostStatus PostStatus { get; set; }
         public Guid HospitalId { get; set; }

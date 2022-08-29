@@ -299,21 +299,6 @@ namespace BloodBankApp.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.SuperAdmin", b =>
-                {
-                    b.Property<Guid>("SuperAdminId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmailContact")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("SuperAdminId");
-
-                    b.ToTable("SuperAdmins");
-                });
-
             modelBuilder.Entity("BloodBankApp.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -695,18 +680,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("HealthFormQuestionnaire");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.SuperAdmin", b =>
-                {
-                    b.HasOne("BloodBankApp.Models.User", "User")
-                        .WithOne("SuperAdmin")
-                        .HasForeignKey("BloodBankApp.Models.SuperAdmin", "SuperAdminId")
-                        .HasConstraintName("UserSuperAdmin")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -812,8 +785,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Donor");
 
                     b.Navigation("MedicalStaff");
-
-                    b.Navigation("SuperAdmin");
                 });
 #pragma warning restore 612, 618
         }

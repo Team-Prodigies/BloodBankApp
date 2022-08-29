@@ -8,6 +8,7 @@ namespace BloodBankApp.Models
     {
         [Key]
         public Guid HealthFormQuestionnaireId { get; set; }
+
         [Display(Name = "Last updated")]
         public DateTime LastUpdated { get; set; }
         public Guid DonorId { get; set; }

@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Models
@@ -12,7 +12,5 @@ namespace BloodBankApp.Models
         public Hospital Hospital { get; set; }
         public Guid BloodTypeId { get; set; }
         public BloodType BloodType { get; set; }
-
-      
     }
 }

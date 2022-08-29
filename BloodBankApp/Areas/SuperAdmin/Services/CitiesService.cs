@@ -25,10 +25,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task EditCity(Guid id, string cityName)
         {
-            var cityExists = await _context.Cities.Where(b => b.CityName.ToUpper() == cityName.ToUpper()).FirstOrDefaultAsync();
+            var cityExists = await _context.Cities
+                .Where(b => b.CityName.ToUpper() == cityName.ToUpper())
+                .FirstOrDefaultAsync();
+
             if (cityExists == null)
             {
-                var city =await  _context.Cities.FindAsync(id);
+                var city = await _context.Cities.FindAsync(id);
                 if (city != null)
                 {
                     city.CityName = cityName;
@@ -40,7 +43,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<IEnumerable<City>> GetCities()
         {
-            return  await _context.Cities.ToListAsync();
+            return await _context.Cities.ToListAsync();
         }
 
         public async Task<City> GetCity(Guid id)

@@ -20,5 +20,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input);
         Task<IdentityResult> SetPhoneNumber(User user, string phoneNumber);
         Task<IdentityResult> SetUserName(User user, string username);
+        Task<bool> UserIsInRole(User user,string role);
     }
 }
