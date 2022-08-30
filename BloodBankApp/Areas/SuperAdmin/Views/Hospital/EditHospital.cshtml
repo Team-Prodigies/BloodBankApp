@@ -27,6 +27,10 @@
                         <label asp-for="HospitalCode" class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
                             <input asp-for="HospitalCode" class="form-control" />
+                            @if (ViewBag.hospitalCodeInUse != null)
+                            {
+                                <p class="text-danger">@ViewBag.hospitalCodeInUse</p>
+                            }
                             <span asp-validation-for="HospitalCode" class="text-danger"></span>
                         </div>
                     </div>

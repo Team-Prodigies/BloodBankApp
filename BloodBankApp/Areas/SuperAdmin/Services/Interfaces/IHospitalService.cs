@@ -15,5 +15,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task EditHospital(HospitalModel hospital);
         Task<Hospital> GetHospital(Guid hospitalId);
         Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber);
+        Task<bool> HospitalCodeExists(string hospitalCode);
     }
 }

@@ -49,10 +49,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 ViewData["CityId"] = _cityList;
                 return View();
             }
+            var hospitalCodeInUse = await _hospitalService.HospitalCodeExists(model.HospitalCode);
             var result = await _hospitalService.CreateHospital(model);
-            if (!result)
+            
+            if (!result || hospitalCodeInUse)
             {
                 ViewData["CityId"] = _cityList;
+                ViewData["hospitalCodeInUse"] = "this hospital code is already taken!";
                 return View();
             }
             return RedirectToAction(nameof(ManageHospitals));
@@ -63,8 +66,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> EditHospital(Guid hospitalId) 
         {
             var hospital = await _hospitalService.GetHospital(hospitalId);
-
-            if(hospital == null)
+           
+            if (hospital == null)
             {
                 return RedirectToAction(nameof(ManageHospitals));
             }
@@ -76,9 +79,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditHospital(HospitalModel hospital) 
         {
-            if(!ModelState.IsValid)
+            var hospitalCodeInUse = await _hospitalService.HospitalCodeExists(hospital.HospitalCode);
+
+            if (!ModelState.IsValid || hospitalCodeInUse)
             {
                 ViewData["CityId"] = _cityList;
+                ViewData["hospitalCodeInUse"] = "this hospital code is already taken!";
                 return View(hospital);
             }
             await _hospitalService.EditHospital(hospital);

@@ -18,41 +18,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _context = context;
         }
 
-        public async Task AddNewBloodType(string bloodTypeName)
-        {
-            var bloodTypeExists = await _context.BloodTypes
-                .Where(b => b.BloodTypeName.ToUpper() == bloodTypeName.ToUpper())
-                .FirstOrDefaultAsync();
-
-            if (bloodTypeExists == null)
-            {
-                BloodType newBloodType = new BloodType();
-                newBloodType.BloodTypeName = bloodTypeName;
-
-                await _context.AddAsync(newBloodType);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task EditBloodType(BloodType editBloodType)
-        {
-
-            var bloodTypeExists = await _context.BloodTypes
-                .Where(b => b.BloodTypeName.ToUpper() == editBloodType.BloodTypeName.ToUpper())
-                .FirstOrDefaultAsync();
-
-            if (bloodTypeExists == null)
-            {
-                var bloodType = await _context.BloodTypes.FindAsync(editBloodType.BloodTypeId);
-                if (bloodType != null)
-                {
-                    bloodType.BloodTypeName = editBloodType.BloodTypeName;
-                    _context.Update(bloodType);
-                    await _context.SaveChangesAsync();
-                }
-            }
-        }
-
         public async Task<BloodType> GetBloodType(Guid bloodTypeID)
         {
             return await _context.BloodTypes.FindAsync(bloodTypeID);

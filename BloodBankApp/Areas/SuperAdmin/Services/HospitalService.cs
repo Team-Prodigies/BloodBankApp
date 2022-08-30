@@ -80,6 +80,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .ToListAsync();
         }
 
+        public async Task<bool> HospitalCodeExists(string hospitalCode)
+        {
+            var hospitalCodeInUse = await _context.Hospitals
+                .Where(hospital => hospital.HospitalCode == hospitalCode)
+                .FirstOrDefaultAsync();
+
+            if(hospitalCodeInUse != null)
+            {
+                return true;
+            }
+            return false; 
+        }
+
         public async Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;

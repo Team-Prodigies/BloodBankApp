@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
-    [Area("SuperAdmin")]/*
-    [Authorize(Roles = "SuperAdmin")]*/
+    [Area("SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminRegisterController : Controller
     {
         private readonly IUsersService _usersService;

@@ -60,7 +60,7 @@
 <div class="d-flex justify-content-end">
     <div class="search-bar row g-3">
         <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Donors" asp-action="DonorSearchResults">
-            <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors">
+            <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonors" autocomplete="off">
             <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
         </form>
         <datalist id="donorSuggestions"></datalist>
