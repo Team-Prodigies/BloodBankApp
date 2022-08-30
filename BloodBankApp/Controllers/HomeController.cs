@@ -14,8 +14,11 @@ namespace BloodBankApp.Controllers
         {
             _statisticsService = statisticsService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewData["UsersCount"] = await _statisticsService.GetUsersCountAsync();
+            ViewData["HospitalCount"] =await _statisticsService.GetHospitalsCountAsync();
+            ViewData["AmountOfDonations"] = await _statisticsService.GetAmountOfBloodDonatedAsync();
             return View();
         }
 
@@ -23,10 +26,8 @@ namespace BloodBankApp.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> AboutUs()
+        public IActionResult AboutUs()
         {
-            ViewData["UsersCount"] =await _statisticsService.GetUsersCountAsync();
-            ViewData["HospitalCount"] =await _statisticsService.GetHospitalsCountAsync();
             return View();
         }
 

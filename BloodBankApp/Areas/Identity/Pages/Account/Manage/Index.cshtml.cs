@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
-{
+{ 
+    [Authorize(Roles = "Donor")]
     public partial class PersonalProfileIndexModel : PageModel
     {
         private readonly IUsersService _usersService;
@@ -80,7 +82,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 CityId = donor.CityId
             };
         }
-
+       
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _usersService.GetUser(User);
