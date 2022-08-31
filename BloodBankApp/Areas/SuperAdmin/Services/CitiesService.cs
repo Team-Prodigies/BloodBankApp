@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.ExtensionMethods;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -19,6 +20,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         }
         public async Task AddCity(City city)
         {
+            city.CityName = city.CityName.ToTitleCase();
             await _context.Cities.AddAsync(city);
             await _context.SaveChangesAsync();
         }
@@ -34,7 +36,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 var city = await _context.Cities.FindAsync(id);
                 if (city != null)
                 {
-                    city.CityName = cityName;
+                    city.CityName = cityName.ToTitleCase();
                     _context.Update(city);
                     _context.SaveChanges();
                 }

@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BloodBankApp.ExtensionMethods;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
@@ -47,6 +48,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<IdentityResult> AddSuperAdmin(SuperAdminModel user)
         {
+            user.Name = user.Name.ToTitleCase();
+            user.Surname = user.Surname.ToTitleCase();
             var superAdminAccount = _mapper.Map<User>(user);
 
             var result = await _userManager.CreateAsync(superAdminAccount, user.Password);
@@ -87,6 +90,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<IdentityResult> AddDonor(RegisterModel.RegisterInputModel input)
         {
+            input.Name = input.Name.ToTitleCase();
+            input.Surname = input.Surname.ToTitleCase();
             using (var transaction = _context.Database.BeginTransaction())
             {
                 var user = _mapper.Map<User>(input);
@@ -121,6 +126,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input)
         {
+            input.Name = input.Name.ToTitleCase();
+            input.Surname = input.Surname.ToTitleCase();
             using (var transaction = _context.Database.BeginTransaction())
             {
                 var hospital = await _context.Hospitals
@@ -129,7 +136,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
                 if (!hospital.HospitalCode.Equals(input.HospitalCode))
                 {
-                    return IdentityResult.Failed(new IdentityError { Description = "This code doesnt belong to the hospital you entered"});
+                    return IdentityResult.Failed(new IdentityError { Description = "This code doesn't belong to the hospital you entered"});
                 }
 
                 var user = _mapper.Map<User>(input);
