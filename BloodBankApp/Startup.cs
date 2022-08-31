@@ -54,6 +54,7 @@ namespace BloodBankApp
             services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<ISignInService, SignInService>();
             services.AddScoped<ISuggestionsService, SuggestionsService>();
+            services.AddScoped<IAvailabilityService, AvailabilityService>();
 
             services.AddRazorPages();
 

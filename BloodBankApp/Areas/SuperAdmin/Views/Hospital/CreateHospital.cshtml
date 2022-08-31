@@ -28,12 +28,12 @@
                     <div class="row mb-3">
                         <label asp-for="HospitalCode" class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
-                            <input asp-for="HospitalCode" class="form-control" />
-                            @if(ViewBag.hospitalCodeInUse != null)
-                            { 
-                            <p class="text-danger">@ViewBag.hospitalCodeInUse</p>
+                            <input asp-for="HospitalCode" class="form-control" id="HospitalCode"/>
+                            @if (ViewBag.hospitalCodeInUse != null) {
+                                <p class="text-danger">@ViewBag.hospitalCodeInUse</p>
                             }
                             <span asp-validation-for="HospitalCode" class="text-danger"></span>
+                            <span class="text-danger d-none" id="HospitalCodeIsTaken">This hospital code is already taken!</span>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -61,3 +61,33 @@
         </div>
     </div>
 </div>
+
+<script>
+        var typingTimer;
+        var doneTypingInterval = 1000;
+        var $hospitalCode = $('#HospitalCode');
+
+        //on keyup, start the countdown
+        $hospitalCode.on('keyup', function() {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTypingUserName, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+        $hospitalCode.on('keydown', function() {
+                clearTimeout(typingTimer);
+        });
+
+        function doneTypingUserName() {
+            $.get("/api/Availability/HospitalCodeIsTaken?hospitalCode=" + $hospitalCode.val(), function (data, status) {
+                    console.log("Trying "+data);
+                    if (status == 'success') {
+                        if (data) {
+                            $("#HospitalCodeIsTaken").removeClass("d-none");
+                        } else {
+                            $("#HospitalCodeIsTaken").addClass("d-none");
+                        }
+                    }
+                });
+            }
+</script>
