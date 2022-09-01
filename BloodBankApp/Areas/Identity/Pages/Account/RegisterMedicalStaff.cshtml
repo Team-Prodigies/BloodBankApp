@@ -12,26 +12,25 @@
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4 class="mt-3 text-danger">Create a new account.</h4>
             <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-3">
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.Name" class="mb-1 mt-2"></label>
                         <input asp-for="Input.Name" class="form-control text-capitalize" />
-                        <span asp-validation-for="Input.Name" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.Surname" class="mb-1 mt-2"></label>
                         <input asp-for="Input.Surname" class="form-control text-capitalize" />
-                        <span asp-validation-for="Input.Surname" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.UserName" class="mb-1 mt-2">UserName</label>
-                        <input asp-for="Input.UserName" class="form-control" />
-                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                        <input asp-for="Input.UserName" class="form-control" id="UserName" />
+                        <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>
                     </div>
                 </div>
             </div>
@@ -40,21 +39,18 @@
                     <div class="form-group">
                         <label asp-for="Input.DateOfBirth" class="mb-1 mt-2"></label>
                         <input asp-for="Input.DateOfBirth" class="form-control" />
-                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.PhoneNumber" class="mb-1 mt-2"></label>
                         <input asp-for="Input.PhoneNumber" class="form-control" />
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.Email" class="mb-1 mt-2"></label>
                         <input asp-for="Input.Email" class="form-control" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -63,21 +59,18 @@
                     <div class="form-group">
                         <label asp-for="Input.Password" class="mb-1 mt-2"></label>
                         <input asp-for="Input.Password" class="form-control" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.ConfirmPassword" class="mb-1 mt-2"></label>
                         <input asp-for="Input.ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Input.HospitalCode" class="mb-1 mt-2"></label>
                         <input asp-for="Input.HospitalCode" class="form-control" />
-                        <span asp-validation-for="Input.HospitalCode" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -87,7 +80,6 @@
                         <label asp-for="Input.HospitalId" class="mb-1 mt-2"></label>
                         <select class="form-select" asp-items="ViewBag.Hospital" asp-for="Input.HospitalId" aria-label="Default select example">
                         </select>
-                        <span asp-validation-for="Input.HospitalId" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -102,3 +94,4 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+    <script src="~/js/AvailableUsername.js"></script>

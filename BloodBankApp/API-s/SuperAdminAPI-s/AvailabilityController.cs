@@ -1,10 +1,5 @@
 ﻿using BloodBankApp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp.API_s.SuperAdminAPI_s
 {
@@ -23,7 +18,7 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
         [Route("UsernameIsTaken")]
         public bool UsernameIsTaken(string username)
         {
-            if(username == null || username.Trim() == "")
+            if (username == null || username.Trim() == "")
             {
                 return false;
             }

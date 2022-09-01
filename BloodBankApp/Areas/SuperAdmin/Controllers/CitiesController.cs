@@ -34,7 +34,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View();
             }
-            await _citiesService.AddCity(city);
+            var result = await _citiesService.AddCity(city);
+            if (!result)
+            {
+                ModelState.AddModelError("", "This City already exists");
+                return View();
+            }
             return RedirectToAction(nameof(Cities));
         }
 
@@ -55,7 +60,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            await _citiesService.EditCity(city.CityId, city.CityName);
+            var result = await _citiesService.EditCity(city.CityId, city.CityName);
+            if (!result)
+            {
+                ModelState.AddModelError("", "This City already exists");
+                return View();
+            }
             return RedirectToAction(nameof(Cities));
         }
 

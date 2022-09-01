@@ -13,11 +13,6 @@
 .bgForm {
     background: rgb(226 218 218 / 0.40);
 }
-.validationList ul li {
-    display: inline;
-    margin-right: 12px;
-    padding-right: 8px;
-}
 
 #header .logo {
     font-size: 30px;

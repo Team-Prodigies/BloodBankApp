@@ -65,6 +65,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             public DateTime DateOfBirth { get; set; }
 
             [Required]
+            [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 

@@ -104,7 +104,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 var result = await _usersService.AddHospitalAdmin(Input);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home", new { area = "HospitalAdmin"});
                 }
                 foreach (var error in result.Errors)
                 {

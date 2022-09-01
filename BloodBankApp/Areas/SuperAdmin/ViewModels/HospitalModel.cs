@@ -20,6 +20,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Display(Name = "Contact number")]
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string ContactNumber { get; set; }
 
         [Required]
