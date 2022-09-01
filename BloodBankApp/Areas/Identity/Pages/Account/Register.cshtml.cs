@@ -59,9 +59,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
-            [Display(Name = "Date of Birthday")]
+            [Display(Name = "Date of birth")]
             [DataType(DataType.Date)]
-            [MinAgeAttribute(18)]
+            [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
@@ -87,14 +87,15 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             // Donor Fields
             [Required]
-            [PersonalNumberAttribute]
+            [PersonalNumber]
+            [Display(Name = "Personal number")]
             public long PersonalNumber { get; set; }
 
             [Required]
             public Gender Gender { get; set; }
 
             [Required]
-            [Display(Name = "Blood Type")]
+            [Display(Name = "Blood type")]
             public Guid BloodTypeId { get; set; }
 
             [Required]

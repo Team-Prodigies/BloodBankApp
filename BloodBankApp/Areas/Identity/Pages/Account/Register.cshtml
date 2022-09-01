@@ -1,5 +1,6 @@
 ﻿@page
 @using BloodBankApp.Enums
+@using BloodBankApp.ExtensionMethods
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -30,7 +31,7 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Input.UserName" class="mb-1 mt-2">UserName</label>
+                            <label asp-for="Input.UserName" class="mb-1 mt-2"></label>
                             <input asp-for="Input.UserName" class="form-control" id="UserName"/>
                             <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>                 
                         </div>
@@ -71,7 +72,7 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Input.PersonalNumber" class="mb-1 mt-2">Personal Number</label>
+                            <label asp-for="Input.PersonalNumber" class="mb-1 mt-2"></label>
                             <input asp-for="Input.PersonalNumber" class="form-control" id="PersonalNumber" />
                             <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
                         </div>
@@ -84,7 +85,7 @@
                             <div class="d-flex align-items-center justify-content-evenly">
                                 @foreach (var c in System.Enum.GetValues(typeof(Gender))) {
                                     <div class="form-check">
-                                        <label class="form-check-label me-2" asp-for="Input.Gender">@c</label>
+                                        <label class="form-check-label me-2" asp-for="Input.Gender">@c.ToString().ToTitleCase()</label>
                                         <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" />
                                     </div>
                                 }

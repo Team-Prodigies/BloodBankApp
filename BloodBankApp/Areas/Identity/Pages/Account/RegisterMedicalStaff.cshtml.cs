@@ -53,7 +53,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
-            [Display(Name = "Date of Birthday")]
+            [Display(Name = "Date of birth")]
             [DataType(DataType.Date)]
             [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
@@ -83,7 +83,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Hospital")]
             public Guid HospitalId { get; set; }
-            public String HospitalCode { get; set; }
+
+            [Display(Name = "Hospital code")]
+            public string HospitalCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)

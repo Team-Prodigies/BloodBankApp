@@ -44,7 +44,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var check = await _rolesService.CreateRole(model);
             if (!check.Succeeded)
             {
-                return BadRequest();
+                foreach (var error in check.Errors)
+                {
+                    if (!ModelState.ContainsKey(error.Code))
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                }
+                return View();
             }
             return RedirectToAction(nameof(AllRoles));
         }
@@ -86,7 +93,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
            
             if (!result.Succeeded)
             {
-                return NotFound();
+                foreach (var error in result.Errors)
+                {
+                    if (!ModelState.ContainsKey(error.Code))
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                }
+                return View();
             }
             return RedirectToAction(nameof(AllRoles));
         }

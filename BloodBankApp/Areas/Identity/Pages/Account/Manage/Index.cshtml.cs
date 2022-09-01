@@ -42,6 +42,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
         public string Surname { get; set; }
 
         [Display(Name = "Date of birth")]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [TempData]

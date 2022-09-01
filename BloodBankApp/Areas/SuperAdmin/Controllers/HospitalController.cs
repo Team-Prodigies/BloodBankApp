@@ -55,6 +55,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             if (!result || hospitalCodeInUse)
             {
                 ViewData["CityId"] = _cityList;
+                ViewData["hospitalCodeInUse"] = "This hospital code is already taken!";
                 return View();
             }
             return RedirectToAction(nameof(ManageHospitals));
