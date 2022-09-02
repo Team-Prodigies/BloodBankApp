@@ -1,5 +1,4 @@
 ﻿using BloodBankApp.CustomValidation;
-using BloodBankApp.Data;
 using BloodBankApp.Models;
 using System;
 using System.ComponentModel.DataAnnotations;

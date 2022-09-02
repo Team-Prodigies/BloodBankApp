@@ -1,9 +1,6 @@
 ﻿using BloodBankApp.Data;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BloodBankApp.CustomValidation {
     public class HospitalCodeInUse : ValidationAttribute 
@@ -14,6 +11,10 @@ namespace BloodBankApp.CustomValidation {
             _context = context;
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
+            if (value == null)
+            {
+                return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
+            }
 
             var hospitalCode = value.ToString();
             var hospitalCodeInUse = _context.Hospitals

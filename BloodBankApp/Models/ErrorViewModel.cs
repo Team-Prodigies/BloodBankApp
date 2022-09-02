@@ -1,5 +1,3 @@
-using System;
-
 namespace BloodBankApp.Models
 {
     public class ErrorViewModel

@@ -2,7 +2,6 @@
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -57,9 +56,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditRole(Guid Id)
+        public async Task<IActionResult> EditRole(Guid id)
         {
-            var role = await _rolesService.GetRole(Id);
+            var role = await _rolesService.GetRole(id);
 
             if (role == null)
             {
@@ -70,18 +69,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditRole(RoleModel role, Guid Id)
+        public async Task<IActionResult> EditRole(RoleModel role, Guid id)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            if (role.Id != Id)
+            if (role.Id != id)
             {
                 return NotFound();
             }
 
-            var dbRole = await _rolesService.GetRole(Id);
+            var dbRole = await _rolesService.GetRole(id);
 
             if (dbRole == null)
             {

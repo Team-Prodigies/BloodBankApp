@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {

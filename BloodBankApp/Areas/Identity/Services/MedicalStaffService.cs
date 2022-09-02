@@ -1,6 +1,7 @@
 ﻿using BloodBankApp.Data;
 using BloodBankApp.Models;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Identity.Services.Interfaces;
 
 namespace BloodBankApp.Areas.Identity.Services
 {

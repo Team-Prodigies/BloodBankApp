@@ -14,7 +14,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
     public class HospitalController : Controller
     {
-        private readonly ICitiesService _citiesService;
         private readonly IMapper _mapper;
         private readonly SelectList _cityList;
         private readonly IHospitalService _hospitalService;
@@ -22,9 +21,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             IMapper mapper,
             IHospitalService hospitalService)
         {
-            _citiesService = citiesService;
             _mapper = mapper;
-            _cityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
+            _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
             _hospitalService = hospitalService;
         }
 

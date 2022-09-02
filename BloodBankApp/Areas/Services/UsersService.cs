@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.Identity.Pages.Account;
-using BloodBankApp.Areas.Identity.Services;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
@@ -11,10 +10,12 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Identity.Services.Interfaces;
+using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.ExtensionMethods;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services
+namespace BloodBankApp.Areas.Services
 {
     public class UsersService : IUsersService
     {

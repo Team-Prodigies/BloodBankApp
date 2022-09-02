@@ -8,44 +8,44 @@
                 <form method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                        <label class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input class="form-control text-capitalize" asp-for="@Model.Name" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Surname</label>
+                        <label class="col-sm-2 col-form-label">Surname</label>
                         <div class="col-sm-10">
                             <input class="form-control text-capitalize" asp-for="@Model.Surname" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Date of birth</label>
+                        <label class="col-sm-2 col-form-label">Date of birth</label>
                         <div class="col-sm-10">
                             <input class="form-control" asp-for="@Model.DateOfBirth" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">UserName</label>
+                        <label class="col-sm-2 col-form-label">UserName</label>
                         <div class="col-sm-10">
                             <input class="form-control" asp-for="@Model.UserName" required id="UserName" />
                         <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Email</label>
+                        <label class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
                             <input class="form-control" asp-for="@Model.Email" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Password</label>
+                        <label class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
                             <input class="form-control" asp-for="@Model.Password" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Confirm Password</label>
+                        <label class="col-sm-2 col-form-label">Confirm Password</label>
                         <div class="col-sm-10">
                             <input class="form-control" asp-for="@Model.ConfirmPassword" required>
                         </div>

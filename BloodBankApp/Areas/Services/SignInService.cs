@@ -1,11 +1,11 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Models;
+﻿using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services
+namespace BloodBankApp.Areas.Services
 {
     public class SignInService : ISignInService
     {

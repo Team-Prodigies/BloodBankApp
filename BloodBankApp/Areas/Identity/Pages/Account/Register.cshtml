@@ -7,7 +7,7 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/css//StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
 </head>
 <div class="container-fluid bgForm" >
     <div class="container-fluid d-flex justify-content-center" style="padding-top: 7%; padding-bottom: 7%; ">
@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <label asp-for="Input.Gender" class="mb-1 mt-2"></label>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                @foreach (var c in System.Enum.GetValues(typeof(Gender))) {
+                                @foreach (var c in Enum.GetValues(typeof(Gender))) {
                                     <div class="form-check">
                                         <label class="form-check-label me-2" asp-for="Input.Gender">@c.ToString().ToTitleCase()</label>
                                         <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" />

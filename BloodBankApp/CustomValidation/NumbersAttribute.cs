@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace BloodBankApp.CustomValidation
@@ -12,7 +11,7 @@ namespace BloodBankApp.CustomValidation
                 return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
             var name = value.ToString();
 
-            if (name.Any(x => char.IsDigit(x)))
+            if (name.Any(char.IsDigit))
             {
                 return new ValidationResult(validationContext.DisplayName + " cannot contain numbers!");
             }

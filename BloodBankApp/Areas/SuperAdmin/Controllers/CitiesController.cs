@@ -1,10 +1,8 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,9 +68,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditCity(Guid cityID)
+        public async Task<IActionResult> EditCity(Guid cityId)
         {
-            var editCity = await _citiesService.GetCity(cityID);
+            var editCity = await _citiesService.GetCity(cityId);
             if (editCity == null)
             {
                 return RedirectToAction(nameof(Cities));

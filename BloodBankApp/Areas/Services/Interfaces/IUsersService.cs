@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
+namespace BloodBankApp.Areas.Services.Interfaces
 {
     public interface IUsersService
     {

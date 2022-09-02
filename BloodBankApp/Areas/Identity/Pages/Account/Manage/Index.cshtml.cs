@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 { 
     [Authorize(Roles = "Donor")]
-    public partial class PersonalProfileIndexModel : PageModel
+    public class PersonalProfileIndexModel : PageModel
     {
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;

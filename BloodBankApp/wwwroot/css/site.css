@@ -353,7 +353,7 @@ html {
     }
 
     .backgroundContent {
-        background-color: rgb(0 0 0 / 0.60);
+        background-color: rgba(0 0 0 0.60);
         position: absolute;
         z-index: 10;
         top: 0;

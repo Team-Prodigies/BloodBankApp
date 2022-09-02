@@ -5,13 +5,15 @@ namespace BloodBankApp.CustomValidation
 {
     public class MinAgeAttribute : ValidationAttribute
     {
-        private int _Limit;
-        public MinAgeAttribute(int Limit)
+        private readonly int _limit;
+        public MinAgeAttribute(int limit)
         {
-            _Limit = Limit;
+            _limit = limit;
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+                return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
             DateTime bday = DateTime.Parse(value.ToString());
             DateTime now = DateTime.Today;
             int age = now.Year - bday.Year;
@@ -20,7 +22,7 @@ namespace BloodBankApp.CustomValidation
             {
                 age--;
             }
-            if (age < _Limit)
+            if (age < _limit)
             {
                 return new ValidationResult("You must meet the minimum age required!");
             }

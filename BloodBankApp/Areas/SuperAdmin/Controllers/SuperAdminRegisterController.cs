@@ -1,11 +1,11 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
+﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {

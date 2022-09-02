@@ -1,6 +1,5 @@
 ﻿using BloodBankApp.CustomValidation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Areas.SuperAdmin.ViewModels

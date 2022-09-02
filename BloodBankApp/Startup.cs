@@ -9,13 +9,15 @@ using BloodBankApp.Services;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using BloodBankApp.Areas.Identity.Services.Interfaces;
+using BloodBankApp.Areas.Services;
+using BloodBankApp.Areas.Services.Interfaces;
 
 namespace BloodBankApp
 {

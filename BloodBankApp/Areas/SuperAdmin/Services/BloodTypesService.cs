@@ -4,7 +4,6 @@ using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
@@ -18,9 +17,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _context = context;
         }
 
-        public async Task<BloodType> GetBloodType(Guid bloodTypeID)
+        public async Task<BloodType> GetBloodType(Guid bloodTypeId)
         {
-            return await _context.BloodTypes.FindAsync(bloodTypeID);
+            return await _context.BloodTypes.FindAsync(bloodTypeId);
         }
 
         public async Task<List<BloodType>> GetAllBloodTypes()
