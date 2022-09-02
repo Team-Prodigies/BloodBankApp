@@ -3,6 +3,10 @@
     background: #DFE2E7;
 }
 
+.custom-h {
+    min-height: 60vh;
+}
+
 ul li {
     list-style: none;
 }
