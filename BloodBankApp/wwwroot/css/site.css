@@ -11,7 +11,11 @@
 }
 
 .bgForm {
-    background: rgb(226 218 218 / 0.40);
+    background: white;
+}
+
+.bg-customGr {
+    background-color: #f5f3f4;
 }
 
 #header .logo {
