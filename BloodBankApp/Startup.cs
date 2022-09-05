@@ -65,6 +65,13 @@ namespace BloodBankApp
                 config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; 
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
+
+            services.AddAuthentication().AddCookie();
+
             var mapperConfig = new MapperConfiguration(mapper =>
             {
                 mapper.AddProfile(new MappingProfile());
