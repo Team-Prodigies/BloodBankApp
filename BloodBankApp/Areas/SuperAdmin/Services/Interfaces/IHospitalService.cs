@@ -2,7 +2,6 @@
 using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
@@ -15,5 +14,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task EditHospital(HospitalModel hospital);
         Task<Hospital> GetHospital(Guid hospitalId);
         Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber);
+        Task<bool> HospitalCodeExists(string hospitalCode);
     }
 }

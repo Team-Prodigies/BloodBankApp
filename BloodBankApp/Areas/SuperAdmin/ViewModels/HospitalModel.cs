@@ -19,11 +19,13 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Display(Name = "Contact number")]
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string ContactNumber { get; set; }
 
         [Required]
         [Display(Name = "Hospital code")]
         [StringLength(50,MinimumLength = 2)]
+ 
         public string HospitalCode { get; set; }
 
         [Required]

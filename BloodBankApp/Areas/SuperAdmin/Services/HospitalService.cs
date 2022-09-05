@@ -14,16 +14,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     public class HospitalService : IHospitalService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         public HospitalService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-            this.mapper = mapper;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateHospital(HospitalModel model)
         {
-            var location = mapper.Map<Location>(model);
+            var location = _mapper.Map<Location>(model);
             await _context.AddAsync(location);
 
             using (var transaction = _context.Database.BeginTransaction())
@@ -31,7 +31,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 try
                 {
                     await _context.SaveChangesAsync();
-                    var hospital = mapper.Map<Hospital>(model);
+                    var hospital = _mapper.Map<Hospital>(model);
                     hospital.LocationId = location.LocationId;
                     await _context.AddAsync(hospital);
                     await _context.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task EditHospital(HospitalModel hospital)
         {
-            var editHospital = mapper.Map<Hospital>(hospital);
+            var editHospital = _mapper.Map<Hospital>(hospital);
 
             _context.Update(editHospital.Location);
             _context.Update(editHospital);
@@ -78,6 +78,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .Skip(skipRows)
                 .Take(10)
                 .ToListAsync();
+        }
+
+        public async Task<bool> HospitalCodeExists(string hospitalCode)
+        {
+            var hospitalCodeInUse = await _context.Hospitals
+                .Where(hospital => hospital.HospitalCode == hospitalCode)
+                .FirstOrDefaultAsync();
+
+            if(hospitalCodeInUse != null)
+            {
+                return true;
+            }
+            return false; 
         }
 
         public async Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber)

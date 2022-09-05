@@ -7,9 +7,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
     public interface IBloodTypesService
     {
-        Task AddNewBloodType(string bloodTypeName);
-        Task EditBloodType(BloodType editBloodType);
-        Task<BloodType> GetBloodType(Guid bloodTypeID);
+        Task<BloodType> GetBloodType(Guid bloodTypeId);
         Task<List<BloodType>> GetAllBloodTypes();
     }
 }

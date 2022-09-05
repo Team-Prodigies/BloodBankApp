@@ -2,15 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using System;
-using BloodBankApp.CustomValidation;
-
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
@@ -96,7 +93,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl,Input.RememberMe });
                 }
                 else
                 {

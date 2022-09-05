@@ -19,6 +19,5 @@ namespace BloodBankApp.Models
         public bool Locked { get; set; }
         public virtual Donor Donor { get; set; }
         public virtual MedicalStaff MedicalStaff { get; set; }
-
     }
 }

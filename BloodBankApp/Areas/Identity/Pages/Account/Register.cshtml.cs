@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -59,12 +60,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
-            [Display(Name = "Date of Birthday")]
+            [Display(Name = "Date of birth")]
             [DataType(DataType.Date)]
-            [MinAgeAttribute(18)]
+            [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
 
             [Required]
+            [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
@@ -86,14 +88,15 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             // Donor Fields
             [Required]
-            [PersonalNumberAttribute]
+            [PersonalNumber]
+            [Display(Name = "Personal number")]
             public long PersonalNumber { get; set; }
 
             [Required]
             public Gender Gender { get; set; }
 
             [Required]
-            [Display(Name = "Blood Type")]
+            [Display(Name = "Blood type")]
             public Guid BloodTypeId { get; set; }
 
             [Required]
@@ -124,7 +127,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("UserName", error.Description);
                 }
             }
             ViewData["City"] = CityList;

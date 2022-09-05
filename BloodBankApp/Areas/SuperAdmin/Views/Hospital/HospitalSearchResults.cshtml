@@ -8,7 +8,7 @@
     <div class="justify-content-end">
         <div class="search-bar row g-3">
             <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Hospital" asp-action="HospitalSearchResults">
-                <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="hospitalsSuggestions" id="searchHospital">
+                <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="hospitalsSuggestions" id="searchHospital" autocomplete="off">
                 <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
             </form>
             <datalist id="hospitalsSuggestions"></datalist>

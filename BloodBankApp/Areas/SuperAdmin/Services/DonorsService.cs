@@ -62,7 +62,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<List<DonorModel>> GetDonors(int pageNumber = 1, string filterBy = "A-Z")
         {
             var skipRows = (pageNumber - 1) * 10;
-            var donors = new List<Donor>();
+            List<Donor> donors;
 
             switch (filterBy)
             {

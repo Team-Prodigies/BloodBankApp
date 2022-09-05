@@ -10,19 +10,22 @@
     box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
 }
 
-    #header.header-scrolled {
-        top: 0;
-        background: red !important;
-    }
+.bgForm {
+    background: white;
+}
 
-    #header .logo {
-        font-size: 30px;
-        margin: 0;
-        padding: 0;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        font-family: "Poppins", sans-serif;
-    }
+.bg-customGr {
+    background-color: #f5f3f4;
+}
+
+#header .logo {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+}
 
         #header .logo a {
             color: red;
@@ -37,11 +40,65 @@
 
     .mobile-nav-toggle {
         display: block;
+        font-size: 30px;
+        margin-right: 10px;
     }
 
     .navbar ul {
         display: none;
     }
+    .navbar-mobile {
+        position: fixed;
+        overflow: hidden;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: rgba(28, 47, 65, 0.9);
+        transition: 0.3s;
+        z-index: 999;
+    }
+        .navbar-mobile .mobile-nav-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .navbar-mobile ul {
+            display: block;
+            position: absolute;
+            top: 55px;
+            right: 15px;
+            bottom: 15px;
+            left: 15px;
+            padding: 10px 0;
+            background-color: #fff;
+            overflow-y: auto;
+            transition: 0.3s;
+        }
+
+        .navbar-mobile > ul > li {
+            padding: 0;
+        }
+
+        .navbar-mobile a,
+        .navbar-mobile a:focus {
+            padding: 10px 20px;
+            font-size: 15px;
+            color: #2c4964;
+            border: none;
+        }
+
+            .navbar-mobile a:hover,
+            .navbar-mobile .active,
+            .navbar-mobile li:hover > a {
+                color: #1977cc;
+            }
+
+        .navbar-mobile .getstarted,
+        .navbar-mobile .getstarted:focus {
+            margin: 15px;
+        }
 }
 
 /* Sticky footer styles
@@ -246,7 +303,7 @@ html {
     }
 
         .mainContet .title {
-            background: linear-gradient(170deg,#F93642, #dd424b 40%);
+            background-color: #d1001f;
             border-radius: 5px;
             position: absolute;
             bottom: -100px;
@@ -271,7 +328,7 @@ html {
     }
 
     .countStats {
-        background: linear-gradient(170deg,#F93642, #F40D45 );
+        background-color: #d1001f;
         color: white;
         padding: 87px 0;
     }
@@ -296,7 +353,7 @@ html {
     }
 
     .backgroundContent {
-        background-color: rgb(0 0 0 / 0.60);
+        background-color: rgba(0 0 0 0.60);
         position: absolute;
         z-index: 10;
         top: 0;
@@ -325,10 +382,8 @@ html {
         position: absolute;
         bottom: 0;
         width: 100%;
-        padding-top: 10px;
-        margin-top: 20px;
         white-space: nowrap;
-        line-height: 60px; /* Vertically center the text there */
+        /* Vertically center the text there */
     }
 
     a:hover {

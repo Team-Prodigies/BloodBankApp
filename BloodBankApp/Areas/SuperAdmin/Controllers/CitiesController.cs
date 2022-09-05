@@ -1,10 +1,8 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +22,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Cities()
         {
             var cities = await _citiesService.GetCities();
-            return View(cities);
+            return View(cities.ToList());
         }
 
         [HttpPost]
@@ -34,7 +32,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View();
             }
-            await _citiesService.AddCity(city);
+            var result = await _citiesService.AddCity(city);
+            if (!result)
+            {
+                ModelState.AddModelError("", "This City already exists");
+                return View();
+            }
             return RedirectToAction(nameof(Cities));
         }
 
@@ -55,14 +58,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-            await _citiesService.EditCity(city.CityId, city.CityName);
+            var result = await _citiesService.EditCity(city.CityId, city.CityName);
+            if (!result)
+            {
+                ModelState.AddModelError("", "This City already exists");
+                return View();
+            }
             return RedirectToAction(nameof(Cities));
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditCity(Guid cityID)
+        public async Task<IActionResult> EditCity(Guid cityId)
         {
-            var editCity = await _citiesService.GetCity(cityID);
+            var editCity = await _citiesService.GetCity(cityId);
             if (editCity == null)
             {
                 return RedirectToAction(nameof(Cities));

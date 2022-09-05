@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -53,7 +54,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
-            [Display(Name = "Date of Birthday")]
+            [Display(Name = "Date of birth")]
             [DataType(DataType.Date)]
             [MinAge(18)]
             public DateTime DateOfBirth { get; set; }
@@ -83,7 +84,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Hospital")]
             public Guid HospitalId { get; set; }
-            public String HospitalCode { get; set; }
+
+            [Display(Name = "Hospital code")]
+            public string HospitalCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -97,14 +100,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var result = await _usersService.AddHospitalAdmin(Input);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home", new { area = "HospitalAdmin"});
                 }
                 foreach (var error in result.Errors)
                 {

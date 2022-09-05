@@ -27,7 +27,7 @@ namespace BloodBankApp.Services
                 .Contains(search.ToUpper()) || donor.User.Surname.ToUpper()
                 .Contains(search.ToUpper()))
                 .Select(donor => donor.User.Name + " " + donor.User.Surname)
-                .Take(5).ToListAsync<string>();
+                .Take(5).ToListAsync();
 
             return suggestions;
         }
@@ -42,7 +42,7 @@ namespace BloodBankApp.Services
                 .Where(hospital => hospital.HospitalName.ToUpper()
                 .Contains(search.ToUpper()))
                 .Select(hospital => hospital.HospitalName)
-                .Take(5).ToListAsync<string>();
+                .Take(5).ToListAsync();
 
             return suggestions;
         }

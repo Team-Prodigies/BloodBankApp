@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Controllers;
 
 namespace BloodBankApp.Data
 {
@@ -11,7 +12,7 @@ namespace BloodBankApp.Data
     {
         public static async Task SeedData(ApplicationDbContext context)
         {
-            if (!context.Cities.Any())
+            if (!context.Cities.Any() && !context.Hospitals.Any() && !context.Locations.Any())
             {
                 var cities = new List<City>
                 {
@@ -41,9 +42,98 @@ namespace BloodBankApp.Data
                     },
                      new City{
                         CityName="Prizren"
-                    }
+                    },
+                     new City{
+                         CityName="Drenas"
+                     },
+                     new City{
+                         CityName="Malishevë"
+                     },
+                     new City{
+                         CityName="Viti"
+                     }, new City{
+                         CityName="Rahovec"
+                     },
+                     new City{
+                         CityName="Vushtrri"
+                     }
                 };
                 context.Cities.AddRange(cities);
+
+                var locations = new List<Location>
+                {
+                    new Location
+                    {
+                        Longitude = "42.457937",
+                        Latitude = "21.462887"
+                    },
+                    new Location
+                    {
+                        Longitude = "42.457953",
+                        Latitude = "21.462877"
+                    },
+                    new Location
+                    {
+                        Longitude = "42.643420",
+                        Latitude = "21.160862"
+                    },
+                    new Location
+                    {
+                        Longitude = "42.662377",
+                        Latitude = "20.273710"
+                    },
+                    new Location
+                    {
+                        Longitude = "42.203777",
+                        Latitude = "20.730347"
+                    }
+                };
+                context.Locations.AddRange(locations);
+                
+                var hospitals = new List<Hospital>
+                {
+                    new Hospital
+                    {
+                        HospitalName = "Spitali Rajonal Idriz Seferi",
+                        ContactNumber = "+38344111222",
+                        HospitalCode = "203452",
+                        Location = locations[0],
+                        City = cities[0],
+                    },
+                    new Hospital
+                    {
+                        HospitalName = "Spitali Rajonal I Ferizajit",
+                        ContactNumber = "+38344342354",
+                        HospitalCode = "304923",
+                        Location = locations[1],
+                        City = cities[1],
+                    },
+                    new Hospital
+                    {
+                        HospitalName = "Spitali I Përgjithshëm Dr. Sami Haxhibeqiri",
+                        ContactNumber = "+38344997799",
+                        HospitalCode = "345672",
+                        Location = locations[2],
+                        City = cities[2],
+                    },
+                    new Hospital
+                    {
+                        HospitalName = "Qendra Klinike Universitare e Kosovës",
+                        ContactNumber = "+38344334554",
+                        HospitalCode = "256552",
+                        Location = locations[3],
+                        City = cities[3],
+                    },
+                    new Hospital
+                    {
+                        HospitalName = "Spitali I Përgjithshëm Shkronjat",
+                        ContactNumber = "+38345995445",
+                        HospitalCode = "229564",
+                        Location = locations[4],
+                        City = cities[4],
+                    },
+                };
+                context.Hospitals.AddRange(hospitals);
             }
             if (!context.Roles.Any())
             {
@@ -95,6 +185,7 @@ namespace BloodBankApp.Data
                 };
                 context.BloodTypes.AddRange(bloodTypes);
             }
+            
             await context.SaveChangesAsync();
         }
     }

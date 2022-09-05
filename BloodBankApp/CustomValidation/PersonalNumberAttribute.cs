@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.CustomValidation
 {
@@ -8,9 +7,9 @@ namespace BloodBankApp.CustomValidation
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            int personalNumber = Convert.ToInt32(value);
+            var personalNumber = value.ToString();
 
-            if (personalNumber != 10)
+            if (personalNumber == null || personalNumber.Length != 10)
             {
                 return new ValidationResult(validationContext.DisplayName + " should be 10 characters long!");
             }

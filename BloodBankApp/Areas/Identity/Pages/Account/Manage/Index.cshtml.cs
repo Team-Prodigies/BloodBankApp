@@ -1,16 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
-{
-    public partial class PersonalProfileIndexModel : PageModel
+{ 
+    [Authorize(Roles = "Donor")]
+    public class PersonalProfileIndexModel : PageModel
     {
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
@@ -40,6 +43,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
         public string Surname { get; set; }
 
         [Display(Name = "Date of birth")]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [TempData]
@@ -80,7 +84,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 CityId = donor.CityId
             };
         }
-
+       
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _usersService.GetUser(User);
