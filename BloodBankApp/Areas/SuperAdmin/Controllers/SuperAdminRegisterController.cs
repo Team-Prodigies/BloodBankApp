@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -15,20 +16,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
-        public List<AuthenticationScheme> ExternalLogins { get; private set; }
-
+        private readonly INotyfService _notyfService;
         public SuperAdminRegisterController(IUsersService usersService,
-            ISignInService signInService)
+            ISignInService signInService, INotyfService notyfService)
         {
             _usersService = usersService;
             _signInService = signInService;
+            _notyfService = notyfService;
         }
 
         public IActionResult CreateSuperAdmin()
-        {
-            return View();
-        }
-        public IActionResult AccountCreatedSuccessfully()
         {
             return View();
         }
@@ -36,15 +33,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user)
         {
-            ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
                 var result = await _usersService.AddSuperAdmin(user);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(AccountCreatedSuccessfully));
+                    _notyfService.Success("SuperAdmin account was added!");
+                    return RedirectToAction(nameof(CreateSuperAdmin));
                 }
                 foreach (var error in result.Errors)
                 {

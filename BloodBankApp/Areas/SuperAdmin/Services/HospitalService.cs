@@ -70,6 +70,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<string> GetHospitalCode(Guid hospitalId)
+        {      
+            var hospital = await _context.Hospitals.AsNoTracking().FirstOrDefaultAsync(hospital => hospital.HospitalId == hospitalId);
+            if (hospital == null)
+            {
+                return null;
+            }
+            return hospital.HospitalCode;
+        }
+
         public async Task<List<Hospital>> GetHospitals(int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;

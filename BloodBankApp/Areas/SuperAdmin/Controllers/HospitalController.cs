@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -17,13 +18,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         private readonly IMapper _mapper;
         private readonly SelectList _cityList;
         private readonly IHospitalService _hospitalService;
+        private readonly INotyfService _notyfService;
         public HospitalController(ICitiesService citiesService,
             IMapper mapper,
-            IHospitalService hospitalService)
+            IHospitalService hospitalService, INotyfService notyfService)
         {
             _mapper = mapper;
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
             _hospitalService = hospitalService;
+            _notyfService = notyfService;
         }
 
         public IActionResult CreateHospital()
@@ -56,6 +59,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 ViewData["hospitalCodeInUse"] = "This hospital code is already taken!";
                 return View();
             }
+
+            _notyfService.Success("Hospital added successfully!");
             return RedirectToAction(nameof(ManageHospitals));
         }
 
@@ -67,6 +72,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
            
             if (hospital == null)
             {
+                _notyfService.Error("Hospital was not found!");
                 return RedirectToAction(nameof(ManageHospitals));
             }
             ViewData["CityId"] = _cityList;
@@ -77,15 +83,28 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditHospital(HospitalModel hospital) 
         {
-            var hospitalCodeInUse = await _hospitalService.HospitalCodeExists(hospital.HospitalCode);
 
-            if (!ModelState.IsValid || hospitalCodeInUse)
-            {
+            if (!ModelState.IsValid) {
                 ViewData["CityId"] = _cityList;
-                ViewData["hospitalCodeInUse"] = "this hospital code is already taken!";
                 return View(hospital);
             }
+
+            var oldHospitalCode = await _hospitalService.GetHospitalCode(hospital.HospitalId);         
+
+            if(oldHospitalCode != null && oldHospitalCode != hospital.HospitalCode)
+            {
+                var hospitalCodeInUse = await _hospitalService.HospitalCodeExists(hospital.HospitalCode);
+                if (hospitalCodeInUse)
+                {
+                    ViewData["hospitalCodeInUse"] = "This hospital code is already taken!";
+                    ViewData["CityId"] = _cityList;
+                    return View(hospital);
+                }
+            }
+
+          
             await _hospitalService.EditHospital(hospital);
+            _notyfService.Success("Hospital updated successfully!");
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
 

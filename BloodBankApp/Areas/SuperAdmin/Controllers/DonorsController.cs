@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -13,12 +14,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
         private readonly IDonorsService _donorsService;
         private readonly IUsersService _usersService;
-
+        private readonly INotyfService _notyfService;
         public DonorsController(IDonorsService donorsService,
-            IUsersService usersService)
+            IUsersService usersService, INotyfService notyfService)
         {
             _donorsService = donorsService;
             _usersService = usersService;
+            _notyfService = notyfService;
         }
         [HttpGet]
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
@@ -49,9 +51,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
-                return NotFound();
+                _notyfService.Warning("Donor was not found!");
+                return RedirectToAction(nameof(Donors));
             }
             await _donorsService.LockoutDonor(donor);
+            _notyfService.Success("Donor "+donor.UserName+" has been locked out!");
             return RedirectToAction(nameof(Donors));
         }
 
@@ -61,9 +65,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var donor = await _usersService.GetUser(donorId);
             if (donor == null)
             {
-                return NotFound();
+                _notyfService.Warning("Donor was not found!");
+                return RedirectToAction(nameof(Donors));
             }
             await _donorsService.UnlockDonor(donor);
+            _notyfService.Success("Donor " + donor.UserName + " has been unlocekd!");
             return RedirectToAction(nameof(Donors));
         }
     }
