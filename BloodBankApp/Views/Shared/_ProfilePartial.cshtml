@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    if (User.IsInRole("Donor"))
+    {
+        <li class="nav-item mb-2">
+            <a href="/Identity/Account/Manage" class="nav-link p-0 text-muted">Profile</a>
+        </li>
+    }
+}
