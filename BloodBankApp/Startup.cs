@@ -18,6 +18,8 @@ using System;
 using BloodBankApp.Areas.Identity.Services.Interfaces;
 using BloodBankApp.Areas.Services;
 using BloodBankApp.Areas.Services.Interfaces;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 
 namespace BloodBankApp
 {
@@ -59,6 +61,9 @@ namespace BloodBankApp
             services.AddScoped<IAvailabilityService, AvailabilityService>();
 
             services.AddRazorPages();
+            services.AddNotyf(config => {
+                config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; 
+            });
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {
@@ -86,7 +91,7 @@ namespace BloodBankApp
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-
+            app.UseNotyf();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

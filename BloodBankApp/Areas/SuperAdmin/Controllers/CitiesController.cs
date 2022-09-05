@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     public class CitiesController : Controller
     {
         private readonly ICitiesService _citiesService;
-
-        public CitiesController(ICitiesService citiesService)
+        private readonly INotyfService _notyfService;
+        public CitiesController(ICitiesService citiesService, INotyfService notyfService)
         {
             _citiesService = citiesService;
+            _notyfService = notyfService;
         }
 
         public async Task<IActionResult> Cities()
@@ -35,9 +37,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var result = await _citiesService.AddCity(city);
             if (!result)
             {
-                ModelState.AddModelError("", "This City already exists");
+                _notyfService.Error("City already exists!");
                 return View();
             }
+            _notyfService.Success("Successfully added city!");
             return RedirectToAction(nameof(Cities));
         }
 
@@ -56,14 +59,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             if (cityId != city.CityId)
             {
-                return NotFound();
+                _notyfService.Warning("City was not found!");
+                return View();
             }
             var result = await _citiesService.EditCity(city.CityId, city.CityName);
             if (!result)
             {
-                ModelState.AddModelError("", "This City already exists");
+                _notyfService.Error("City name already exists!");
                 return View();
             }
+            _notyfService.Success("City was updated!");
             return RedirectToAction(nameof(Cities));
         }
 
@@ -73,6 +78,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             var editCity = await _citiesService.GetCity(cityId);
             if (editCity == null)
             {
+                _notyfService.Warning("City was not found!");
                 return RedirectToAction(nameof(Cities));
             }
             return View(editCity);

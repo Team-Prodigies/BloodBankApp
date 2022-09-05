@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ namespace BloodBankApp.Controllers
     public class HomeController : Controller
     {
         private readonly IStatisticsService _statisticsService;
-
+        
         public HomeController(IStatisticsService statisticsService)
         {
             _statisticsService = statisticsService;
