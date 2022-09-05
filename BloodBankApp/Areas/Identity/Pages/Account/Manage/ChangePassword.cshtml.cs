@@ -1,26 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly INotyfService _notyfService;
 
         public ChangePasswordModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            INotyfService notyfService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+            _notyfService = notyfService;
         }
 
         [BindProperty]
@@ -61,7 +61,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             {
                 return RedirectToPage("./SetPassword");
             }
-
             return Page();
         }
 
@@ -87,11 +86,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 }
                 return Page();
             }
-
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
 
+            _notyfService.Success("Your password has been changed.");
             return RedirectToPage();
         }
     }

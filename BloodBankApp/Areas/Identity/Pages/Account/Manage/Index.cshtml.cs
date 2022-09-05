@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
@@ -19,17 +20,19 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
         private readonly ISignInService _signInService;
         private readonly ICitiesService _citiesService;
         private readonly IDonorsService _donorsService;
-
+        private readonly INotyfService _notyfService;
         public PersonalProfileIndexModel(
             IUsersService usersService,
             ISignInService signInService,
             ICitiesService citiesService,
-            IDonorsService donorsService)
+            IDonorsService donorsService,
+            INotyfService notyfService)
         {
             _usersService = usersService;
             _signInService = signInService;
             _citiesService = citiesService;
             _donorsService = donorsService;
+            _notyfService = notyfService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
         }
 
@@ -120,7 +123,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _usersService.SetPhoneNumber(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    _notyfService.Error("Unexpected error when trying to set phone number.");
                     return RedirectToPage();
                 }
             }
@@ -129,7 +132,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 var setUserNameResult = await _usersService.SetUserName(user, Input.UserName);
                 if (!setUserNameResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set username.";
+                    _notyfService.Error("Unexpected error when trying to set username.");
                     return RedirectToPage();
                 }
             }
@@ -140,7 +143,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInService.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            _notyfService.Success("Your profile has been updated");
             ViewData["City"] = CityList;
             return RedirectToPage();
         }
