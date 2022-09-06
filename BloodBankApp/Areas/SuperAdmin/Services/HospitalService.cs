@@ -72,6 +72,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<HospitalModel>(hospital);
         }
 
+
+        public async Task<string> GetHospitalCode(Guid hospitalId)
+        {      
+            var hospital = await _context.Hospitals.AsNoTracking().FirstOrDefaultAsync(hospital => hospital.HospitalId == hospitalId);
+            if (hospital == null)
+            {
+                return null;
+            }
+            return hospital.HospitalCode;
+        }
+
+
         public async Task<List<HospitalModel>> GetHospitals(int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;

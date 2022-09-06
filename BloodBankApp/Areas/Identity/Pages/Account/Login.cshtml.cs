@@ -35,7 +35,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         {
             [Required]
             [Display(Name = "Username")]
-            [StringLength(30, ErrorMessage = "Username cannot be longer than 20 characters")]
+            [StringLength(20, ErrorMessage = "Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using BloodBankApp.Services.Interfaces;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -11,14 +12,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
 
         private readonly IStatisticsService _statisticsService;
-
-        public AdminHomeController(IStatisticsService statisticsService)
+        private readonly INotyfService _notyfService;
+        public AdminHomeController(IStatisticsService statisticsService, INotyfService notyfService)
         {
             _statisticsService = statisticsService;
+            _notyfService = notyfService;
         }
 
         public async Task<IActionResult> Index()
-        {
+        {           
             ViewData["UserRolesData"] = await _statisticsService.GetUserRoleDataAsync();
             ViewData["BloodTypeData"] = await _statisticsService.GetUserBloodDataAsync();
             ViewData["DonorCount"] = await _statisticsService.GetDonorCountAsync();

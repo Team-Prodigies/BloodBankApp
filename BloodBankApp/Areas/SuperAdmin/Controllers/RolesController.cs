@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +15,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
         private readonly IRolesService _rolesService;
         private readonly IMapper _mapper;
-
-        public RolesController(IRolesService rolesService, IMapper mapper)
+        private readonly INotyfService _notyfService;
+        public RolesController(IRolesService rolesService, IMapper mapper, INotyfService notyfService)
         {
             _rolesService = rolesService;
             _mapper = mapper;
+            _notyfService = notyfService;
         }
 
         public async Task<IActionResult> AllRoles()
@@ -52,6 +54,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 }
                 return View();
             }
+            _notyfService.Success("Role added successfully!");
             return RedirectToAction(nameof(AllRoles));
         }
 
@@ -62,7 +65,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
             if (role == null)
             {
-                return NotFound();
+                _notyfService.Warning("Role was not found!");
+                return View();
             }
             var roleModel = _mapper.Map<RoleModel>(role);
             return View(roleModel);
@@ -77,14 +81,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             if (role.Id != id)
             {
-                return NotFound();
+                _notyfService.Warning("Role was not found");
+                return View();
             }
 
             var dbRole = await _rolesService.GetRole(id);
 
             if (dbRole == null)
             {
-                return NotFound();
+                _notyfService.Warning("Role was not found");
+                return View();
             }
             dbRole.Name = role.RoleName;
 
@@ -101,6 +107,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 }
                 return View();
             }
+            _notyfService.Success("Role was updated!");
             return RedirectToAction(nameof(AllRoles));
         }
     }
