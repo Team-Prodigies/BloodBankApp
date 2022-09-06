@@ -8,12 +8,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
     public interface IHospitalService
     {
-        Task<List<Hospital>> GetHospitals(int pageNumber);
-        Task<List<Hospital>> GetAllHospitals();
+        Task<List<HospitalModel>> GetHospitals(int pageNumber);
+        Task<List<HospitalModel>> GetAllHospitals();
         Task<bool> CreateHospital(HospitalModel model);
         Task EditHospital(HospitalModel hospital);
-        Task<Hospital> GetHospital(Guid hospitalId);
-        Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber);
+        Task<HospitalModel> GetHospital(Guid hospitalId);
+        Task<List<HospitalModel>> HospitalSearchResults(string searchTerm, int pageNumber);
         Task<bool> HospitalCodeExists(string hospitalCode);
     }
 }

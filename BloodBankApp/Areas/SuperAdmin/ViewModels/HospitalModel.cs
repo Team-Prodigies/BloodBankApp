@@ -36,5 +36,7 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Required]
         [Display(Name = "City")]
         public Guid CityId { get; set; }
+        public City City { get; set; }
+
     }
 }

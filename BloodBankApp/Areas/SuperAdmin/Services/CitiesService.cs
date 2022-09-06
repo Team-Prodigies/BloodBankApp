@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.ExtensionMethods;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
@@ -13,13 +15,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     public class CitiesService : ICitiesService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CitiesService(ApplicationDbContext context)
+        public CitiesService(ApplicationDbContext context,
+            IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<bool> AddCity(City city)
+        public async Task<bool> AddCity(CityModel cityModel)
         {
+            var city = _mapper.Map<City>(cityModel);
             var cityExists = await _context.Cities
                 .Where(b => b.CityName.ToUpper() == city.CityName.ToUpper())
                 .FirstOrDefaultAsync();
@@ -47,21 +53,28 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 {
                     city.CityName = cityName.ToTitleCase();
                     _context.Update(city);
-                    _context.SaveChanges();
+                  await _context.SaveChangesAsync();
                 }
                 return true;
             }
             return false;
         }
 
-        public async Task<IEnumerable<City>> GetCities()
+        public async Task<IEnumerable<CityModel>> GetCities()
         {
-            return await _context.Cities.ToListAsync();
+            var cities = await _context.Cities.ToListAsync();
+
+            var cityModels = _mapper.Map<List<CityModel>>(cities);
+
+            return cityModels;
         }
 
-        public async Task<City> GetCity(Guid id)
+        public async Task<CityModel> GetCity(Guid id)
         {
-            return await _context.Cities.FindAsync(id);
+            var city = await _context.Cities.FindAsync(id);
+            var cityModel = _mapper.Map<CityModel>(city);
+
+            return cityModel;
         }
     }
 }

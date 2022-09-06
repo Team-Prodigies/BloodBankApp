@@ -1,9 +1,11 @@
-﻿namespace BloodBankApp.Services.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace BloodBankApp.Services.Interfaces
 {
     public interface IAvailabilityService
     {
-        bool UsernameIsTaken(string username);
-        bool PersonalNumberIsTaken(int personalNumber);
-        bool HospitalCodeIsTaken(string hospitalCode);
+        Task<bool> UsernameIsTaken(string username);
+        Task<bool> PersonalNumberIsTaken(int personalNumber);
+        Task<bool> HospitalCodeIsTaken(string hospitalCode);
     }
 }

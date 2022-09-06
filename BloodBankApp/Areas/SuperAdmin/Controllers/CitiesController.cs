@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -26,7 +27,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewCity(City city)
+        public async Task<IActionResult> AddNewCity(CityModel city)
         {
             if (!ModelState.IsValid)
             {

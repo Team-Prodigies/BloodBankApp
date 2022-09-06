@@ -5,26 +5,30 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
     public class BloodTypesService : IBloodTypesService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BloodTypesService(ApplicationDbContext context)
+        public BloodTypesService(ApplicationDbContext context,
+        IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<BloodType> GetBloodType(Guid bloodTypeId)
+        public async Task<List<BloodTypeModel>> GetAllBloodTypes()
         {
-            return await _context.BloodTypes.FindAsync(bloodTypeId);
-        }
+            var bloodTypes = await _context.BloodTypes.ToListAsync();
 
-        public async Task<List<BloodType>> GetAllBloodTypes()
-        {
-            return await _context.BloodTypes.ToListAsync();
+            var bloodTypeModels = _mapper.Map<List<BloodTypeModel>>(bloodTypes);
+
+            return bloodTypeModels;
         }
     }
 }

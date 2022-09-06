@@ -23,7 +23,7 @@ namespace BloodBankApp.Areas.Services
 
         public async Task<SignInResult> PasswordSignInAsync(string username, string password, bool rememberMe, bool lockoutOnFailure)
         {
-            return await _signInManager.PasswordSignInAsync(username,password,rememberMe,lockoutOnFailure);
+            return await _signInManager.PasswordSignInAsync(username, password, rememberMe, lockoutOnFailure);
         }
 
         public async Task RefreshSignInAsync(User user)

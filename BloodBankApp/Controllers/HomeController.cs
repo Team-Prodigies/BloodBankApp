@@ -1,5 +1,5 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Models;
+﻿using BloodBankApp.Models;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;

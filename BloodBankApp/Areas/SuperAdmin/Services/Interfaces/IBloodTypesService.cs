@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
     public interface IBloodTypesService
     {
-        Task<BloodType> GetBloodType(Guid bloodTypeId);
-        Task<List<BloodType>> GetAllBloodTypes();
+        Task<List<BloodTypeModel>> GetAllBloodTypes();
     }
 }

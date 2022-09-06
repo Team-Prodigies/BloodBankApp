@@ -50,13 +50,21 @@ namespace BloodBankApp.Mapping
               .ForMember(dest => dest.Longitude,
               opts => opts.MapFrom(src => src.Location.Longitude))
               .ForMember(dest => dest.Latitude,
-              opts => opts.MapFrom(src => src.Location.Latitude));
+              opts => opts.MapFrom(src => src.Location.Latitude)).ReverseMap();
 
             CreateMap<SuperAdminModel, User>();
 
             CreateMap<RoleModel, IdentityRole<Guid>>()
                 .ForMember(dest => dest.Name,
                  opts => opts.MapFrom(src => src.RoleName)).ReverseMap();
+
+            CreateMap<BloodType, BloodTypeModel>();
+
+            CreateMap<Donor, DonorDto>()
+                .ForPath(dest => dest.BloodTypeName,
+                    opts => opts.MapFrom(src => src.BloodType.BloodTypeName)).ReverseMap();
+
+            CreateMap<City, CityModel>().ReverseMap();
         }
     }
 }

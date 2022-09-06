@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Services.Interfaces;
+﻿using System.Threading.Tasks;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodBankApp.API_s.SuperAdminAPI_s
@@ -16,31 +17,31 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
 
         [HttpGet]
         [Route("UsernameIsTaken")]
-        public bool UsernameIsTaken(string username)
+        public async Task<bool> UsernameIsTaken(string username)
         {
             if (username == null || username.Trim() == "")
             {
                 return false;
             }
-            return _availabilityService.UsernameIsTaken(username);
+            return await _availabilityService.UsernameIsTaken(username);
         }
 
         [HttpGet]
         [Route("PersonalNumberIsTaken")]
-        public bool PersonalNumberIsTaken(int personalNumber)
+        public async Task<bool> PersonalNumberIsTaken(int personalNumber)
         {
-            return _availabilityService.PersonalNumberIsTaken(personalNumber);
+            return await _availabilityService.PersonalNumberIsTaken(personalNumber);
         }
 
         [HttpGet]
         [Route("HospitalCodeIsTaken")]
-        public bool HospitalCodeIsTaken(string hospitalCode)
+        public async Task<bool> HospitalCodeIsTaken(string hospitalCode)
         {
             if (hospitalCode == null || hospitalCode.Trim() == "")
             {
                 return false;
             }
-            return _availabilityService.HospitalCodeIsTaken(hospitalCode);
+            return await _availabilityService.HospitalCodeIsTaken(hospitalCode);
         }
     }
 }
