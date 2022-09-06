@@ -75,7 +75,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             PersonalNumber = donor.PersonalNumber;
             Gender = donor.Gender;
-            BloodTypeName = donor.BloodType.BloodTypeName;
+            BloodTypeName = donor.BloodTypeName;
             Name = user.Name;
             Surname = user.Surname;
             DateOfBirth = user.DateOfBirth;
@@ -139,7 +139,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             if (Input.CityId != cityId)
             {
                 donor.CityId = Input.CityId;
-                await _donorsService.EditDonor(donor);
+
+                await _donorsService.EditDonor(user.Id, donor);
             }
 
             await _signInService.RefreshSignInAsync(user);

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
-using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Services.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers

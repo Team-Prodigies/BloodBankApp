@@ -42,11 +42,6 @@ namespace BloodBankApp.Areas.Services
             _mapper = mapper;
         }
 
-        public async Task<User> GetUser(Guid id)
-        {
-            return await _userManager.FindByIdAsync(id.ToString());
-        }
-
         public async Task<IdentityResult> AddSuperAdmin(SuperAdminModel user)
         {
             user.Name = user.Name.ToTitleCase();
@@ -65,6 +60,11 @@ namespace BloodBankApp.Areas.Services
         public async Task<User> GetUser(ClaimsPrincipal principal)
         {
             return await _userManager.GetUserAsync(principal);
+        }
+
+        public async Task<User> GetUser(Guid id)
+        {
+            return await _userManager.FindByIdAsync(id.ToString());
         }
 
         public string GetUserId(ClaimsPrincipal principal)
@@ -137,7 +137,7 @@ namespace BloodBankApp.Areas.Services
 
                 if (!hospital.HospitalCode.Equals(input.HospitalCode))
                 {
-                    return IdentityResult.Failed(new IdentityError { Description = "This code doesn't belong to the hospital you entered"});
+                    return IdentityResult.Failed(new IdentityError { Description = "This code doesn't belong to the hospital you entered" });
                 }
 
                 var user = _mapper.Map<User>(input);
@@ -170,7 +170,7 @@ namespace BloodBankApp.Areas.Services
             }
         }
 
-        public async Task<bool> UserIsInRole(User user,string role)
+        public async Task<bool> UserIsInRole(User user, string role)
         {
             return await _userManager.IsInRoleAsync(user, role);
         }

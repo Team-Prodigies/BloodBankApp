@@ -1,12 +1,12 @@
-﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
+﻿using BloodBankApp.Data;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services
+namespace BloodBankApp.Services
 {
     public class StatisticsService : IStatisticsService
     {
@@ -29,9 +29,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<int> GetDonorCountAsync()
         {
-           return await _context.BloodDonations
-                .Where(x => x.DonationDate.Year == DateTime.Now.Year)
-                .CountAsync();
+            return await _context.BloodDonations
+                 .Where(x => x.DonationDate.Year == DateTime.Now.Year)
+                 .CountAsync();
         }
 
         public async Task<int> GetHospitalsCountAsync()
@@ -41,9 +41,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<int> GetNumberOfDonationPostsAsync()
         {
-          return await _context.DonationPosts
-                .Where(x => x.DateRequired.Year == DateTime.Now.Year)
-                .CountAsync();
+            return await _context.DonationPosts
+                  .Where(x => x.DateRequired.Year == DateTime.Now.Year)
+                  .CountAsync();
         }
 
         public async Task<Dictionary<string, int>> GetUserBloodDataAsync()
@@ -73,7 +73,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
             var userCountByRole =
                 from role in await _context.Roles.ToListAsync()
-                join user in await _context.UserRoles.ToListAsync() 
+                join user in await _context.UserRoles.ToListAsync()
                 on role.Id equals user.RoleId into users
                 select new
                 {

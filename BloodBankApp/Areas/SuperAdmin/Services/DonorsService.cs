@@ -43,20 +43,22 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<List<DonorModel>>(donors);
         }
 
-        public async Task EditDonor(Donor donor)
+        public async Task EditDonor(Guid donorId, DonorDto donorDto)
         {
-            _context.Update(donor);
+            var donor = await _context.Donors.FirstOrDefaultAsync(d=>d.DonorId == donorId);
+            _mapper.Map(donorDto, donor);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Donor> GetDonor(Guid donorId)
+        public async Task<DonorDto> GetDonor(Guid donorId)
         {
             var donor = await _context.Donors
                 .Include(c => c.City)
                 .Include(b => b.BloodType)
                 .FirstOrDefaultAsync(x => x.DonorId == donorId);
 
-            return donor;
+            var donorDto = _mapper.Map<DonorDto>(donor);
+            return donorDto;
         }
 
         public async Task<List<DonorModel>> GetDonors(int pageNumber = 1, string filterBy = "A-Z")

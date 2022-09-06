@@ -83,7 +83,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     }
                     if (await _usersService.UserIsInRole(user, "SuperAdmin"))
                     {
-                        return RedirectToAction("Index", "AdminHome", new {area = "SuperAdmin"});
+                        return RedirectToAction("Index", "AdminHome", new { area = "SuperAdmin" });
                     }
                     if (await _usersService.UserIsInRole(user, "HospitalAdmin"))
                     {
@@ -93,7 +93,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl,Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 else
                 {

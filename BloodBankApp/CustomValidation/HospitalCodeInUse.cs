@@ -17,9 +17,7 @@ namespace BloodBankApp.CustomValidation {
             }
 
             var hospitalCode = value.ToString();
-            var hospitalCodeInUse = _context.Hospitals
-                .Where(hospital => hospital.HospitalCode == hospitalCode)
-                .FirstOrDefault();
+            var hospitalCodeInUse = _context.Hospitals.FirstOrDefault(hospital => hospital.HospitalCode == hospitalCode);
 
             if (hospitalCodeInUse != null)
             {

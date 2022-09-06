@@ -56,19 +56,22 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Hospital>> GetAllHospitals()
+        public async Task<List<HospitalModel>> GetAllHospitals()
         {
-            return await _context.Hospitals.ToListAsync();
+            var hospitals= await _context.Hospitals.ToListAsync();
+            return _mapper.Map<List<HospitalModel>>(hospitals);
         }
 
-        public async Task<Hospital> GetHospital(Guid hospitalId)
+        public async Task<HospitalModel> GetHospital(Guid hospitalId)
         {
-            return await _context.Hospitals
+            var hospital = await _context.Hospitals
                 .Include(l => l.Location)
                 .Include(c => c.City)
                 .Where(h => h.HospitalId == hospitalId)
                 .FirstOrDefaultAsync();
+            return _mapper.Map<HospitalModel>(hospital);
         }
+
 
         public async Task<string> GetHospitalCode(Guid hospitalId)
         {      
@@ -80,14 +83,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return hospital.HospitalCode;
         }
 
-        public async Task<List<Hospital>> GetHospitals(int pageNumber)
+
+        public async Task<List<HospitalModel>> GetHospitals(int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;
-            return await _context.Hospitals
+            var hospitals= await _context.Hospitals
                 .Include(c => c.City)
                 .Skip(skipRows)
                 .Take(10)
                 .ToListAsync();
+            return _mapper.Map<List<HospitalModel>>(hospitals);
         }
 
         public async Task<bool> HospitalCodeExists(string hospitalCode)
@@ -103,15 +108,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return false; 
         }
 
-        public async Task<List<Hospital>> HospitalSearchResults(string searchTerm, int pageNumber)
+        public async Task<List<HospitalModel>> HospitalSearchResults(string searchTerm, int pageNumber)
         {
             var skipRows = (pageNumber - 1) * 10;
-            return await _context.Hospitals
+            var hospitals= await _context.Hospitals
                 .Where(hospital => hospital.HospitalName.ToUpper()
                 .Contains(searchTerm.ToUpper()))
                 .Skip(skipRows)
                 .Take(10)
                 .ToListAsync();
+            return _mapper.Map<List<HospitalModel>>(hospitals);
         }
     }
 }

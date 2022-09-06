@@ -1,6 +1,8 @@
 ﻿using BloodBankApp.Data;
 using BloodBankApp.Services.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Services
 {
@@ -13,9 +15,10 @@ namespace BloodBankApp.Services
             _context = context;
         }
 
-        public bool HospitalCodeIsTaken(string hospitalCode)
+        public async Task<bool> HospitalCodeIsTaken(string hospitalCode)
         {
-            var hospitalCodeInUse = _context.Hospitals.Where(hospital => hospital.HospitalCode == hospitalCode).FirstOrDefault();
+            var hospitalCodeInUse = await _context.Hospitals
+                .FirstOrDefaultAsync(hospital => hospital.HospitalCode == hospitalCode);
             if (hospitalCodeInUse != null)
             {
                 return true;
@@ -23,9 +26,10 @@ namespace BloodBankApp.Services
             return false;
         }
 
-        public bool PersonalNumberIsTaken(int personalNumber)
+        public async Task<bool> PersonalNumberIsTaken(int personalNumber)
         {
-            var personalNumberInUse = _context.Donors.Where(donor => donor.PersonalNumber == personalNumber).FirstOrDefault();
+            var personalNumberInUse = await _context.Donors
+                .FirstOrDefaultAsync(donor => donor.PersonalNumber == personalNumber);
             if (personalNumberInUse != null)
             {
                 return true;
@@ -33,9 +37,10 @@ namespace BloodBankApp.Services
             return false;
         }
 
-        public bool UsernameIsTaken(string username)
+        public async Task<bool> UsernameIsTaken(string username)
         {
-            var personalNumberInUse = _context.Users.Where(user => user.NormalizedUserName == username.ToUpper()).FirstOrDefault();
+            var personalNumberInUse = await _context.Users
+                .FirstOrDefaultAsync(user => user.NormalizedUserName == username.ToUpper());
             if (personalNumberInUse != null)
             {
                 return true;

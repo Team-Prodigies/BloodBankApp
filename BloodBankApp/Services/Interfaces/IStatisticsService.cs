@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
+namespace BloodBankApp.Services.Interfaces
 {
     public interface IStatisticsService
     {
