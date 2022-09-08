@@ -111,6 +111,11 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
 
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/");
+            }
+
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
