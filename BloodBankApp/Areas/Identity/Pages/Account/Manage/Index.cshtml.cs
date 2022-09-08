@@ -75,7 +75,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
             PersonalNumber = donor.PersonalNumber;
             Gender = donor.Gender;
-            BloodTypeName = donor.BloodTypeName;
+            BloodTypeName = donor.BloodType.BloodTypeName;
             Name = user.Name;
             Surname = user.Surname;
             DateOfBirth = user.DateOfBirth;

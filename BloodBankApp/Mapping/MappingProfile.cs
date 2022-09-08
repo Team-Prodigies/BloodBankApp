@@ -61,7 +61,7 @@ namespace BloodBankApp.Mapping
             CreateMap<BloodType, BloodTypeModel>();
 
             CreateMap<Donor, DonorDto>()
-                .ForPath(dest => dest.BloodTypeName,
+                .ForPath(dest => dest.BloodType.BloodTypeName,
                     opts => opts.MapFrom(src => src.BloodType.BloodTypeName)).ReverseMap();
 
             CreateMap<City, CityModel>().ReverseMap();
