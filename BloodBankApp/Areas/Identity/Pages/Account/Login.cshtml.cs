@@ -53,6 +53,11 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/");
+            }
+
             returnUrl ??= Url.Content("~/");
 
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -88,6 +93,10 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     if (await _usersService.UserIsInRole(user, "HospitalAdmin"))
                     {
                         return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
+                    }
+                    if (await _usersService.UserIsInRole(user, "Donor"))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Donator" });
                     }
                     return LocalRedirect(returnUrl);
                 }
