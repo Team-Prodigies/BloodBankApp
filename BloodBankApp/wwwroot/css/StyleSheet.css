@@ -85,8 +85,16 @@ a:hover {
 }
 
 .bg-custom1 {
-    background-color: #f5f3f4;
+    background-color: #f5f3f4 !important;
 }
+
+.bg-custom1-h {
+    background-color: #f5f3f4 !important;
+}
+
+    .bg-custom1-h:hover {
+        background-color: white !important;
+    }
 
 .bg-custom2 {
     background-color: #d1001f;

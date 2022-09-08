@@ -94,6 +94,10 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     {
                         return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
                     }
+                    if (await _usersService.UserIsInRole(user, "Donor"))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Donator" });
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
