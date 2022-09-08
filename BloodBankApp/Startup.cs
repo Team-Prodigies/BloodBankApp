@@ -101,6 +101,10 @@ namespace BloodBankApp
                     pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
+                 name: "Donator",
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
