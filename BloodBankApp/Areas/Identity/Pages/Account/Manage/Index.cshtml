@@ -14,14 +14,14 @@
                 <div class="col">
                     <div class="form-group mt-3">
                         <label asp-for="Input.UserName"></label>
-                        <input asp-for="Input.UserName" class="form-control" />
+                        <input asp-for="Input.UserName" class="form-control" required />
                         <span asp-validation-for="Input.UserName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group mt-3">
                         <label asp-for="Input.PhoneNumber"></label>
-                        <input asp-for="Input.PhoneNumber" class="form-control" />
+                        <input asp-for="Input.PhoneNumber" class="form-control" required />
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
@@ -80,6 +80,3 @@
     </div>
 </div>
 @await Component.InvokeAsync("Notyf")
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

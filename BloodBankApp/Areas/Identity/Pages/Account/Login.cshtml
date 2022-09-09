@@ -18,14 +18,14 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label asp-for="Input.UserName" class="mb-1 mt-2"></label>
-                                    <input asp-for="Input.UserName" class="form-control" />
+                                    <input asp-for="Input.UserName" class="form-control" required />
                                     <span asp-validation-for="Input.UserName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label asp-for="Input.Password" class="mb-1 mt-2"></label>
-                                    <input asp-for="Input.Password" class="form-control gy-3" />
+                                    <input asp-for="Input.Password" class="form-control gy-3" required />
                                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                                 </div>
                             </div>
@@ -54,6 +54,3 @@
 
 
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
