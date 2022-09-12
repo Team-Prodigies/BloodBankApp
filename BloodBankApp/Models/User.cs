@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Models
@@ -19,5 +20,9 @@ namespace BloodBankApp.Models
         public bool Locked { get; set; }
         public virtual Donor Donor { get; set; }
         public virtual MedicalStaff MedicalStaff { get; set; }
+
+        public ICollection<Message> SendMessages { get; set; }
+        public ICollection<Message> ReceivedMessages { get; set; }
+        
     }
 }

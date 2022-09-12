@@ -22,6 +22,7 @@ namespace BloodBankApp.Data
         public DbSet<MedicalStaff> MedicalStaffs { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -151,6 +152,19 @@ namespace BloodBankApp.Data
            .HasForeignKey(fk => fk.HealthFormQuestionnaireId)
            .HasConstraintName("FormQuestions")
            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Message>()
+           .HasOne(b => b.Sender)
+           .WithMany(b => b.SendMessages)
+           .HasForeignKey(b => b.SenderId)
+           .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+           .HasOne(b => b.Receiver)
+           .WithMany(b => b.ReceivedMessages)
+           .HasForeignKey(b => b.ReceiverId)
+           .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
