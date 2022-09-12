@@ -57,6 +57,13 @@ namespace BloodBankApp.Areas.Services
             return result;
         }
 
+        public async Task<IdentityResult> EditSuperAdmin(User user)
+        {
+            var result = await _userManager.UpdateAsync(user);
+
+            return result;
+        }
+
         public async Task<User> GetUser(ClaimsPrincipal principal)
         {
             return await _userManager.GetUserAsync(principal);
@@ -174,5 +181,7 @@ namespace BloodBankApp.Areas.Services
         {
             return await _userManager.IsInRoleAsync(user, role);
         }
+
+        
     }
 }
