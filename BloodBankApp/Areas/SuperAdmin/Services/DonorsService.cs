@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Identity.Pages.Account.Manage;
+using BloodBankApp.Enums;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -43,22 +45,32 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<List<DonorModel>>(donors);
         }
 
-        public async Task EditDonor(Guid donorId, DonorDto donorDto)
+        public List<Gender> GetGenders()
         {
-            var donor = await _context.Donors.FirstOrDefaultAsync(d=>d.DonorId == donorId);
-            _mapper.Map(donorDto, donor);
-            await _context.SaveChangesAsync();
+           return Enum.GetValues(typeof(Gender))
+               .Cast<Gender>()
+               .ToList();
         }
 
-        public async Task<DonorDto> GetDonor(Guid donorId)
+        public async Task<bool> EditDonor(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(d=>d.Id == donorId);
+            var donor = await _context.Donors.FirstOrDefaultAsync(d => d.DonorId == donorId);
+
+           _mapper.Map(donorDto, user);
+           _mapper.Map(donorDto, donor);
+
+           return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Donor> GetDonor(Guid donorId)
         {
             var donor = await _context.Donors
                 .Include(c => c.City)
                 .Include(b => b.BloodType)
                 .FirstOrDefaultAsync(x => x.DonorId == donorId);
-
-            var donorDto = _mapper.Map<DonorDto>(donor);
-            return donorDto;
+            
+            return donor;
         }
 
         public async Task<List<DonorModel>> GetDonors(int pageNumber = 1, string filterBy = "A-Z")

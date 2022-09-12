@@ -3,6 +3,8 @@ using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.Identity.Pages.Account.Manage;
+using BloodBankApp.Enums;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
@@ -12,8 +14,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task<List<DonorModel>> DonorSearchResults(string searchTerm, int pageNumber = 1);
         Task LockoutDonor(User user);
         Task UnlockDonor(User user);
-        Task<DonorDto> GetDonor(Guid donorId);
-        Task EditDonor(Guid donorId, DonorDto donorDto);
+        Task<Donor> GetDonor(Guid donorId);
+        List<Gender> GetGenders();
+        Task<bool> EditDonor(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto);
         Task AddDonor(Donor donor);
     }
 }
