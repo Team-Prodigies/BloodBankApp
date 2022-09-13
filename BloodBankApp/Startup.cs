@@ -21,6 +21,7 @@ using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using BloodBankApp.Hubs;
+using System.Text.Json.Serialization;
 
 namespace BloodBankApp
 {
