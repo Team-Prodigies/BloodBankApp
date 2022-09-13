@@ -30,18 +30,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var admin = new SuperAdminModel();
             var superadmin = await _usersService.GetUser(User);
-            admin.UserName = superadmin.UserName;
-            admin.Name = superadmin.Name;
-            admin.Surname = superadmin.Surname;
-            admin.DateOfBirth = superadmin.DateOfBirth;
-            admin.Email = superadmin.Email;
-            return View(admin);
+
+            ProfileAdminModel profileAdminUser = _mapper.Map<ProfileAdminModel>(superadmin);
+
+            return View(profileAdminUser);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(SuperAdminModel user)
+        public async Task<IActionResult> EditProfile(ProfileAdminModel user)
         {
             user.Name = user.Name.ToTitleCase();
             user.Surname = user.Surname.ToTitleCase();
@@ -51,6 +48,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             superadmin.UserName = user.UserName;
             superadmin.DateOfBirth = user.DateOfBirth;
             superadmin.Email = user.Email;
+
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Index));
+            }
+
             var result = await _usersService.EditSuperAdmin(superadmin);
 
             if (result.Succeeded)
@@ -71,10 +74,31 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeSuperAdminPassword(ChangePasswordModel pass)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(ChangePassword));
+            }
+
+            var superadmin = await _usersService.GetUser(User);
+            var result = await _usersService.ChangePassword(superadmin, pass.OldPassword, pass.NewPassword);
 
 
-
-
+            if (result.Succeeded)
+            {
+                _notyfService.Success("Password changed successfully!");
+                await _signInService.RefreshSignInAsync(superadmin);
+                return RedirectToAction(nameof(ChangePassword));
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+                _notyfService.Error(error.Description);
+            }
+            return View(nameof(ChangePassword));
+        }
 
     }
 }

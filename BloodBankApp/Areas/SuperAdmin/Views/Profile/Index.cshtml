@@ -1,4 +1,4 @@
-﻿@model SuperAdminModel
+﻿@model ProfileAdminModel
 @{
     ViewData["Title"] = "Profile";
 }
@@ -7,7 +7,7 @@
 <div class="container-fluid w-100 p-0 mb-3 d-flex justify-content-center">
     <div class="container ms-2 me-2 w-75 mt-4 mb-4 shadow rounded p-4" style="background-color: white">
         <form id="profile-form" asp-controller="Profile" asp-action="EditProfile" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                 <div class="col">
                     <div class="form-group mt-3">
@@ -33,7 +33,7 @@
                 <div class="col">
                     <div class="form-group mt-3">
                         <label class="mb-2" asp-for="Email"></label>
-                        <input asp-for="Email" class="form-control" required />
+                        <input asp-for="Email" class="form-control" required type="email" />
                     </div>
                 </div>
             </div>

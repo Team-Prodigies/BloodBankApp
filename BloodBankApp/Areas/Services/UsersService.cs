@@ -64,6 +64,13 @@ namespace BloodBankApp.Areas.Services
             return result;
         }
 
+        public async Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+
+            return result;
+        }
+
         public async Task<User> GetUser(ClaimsPrincipal principal)
         {
             return await _userManager.GetUserAsync(principal);
@@ -182,6 +189,5 @@ namespace BloodBankApp.Areas.Services
             return await _userManager.IsInRoleAsync(user, role);
         }
 
-        
     }
 }

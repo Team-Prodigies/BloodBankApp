@@ -17,6 +17,7 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<User> GetUserByUsername(string username);
         Task<IdentityResult> AddSuperAdmin(SuperAdminModel user);
         Task<IdentityResult> EditSuperAdmin(User user);
+        Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword);
         Task<IdentityResult> AddDonor(RegisterInputModel input);
         Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input);
         Task<IdentityResult> SetPhoneNumber(User user, string phoneNumber);
