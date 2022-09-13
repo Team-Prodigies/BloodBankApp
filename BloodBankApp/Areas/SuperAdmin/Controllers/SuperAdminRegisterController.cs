@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class SuperAdminRegisterController : Controller
     {
         private readonly IUsersService _usersService;
@@ -22,12 +23,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _notyfService = notyfService;
         }
 
+        [Authorize(Policy = Permissions.SuperAdmin.Create)]
         public IActionResult CreateSuperAdmin()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.ViewStatistics)]
         public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user)
         {
             if (ModelState.IsValid)

@@ -5,11 +5,12 @@ using System;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class DonorsController : Controller
     {
         private readonly IDonorsService _donorsService;
@@ -23,6 +24,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _notyfService = notyfService;
         }
         [HttpGet]
+        [Authorize(Policy = Permissions.Donors.View)]
         public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
         {
             var donors = await _donorsService.GetDonors(pageNumber, filterBy);
@@ -32,6 +34,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.Donors.View)]
         public async Task<IActionResult> DonorSearchResults(string searchTerm, int pageNumber = 1)
         {
             if (searchTerm == null || searchTerm.Trim() == "")
@@ -46,6 +49,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View(donors);
         }
         [HttpPost]
+        [Authorize(Policy = Permissions.Donors.Lock)]
         public async Task<IActionResult> LockoutDonor(Guid donorId)
         {
             var donor = await _usersService.GetUser(donorId);
@@ -60,6 +64,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Donors.Unlock)]
         public async Task<IActionResult> UnlockDonor(Guid donorId)
         {
             var donor = await _usersService.GetUser(donorId);

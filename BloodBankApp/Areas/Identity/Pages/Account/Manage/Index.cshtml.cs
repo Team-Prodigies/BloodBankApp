@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -13,7 +14,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 { 
-    [Authorize(Roles = "Donor")]
+    [Authorize(Policy = Permissions.Donors.ViewProfile)]
+    [Authorize(Policy = Permissions.Donors.EditProfile)]
     public class PersonalProfileIndexModel : PageModel
     {
         private readonly IUsersService _usersService;

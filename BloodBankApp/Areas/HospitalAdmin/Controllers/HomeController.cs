@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BloodBankApp.Areas.SuperAdmin.Permission;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
+    [Area("HospitalAdmin")]
+    [Authorize]
     public class HomeController : Controller
     {
-        [Area("HospitalAdmin")]
-        [Authorize(Roles="HospitalAdmin")]
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewDashboard)]
         public IActionResult Index()
         {
             return View();

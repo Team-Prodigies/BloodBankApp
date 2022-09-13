@@ -3,16 +3,19 @@
 <div class="container col-7 card">
     <div class="card-body">
         <h5 class="card-title">Edit Role</h5>
-        <form class="row g-3" asp-controller="Roles" asp-action="EditRole" method="post">
+        <form class="row g-3 justify-content-center" asp-controller="Roles" asp-action="EditRole" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="container col-8">
+            <div class="container col-8 row">
                 <div class="mb-3 mt-2">
                     <input asp-for="Id" type="hidden" class="form-control" id="am">
                     <label asp-for="RoleName" class="form-label"></label>
                     <input asp-for="RoleName" class="form-control" id="inputName4">
                 </div>
-                <div class="text-start mt-2 mb-2">
-                    <button type="submit" class="btn btn-info">Submit</button>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+                <div class="col-6 text-end">
+                    <a class="btn btn-secondary" asp-controller="Permission" asp-action="Index" asp-route-roleId="@Model.Id">Permissions</a>
                 </div>
             </div>
         </form>
