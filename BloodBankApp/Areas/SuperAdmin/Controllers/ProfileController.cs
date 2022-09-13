@@ -40,21 +40,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(ProfileAdminModel user)
         {
-            user.Name = user.Name.ToTitleCase();
-            user.Surname = user.Surname.ToTitleCase();
-            var superadmin = await _usersService.GetUser(User);
-            superadmin.Name = user.Name;
-            superadmin.Surname = user.Surname;
-            superadmin.UserName = user.UserName;
-            superadmin.DateOfBirth = user.DateOfBirth;
-            superadmin.Email = user.Email;
-
             if (!ModelState.IsValid)
             {
                 return View(nameof(Index));
             }
 
-            var result = await _usersService.EditSuperAdmin(superadmin);
+            var result = await _usersService.EditSuperAdmin(user);
 
             if (result.Succeeded)
             {
@@ -64,7 +55,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
-                _notyfService.Error("Something went wrong!");
+                _notyfService.Error(error.Description.Replace("'",""));
             }
             return View(nameof(Index));
         }
