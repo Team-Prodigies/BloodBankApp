@@ -65,6 +65,9 @@ namespace BloodBankApp.Mapping
                     opts => opts.MapFrom(src => src.BloodType.BloodTypeName)).ReverseMap();
 
             CreateMap<City, CityModel>().ReverseMap();
+
+            CreateMap<User, ProfileAdminModel>();
+
         }
     }
 }
