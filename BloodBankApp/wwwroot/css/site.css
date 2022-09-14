@@ -331,7 +331,7 @@ html {
 }
 
 .title {
-    background-color: #d1001f !important;
+    background-color: rgb(209 0 31 / 0.97) !important;
     border-radius: 5px;
     position: absolute;
     bottom: -100px;
@@ -381,7 +381,7 @@ html {
 }
 
 .backgroundContent {
-    background-color: rgba(0 0 0 0.60);
+    background-color: rgba(0, 0, 0, 0.60);
     position: absolute;
     z-index: 10;
     top: 0;
@@ -399,9 +399,16 @@ html {
 @media (max-width: 768px) {
     .aboutUsPage p {
         font-size: 13px;
+        margin-bottom: 20px;
     }
 
     .aboutUsPage h1, .aboutUsPage h2 {
         font-size: 25px;
+    }
+
+    .title {
+        position: relative;
+        bottom: 30px;
+        padding: 40px 20px;
     }
 }

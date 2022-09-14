@@ -22,6 +22,8 @@ using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using Microsoft.AspNetCore.Authorization;
+using BloodBankApp.Areas.HospitalAdmin.Services;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 
 namespace BloodBankApp
 {
@@ -61,6 +63,7 @@ namespace BloodBankApp
             services.AddScoped<ISignInService, SignInService>();
             services.AddScoped<ISuggestionsService, SuggestionsService>();
             services.AddScoped<IAvailabilityService, AvailabilityService>();
+            services.AddScoped<IHospitalAdminService, HospitalAdminService>();
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -104,6 +107,10 @@ namespace BloodBankApp
                 endpoints.MapControllerRoute(
                     name: "SuperAdmin",
                     pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                 name: "Donator",
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",

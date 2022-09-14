@@ -43,8 +43,10 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class RegisterMedicalStaffInputModel
         {
             [Required]
+            [Numbers]
             public string Name { get; set; }
 
+            [Numbers]
             [Required]
             public string Surname { get; set; }
 

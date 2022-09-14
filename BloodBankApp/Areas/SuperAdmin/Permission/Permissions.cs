@@ -48,6 +48,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Permission
             public const string ViewStatistics = "View SuperAdmin Dashboard";
             public const string ViewProfile = "View SuperAdmin Profile";
             public const string EditProfile = "Edit SuperAdmin Profile";
+            public const string ChangePassword = "Change Password";
         }
         public static class Hospitals
         {
@@ -61,6 +62,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Permission
             public const string ViewHospital = "View Specific Hospital";
             public const string EditHospital = "Edit Specific Hospital";
             public const string ViewDashboard = "View HospitalAdmin Dashboard";
+            public const string ViewProfile = "View HospitalAdmin Profile";
+            public const string EditProfile = "Edit HospitalAdmin Profile";
+            public const string ChangePassword = "Change HospitalAdmin Password";
         }
     }
 }

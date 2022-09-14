@@ -209,6 +209,7 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ViewStatistics));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.EditProfile));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ViewProfile));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ChangePassword));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.View));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.Lock));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.Unlock));
@@ -228,6 +229,9 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewDashboard));
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.EditHospital));
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewHospital));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.EditProfile));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewProfile));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ChangePassword));
         }
         public static async Task AddPermissionClaim(this RoleManager<IdentityRole<Guid>> roleManager, IdentityRole<Guid> role, string module)
         {
