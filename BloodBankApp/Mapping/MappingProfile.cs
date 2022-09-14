@@ -70,6 +70,9 @@ namespace BloodBankApp.Mapping
             CreateMap<PersonalProfileIndexModel.ProfileInputModel, User>();
 
             CreateMap<PersonalProfileIndexModel.ProfileInputModel, Donor>().ReverseMap();
+
+            CreateMap<User, ProfileAdminModel>();
+
         }
     }
 }
