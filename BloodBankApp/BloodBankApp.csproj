@@ -7,13 +7,9 @@
 
   <ItemGroup>
     <Compile Remove="Areas\HospitalAdmin\Models\**" />
-    <Compile Remove="Areas\SuperAdmin\NewFolder\**" />
     <Content Remove="Areas\HospitalAdmin\Models\**" />
-    <Content Remove="Areas\SuperAdmin\NewFolder\**" />
     <EmbeddedResource Remove="Areas\HospitalAdmin\Models\**" />
-    <EmbeddedResource Remove="Areas\SuperAdmin\NewFolder\**" />
     <None Remove="Areas\HospitalAdmin\Models\**" />
-    <None Remove="Areas\SuperAdmin\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

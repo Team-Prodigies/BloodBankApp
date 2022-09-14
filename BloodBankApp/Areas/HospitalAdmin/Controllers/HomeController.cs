@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using BloodBankApp.Areas.SuperAdmin.Permission;
+using AutoMapper;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +15,9 @@ using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
-{       
+{
     [Area("HospitalAdmin")]
-    [Authorize(Roles="HospitalAdmin")]
+    [Authorize]
     public class HomeController : Controller
     {
 
@@ -39,13 +40,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _hospitalAdminService = hospitalAdminService;
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewDashboard)]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Profile() {
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewProfile)]
+        public IActionResult Profile()
+        {
             var user = _userManager.GetUserAsync(User);
 
             var hospitalAdmin = new HospitalAdminModel {
@@ -60,7 +64,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeProfile(HospitalAdminModel hospitalModel) {
+        [Authorize(Policy = Permissions.HospitalAdmin.EditProfile)]
+        public async Task<IActionResult> ChangeProfile(HospitalAdminModel hospitalModel)
+        {
             if (!ModelState.IsValid) {
                 _notyfService.Error("You changes are not correct.");
                 return View(nameof(ChangePassword));
@@ -85,12 +91,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
        [HttpGet]
-       public IActionResult ChangePassword() {
+        [Authorize(Policy = Permissions.HospitalAdmin.ChangePassword)]
+       public IActionResult ChangePassword()
+        {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePasswordModel) {
+        [Authorize(Policy = Permissions.HospitalAdmin.ChangePassword)]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
             if (!ModelState.IsValid) {
                 _notyfService.Error("Your password has not changed.");
                 return View(nameof(ChangePassword));

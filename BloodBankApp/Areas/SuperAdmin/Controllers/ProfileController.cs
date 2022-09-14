@@ -5,11 +5,12 @@ using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly IUsersService _usersService;
@@ -23,6 +24,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _notyfService = notyfService;
             _mapper = mapper;
         }
+
+        [Authorize(Policy = Permissions.SuperAdmin.ViewProfile)]
         public async Task<IActionResult> Index()
         {
             var superadmin = await _usersService.GetUser(User);
@@ -33,6 +36,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.EditProfile)]
         public async Task<IActionResult> EditProfile(ProfileAdminModel user)
         {
             if (!ModelState.IsValid)
@@ -55,12 +59,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View(nameof(Index));
         }
 
+        [Authorize(Policy = Permissions.SuperAdmin.ChangePassword)]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.ChangePassword)]
         public async Task<IActionResult> ChangeSuperAdminPassword(ChangePasswordModel pass)
         {
             if (!ModelState.IsValid)
