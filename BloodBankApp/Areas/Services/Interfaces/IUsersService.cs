@@ -22,6 +22,5 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<IdentityResult> SetPhoneNumber(User user, string phoneNumber);
         Task<IdentityResult> SetUserName(User user, string username);
         Task<bool> UserIsInRole(User user,string role);
-        Task EditHospitalAdmin(HospitalAdminModel hospitalModel);
     }
 }

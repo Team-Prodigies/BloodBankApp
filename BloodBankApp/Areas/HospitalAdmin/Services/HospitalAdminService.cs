@@ -35,22 +35,21 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             _httpContextAccessor = httpContextAccessor;
             }
 
-        public Task<IdentityResult> EditHospitalAdmin(HospitalAdminModel hospitalModel) {
-            throw new NotImplementedException();
+        public async Task<IdentityResult> EditHospitalAdmin(HospitalAdminModel hospitalModel) {
+            var getUser = await GetUser(_httpContextAccessor.HttpContext.User);
+            getUser.Name= hospitalModel.Name;
+            getUser.Surname = hospitalModel.Surname;
+            getUser.UserName = hospitalModel.UserName;
+            getUser.NormalizedUserName = hospitalModel.UserName.ToTitleCase();
+            getUser.DateOfBirth = hospitalModel.DateOfBirth;
+            getUser.PhoneNumber = hospitalModel.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(getUser);
+            return result;
         }
 
-        /*public async Task<IdentityResult> EditHospitalAdmin(HospitalAdminModel hospitalModel) {
-            var getUser = 3;
-            //var getUser = await GetUser(_httpContextAccessor.HttpContext.User);
-            //getUser.Result.Name = hospitalModel.Name;
-            //getUser.Result.Surname = hospitalModel.Surname;
-            //getUser.Result.UserName = hospitalModel.UserName;
-            //getUser.Result.NormalizedUserName = hospitalModel.UserName.ToTitleCase();
-            //getUser.Result.DateOfBirth = hospitalModel.DateOfBirth;
-            //getUser.Result.PhoneNumber = hospitalModel.PhoneNumber;
-            var result = await _userManager.UpdateAsync(getUser);
-
-            return result;
-        }*/
+        public async Task<User> GetUser(ClaimsPrincipal principal) {
+            return await _userManager.GetUserAsync(principal);
+        }
     }
 }
