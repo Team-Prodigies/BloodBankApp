@@ -162,40 +162,41 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown pe-3">
-                    
-                            @{
-                                var user = UserManager.GetUserAsync(User);
-                                string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
-                            }
-                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                                <img src="@initialsUrl" alt="Profile" class="rounded-circle">
-                                <span class="d-none d-md-block dropdown-toggle ps-2">@user.Result.Name @user.Result.Surname</span>
+
+                    @{
+                        var user = UserManager.GetUserAsync(User);
+                        string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
+                    }
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="@initialsUrl" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">@user.Result.Name @user.Result.Surname</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>@user.Result.Name @user.Result.Surname</h6>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" asp-area="HospitalAdmin" asp-controller="Home" asp-action="Profile">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                                <li class="dropdown-header">
-                                    <h6>@user.Result.Name @user.Result.Surname</h6>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <i class="bi bi-person"></i>
-                                        <span>My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                        </form>
-                                    </a>
-                                </li>
-                         
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </a>
+                        </li>
+
+                    </ul>
             </ul>
         </nav>
     </header>
@@ -267,7 +268,7 @@
     <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/php-email-form/validate.js"></script>
-
+    @await Component.InvokeAsync("Notyf")
 </body>
 </html>
 
