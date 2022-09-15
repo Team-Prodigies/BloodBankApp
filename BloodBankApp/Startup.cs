@@ -22,6 +22,8 @@ using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using BloodBankApp.Hubs;
 using System.Text.Json.Serialization;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
+using BloodBankApp.Areas.HospitalAdmin.Services;
 
 namespace BloodBankApp
 {
@@ -50,6 +52,7 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IDonatorService, DonatorService>();
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IBloodTypesService, BloodTypesService>();
             services.AddScoped<ICitiesService, CitiesService>();
