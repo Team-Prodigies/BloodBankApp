@@ -91,7 +91,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         {
 
             if (!ModelState.IsValid) {
-                ViewData["CityId"] = _cityList;
+                ViewData["CityId"] = _cityList; 
                 return View(hospital);
             }
 
@@ -107,8 +107,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                     return View(hospital);
                 }
             }
-
-          
             await _hospitalService.EditHospital(hospital);
             _notyfService.Success("Hospital updated successfully!");
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
