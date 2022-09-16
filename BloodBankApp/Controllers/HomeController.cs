@@ -23,11 +23,15 @@ namespace BloodBankApp.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult DonationProcess()
         {
             return View();
         }
         public IActionResult AboutUs()
+        {
+            return View();
+        }
+        public IActionResult DonationBenefits()
         {
             return View();
         }

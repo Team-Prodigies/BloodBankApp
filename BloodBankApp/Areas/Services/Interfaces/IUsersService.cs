@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
+﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using System;

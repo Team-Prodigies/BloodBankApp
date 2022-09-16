@@ -20,6 +20,10 @@ using BloodBankApp.Areas.Services;
 using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using BloodBankApp.Areas.SuperAdmin.Permission;
+using Microsoft.AspNetCore.Authorization;
+using BloodBankApp.Areas.HospitalAdmin.Services;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 
 namespace BloodBankApp
 {
@@ -59,6 +63,10 @@ namespace BloodBankApp
             services.AddScoped<ISignInService, SignInService>();
             services.AddScoped<ISuggestionsService, SuggestionsService>();
             services.AddScoped<IAvailabilityService, AvailabilityService>();
+            services.AddScoped<IHospitalAdminService, HospitalAdminService>();
+
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             services.AddRazorPages();
             services.AddNotyf(config => {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Policy = Permissions.Donors.DeleteAccount)]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<User> _userManager;
