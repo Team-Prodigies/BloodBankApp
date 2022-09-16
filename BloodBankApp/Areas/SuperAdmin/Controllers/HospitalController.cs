@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.SuperAdmin.Permission;
+using System.Collections.Generic;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -81,6 +82,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 return RedirectToAction(nameof(ManageHospitals));
             }
             ViewData["CityId"] = _cityList;
+            ViewData["Location"] = await _hospitalService.GetAllLocations();
             var editHospital = _mapper.Map<HospitalModel>(hospital);
             return View(editHospital);
         }

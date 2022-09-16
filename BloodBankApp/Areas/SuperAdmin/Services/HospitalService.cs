@@ -62,6 +62,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<List<HospitalModel>>(hospitals);
         }
 
+        public async Task<List<Location>> GetAllLocations()
+        {
+            var locations = await _context.Locations.ToListAsync();
+            return _mapper.Map<List<Location>>(locations);
+        }
+
         public async Task<HospitalModel> GetHospital(Guid hospitalId)
         {
             var hospital = await _context.Hospitals
