@@ -1,32 +1,29 @@
 ﻿@model HospitalModel
-@using Newtonsoft.Json;
 
-<div class="d-flex justify-content-center">
-    <div class="col-lg-10">
+<div class="container-fluid w-100 p-0 bg-custom1 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-100 mt-5 mb-5">
         <div class="card">
             <div class="card-body p-4">
                 <h5 class="card-title">Edit Hospital</h5>
                 <form asp-action="EditHospital" asp-controller="Hospital" asp-area="SuperAdmin" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="row mb-3">
-                        <input asp-for="HospitalId" style="display:none" />
-                        <input asp-for="Location.LocationId" style="display:none" required />
-                        <label asp-for="HospitalName" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                    <input asp-for="HospitalId" class="d-flex d-none" />
+                    <input asp-for="Location.LocationId" class="d-flex d-none" required />
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+                        <div class="col">
+                            <label asp-for="HospitalName" class="col-form-label"></label>
                             <input asp-for="HospitalName" class="form-control" required />
                             <span asp-validation-for="HospitalName" class="text-danger"></span>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label asp-for="ContactNumber" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <div class="col">
+                            <label asp-for="ContactNumber" class="col-form-label"></label>
                             <input asp-for="ContactNumber" class="form-control" required />
                             <span asp-validation-for="ContactNumber" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label asp-for="HospitalCode" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+                        <div class="col">
+                            <label asp-for="HospitalCode" class="col-form-label"></label>
                             <input asp-for="HospitalCode" class="form-control" required />
                             @if (ViewBag.hospitalCodeInUse != null)
                             {
@@ -34,23 +31,24 @@
                             }
                             <span asp-validation-for="HospitalCode" class="text-danger"></span>
                         </div>
+                        <div class="col">
+                            <label asp-for="CityId" class="col-sm-2 col-form-label"></label>
+                            <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
+                        </div>
                     </div>
-                    <div class="row mb-3">
-                        <label asp-for="LocationId" class="col-sm-3 col-form-label"></label>
-
-                        <div id="map" style="width:100%; height: 500px"></div>
-                        <div class="d-flex">
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 gy-4">
+                        <div class="col">
+                            <label asp-for="LocationId" class="col-form-label"></label>
+                            <div id="map" style="width:100%; height: 500px"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex d-none">
                             <input asp-for="Location.Latitude" id="latitude" class="form-control" required />
                             <input asp-for="Location.Longitude" id="longitude" class="form-control" required />
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label asp-for="CityId" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
-                            <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center mt-4">
                         <input type="submit" value="Save Changes" class="btn btn-info" />
                     </div>
                 </form>
@@ -63,7 +61,6 @@
 
     let map;
     var marker;
-
     var myStyle = [
     {
         featureType: "administrative",
@@ -149,9 +146,16 @@ function initMap() {
     map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));
 
 
-    @foreach(var location in ViewBag.Location)
+    @for(int i= 0; i < ViewBag.Location.Count; i++)
             {
-                @:addMarker({ lat: parseFloat('@location.Latitude'), lng: parseFloat('@location.Longitude') });
+                if(ViewBag.Location[i].Latitude == Model.Location.Latitude && ViewBag.Location[i].Longitude == Model.Location.Longitude)
+                {
+
+                }
+                else
+                {
+                    @:addMarker({ lat: parseFloat('@ViewBag.Location[i].Latitude]'), lng: parseFloat('@ViewBag.Location[i].Longitude') });
+                }
             }
 
     function addMarker(coords) {
@@ -181,7 +185,8 @@ function initMap() {
         marker = new google.maps.Marker({
             position: { lat: lat, lng: lng },
             map: map,
-            title: 'Hospital'
+            title: 'Hospital',
+            icon: iconBase + 'parking_lot_maps.png'
         });
 
 
