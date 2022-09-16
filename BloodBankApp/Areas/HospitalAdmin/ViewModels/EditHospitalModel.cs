@@ -11,7 +11,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.ViewModels
         
         public string ContactNumber { get; set; }
 
-        public string HospitalCode { get; set; }
+        public string? HospitalCode { get; set; }
 
         public Guid LocationId { get; set; }
         public Location Location { get; set; }

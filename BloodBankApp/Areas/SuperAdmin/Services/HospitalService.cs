@@ -112,17 +112,34 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             var hospital = await _context.Hospitals
                 .Include(l => l.Location)
+                .AsNoTracking()
                 .Include(c => c.City)
+                .AsNoTracking()
                 .Where(h => h.HospitalId == hospitalId)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
             return _mapper.Map<EditHospitalModel>(hospital);
         }
 
         public async Task EditHospitalForHospitalAdmin( EditHospitalModel editHospital)
         {
-            var hospital = _mapper.Map<Hospital>(editHospital);
+            var hospital = await _context.Hospitals
+                .Include(l => l.Location)
+                .AsNoTracking()
+                .Where(h => h.HospitalId == editHospital.HospitalId)
+                .FirstOrDefaultAsync();
+
+            hospital.HospitalName = editHospital.HospitalName;
+            hospital.ContactNumber = editHospital.ContactNumber;
+            hospital.Location = editHospital.Location;
+            hospital.CityId = editHospital.CityId;
+
+
+            //await _context.SaveChangesAsync();
+            //     var hospitalModel = _mapper.Map<Hospital>(hospital);
 
             _context.Update(hospital.Location);
+
             _context.Update(hospital);
 
             await _context.SaveChangesAsync();
