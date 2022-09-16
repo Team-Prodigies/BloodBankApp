@@ -99,16 +99,6 @@ namespace BloodBankApp.Areas.Services
             return _userManager.GetUserId(principal);
         }
 
-        public async Task<IdentityResult> SetPhoneNumber(User user, string phoneNumber)
-        {
-            return await _userManager.SetPhoneNumberAsync(user, phoneNumber);
-        }
-
-        public async Task<IdentityResult> SetUserName(User user, string username)
-        {
-            return await _userManager.SetUserNameAsync(user, username);
-        }
-
         public async Task<User> GetUserByUsername(string username)
         {
             return await _userManager.Users
