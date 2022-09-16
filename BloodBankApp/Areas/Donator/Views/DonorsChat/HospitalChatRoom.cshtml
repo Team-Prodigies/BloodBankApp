@@ -1,5 +1,4 @@
-﻿@model List<MedicalStaffModel>
-<head>
+﻿<head>
     <style>
         body {
             margin-top: 20px;
@@ -17,7 +16,7 @@
             display: flex;
             flex-direction: column;
             max-height: 600px;
-            min-height:600px;
+            min-height: 600px;
             overflow-y: scroll
         }
 
@@ -54,64 +53,36 @@
             border-top: 1px solid #dee2e6 !important;
         }
     </style>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
 </head>
-
-
-
-
+<script>
+     var chatWithDonorId = '@ViewBag.DonorId';
+     var chatWithHospitalId = '@ViewBag.HospitalId';
+</script>
 <main class="content">
     <div class="container p-0">
         <div class="card">
             <div class="row g-0">
-                <div class="col-12 col-lg-5 col-xl-3 border-right">
-                    <div class="px-4 d-none d-md-block">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h4>@ViewBag.HospitalName</h4>
-                            </div>
-                        </div>
-                    </div>
-                    @foreach (var hospitalAdmin in Model) {
-                    <div class="list-group-item list-group-item-action border-0">
-
-                        @{
-                            string initialsUrl = "https://ui-avatars.com/api/?name=" + hospitalAdmin.User.Name + "+" + hospitalAdmin.User.Surname + "& background=d1001f&color=fff";
-                        }
-                        <div class="d-flex align-items-start">
-                            <img src="@initialsUrl" alt="Profile" class="p-2" width="60" height="60">
-
-                            <div class="flex-grow-1 ml-3 p-2">
-                                <button class="btn btn-outline-secondary p-2" onclick="onSelectHospitalAdmin('@hospitalAdmin.User.Id')" >@hospitalAdmin.User.Name @hospitalAdmin.User.Surname</button>
-                            </div>
-                        </div>
-                        <hr />
-                    </div>
-                    }
-             
-                    <hr class="d-block d-lg-none mt-1 mb-0">
-                </div>
                 <div class="col-12 col-lg-7 col-xl-9">
                     <div class="py-2 px-4 border-bottom d-none d-lg-block">
                         <div class="d-flex align-items-center py-1">
-                           
                             <div class="flex-grow-1 pl-3">
                                 <strong id="talkingToFullName"></strong>
-                                <!--<div class="text-muted small"><em>Typing...</em></div>-->
+
                             </div>
 
                         </div>
                     </div>
-
                     <div class="position-relative">
                         <div class="chat-messages p-4" id="chatBox">
-                            <h5>You have selected no conversation</h5>
-                        </div>
-                    </div>
 
+                        </div>
+
+                    </div>
+                    <div class="m-1 text-muted small" id="typing" style="display:none"><em>Typing...</em></div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
+
                         <div class="input-group">
+
                             <input type="text" class="form-control" placeholder="Type your message" id="message">
                             <button class="btn btn-primary" onclick="sendMessage()">Send</button>
                         </div>

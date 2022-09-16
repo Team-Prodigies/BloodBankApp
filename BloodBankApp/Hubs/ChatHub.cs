@@ -22,19 +22,11 @@ namespace BloodBankApp.Hubs
             _context = context;
         }
 
-        public async Task GetChatConversation(string recipientId)          
+        public async Task GetChatConversation(string donorId, string hospitalId)          
         {
-            var currentUser = _userManager.GetUserId(Context.User);
-            var user = await _userManager.GetUserAsync(Context.User);
-
-            var recipientFullName = _context.Users
-                .Where(u => u.Id == new Guid(recipientId))
-                .Select(u => u.Name + " " + u.Surname)
-                .FirstOrDefault();
-
+         
             var messages = _context.Messages
-                .Where(u => u.SenderId == user.Id && u.ReceiverId == new Guid(recipientId)
-                || u.SenderId == new Guid(recipientId) && u.ReceiverId == user.Id)
+                .Where(u => u.DonorId == new Guid(donorId) && u.HospitalId == new Guid(hospitalId))
                 .OrderBy(t => t.DateSent)
                 .Select(m => new {
                     m.MessageId,
@@ -42,28 +34,36 @@ namespace BloodBankApp.Hubs
                     m.Content,
                     m.DateSent.Hour,
                     m.DateSent.Minute,
-                    m.SenderId,
-                    m.ReceiverId
+                    m.DonorId,
+                    m.HospitalId,
+                    m.Sender
                 }).ToList();
-           
-            await Clients.User(currentUser).SendAsync("loadChatConversation", messages, recipientId, recipientFullName); 
-            
-        }
-        public async Task SendMessage()
-        {
-       
+
+           /* var blogs = _context.Messages
+                .FromSqlRaw("SELECT * FROM dbo.Messages")
+                .ToList();*/
+
+            string roomName = "ChatRoom-" + donorId + "Donor";
+            await JoinRoom(roomName);
+
+            var currentUser = _userManager.GetUserId(Context.User);
+            await Clients.User(currentUser).SendAsync("loadChatConversation", messages, donorId, hospitalId);            
         }
 
-        public async Task SendMessages(string content, string recipientId)
+        public async Task SendMessage()
         {
-            var currentUser = _userManager.GetUserId(Context.User);
+
+        }
+
+        public async Task SendMessages(string content, string donorId, string hospitalId, int sender)
+        {
 
             var newMessage = new Message();
             newMessage.Content = content;
-            newMessage.SenderId = new Guid(currentUser);
-            newMessage.ReceiverId = new Guid(recipientId);
+            newMessage.DonorId = new Guid(donorId);
+            newMessage.HospitalId = new Guid(hospitalId);
             newMessage.DateSent = DateTime.Now;
-
+            newMessage.Sender = (Enums.MessageSender)sender;
             await _context.AddAsync(newMessage);
             await _context.SaveChangesAsync();
 
@@ -73,13 +73,34 @@ namespace BloodBankApp.Hubs
                 Content = newMessage.Content,
                 Hour = newMessage.DateSent.Hour,
                 Minute = newMessage.DateSent.Minute,
-                SenderId = newMessage.SenderId,
-                ReceiverId = newMessage.ReceiverId
+                DonorId = donorId,
+                HospitalId = hospitalId,
+                Sender = sender
             };
 
+            string roomName = "ChatRoom-" + donorId + "Donor";
 
-            await Clients.User(currentUser).SendAsync("recieveMessage", resendMessage, 0);
-            await Clients.User(recipientId).SendAsync("recieveMessage", resendMessage, 1);
+            await Clients.Group(roomName).SendAsync("recieveMessage", resendMessage);
+        }
+
+        public async Task JoinRoom(string roomName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+        }
+
+        public async Task LeaveRoom(string roomName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+        }
+        public async Task Typing(string donorId)
+        {
+            string roomName = "ChatRoom-" + donorId + "Donor";
+            await Clients.Group(roomName).SendAsync("typing");
+        }
+
+        public async Task NotTyping(string donorId) {
+            string roomName = "ChatRoom-" + donorId + "Donor";
+            await Clients.Group(roomName).SendAsync("notTyping");
         }
 
         public string GetConnectionId()
@@ -87,21 +108,20 @@ namespace BloodBankApp.Hubs
             return Context.ConnectionId;
         }
 
-        public async Task GetWaitingDonors()
+        public async Task GetWaitingDonors(string hospitalId)
         {
             var currentUser = _userManager.GetUserId(Context.User);
 
              var donors = await  _context.Messages
-                 .Include(user => user.Sender)
-                 .Where(m => m.ReceiverId == new Guid(currentUser) && m.Seen == false)
+                 .Include(user => user.Donor.User)
+                 .Where(h=> h.HospitalId == new Guid(hospitalId))
                  .Select(u => new {
-                     u.SenderId,
-                     u.Sender.Name,
-                     u.Sender.Surname
+                     u.DonorId,
+                     u.HospitalId,
+                     u.Donor.User.Name,
+                     u.Donor.User.Surname
                  }).ToListAsync();
-
-       
-
+             
             await Clients.User(currentUser).SendAsync("loadWaitingDonors", donors);
         }
     }

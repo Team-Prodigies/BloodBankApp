@@ -16,7 +16,7 @@
                             <p>Contact number: @hospital.ContactNumber</p>
                             <p>Hospital code: @hospital.HospitalCode</p>
                             <p>Location: @hospital.City.CityName</p>
-                            <a class="btn btn-outline-info" asp-controller="DonorsChat" asp-action="HospitalChatRoom" asp-route-hospitalId="@hospital.HospitalId">Chat Room</a>
+                            <a class="btn btn-outline-info" asp-controller="DonorsChat" asp-action="HospitalChatRoom" asp-route-donorId="@ViewBag.DonorId" asp-route-hospitalId="@hospital.HospitalId">Chat Room</a>
                         </div>
                     </div>
                 </div>

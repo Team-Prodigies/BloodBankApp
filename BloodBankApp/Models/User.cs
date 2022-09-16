@@ -19,10 +19,6 @@ namespace BloodBankApp.Models
         public DateTime DateOfBirth { get; set; }
         public bool Locked { get; set; }
         public virtual Donor Donor { get; set; }
-        public virtual MedicalStaff MedicalStaff { get; set; }
-
-        public ICollection<Message> SendMessages { get; set; }
-        public ICollection<Message> ReceivedMessages { get; set; }
-        
+        public virtual MedicalStaff MedicalStaff { get; set; }      
     }
 }
