@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model HospitalModel
+<head>
     <style>
         body {
             margin-top: 20px;
@@ -56,17 +57,17 @@
 </head>
 <script>
      var chatWithDonorId = '@ViewBag.DonorId';
-     var chatWithHospitalId = '@ViewBag.HospitalId';
+     var chatWithHospitalId = '@Model.HospitalId';
 </script>
 <main class="content">
     <div class="container p-0">
         <div class="card">
             <div class="row g-0">
-                <div class="col-12 col-lg-7 col-xl-9">
+                <div class="col-12">
                     <div class="py-2 px-4 border-bottom d-none d-lg-block">
                         <div class="d-flex align-items-center py-1">
                             <div class="flex-grow-1 pl-3">
-                                <strong id="talkingToFullName"></strong>
+                                <strong>@Model.HospitalName</strong>
 
                             </div>
 

@@ -13,24 +13,27 @@ connection.start().then(function () {
 });
 
 $('#message').bind('input', function () {
-    console.log($(this).val());
     if ($(this).val().length > 0) {
-        connection.invoke("Typing", chatWithDonorId).catch(function (err) {
+        connection.invoke("Typing", chatWithDonorId, 0).catch(function (err) {
             return console.error(err.toString());
         });
     } else {
-        connection.invoke("NotTyping", chatWithDonorId).catch(function (err) {
+        connection.invoke("NotTyping", chatWithDonorId, 0).catch(function (err) {
             return console.error(err.toString());
         });
     }
 });
 
-connection.on("typing", function () {
-    $("#typing").css("display", "block");
+connection.on("typing", function (num) {
+    if (num == 1) {
+        $("#typing").css("display", "block");
+    }   
 });
 
-connection.on("notTyping", function () {
-    $("#typing").css("display", "none");
+connection.on("notTyping", function (num) {
+    if (num == 1) {
+        $("#typing").css("display", "none");
+    }   
 });
 
 connection.on("loadChatConversation", function (data, donorId, hospitalId) {
@@ -60,6 +63,9 @@ function sendMessage() {
     });
 
     $("#message").val("");
+    connection.invoke("NotTyping", chatWithDonorId, 0).catch(function (err) {
+        return console.error(err.toString());
+    });
 }
 
 connection.on("recieveMessage", function (data) {

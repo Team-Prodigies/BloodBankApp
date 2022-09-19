@@ -92,15 +92,15 @@ namespace BloodBankApp.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
         }
-        public async Task Typing(string donorId)
+        public async Task Typing(string donorId, int typingIndicator)
         {
             string roomName = "ChatRoom-" + donorId + "Donor";
-            await Clients.Group(roomName).SendAsync("typing");
+            await Clients.Group(roomName).SendAsync("typing", typingIndicator);
         }
 
-        public async Task NotTyping(string donorId) {
+        public async Task NotTyping(string donorId, int typingIndicator) {
             string roomName = "ChatRoom-" + donorId + "Donor";
-            await Clients.Group(roomName).SendAsync("notTyping");
+            await Clients.Group(roomName).SendAsync("notTyping", typingIndicator);
         }
 
         public string GetConnectionId()

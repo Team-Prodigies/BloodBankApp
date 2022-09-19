@@ -27,12 +27,12 @@ namespace BloodBankApp.Areas.Donator.Controllers
             ViewBag.PageNumber = pageNumber;
             return View(hospitals);
         }
-        public IActionResult HospitalChatRoom(Guid hospitalId)
+        public async Task<IActionResult> DonorChatRoomAsync(Guid hospitalId)
         {
-            ViewBag.DonorId = _userManager.GetUserId(User);
-            ViewBag.HospitalId = hospitalId;
+            ViewBag.DonorId = _userManager.GetUserId(User);            
+            var hospital = await _hospitalService.GetHospital(hospitalId);
 
-            return View();
+            return View(hospital);
         }
     }
 }

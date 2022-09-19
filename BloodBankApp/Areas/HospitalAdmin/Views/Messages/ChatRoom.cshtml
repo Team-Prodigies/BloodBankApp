@@ -59,10 +59,11 @@
 
 <main class="content">
     <div class="container p-0">
+        
         <div class="card">
             <div class="row g-0">
-
-                <div class="col-12 col-lg-5 col-xl-3 border-right" id="waitingDonors">
+                
+                <div class="col-12 col-lg-5 col-xl-3 border-right shadow-sm p-3 mb-5 bg-white rounded" id="waitingDonors">
                     <script>
                         var chatWithDonorId = '';
                         var chatWithHospitalId = '@ViewBag.HospitalId';
@@ -74,8 +75,7 @@
                         <div class="d-flex align-items-center py-1">
 
                             <div class="flex-grow-1 pl-3">
-                                <strong id="talkingToFullName"></strong>
-                               
+                                <strong id="talkingToDonorFullName"></strong>
                             </div>
 
                         </div>
@@ -83,7 +83,7 @@
 
                     <div class="position-relative">
                         <div class="chat-messages p-4" id="chatBox">
-                            
+
                         </div>
                     </div>
                     <div class="m-1 text-muted small" id="typing" style="display:none"><em>Typing...</em></div>
