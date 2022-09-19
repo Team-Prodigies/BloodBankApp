@@ -3,6 +3,8 @@ using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
+using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.Identity.Pages.Account.Manage;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
@@ -66,6 +68,14 @@ namespace BloodBankApp.Mapping
                     opts => opts.MapFrom(src => src.BloodType.BloodTypeName)).ReverseMap();
 
             CreateMap<City, CityModel>().ReverseMap();
+
+            CreateMap<PersonalProfileIndexModel.ProfileInputModel, User>();
+
+            CreateMap<PersonalProfileIndexModel.ProfileInputModel, Donor>().ReverseMap();
+
+            CreateMap<User, ProfileAdminModel>();
+
+            CreateMap<EditHospitalModel, Hospital>().ReverseMap();
         }
     }
 }

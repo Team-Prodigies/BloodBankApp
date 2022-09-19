@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Policy = Permissions.Donors.ChangePassword)]
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<User> _userManager;

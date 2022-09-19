@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "Donation Process";
+}
+
+<section id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active drk">
+            <img class="d-block w-100 vh-100 image-slider" src="~/Images/dp1.jpg" alt="First slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center  h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Every drop counts, every drop saves.</h1>
+                <h1 style="font-weight: 800">Give blood, save lives.</h1>
+            </div>
+        </div>
+        <div class="carousel-item drk">
+            <img class="d-block w-100 vh-100 image-slider" id="img-slider" src="~/Images/dp2.jpg" alt="Second slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Every drop counts, every drop saves.</h1>
+                <h1 style="font-weight: 800">Give blood, save lives.</h1>
+            </div>
+        </div>
+        <div class="carousel-item drk">
+            <img class="d-block w-100 vh-100 image-slider" src="~/Images/dp3.jpg" alt="Third slide">
+            <div class="carousel-caption d-flex flex-column justify-content-center  h-100">
+                <h5>Donate blood to contribute</h5>
+                <h1 style="font-weight: 800">Every drop counts, every drop saves.</h1>
+                <h1 style="font-weight: 800">Give blood, save lives.</h1>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </a>
+</section>
+
+<section class="container-fluid w-100 p-0 bg-white d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-4">
+        <div>
+            <h1 class="mb-5">Donation Process</h1>
+            <h5 class="mb-4 mt-4" style="font-weight: 800">The blood donation process can be broken down into <i class="bi bi-4-circle icon-color"></i> steps:</h5>
+            <ul class="d-flex flex-column">
+                <l1 class="h6"><i class="bi bi-1-circle icon-color"></i> Registration</l1>
+                <l1 class="h6"><i class="bi bi-2-circle icon-color"></i> Medical history and mini-physical</l1>
+                <l1 class="h6"><i class="bi bi-3-circle icon-color"></i> Donation</l1>
+                <l1 class="h6"><i class="bi bi-4-circle icon-color"></i> Refreshments</l1>
+            </ul>
+            <p>
+                While the whole process, from the time you get to the facility to the time you leave, can take about an hour,
+                the actual donation itself may take as little as 8-10 minutes. If you donate platelets, a machine filters the
+                platelets out of your blood and returns the rest of your blood to you. This process takes longer (2-3 hours).
+            </p>
+        </div>
+        <div id="register">
+            <h4 class="fw-bold"><i class="bi bi-pencil-square me-3 fs-5 icon-color"></i><span class="span-border">Registration</span></h4>
+            <p>
+                When you arrive at the blood bank or blood drive, you’ll sign in for your appointment and show your ID.
+                Then you’ll complete paperwork that includes general information like your name, address, and phone number.
+            </p>
+        </div>
+        <div id="medical">
+            <h4 class="fw-bold mt-4"><i class="bi bi-clipboard2-pulse me-3 fs-5 icon-color"></i><span class="span-border">Medical history and mini-physical</span></h4>
+            <p>
+                Before you donate, an employee from the blood bank will ask you some confidential questions about your health and lifestyle.
+                You’ll also get a short health exam or “mini-physical.”
+                An employee will take your pulse, blood pressure, and temperature, and take a small amount of blood for testing.
+            </p>
+            <p>They’ll ask you about:</p>
+            <ol style="list-style-type: inherit">
+                <li class="h6">Your health history</li>
+                <li class="h6">Travel</li>
+                <li class="h6">Medications you take</li>
+                <li class="h6">Sexual activity (questions are about specific behaviors, not sexual orientation)</li>
+            </ol>
+            <p>
+                The questions are based on guidelines developed by the AABB
+                (formerly called the American Association of Blood Banks) and approved by the FDA.
+            </p>
+            <p>
+                They’ll test your blood to see what blood type it is and to check for:
+            </p>
+            <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+                <div class="col">
+                    <ol style="list-style-type: inherit">
+                        <li class="h6">Babesiosis, a parasite</li>
+                        <li class="h6">Cytomegalovirus (CMV) antibody</li>
+                        <li class="h6">Hepatitis B virus</li>
+                        <li class="h6">Hepatitis C virus</li>
+                        <li class="h6">HIV</li>
+                        <li class="h6">
+                            Human leukocyte antigen (HLA) antibodies, for first-time donors who have ever been pregnant
+                            or for those who’ve been pregnant since their last blood donation
+                        </li>
+
+                    </ol>
+                </div>
+                <div class="col">
+                    <ol style="list-style-type: inherit">
+                        <li class="h6">Human T-lymphotropic virus</li>
+                        <li class="h6">Syphilis</li>
+                        <li class="h6">Trypanosoma cruzi, a parasite that causes Chagas disease</li>
+                        <li class="h6">West Nile virus</li>
+                        <li class="h6">Zika virus</li>
+                    </ol>
+                </div>
+            </div>
+
+            <p>
+                Tattoos, in most states, aren’t a barrier to giving blood, provided that the tattoo artist followed good safety practices
+                (like using sterile needles and not reusing ink).
+                A few states may require a waiting period between when you get a tattoo and when you donate blood, but in general, it’s not an issue.
+            </p>
+        </div>
+        <div id="donation">
+            <h4 class="fw-bold mt-4"><i class="bi bi-bag-heart me-3 fs-5 icon-color"></i><span class="span-border">Donation</span></h4>
+            <p>When it’s time to donate, here’s what will happen:</p>
+            <ol style="list-style-type: inherit">
+                <li class="h6">You’ll go into a donor room where you’ll lie down on a cot.</li>
+                <li class="h6">
+                    A phlebotomist (an employee who draws blood) will clean your arm and insert a new, sterile needle into your vein.
+                    This takes just a few seconds, and it can feel like a quick pinch.
+                </li>
+                <li class="h6">
+                    You’ll donate about 1 pint (one unit) of blood. The process should take less than 10 minutes.
+                    But if you’re donating platelets, red cells, or plasma by apheresis, the process can take much longer: up to 2 hours.
+                </li>
+                <li class="h6">
+                    When you’re done, you’ll raise your donation arm and put a little bit of pressure on it, which helps your blood clot.
+                    Then they’ll put an adhesive strip on your arm.
+                </li>
+            </ol>
+        </div>
+        <div id="refresh">
+            <h4 class="fw-bold mt-4"><i class="bi bi-cup-straw me-3 fs-5 icon-color"></i><span class="span-border">Refreshments</span></h4>
+            <p>
+                After you’re finished, you’ll be given snacks and a drink to help your body get back to normal since you lost some fluids.
+                You’ll want to sit and relax for at least 10 minutes to restore your strength and get some energy back before you leave.
+            </p>
+            <h4 class="fw-bold mt-4"><i class="bi bi-patch-exclamation me-3 fs-5 icon-color"></i><span class="span-border">Side Effects After Donating Blood</span></h4>
+            <p>There aren’t any lasting side effects, but you may temporarily:</p>
+            <ol style="list-style-type: inherit">
+                <li class="h6">Need to hydrate. Drink more non-alcoholic beverages for 24-48 hours after you donate blood.</li>
+                <li class="h6">Need to take it easy. Don’t work out or do any hard physical activity for 24 hours after giving blood.</li>
+                <li class="h6">Feel lightheaded. Lie down for a few minutes until you feel ready to get back up.</li>
+                <li class="h6">Have a little bit of bleeding from the spot where you donated. Raise your arm and apply pressure to that spot for a few minutes.</li>
+                <li class="h6">If you have bruising in that area, use an ice pack on it.</li>
+            </ol>
+        </div>
+    </div>
+</section>

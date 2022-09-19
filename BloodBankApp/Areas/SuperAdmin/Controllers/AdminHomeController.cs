@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using BloodBankApp.Services.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class AdminHomeController : Controller
     {
 
@@ -18,7 +19,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _statisticsService = statisticsService;
             _notyfService = notyfService;
         }
-
+        [Authorize(Policy = Permissions.SuperAdmin.ViewStatistics)]
         public async Task<IActionResult> Index()
         {           
             ViewData["UserRolesData"] = await _statisticsService.GetUserRoleDataAsync();
