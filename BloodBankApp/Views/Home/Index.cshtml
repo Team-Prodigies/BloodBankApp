@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -83,7 +84,7 @@
                         <h5 style="font-weight: 800">How Donations Help</h5>
                     </div>
                     <p style="color: gray">
-                        Every day, blood donors help patients of all ages: accident and burn victims, 
+                        Every day, blood donors help patients of all ages: accident and burn victims,
                         heart surgery
                         and those battling cancer.
                     </p>
@@ -273,3 +274,151 @@
         </div>
     </div>
 </div>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <h1 class="text-center mb-5">Hospitals Where You Can Donate Blood</h1>
+        <div id="map" style="width: 100%; height:500px"></div>
+    </div>
+</div>
+<div>
+    @foreach(var hospital in ViewBag.GetAllHospitals)
+            {
+                <h1>@hospital.HospitalName</h1>
+            }
+</div>
+
+<script>
+
+    var myStyle = [
+    {
+        featureType: "administrative",
+        elementType: "all",
+        stylers: [
+            { visibility: "on" }
+        ]
+    }, {
+        featureType: "landscape.man_made",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.attraction",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.business",
+        elementType: "labels",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.government",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.medical",
+        elementType: "all",
+        stylers: [
+            { visibility: "on" }
+        ]
+    }, {
+        featureType: "poi.place_of_worship",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.school",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "poi.sports_complex",
+        elementType: "labels",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }, {
+        featureType: "road",
+        elementType: "all",
+        stylers: [
+            { visibility: "on" }
+        ]
+    }, {
+        featureType: "transit",
+        elementType: "all",
+        stylers: [
+            { visibility: "off" }
+        ]
+    }
+    ]
+
+
+function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeControlOptions: {
+            mapTypeIds: ['mystyle', google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.TERRAIN]
+        },
+        center: new google.maps.LatLng(42.662914, 21.165503),
+        zoom: 9,
+        mapTypeId: 'mystyle'
+    });
+
+    map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));
+ 
+
+    @for (int i = 0; i < ViewBag.GetAllHospitals.Count; i++)
+    {
+
+
+                    @:addMarker({ lat: parseFloat('@ViewBag.GetAllHospitals[i].Location.Latitude'), lng: parseFloat('@ViewBag.GetAllHospitals[i].Location.Longitude') }, { name: ('@ViewBag.GetAllHospitals[i].HospitalName'), number: ('@ViewBag.GetAllHospitals[i].ContactNumber')});
+                   
+    }
+
+
+
+    function addMarker(coords, contentString) {
+
+
+
+        contentString = '<div class="">' + "Hospital Name:" + "<h6>" + contentString.name + "</h6>" + "Contact Numer: " + "<h6>" + contentString.number + "</h6>" + "</div>"
+         const infowindow = new google.maps.InfoWindow({content: contentString});
+
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            title: 'Hospital',
+
+        });
+
+            marker.addListener("click", () => {
+                infowindow.open({
+                    anchor: marker,
+                    map,
+                    shouldFocus: false,
+                });
+            });
+
+
+    }
+
+
+
+
+
+
+
+    }
+
+
+</script>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK9UFRdqsHtglFgWc8deAWesQaYr-BDcY&callback=initMap">
+</script>
