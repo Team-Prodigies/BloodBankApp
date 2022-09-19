@@ -134,7 +134,7 @@ namespace BloodBankApp.Areas.Services
                     }
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     return IdentityResult.Failed();

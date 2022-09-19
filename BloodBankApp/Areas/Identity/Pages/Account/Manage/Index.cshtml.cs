@@ -78,7 +78,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
             public string UserName { get; set; }
 
             [Display(Name = "Blood Type")]
-            public Guid BloodTypeId { get; set; }
+            public Guid? BloodTypeId { get; set; }
 
             [Display(Name = "City")]
             public Guid CityId { get; set; }
