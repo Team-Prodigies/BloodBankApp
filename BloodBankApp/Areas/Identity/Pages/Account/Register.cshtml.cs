@@ -21,16 +21,19 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
         private readonly ICitiesService _citiesService;
-
+        private readonly IBloodTypesService _bloodTypesService;
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
+            IBloodTypesService bloodTypesService,
             ICitiesService citiesService)
         {
             _usersService = usersService;
             _signInService = signInService;
+            _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
+            BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
         }
 
         [BindProperty]
@@ -102,6 +105,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
 
             ReturnUrl = returnUrl;
 
@@ -130,6 +134,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
             }
             ViewData["City"] = CityList;
+            ViewData["BloodType"] = BloodTypeList;
 
             return Page();
         }

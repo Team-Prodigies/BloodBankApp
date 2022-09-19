@@ -86,17 +86,26 @@
                                 @foreach (var c in Enum.GetValues(typeof(Gender))) {
                                     <div class="form-check">
                                         <label class="form-check-label me-2" asp-for="Input.Gender">@c.ToString().ToTitleCase()</label>
-                                        <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" required/>
+                                        <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" required />
                                     </div>
                                 }
                             </div>
                         </div>
-                    </div>                   
+                    </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.CityId" class="mb-1 mt-2"></label>
                             <select class="form-select" asp-items="ViewBag.City" asp-for="Input.CityId" aria-label="Default select example">
                             </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Input.BloodTypeId" class="mb-1 mt-2"></label>
+                            <select class="form-select" asp-items="ViewBag.BloodType" asp-for="Input.BloodTypeId" aria-label="Default select example">
+                                <option value="">Not selected</option>
+                            </select>
+                            <small>Optional</small>
                         </div>
                     </div>
                 </div>
