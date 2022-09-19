@@ -16,7 +16,7 @@ namespace BloodBankApp.Models
         public Guid? HealthFormQuestionnaireId { get; set; }
         public Gender Gender { get; set; }
         public HealthFormQuestionnaire HealthFormQuestionnaire { get; set; }
-        public Guid BloodTypeId { get; set; }
+        public Guid? BloodTypeId { get; set; }
         public BloodType BloodType { get; set; }
         public Guid CityId { get; set; }
         public City City { get; set; }

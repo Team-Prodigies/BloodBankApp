@@ -55,7 +55,8 @@
                 </div>
                 <div class="form-group mt-3">
                     <label asp-for="Input.BloodTypeId"></label>
-                    <select class="form-select" asp-items="ViewBag.BloodType" asp-for="Input.BloodTypeId" aria-label="Default select example">
+                    <select class="form-select" asp-items="ViewBag.BloodType" asp-for="Input.BloodTypeId">
+                        <option value="">Not selected</option>
                     </select>
                 </div>
                 <div class="form-group mt-3">
