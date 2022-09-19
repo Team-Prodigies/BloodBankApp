@@ -144,7 +144,7 @@ function initMap() {
     });
 
     map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));
-
+    const markerHospital = "/Images/hospital-pin32.png";
 
     @for(int i= 0; i < ViewBag.Location.Count; i++)
             {
@@ -163,15 +163,15 @@ function initMap() {
             position:  coords,
             map: map,
             title: 'Hospital'
+            
         });
     }
-    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 
     marker = new google.maps.Marker({
         position: {lat: parseFloat('@Model.Location.Latitude'), lng: parseFloat('@Model.Location.Longitude')},
         map: map,
         title: 'Hospital',
-        icon: iconBase + 'parking_lot_maps.png'
+        icon: markerHospital
     });
 
     map.addListener("click", (e) => {
@@ -186,7 +186,7 @@ function initMap() {
             position: { lat: lat, lng: lng },
             map: map,
             title: 'Hospital',
-            icon: iconBase + 'parking_lot_maps.png'
+            icon: markerHospital
         });
 
 
