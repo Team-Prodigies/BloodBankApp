@@ -1,5 +1,8 @@
-﻿using System;
+﻿using BloodBankApp.Enums;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BloodBankApp.Models
 {
@@ -10,13 +13,20 @@ namespace BloodBankApp.Models
 
         [Display(Name = "Date sent")]
         public DateTime DateSent { get; set; }
+        public bool Seen { get; set; }
 
         [Required]
         [StringLength(2000)]
         public string Content { get; set; }
+
         public Guid DonorId { get; set; }
-        public Donor Sender { get; set; }
-        public Guid MedicalStaffId { get; set; }
-        public MedicalStaff MedicalStaff { get; set; }
+        public Donor Donor { get; set; }
+
+        public Guid HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        public MessageSender Sender { get; set; }
+
     }
+
 }

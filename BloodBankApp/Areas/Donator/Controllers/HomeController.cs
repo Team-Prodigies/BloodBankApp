@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodBankApp.Areas.Donator.Controllers
 {
     [Area("Donator")]
-    [Authorize]
+    [Authorize(Roles = "Donor")]
     public class HomeController : Controller
     {
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]

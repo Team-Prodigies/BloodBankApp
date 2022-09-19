@@ -33,6 +33,7 @@ namespace BloodBankApp.Mapping
                 opts => opts.MapFrom(src => src.HospitalId));
 
             CreateMap<HospitalModel, Hospital>().ReverseMap();
+            CreateMap<MedicalStaffModel, MedicalStaff>().ReverseMap();
 
             CreateMap<Donor, DonorModel>()
                .ForPath(dest => dest.Locked,

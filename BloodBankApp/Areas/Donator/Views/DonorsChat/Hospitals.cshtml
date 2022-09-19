@@ -1,0 +1,63 @@
+﻿@model List<HospitalModel>
+
+<section class="section">
+    <div class="row">
+        @foreach (var hospital in Model) {
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="d-flex">
+                            <div class="icon mx-2">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h5 class="text-primary">@hospital.HospitalName</h5>
+                        </div>
+                        <div class="m-4">
+                            <p>Contact number: @hospital.ContactNumber</p>
+                            <p>Hospital code: @hospital.HospitalCode</p>
+                            <p>Location: @hospital.City.CityName</p>
+                            <a class="btn btn-outline-info" asp-controller="DonorsChat" asp-action="DonorChatRoom" asp-route-donorId="@ViewBag.DonorId" asp-route-hospitalId="@hospital.HospitalId">Chat Room</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">First Page</a>
+        </li>
+        @if (ViewBag.pageNumber < 6) {
+            for (int i = 1; i <= 6; i++) {
+                if (i == ViewBag.pageNumber) {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                } else {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals"
+                           asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+            }
+        } else {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++) {
+                if
+                (i == ViewBag.pageNumber) {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                } else {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>
+

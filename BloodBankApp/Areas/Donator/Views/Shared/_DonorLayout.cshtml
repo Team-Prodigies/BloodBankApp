@@ -233,6 +233,12 @@
                     <span>My Donations</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">
+                    <i class="bi bi-card-list" style="color: black"></i>
+                    <span>Chat Rooms</span>
+                </a>
+            </li>
         </ul>
     </aside>
 
@@ -254,6 +260,8 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/js/NameValidate.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/signalr/donorChat.js"></script>
     @await Component.InvokeAsync("Notyf")
 </body>
 </html>

@@ -30,5 +30,6 @@ namespace BloodBankApp.Models
         public ICollection<MedicalStaff> MedicalStaff { get; set; } = new List<MedicalStaff>();
         public ICollection<BloodReserve> BloodReserves { get; set; } = new List<BloodReserve>();
         public ICollection<DonationPost> DonationPosts { get; set; } = new List<DonationPost>();
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

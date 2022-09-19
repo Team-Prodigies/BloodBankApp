@@ -4,15 +4,15 @@ using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System;
+using BloodBankApp.Data;
 
 namespace BloodBankApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IStatisticsService _statisticsService;
-        
-        public HomeController(IStatisticsService statisticsService)
-        {
+        public HomeController(IStatisticsService statisticsService) {
             _statisticsService = statisticsService;
         }
         public async Task<IActionResult> Index()

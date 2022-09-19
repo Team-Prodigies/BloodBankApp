@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Models
@@ -18,6 +19,6 @@ namespace BloodBankApp.Models
         public DateTime DateOfBirth { get; set; }
         public bool Locked { get; set; }
         public virtual Donor Donor { get; set; }
-        public virtual MedicalStaff MedicalStaff { get; set; }
+        public virtual MedicalStaff MedicalStaff { get; set; }      
     }
 }

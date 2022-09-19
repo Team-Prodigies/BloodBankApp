@@ -64,6 +64,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<MedicalStaffModel>> GetAllHospitalAdminsByHospitalId(Guid hospitalId)
+        {
+            var hospitalAdmins = await _context.MedicalStaffs
+           .Where(hospital => hospital.HospitalId == hospitalId)
+           .Include(user => user.User)
+           .ToListAsync();
+
+            return _mapper.Map<List<MedicalStaffModel>>(hospitalAdmins);
+        }
+
         public async Task<List<HospitalModel>> GetAllHospitals()
         {
             var hospitals= await _context.Hospitals.ToListAsync();

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BloodBankApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BloodBankApp.Models
+namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
-    public class MedicalStaff
+    public class MedicalStaffModel
     {
-        [Key]
         public Guid MedicalStaffId { get; set; }
         public virtual User User { get; set; }
         public Guid HospitalId { get; set; }
