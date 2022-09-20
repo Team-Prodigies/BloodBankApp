@@ -36,13 +36,10 @@
                     </div>
                     <div class="row mb-3">
                         <label asp-for="Location" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-4">
-                            <label asp-for="Location.Longitude" class="col-sm-4 col-form-label"></label>
-                            <input asp-for="Location.Longitude" class="form-control" required />
-                        </div>
-                        <div class="col-sm-4">
-                            <label asp-for="Location.Latitude" class="col-sm-3 col-form-label"></label>
-                            <input asp-for="Location.Latitude" class="form-control" required />
+                        <div id="map" style="width:100%; height: 500px"></div>
+                        <div class="col-sm-12 d-flex justify-content-center mt-4 d-none">
+                            <input asp-for="Location.Latitude" id="latitude" class="form-control" required />
+                            <input asp-for="Location.Longitude" id="longitude" class="form-control" required />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -59,5 +56,8 @@
         </div>
     </div>
 </div>
-
+<script src="~/js/map.js"></script>
 <script src="~/js/AvailableHospitalCode.js"></script>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK9UFRdqsHtglFgWc8deAWesQaYr-BDcY&callback=initMap">
+</script>

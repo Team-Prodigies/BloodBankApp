@@ -15,6 +15,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task EditHospitalForHospitalAdmin( EditHospitalModel hospital);
         Task<List<HospitalModel>> GetHospitals(int pageNumber);
         Task<List<HospitalModel>> GetAllHospitals();
+        Task<List<Location>> GetAllLocations();
         Task<bool> CreateHospital(HospitalModel model);
         Task EditHospital(HospitalModel hospital);
         Task<HospitalModel> GetHospital(Guid hospitalId);
