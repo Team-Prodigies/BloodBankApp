@@ -1,5 +1,4 @@
 ﻿
-let map;
 var myStyle = [
     {
         featureType: "administrative",
@@ -87,7 +86,8 @@ function initMap() {
     marker = new google.maps.Marker({
         position: { lat: 42.0002, lng: 20.001 },
         map: map,
-        title: 'Hospital'
+        title: 'Hospital',
+        icon: "/Images/HospitalIconMarker.png"
     });
 
     map.addListener("click", (e) => {
@@ -101,7 +101,8 @@ function initMap() {
         marker = new google.maps.Marker({
             position: { lat: lat, lng: lng },
             map: map,
-            title: 'Hospital'
+            title: 'Hospital',
+            icon: "/Images/HospitalIconMarker.png"
         });
 
     });
