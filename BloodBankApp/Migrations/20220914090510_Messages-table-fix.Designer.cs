@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220914090510_Messages-table-fix")]
+    partial class Messagestablefix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace BloodBankApp.Migrations
                     b.Property<Guid>("DonorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BloodTypeId")
+                    b.Property<Guid>("BloodTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CityId")
@@ -614,7 +616,8 @@ namespace BloodBankApp.Migrations
                         .WithMany("Donors")
                         .HasForeignKey("BloodTypeId")
                         .HasConstraintName("DonorsBloodTypes")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BloodBankApp.Models.City", "City")
                         .WithMany("Donors")

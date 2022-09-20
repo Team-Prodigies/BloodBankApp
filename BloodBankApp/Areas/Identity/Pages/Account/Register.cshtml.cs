@@ -20,9 +20,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
     {
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
-        private readonly IBloodTypesService _bloodTypesService;
         private readonly ICitiesService _citiesService;
-
+        private readonly IBloodTypesService _bloodTypesService;
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
@@ -96,12 +95,11 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             public Gender Gender { get; set; }
 
             [Required]
-            [Display(Name = "Blood type")]
-            public Guid BloodTypeId { get; set; }
-
-            [Required]
             [Display(Name = "City")]
             public Guid CityId { get; set; }
+
+            [Display(Name = "Blood type")]
+            public Guid? BloodTypeId { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)

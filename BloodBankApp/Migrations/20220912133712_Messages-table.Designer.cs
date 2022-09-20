@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220912133712_Messages-table")]
+    partial class Messagestable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace BloodBankApp.Migrations
                     b.Property<Guid>("DonorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BloodTypeId")
+                    b.Property<Guid>("BloodTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CityId")
@@ -271,23 +273,20 @@ namespace BloodBankApp.Migrations
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DonorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HospitalId")
+                    b.Property<Guid?>("ReceiverId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Seen")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Sender")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("SenderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("DonorId");
+                    b.HasIndex("ReceiverId");
 
-                    b.HasIndex("HospitalId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -614,7 +613,8 @@ namespace BloodBankApp.Migrations
                         .WithMany("Donors")
                         .HasForeignKey("BloodTypeId")
                         .HasConstraintName("DonorsBloodTypes")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BloodBankApp.Models.City", "City")
                         .WithMany("Donors")
@@ -692,21 +692,19 @@ namespace BloodBankApp.Migrations
 
             modelBuilder.Entity("BloodBankApp.Models.Message", b =>
                 {
-                    b.HasOne("BloodBankApp.Models.Donor", "Donor")
-                        .WithMany("Messages")
-                        .HasForeignKey("DonorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.HasOne("BloodBankApp.Models.User", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("BloodBankApp.Models.Hospital", "Hospital")
-                        .WithMany("Messages")
-                        .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.HasOne("BloodBankApp.Models.User", "Sender")
+                        .WithMany("SendMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Donor");
+                    b.Navigation("Receiver");
 
-                    b.Navigation("Hospital");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.Notification", b =>
@@ -812,8 +810,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("BloodDonations");
 
                     b.Navigation("HealthFormQuestionnaire");
-
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.HealthFormQuestionnaire", b =>
@@ -828,8 +824,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("DonationPosts");
 
                     b.Navigation("MedicalStaff");
-
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.Location", b =>
@@ -842,6 +836,10 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Donor");
 
                     b.Navigation("MedicalStaff");
+
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SendMessages");
                 });
 #pragma warning restore 612, 618
         }

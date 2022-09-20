@@ -15,23 +15,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services {
     public class HospitalAdminService : IHospitalAdminService {
-
-        private readonly ApplicationDbContext _context;
-        private readonly INotyfService _notyfService;
         private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public HospitalAdminService(
-           ApplicationDbContext context,
-           INotyfService notyfService,
            UserManager<User> userManager,
-           IMapper mapper,
            IHttpContextAccessor httpContextAccessor) 
             {
-            _context = context;
-            _notyfService = notyfService;
             _userManager = userManager;
-            _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             }
 

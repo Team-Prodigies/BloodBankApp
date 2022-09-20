@@ -20,10 +20,12 @@ using BloodBankApp.Areas.Services;
 using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using BloodBankApp.Areas.SuperAdmin.Permission;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using BloodBankApp.Areas.HospitalAdmin.Services;
-using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.Permission;
+using BloodBankApp.Hubs;
+
 
 namespace BloodBankApp
 {
@@ -64,6 +66,7 @@ namespace BloodBankApp
             services.AddScoped<ISuggestionsService, SuggestionsService>();
             services.AddScoped<IAvailabilityService, AvailabilityService>();
             services.AddScoped<IHospitalAdminService, HospitalAdminService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -79,6 +82,8 @@ namespace BloodBankApp
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +116,8 @@ namespace BloodBankApp
                 endpoints.MapControllerRoute(
                  name: "Donator",
                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/chatHub");
 
                 endpoints.MapControllerRoute(
                     name: "default",
