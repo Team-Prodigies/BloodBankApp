@@ -62,6 +62,7 @@ namespace BloodBankApp
             services.AddScoped<ISuggestionsService, SuggestionsService>();
             services.AddScoped<IAvailabilityService, AvailabilityService>();
             services.AddScoped<IHospitalAdminService, HospitalAdminService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddRazorPages();
             services.AddNotyf(config => {

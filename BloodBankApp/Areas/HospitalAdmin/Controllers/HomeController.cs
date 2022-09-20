@@ -67,7 +67,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             }
             var getUser = _userManager.GetUserAsync(User);
             
-            if(getUser.Result.Id != hospitalModel.Id || getUser.Result.UserName != hospitalModel.UserName) {
+            if(getUser.Result.Id != hospitalModel.Id) {
                 _notyfService.Error("Your changes are not right.");
                 return View(nameof(Profile));
             }

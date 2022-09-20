@@ -1,0 +1,75 @@
+﻿@model List<DonationPost>
+<style>
+        .dropbtn {
+            background-color: #7790b4;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #7790b4;
+            border-radius: 5px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-radius: 5px;
+        }
+    </style>
+<h1>Manage Posts</h1>
+<div class="dropdown">
+    <button class="dropbtn">@ViewBag.FilterBy</button>
+    <div class="dropdown-content">
+        <a asp-controller="Posts" asp-action="ManagePosts" asp-route-filterBy="Normal">Normal</a>
+        <a asp-controller="Posts" asp-action="ManagePosts" asp-route-filterBy="Date">Date</a>
+        <a asp-controller="Posts" asp-action="ManagePosts" asp-route-filterBy="Active">Active</a>
+        <a asp-controller="Posts" asp-action="ManagePosts" asp-route-filterBy="InActive">InActive</a>
+        
+    </div>
+</div>
+<br /><br />
+<div class="row justify-content-start">
+    @foreach (var getPost in Model) {
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@getPost.Hospital.HospitalName</h5>
+                    <p class="card-text">@getPost.Description</p>
+                    <p class="card-text">Tipi: @getPost.BloodType.BloodTypeName</p>
+                    <p class="card-text">Sasia: @getPost.AmountRequested</p>
+                    <p class="card-text">Data: @getPost.DateRequired</p>
+                    @if (((int)getPost.PostStatus) == 1) {
+                        <p class="card-text text-success">Statusi: @getPost.PostStatus</p>
+                    } else {
+                        <p class="card-text text-danger">Statusi: @getPost.PostStatus</p>
+                    }
+                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.NotificationId">Edit</a>
+                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.NotificationId">Delete</a>
+                </div>
+            </div>
+        </div>  
+     }
+</div>
