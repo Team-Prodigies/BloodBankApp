@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Models;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {
