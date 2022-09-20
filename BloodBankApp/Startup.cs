@@ -66,6 +66,7 @@ namespace BloodBankApp
             services.AddScoped<ISuggestionsService, SuggestionsService>();
             services.AddScoped<IAvailabilityService, AvailabilityService>();
             services.AddScoped<IHospitalAdminService, HospitalAdminService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
