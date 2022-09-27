@@ -7,6 +7,7 @@ using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -50,15 +51,31 @@ namespace BloodBankApp.Areas.Services
         {
             user.Name = user.Name.ToTitleCase();
             user.Surname = user.Surname.ToTitleCase();
-            var superAdminAccount = _mapper.Map<User>(user);
+            var newUser = _mapper.Map<User>(user);
 
-            var result = await _userManager.CreateAsync(superAdminAccount, user.Password);
+            var result = await _userManager.CreateAsync(newUser, user.Password);
 
             if (result.Succeeded)
             {
-                return await _userManager.AddToRoleAsync(superAdminAccount, "SuperAdmin");
+                return await AddUserToRoles(newUser, user.Roles);
             }
             return result;
+        }
+
+        private async Task<IdentityResult> AddUserToRoles(User user, List<SelectedRoleModel> roles)
+        {
+            foreach (var role in roles)
+            {
+                if(role.IsSelected && !role.RoleName.Equals("Donor") && !role.RoleName.Equals("HospitalAdmin"))
+                {
+                    var result = await _userManager.AddToRoleAsync(user, role.RoleName);
+                    if (!result.Succeeded)
+                    {
+                        return result;
+                    }
+                }
+            }
+            return IdentityResult.Success;
         }
 
         public async Task<IdentityResult> EditSuperAdmin(ProfileAdminModel user)

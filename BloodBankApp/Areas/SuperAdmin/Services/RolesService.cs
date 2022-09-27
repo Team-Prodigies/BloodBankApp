@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using BloodBankApp.Areas.Services.Interfaces;
-using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -21,13 +21,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IUsersService _usersService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService)
+        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService, IMapper mapper)
         {
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
             _usersService = usersService;
+            _mapper = mapper;
+        }
+
+        public async Task<List<SelectedRoleModel>> GetAllSelectedRoles()
+        {
+            var roles = await GetAllRoles();
+            var selectedRoles = new List<SelectedRoleModel>();
+            roles.ForEach(role => selectedRoles.Add(_mapper.Map<SelectedRoleModel>(role)));
+            return selectedRoles;
         }
 
         public async Task<IdentityResult> CreateRole(PermissionViewModel model)

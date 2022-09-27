@@ -1,11 +1,9 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
+﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
