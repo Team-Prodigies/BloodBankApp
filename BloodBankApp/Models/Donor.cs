@@ -20,6 +20,8 @@ namespace BloodBankApp.Models
         public BloodType BloodType { get; set; }
         public Guid CityId { get; set; }
         public City City { get; set; }
+        public Guid? CodeId { get; set; }
+        public Code Code { get; set; }
         public ICollection<BloodDonation> BloodDonations { get; set; } = new List<BloodDonation>();
         public virtual ICollection<Message> Messages { get; set; }
     }
