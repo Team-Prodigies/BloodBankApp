@@ -90,6 +90,10 @@ namespace BloodBankApp.Mapping
             CreateMap<User, ProfileAdminModel>();
 
             CreateMap<EditHospitalModel, Hospital>().ReverseMap();
+
+            CreateMap<SelectedRoleModel, IdentityRole<Guid>>()
+                .ForPath(dest => dest.Name,
+                    opts => opts.MapFrom(src => src.RoleName)).ReverseMap();
         }
     }
 }
