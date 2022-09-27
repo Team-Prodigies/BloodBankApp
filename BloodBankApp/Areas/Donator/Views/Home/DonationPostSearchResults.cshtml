@@ -1,0 +1,78 @@
+﻿@model List<DonationPost>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+<h1>Search results for "@ViewBag.SearchTerm"</h1>
+<div class="d-flex justify-content-between">
+    <a asp-controller="Home" asp-action="Index">Back to all</a>
+
+    <div class="search-bar row g-3">
+        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Home" asp-action="DonationPostSearchResults">
+            <input type="text" placeholder="Search by Hospital Name" name="searchTerm" class="form-control" list="hospitalsSuggestions" required id="searchHospital" autocomplete="off">
+            <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+        </form>
+
+        <datalist id="hospitalsSuggestions"></datalist>
+    </div>
+    </div>
+    <script>
+        var typingTimer;
+        var doneTypingInterval = 1000;
+        var $input = $('#searchHospital');
+
+        //on keyup, start the countdown
+        $input.on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+        $input.on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+
+        function doneTyping() {
+
+            $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
+
+                if (status == 'success') {
+
+                    $("#hospitalsSuggestions").empty();
+
+                    $.each(data, function (index, value) {
+                        console.log('<option value="' + value + '"></option>');
+
+                        $("#hospitalsSuggestions")
+                            .append(
+                                $('<option value="' + value + '"></option>')
+                            );
+                    });
+                }
+            });
+        }
+    </script>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            @foreach (var posts in Model)
+            {
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: red">@posts.Hospital.HospitalName</h5>
+                            <p class="card-text">BloodType required:<span style="color: #d1001f"> @posts.BloodType.BloodTypeName </span></p>
+                            <p class="card-text">Description: <span style="color: #d1001f"> @posts.Description </span></p>
+                            <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
+                            <p class="card-text">Data Required: @posts.DateRequired</p>
+                            <div class="text-center">
+                                <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

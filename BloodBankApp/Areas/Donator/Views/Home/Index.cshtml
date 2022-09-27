@@ -1,76 +1,126 @@
-﻿<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+﻿@model List<DonationPost>
+<style>
+    .dropbtn {
+        background-color: #7790b4;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #7790b4;
+        border-radius: 5px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        border-radius: 5px;
+    }
+</style>
+<div class="d-flex justify-content-between">
+    <div class="dropdown">
+        <button class="dropbtn">@ViewBag.FilterBy</button>
+        <div class="dropdown-content">
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="Normal">Normal</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="A+">A+</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="A-">A-</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="B+">B+</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="B-">B-</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="AB+">AB+</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="AB-">AB-</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="O+">O+</a>
+            <a asp-controller="Home" asp-action="Index" asp-route-filterBy="O-">O-</a>
+        </div>
+    </div>
+    <div class="search-bar row g-3">
+        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Home" asp-action="DonationPostSearchResults">
+            <input type="text" placeholder="Search by Hospital Name" name="searchTerm" class="form-control" required list="hospitalsSuggestions" id="searchHospital" autocomplete="off">
+            <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+        </form>
+
+        <datalist id="hospitalsSuggestions"></datalist>
+    </div>
+</div>
+<script>
+    var typingTimer;
+    var doneTypingInterval = 1000;
+    var $input = $('#searchHospital');
+
+    //on keyup, start the countdown
+    $input.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    function doneTyping() {
+
+        $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
+
+            if (status == 'success') {
+
+                $("#hospitalsSuggestions").empty();
+
+                $.each(data, function (index, value) {
+                    console.log('<option value="' + value + '"></option>');
+
+                    $("#hospitalsSuggestions")
+                        .append(
+                            $('<option value="' + value + '"></option>')
+                        );
+                });
+            }
+        });
+    }
+</script>
+
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
     <div class="container ms-2 me-2 w-75 mt-5 mb-5">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <div class="d-flex flex-row">
-                                <h6 class="card-title">Blood type: A+</h6>
-                                <h6 class="card-title">Date required: 09.09.2022</h6>
-                                <h6 class="card-title">Location: Ferizaj</h6>
+            @foreach (var posts in Model)
+            {
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: red">@posts.Hospital.HospitalName</h5>
+                            <p class="card-text">BloodType required:<span style="color: #d1001f"> @posts.BloodType.BloodTypeName </span></p>
+                            <p class="card-text">Description: <span style="color: #d1001f"> @posts.Description </span></p>
+                            <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
+                            <p class="card-text">Data Required: @posts.DateRequired</p>
+                            <div class="text-center">
+                                <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
                             </div>
                         </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
-
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
-
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
-
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
-
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>

@@ -63,6 +63,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return false;
         }
 
+        public async Task<List<DonationPost>> GetAllPosts()
+        {
+            var posts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+            return posts;
+        }
+
         public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
             List<DonationPost> getPost;
 
@@ -87,6 +93,60 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
 
             var result = _mapper.Map<List<DonationPost>>(getPost);
             return result;
+        }
+
+        public async Task<List<DonationPost>> GetPostsByBloodType(string filterBy = "Normal")
+        {
+            List<DonationPost> getPosts;
+
+            switch (filterBy)
+            {
+                case "A+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "A+" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "A-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "A-" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "B+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "B+" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "B-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "B-" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "AB+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "AB+" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "AB-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "AB-" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "O+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "O+" && x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+                case "O-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "O-").ToListAsync();
+                    break;
+                case "Normal":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+
+                default:
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+                    break;
+            }
+            var result = _mapper.Map<List<DonationPost>>(getPosts);
+            return result;
+        }
+
+        public async Task<List<DonationPost>> GetPostsBySearch(string searchTerm)
+        {
+            var posts = await _context.DonationPosts
+                .Include(x => x.Hospital)
+                .Include(x => x.BloodType)
+                .Where(x => x.Hospital.HospitalName.Replace(" ", "").ToUpper()
+                .Contains(searchTerm.Replace(" ", "").ToUpper()))
+                .ToListAsync();
+
+            return posts;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers {
             }
 
             _notyfService.Success("Post edited!");
-            return View(nameof(ManagePosts));
+            return RedirectToAction(nameof(ManagePosts));
         }
 
         public async Task<IActionResult> DeletePost(Guid notificationId) {
