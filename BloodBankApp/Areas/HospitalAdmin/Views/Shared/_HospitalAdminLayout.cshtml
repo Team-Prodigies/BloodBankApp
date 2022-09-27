@@ -251,6 +251,18 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#donators-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Donators</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="donators-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="Donators" asp-action="ManageDonators">
+                            <i class="bi bi-circle"></i><span>Manage Donators</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#donors-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Donations</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>

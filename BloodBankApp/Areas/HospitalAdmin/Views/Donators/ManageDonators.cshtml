@@ -1,0 +1,42 @@
+﻿@model List<DonatorModel>
+
+@{
+    ViewData["Title"] = "ManageDonators";
+}
+
+<h1>Manage Donators</h1>
+
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all donors that have donated blood</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Personal No.</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Blood Type</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Account Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donator in Model)
+                {
+                    <tr>
+                        <td>@donator.Name</td>
+                        <td>@donator.Surname</td>
+                        <td>@donator.DateOfBirth.ToShortDateString()</td>
+                        <td>@donator.PersonalNumber</td>
+                        <td>@donator.Gender</td>
+                        <td>@donator.BloodTypeName</td>
+                        <td>@donator.CityName</td>
+                        <td>@donator.Locked</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
