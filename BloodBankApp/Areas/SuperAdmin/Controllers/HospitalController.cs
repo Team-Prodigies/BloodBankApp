@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
+using System.Collections.Generic;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
 
     public class HospitalController : Controller
     {
@@ -29,12 +31,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _notyfService = notyfService;
         }
 
+        [Authorize(Policy = Permissions.Hospitals.Create)]
         public IActionResult CreateHospital()
         {
             ViewData["CityId"] = _cityList;
             return View();
         }
 
+        [Authorize(Policy = Permissions.Hospitals.View)]
         public async Task<IActionResult> ManageHospitals(int pageNumber = 1)
         {
             var hospitals = await _hospitalService.GetHospitals(pageNumber);
@@ -43,6 +47,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Hospitals.Create)]
         public async Task<IActionResult> CreateHospital(HospitalModel model)
         {
             if (!ModelState.IsValid)
@@ -66,7 +71,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> EditHospital(Guid hospitalId) 
+        [Authorize(Policy = Permissions.Hospitals.Edit)]
+        public async Task<IActionResult> EditHospital(Guid hospitalId)
         {
             var hospital = await _hospitalService.GetHospital(hospitalId);
            
@@ -76,16 +82,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 return RedirectToAction(nameof(ManageHospitals));
             }
             ViewData["CityId"] = _cityList;
+            ViewData["Location"] = await _hospitalService.GetAllLocations();
             var editHospital = _mapper.Map<HospitalModel>(hospital);
             return View(editHospital);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditHospital(HospitalModel hospital) 
+        [Authorize(Policy = Permissions.Hospitals.Edit)]
+        public async Task<IActionResult> EditHospital(HospitalModel hospital)
         {
 
             if (!ModelState.IsValid) {
-                ViewData["CityId"] = _cityList;
+                ViewData["CityId"] = _cityList; 
                 return View(hospital);
             }
 
@@ -101,15 +109,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                     return View(hospital);
                 }
             }
-
-          
             await _hospitalService.EditHospital(hospital);
             _notyfService.Success("Hospital updated successfully!");
             return RedirectToAction(nameof(EditHospital), new { hospital.HospitalId });
         }
 
         [HttpGet]
-        public async Task<IActionResult> HospitalSearchResults(string searchTerm, int pageNumber = 1) 
+        [Authorize(Policy = Permissions.Hospitals.View)]
+        public async Task<IActionResult> HospitalSearchResults(string searchTerm, int pageNumber = 1)
         {
             if (searchTerm == null || searchTerm.Trim() == "") {
                 return RedirectToAction(nameof(ManageHospitals));

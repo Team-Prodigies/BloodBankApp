@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BloodBankApp.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,11 +19,14 @@ namespace BloodBankApp.Models
         [StringLength(2000)]
         public string Content { get; set; }
 
-        public Guid? SenderId { get; set; }
-        public User Sender { get; set; }
+        public Guid DonorId { get; set; }
+        public Donor Donor { get; set; }
 
-        public Guid? ReceiverId { get; set; }
-        public User Receiver { get; set; }
+        public Guid HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        public MessageSender Sender { get; set; }
 
     }
+
 }

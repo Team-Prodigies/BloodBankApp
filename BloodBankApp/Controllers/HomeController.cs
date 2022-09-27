@@ -4,30 +4,39 @@ using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System;
-using BloodBankApp.Data;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IStatisticsService _statisticsService;
-        public HomeController(IStatisticsService statisticsService) {
+        private readonly IHospitalService _hospitalService;
+
+        public HomeController(IStatisticsService statisticsService, IHospitalService hospitalService)
+        {
             _statisticsService = statisticsService;
+            _hospitalService = hospitalService;
         }
         public async Task<IActionResult> Index()
         {
             ViewData["UsersCount"] = await _statisticsService.GetUsersCountAsync();
             ViewData["HospitalCount"] =await _statisticsService.GetHospitalsCountAsync();
             ViewData["AmountOfDonations"] = await _statisticsService.GetAmountOfBloodDonatedAsync();
+            ViewData["Location"] = await _hospitalService.GetAllLocations();
+            ViewData["GetAllHospitals"] = await _hospitalService.GetAllHospitals();
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult DonationProcess()
         {
             return View();
         }
         public IActionResult AboutUs()
+        {
+            return View();
+        }
+        public IActionResult DonationBenefits()
         {
             return View();
         }

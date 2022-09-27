@@ -1,4 +1,4 @@
-﻿@inject UserManager<User> UserManager
+@inject UserManager<User> UserManager
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +25,7 @@
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/css/style.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 
 </head>
 <body>
@@ -162,41 +163,41 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown pe-3">
-                    
-                            @{
-                                var user = UserManager.GetUserAsync(User);
-                                string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
-                            }
-                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                                <img src="@initialsUrl" alt="Profile" class="rounded-circle">
-                                <span class="d-none d-md-block dropdown-toggle ps-2">@user.Result.Name @user.Result.Surname</span>
+
+                    @{
+                        var user = UserManager.GetUserAsync(User);
+                        string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
+                    }
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="@initialsUrl" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">@user.Result.Name @user.Result.Surname</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>@user.Result.Name @user.Result.Surname</h6>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                                <li class="dropdown-header">
-                                    <h6>@user.Result.Name @user.Result.Surname</h6>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <i class="bi bi-person"></i>
-                                        <span>My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                        </form>
-                                    </a>
-                                </li>
-                         
-            </ul>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </a>
+                        </li>
+
+                    </ul>
         </nav>
     </header>
     <aside id="sidebar" class="sidebar">
@@ -222,20 +223,31 @@
             <li class="nav-item"> <hr class="nav-link" /></li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#hospitals-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Hospital</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="hospitals-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="Hospital" asp-action="ManageHospital">
+                            <i class="bi bi-circle"></i><span>Manage Hospital</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#hospitals-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Posts</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="hospitals-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a>
+                        <a asp-area="HospitalAdmin" asp-controller="Posts" asp-action="CreatePosts">
                             <i class="bi bi-circle"></i><span>Create new post</span>
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a asp-area="HospitalAdmin" asp-controller="Posts" asp-action="ManagePosts">
                             <i class="bi bi-circle"></i><span>Manage posts</span>
                         </a>
                     </li>
-
                 </ul>
             </li>
             <li class="nav-item">
@@ -281,6 +293,9 @@
     <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/php-email-form/validate.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/signalr/hospitalAdminChat.js"></script>
+
+@await Component.InvokeAsync("Notyf")
+
 </body>
 </html>
 

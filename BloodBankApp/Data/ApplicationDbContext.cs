@@ -154,16 +154,16 @@ namespace BloodBankApp.Data
            .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Message>()
-           .HasOne(b => b.Sender)
-           .WithMany(b => b.SendMessages)
-           .HasForeignKey(b => b.SenderId)
-           .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(bc => bc.Donor)
+            .WithMany(b => b.Messages)
+            .HasForeignKey(bc => bc.DonorId)
+            .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Message>()
-           .HasOne(b => b.Receiver)
-           .WithMany(b => b.ReceivedMessages)
-           .HasForeignKey(b => b.ReceiverId)
-           .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(bc => bc.Hospital)
+            .WithMany(c => c.Messages)
+            .HasForeignKey(bc => bc.HospitalId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

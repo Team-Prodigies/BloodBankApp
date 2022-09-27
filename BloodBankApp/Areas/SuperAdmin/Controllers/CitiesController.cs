@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
     public class CitiesController : Controller
     {
         private readonly ICitiesService _citiesService;
@@ -21,14 +21,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _citiesService = citiesService;
             _notyfService = notyfService;
         }
-
+        
+        [Authorize(Policy = Permissions.Cities.View)]
         public async Task<IActionResult> Cities()
+
         {
             var cities = await _citiesService.GetCities();
             return View(cities.ToList());
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Cities.Create)]
         public async Task<IActionResult> AddNewCity(CityModel city)
         {
             if (!ModelState.IsValid)
@@ -46,12 +49,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.Cities.Create)]
         public IActionResult AddNewCity()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Cities.Edit)]
         public async Task<IActionResult> EditCity(Guid cityId, City city)
         {
             if (!ModelState.IsValid)
@@ -74,6 +79,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.Cities.Edit)]
         public async Task<IActionResult> EditCity(Guid cityId)
         {
             var editCity = await _citiesService.GetCity(cityId);

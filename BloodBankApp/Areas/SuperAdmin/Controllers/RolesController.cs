@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class RolesController : Controller
     {
         private readonly IRolesService _rolesService;
@@ -23,6 +24,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             _notyfService = notyfService;
         }
 
+        [Authorize(Policy = Permissions.Roles.View)]
         public async Task<IActionResult> AllRoles()
         {
             var roles = await _rolesService.GetAllRoles();
@@ -30,17 +32,20 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
+        [Authorize(Policy = Permissions.Roles.Create)]
+        public async Task<IActionResult> CreateRole()
         {
-            return View();
+            var model = await _rolesService.GetRolePermissions(null);
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRole(RoleModel model)
+        [Authorize(Policy = Permissions.Roles.Create)]
+        public async Task<IActionResult> CreateRole(PermissionViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             var check = await _rolesService.CreateRole(model);
             if (!check.Succeeded)
@@ -52,13 +57,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                         ModelState.AddModelError(error.Code, error.Description);
                     }
                 }
-                return View();
+                _notyfService.Error("Failed to create role");
+                return View(model);
             }
             _notyfService.Success("Role added successfully!");
             return RedirectToAction(nameof(AllRoles));
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.Roles.Edit)]
         public async Task<IActionResult> EditRole(Guid id)
         {
             var role = await _rolesService.GetRole(id);
@@ -73,16 +80,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Roles.Edit)]
         public async Task<IActionResult> EditRole(RoleModel role, Guid id)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(role);
             }
             if (role.Id != id)
             {
                 _notyfService.Warning("Role was not found");
-                return View();
+                return View(role);
             }
 
             var dbRole = await _rolesService.GetRole(id);
@@ -90,7 +98,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             if (dbRole == null)
             {
                 _notyfService.Warning("Role was not found");
-                return View();
+                return View(role);
             }
             dbRole.Name = role.RoleName;
 
@@ -105,7 +113,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                         ModelState.AddModelError(error.Code, error.Description);
                     }
                 }
-                return View();
+                _notyfService.Error("Role could not be updated");
+                return View(role);
             }
             _notyfService.Success("Role was updated!");
             return RedirectToAction(nameof(AllRoles));

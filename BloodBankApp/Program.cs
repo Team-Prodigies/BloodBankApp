@@ -1,5 +1,6 @@
 using BloodBankApp.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +24,8 @@ namespace BloodBankApp
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedData(context);
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+                await Seed.SeedData(context, roleManager);
             }
             catch (Exception ex)
             {

@@ -14,6 +14,7 @@ using BloodBankApp.Areas.Identity.Services.Interfaces;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.ExtensionMethods;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
+using Microsoft.AspNetCore.Http;
 
 namespace BloodBankApp.Areas.Services
 {
@@ -25,6 +26,7 @@ namespace BloodBankApp.Areas.Services
         private readonly IDonorsService _donorsService;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UsersService(
             IMedicalStaffService medicalStaffService,
@@ -32,7 +34,8 @@ namespace BloodBankApp.Areas.Services
             ApplicationDbContext context,
             IDonorsService donorsService,
             UserManager<User> userManager,
-            IMapper mapper)
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor)
         {
             _medicalStaffService = medicalStaffService;
             _signInManager = signInManager;
@@ -40,6 +43,7 @@ namespace BloodBankApp.Areas.Services
             _donorsService = donorsService;
             _userManager = userManager;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IdentityResult> AddSuperAdmin(SuperAdminModel user)
@@ -57,6 +61,29 @@ namespace BloodBankApp.Areas.Services
             return result;
         }
 
+        public async Task<IdentityResult> EditSuperAdmin(ProfileAdminModel user)
+        {
+            user.Name = user.Name.ToTitleCase();
+            user.Surname = user.Surname.ToTitleCase();
+            var superAdmin = await GetUser(_httpContextAccessor.HttpContext.User);
+            superAdmin.Name = user.Name;
+            superAdmin.Surname = user.Surname;
+            superAdmin.UserName = user.UserName;
+            superAdmin.DateOfBirth = user.DateOfBirth;
+            superAdmin.Email = user.Email;
+
+            var result = await _userManager.UpdateAsync(superAdmin);
+
+            return result;
+        }
+
+        public async Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+
+            return result;
+        }
+
         public async Task<User> GetUser(ClaimsPrincipal principal)
         {
             return await _userManager.GetUserAsync(principal);
@@ -70,16 +97,6 @@ namespace BloodBankApp.Areas.Services
         public string GetUserId(ClaimsPrincipal principal)
         {
             return _userManager.GetUserId(principal);
-        }
-
-        public async Task<IdentityResult> SetPhoneNumber(User user, string phoneNumber)
-        {
-            return await _userManager.SetPhoneNumberAsync(user, phoneNumber);
-        }
-
-        public async Task<IdentityResult> SetUserName(User user, string username)
-        {
-            return await _userManager.SetUserNameAsync(user, username);
         }
 
         public async Task<User> GetUserByUsername(string username)
@@ -117,7 +134,7 @@ namespace BloodBankApp.Areas.Services
                     }
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     return IdentityResult.Failed();
@@ -174,5 +191,6 @@ namespace BloodBankApp.Areas.Services
         {
             return await _userManager.IsInRoleAsync(user, role);
         }
+
     }
 }

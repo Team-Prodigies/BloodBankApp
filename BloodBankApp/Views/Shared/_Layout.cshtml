@@ -65,13 +65,13 @@
                     <h5>Section</h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2">
-                            <a href="" class="nav-link p-0 text-muted">Home</a>
+                            <a asp-controller="Home" asp-action="Index" class="nav-link p-0 text-muted">Home</a>
                         </li>
                         <li class="nav-item mb-2">
                             <a href="" class="nav-link p-0 text-muted">Hospital</a>
                         </li>
                         <li class="nav-item mb-2">
-                            <a href="/Home/AboutUs" class="nav-link p-0 text-muted">About Us</a>
+                            <a asp-controller="Home" asp-action="AboutUs" class="nav-link p-0 text-muted">About Us</a>
                         </li>
                         <partial name="_ProfilePartial" />
                     </ul>
@@ -80,13 +80,10 @@
                     <h5>Blogs</h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2">
-                            <a href="" class="nav-link p-0 text-muted">Donation Process</a>
+                            <a asp-controller="Home" asp-action="DonationProcess" class="nav-link p-0 text-muted">Donation Process</a>
                         </li>
                         <li class="nav-item mb-2">
-                            <a href="" class="nav-link p-0 text-muted">Why Donate</a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="" class="nav-link p-0 text-muted">Benefits</a>
+                            <a asp-controller="Home" asp-action="DonationBenefits" class="nav-link p-0 text-muted">Donation Benefits</a>
                         </li>
                     </ul>
                 </div>
