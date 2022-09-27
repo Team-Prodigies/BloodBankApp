@@ -23,6 +23,7 @@ namespace BloodBankApp.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Code> Codes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -80,6 +81,12 @@ namespace BloodBankApp.Data
                .HasForeignKey<Donor>(d => d.DonorId)
                .HasConstraintName("FormDonor")
                .OnDelete(DeleteBehavior.Cascade);
+
+                d.HasOne(c => c.Code)
+                    .WithOne(d => d.Donor)
+                    .HasForeignKey<Donor>(d => d.DonorId)
+                    .HasConstraintName("DonorCode")
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 d.HasOne(b => b.BloodType)
                .WithMany(d => d.Donors)
@@ -165,6 +172,12 @@ namespace BloodBankApp.Data
             .HasForeignKey(bc => bc.HospitalId)
             .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Entity<Code>()
+                .HasOne(d => d.Donor)
+                .WithOne(c => c.Code)
+                .HasForeignKey<Code>(c => c.CodeId)
+                .HasConstraintName("CodeDonor")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
