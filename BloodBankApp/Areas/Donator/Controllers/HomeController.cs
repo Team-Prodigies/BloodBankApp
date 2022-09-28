@@ -20,21 +20,25 @@ namespace BloodBankApp.Areas.Donator.Controllers
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]
-        public async Task<IActionResult> Index(string filterBy = "Normal")
+        public async Task<IActionResult> Index(string filterBy = "Normal", int pageNumber = 1)
         {
-            var result = await _postService.GetPostsByBloodType(filterBy);
+            var result = await _postService.GetPostsByBloodType(filterBy, pageNumber);
+
+            ViewBag.PageNumber = pageNumber;
             ViewBag.FilterBy = filterBy;
+
             return View(result);
         }
 
-        public async Task<IActionResult> DonationPostSearchResults(string searchTerm)
+        public async Task<IActionResult> DonationPostSearchResults(string searchTerm, int pageNumber = 1)
         {
             if (searchTerm == null || searchTerm.Trim() == "")
             {
                 return RedirectToAction(nameof(Index));
             }
-            var posts = await _postService.GetPostsBySearch(searchTerm);
+            var posts = await _postService.GetPostsBySearch(searchTerm, pageNumber);
 
+            ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
 
             return View(posts);

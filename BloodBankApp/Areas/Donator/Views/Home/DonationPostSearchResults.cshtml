@@ -76,3 +76,52 @@
         </div>
     </div>
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="1" asp-route-filterBy="@ViewBag.FilterBy">First Page</a>
+        </li>
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults"
+                           asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+            }
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
+                if
+                (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>
