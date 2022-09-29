@@ -7,5 +7,7 @@ namespace BloodBankApp.Services.Interfaces
         Task<bool> UsernameIsTaken(string username);
         Task<bool> PersonalNumberIsTaken(int personalNumber);
         Task<bool> HospitalCodeIsTaken(string hospitalCode);
+        Task<bool> DonorCodeIsTaken(string codeValue);
+
     }
 }

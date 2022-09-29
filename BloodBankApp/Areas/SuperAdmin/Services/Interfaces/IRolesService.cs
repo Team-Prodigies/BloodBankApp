@@ -9,6 +9,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
     public interface IRolesService
     {
         Task<List<IdentityRole<Guid>>> GetAllRoles();
+        Task<List<SelectedRoleModel>> GetAllSelectedRoles();
         Task<IdentityResult> CreateRole(PermissionViewModel model);
         Task<IdentityRole<Guid>> GetRole(Guid id);
         Task<PermissionViewModel> GetRolePermissions(Guid? id);
