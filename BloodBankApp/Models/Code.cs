@@ -8,8 +8,8 @@ namespace BloodBankApp.Models
         [Key]
         public Guid CodeId { get; set; }
 
+        [Required]
         public string CodeValue { get; set; }
-        public Guid DonorId { get; set; }
         public Donor Donor { get; set; }
     }
 }

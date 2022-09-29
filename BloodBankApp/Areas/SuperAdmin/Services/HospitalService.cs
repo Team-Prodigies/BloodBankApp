@@ -150,14 +150,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             hospital.Location = editHospital.Location;
             hospital.CityId = editHospital.CityId;
 
-
-            //await _context.SaveChangesAsync();
-            //     var hospitalModel = _mapper.Map<Hospital>(hospital);
-
             _context.Update(hospital.Location);
-
             _context.Update(hospital);
-
             await _context.SaveChangesAsync();
         }
 

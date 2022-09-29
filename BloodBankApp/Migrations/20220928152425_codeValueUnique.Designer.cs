@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220927121736_AddedCodeTable")]
-    partial class AddedCodeTable
+    [Migration("20220928152425_codeValueUnique")]
+    partial class codeValueUnique
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,12 +110,13 @@ namespace BloodBankApp.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CodeValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("DonorId")
-                        .HasColumnType("uniqueidentifier");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CodeId");
+
+                    b.HasIndex("CodeValue")
+                        .IsUnique();
 
                     b.ToTable("Codes");
                 });
@@ -164,9 +165,6 @@ namespace BloodBankApp.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CodeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Gender")

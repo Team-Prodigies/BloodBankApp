@@ -3,23 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BloodBankApp.Migrations
 {
-    public partial class AddedCodeTable : Migration
+    public partial class CodeTablee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "CodeId",
-                table: "Donors",
-                type: "uniqueidentifier",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Codes",
                 columns: table => new
                 {
                     CodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CodeValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DonorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CodeValue = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,10 +30,6 @@ namespace BloodBankApp.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Codes");
-
-            migrationBuilder.DropColumn(
-                name: "CodeId",
-                table: "Donors");
         }
     }
 }

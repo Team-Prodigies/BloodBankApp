@@ -90,6 +90,16 @@ namespace BloodBankApp.Mapping
             CreateMap<User, ProfileAdminModel>();
 
             CreateMap<EditHospitalModel, Hospital>().ReverseMap();
+
+            CreateMap<NotRegisteredDonor, Donor>()
+                .ForMember(dest => dest.CityId,
+                    opts => opts.MapFrom(src => src.CityId))
+                .ForMember(dest => dest.BloodTypeId,
+                    opts => opts.MapFrom(src => src.BloodTypeId))
+               
+                .ReverseMap();
+
+            CreateMap<NotRegisteredDonor, User>();
         }
     }
 }
