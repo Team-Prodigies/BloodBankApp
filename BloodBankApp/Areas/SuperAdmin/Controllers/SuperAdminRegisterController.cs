@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.SuperAdmin.Permission;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -13,20 +14,28 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     public class SuperAdminRegisterController : Controller
     {
         private readonly IUsersService _usersService;
-        private readonly ISignInService _signInService;
         private readonly INotyfService _notyfService;
-        public SuperAdminRegisterController(IUsersService usersService,
-            ISignInService signInService, INotyfService notyfService)
+        private readonly IRolesService _rolesService;
+        public SuperAdminRegisterController(
+            IUsersService usersService,
+            INotyfService notyfService,
+            IRolesService rolesService)
         {
             _usersService = usersService;
-            _signInService = signInService;
             _notyfService = notyfService;
+            _rolesService = rolesService;
         }
 
         [Authorize(Policy = Permissions.SuperAdmin.Create)]
-        public IActionResult CreateSuperAdmin()
+        public async Task<IActionResult> CreateSuperAdmin()
         {
-            return View();
+            var roles = await _rolesService.GetAllSelectedRoles();
+
+            var model = new SuperAdminModel
+            {
+                Roles = roles
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -39,15 +48,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
 
                 if (result.Succeeded)
                 {
-                    _notyfService.Success("SuperAdmin account was added!");
+                    _notyfService.Success("User account was added!");
                     return RedirectToAction(nameof(CreateSuperAdmin));
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                _notyfService.Error("Failed to add user!");
             }
-            return View();
+            return View(user);
         }
     }
 }
