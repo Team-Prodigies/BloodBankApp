@@ -28,7 +28,7 @@ connection.on("loadChatConversation", function (data) {
     $("#chatBox").empty();
     $("#typing").text(chatWithDonorFullName+" is typing...");
         $.each(data, function (index, value) {
-
+            
                 if (value.sender === 0) {
                     $("#chatBox")
                         .append(
@@ -38,9 +38,15 @@ connection.on("loadChatConversation", function (data) {
                     $("#chatBox")
                         .append(
                             $('<div class="chat-message-right pb-4"><div><div class="text-muted small text-nowrap mt-2">' + value.hour + ":" + value.minute + '</div></div><div class="flex-shrink-1 bg-info rounded py-2 px-3 mr-3"><div class="font-weight-bold mb-1">You:</div>' + value.content + '</div></div>')
-                        );
+                    );
                 }       
         });
+
+    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+    connection.invoke("SetDonorMessagesToSeen", chatWithDonorId, chatWithHospitalId).catch(function (err) {
+        return console.error(err.toString());
+    });
     
 });
 
@@ -48,17 +54,18 @@ connection.on("loadWaitingDonors", function (data) {
 
     $.each(data, function (index, value) {
 
-        var divSenderId = "#donor" + value.donorId+"a";
+        var divdonorId = "#donor" + value.donorId+"a";
 
-        if (!$(divSenderId).length) {
-            divSenderId = "donor" + value.donorId+"a";
-            $("#waitingDonors")
+        if (!$(divdonorId).length) {
+            divdonorId = "donor" + value.donorId+"a";
+            $("#waitingDonors") 
                 .append(
-                    $('<div class="list-group-item list-group-item-action border-0" id=' + divSenderId + '><div class="d-flex align-items-start"><img src="https://ui-avatars.com/api/?name=' + value.name + '+' + value.surname + '& background=d1001f&color=fff" alt="Profile" class="p-2" width="60" height="60"><div class="flex-grow-1 ml-3 p-2"><button class="btn btn-outline-secondary p-2" onclick="onSelectDonor(' + "'" + value.donorId + "'" + ',' + "'" + value.name + "'" + ',' + "'" + value.surname + "'" + ',)">' + value.name + ' ' + value.surname + '</button></div></div><hr /></div>')
-                );
+                    $('<div class="list-group-item list-group-item-action border-0" id=' + divdonorId + '><div class="d-flex align-items-start"><img src="https://ui-avatars.com/api/?name=' + value.name + '+' + value.surname + '& background=d1001f&color=fff" alt="Profile" class="p-2" width="60" height="60"><div class="flex-grow-1 ml-3 p-2"><button class="btn btn-outline-secondary p-2" onclick="onSelectDonor(' + "'" + value.donorId + "'" + ',' + "'" + value.name + "'" + ',' + "'" + value.surname + "'" + ',)">' + value.name + ' ' + value.surname + '</button></div><div class="icon"><button onclick="DeleteChat(' + "'" + value.donorId + "'" + ')"><div class="label"><i class="bi bi-trash-fill"></i></div></button></div></div><hr /></div>')
+            );
         }             
     });
 });
+
 
 function onSelectDonor(donorId, donorName, donorSurname) {
 
@@ -70,6 +77,19 @@ function onSelectDonor(donorId, donorName, donorSurname) {
         return console.error(err.toString());
     });
 }
+
+function DeleteChat(donorId) {
+    connection.invoke("DeleteChat", donorId, chatWithHospitalId).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+connection.on("removeWaitingDonor", function (donorId) {
+    console.log(donorId);
+    var divdonorId = "#donor" + donorId + "a";
+    $(divdonorId).remove();
+});
+
 
 function sendMessage() {
 
@@ -95,9 +115,11 @@ $('#message').bind('input', function () {
     }
 });
 
-connection.on("typing", function (num) {
-    if (num == 0) {
-        $("#typing").css("display", "block");
+connection.on("typing", function (num, donorId) {
+    if (donorId === chatWithDonorId) {
+        if (num == 0) {
+            $("#typing").css("display", "block");
+        }
     }  
 });
 
@@ -107,14 +129,19 @@ connection.on("notTyping", function (num) {
     }   
 });
 
-connection.on("recieveMessage", function (data) {
+connection.on("receiveMessage", function (data) {
 
     if (data.donorId === chatWithDonorId) {
         if (data.sender === 0) {
+
             $("#chatBox")
                 .append(
                     $('<div class="chat-message-left pb-4"><div><div class="text-muted small text-nowrap">' + data.hour + ":" + data.minute + '</div></div><div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3"><div class="font-weight-bold mb-1">' + chatWithDonorFullName+':</div>' + data.content + '</div></div>')
-                );
+            );
+            connection.invoke("SetMessageToSeen", data.messageId).catch(function (err) {
+                return console.error(err.toString());
+            });
+
         } else if (data.sender === 1) {
             $("#chatBox")
                 .append(
