@@ -1,11 +1,12 @@
 ﻿using BloodBankApp.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BloodBankApp.Models
-{
-    public class Question
-    {
+namespace BloodBankApp.Areas.SuperAdmin.ViewModels {
+    public class QuestionModel {
         [Key]
         public Guid QuestionId { get; set; }
         [Required]
@@ -13,7 +14,5 @@ namespace BloodBankApp.Models
         public string Description { get; set; }
         [Display(Name = "Answer")]
         public Answer Answer { get; set; }
-        public Guid HealthFormQuestionnaireId { get; set; }
-        public HealthFormQuestionnaire HealthFormQuestionnaire { get; set; }
     }
 }

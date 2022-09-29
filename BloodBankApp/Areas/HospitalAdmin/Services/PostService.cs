@@ -22,7 +22,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
 
         public async Task<bool> AddPost(DonationPost post) {
             if(post != null) {
-                if (post.DateRequired.Hour <= DateTime.Now.Hour || post.DateRequired.Day < DateTime.Now.Day) {
+                if (post.DateRequired.Hour <= DateTime.Today.Hour || post.DateRequired.Day < DateTime.Now.Day) {
                    return false;
                 }
                 

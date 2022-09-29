@@ -189,6 +189,28 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#question-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Questionnaire</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="question-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="CreateQuestionnaire">
+                            <i class="bi bi-circle"></i><span>Create Questionnaire</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="ManageQuestions">
+                            <i class="bi bi-circle"></i><span>Manage Questions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="CreateQuestion">
+                            <i class="bi bi-circle"></i><span>Create Questions</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#donors-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Donors</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
