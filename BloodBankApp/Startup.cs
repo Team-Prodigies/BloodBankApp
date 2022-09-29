@@ -26,6 +26,9 @@ using BloodBankApp.Areas.HospitalAdmin.Services;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Hubs;
 
+using System.Text.Json.Serialization;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
+using BloodBankApp.Areas.HospitalAdmin.Services;
 
 namespace BloodBankApp
 {
@@ -54,6 +57,7 @@ namespace BloodBankApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IDonatorService, DonatorService>();
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IBloodTypesService, BloodTypesService>();
             services.AddScoped<ICitiesService, CitiesService>();
@@ -68,6 +72,7 @@ namespace BloodBankApp
             services.AddScoped<IHospitalAdminService, HospitalAdminService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessagesService, MessagesService>();
+            services.AddScoped<IQuestionService, QuestionsService>();
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();

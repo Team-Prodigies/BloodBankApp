@@ -9,7 +9,7 @@
 <head>
     <link rel="stylesheet" href="~/css/StyleSheet.css" />
 </head>
-<div class="container-fluid bgForm" >
+<div class="container-fluid bgForm">
     <div class="container-fluid d-flex justify-content-center" style="padding-top: 7%; padding-bottom: 7%; ">
         <div class="container ms-2 me-2 w-75 mt-4 mb-4 shadow rounded p-4 bg-customGr">
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -20,20 +20,20 @@
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.Name" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.Name" class="form-control text-capitalize" required/>
+                            <input asp-for="Input.Name" class="form-control text-capitalize" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.Surname" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.Surname" class="form-control text-capitalize" required/>
+                            <input asp-for="Input.Surname" class="form-control text-capitalize" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.UserName" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.UserName" class="form-control" id="UserName" required/>
-                            <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>                 
+                            <input asp-for="Input.UserName" class="form-control" id="UserName" required />
+                            <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>
                         </div>
                     </div>
                 </div>
@@ -41,19 +41,19 @@
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.DateOfBirth" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.DateOfBirth" class="form-control" required/>
+                            <input asp-for="Input.DateOfBirth" class="form-control" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.PhoneNumber" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.PhoneNumber" class="form-control" required/>
+                            <input asp-for="Input.PhoneNumber" class="form-control" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.Email" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.Email" class="form-control" required/>
+                            <input asp-for="Input.Email" class="form-control" required />
                         </div>
                     </div>
                 </div>
@@ -61,19 +61,19 @@
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.Password" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.Password" class="form-control" required/>
+                            <input asp-for="Input.Password" class="form-control" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.ConfirmPassword" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control" required/>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Input.PersonalNumber" class="mb-1 mt-2"></label>
-                            <input asp-for="Input.PersonalNumber" class="form-control" id="PersonalNumber" required/>
+                            <input asp-for="Input.PersonalNumber" class="form-control" id="PersonalNumber" required />
                             <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
                         </div>
                     </div>
@@ -83,7 +83,8 @@
                         <div class="form-group">
                             <label asp-for="Input.Gender" class="mb-1 mt-2"></label>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                @foreach (var c in Enum.GetValues(typeof(Gender))) {
+                                @foreach (var c in Enum.GetValues(typeof(Gender)))
+                                {
                                     <div class="form-check">
                                         <label class="form-check-label me-2" asp-for="Input.Gender">@c.ToString().ToTitleCase()</label>
                                         <input class="form-check-input" type="radio" asp-for="Input.Gender" value="@((int)c)" required />

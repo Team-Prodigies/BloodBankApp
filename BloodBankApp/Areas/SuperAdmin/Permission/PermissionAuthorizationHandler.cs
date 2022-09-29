@@ -6,7 +6,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Permission
 {
     internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
     {
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             var permissions = context.User.Claims.Where(x => x.Type == "Permission" &&
                                                               x.Value == requirement.Permission &&
@@ -15,6 +15,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Permission
             {
                 context.Succeed(requirement);
             }
+            return Task.CompletedTask;
         }
     }
 }
