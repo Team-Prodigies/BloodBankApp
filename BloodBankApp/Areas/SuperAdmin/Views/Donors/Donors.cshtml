@@ -1,4 +1,4 @@
-﻿@model List<DonorModel>
+﻿@model List<ManageUserModel>
 
 @{
     ViewData["Title"] = "Donors";
@@ -48,9 +48,18 @@
 <div class="dropdown">
     <button class="dropbtn">@ViewBag.FilterBy</button>
     <div class="dropdown-content">
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="A-Z">A-Z</a>
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Z-A">Z-A</a>
-        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Locked">Locked</a>
+        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="A-Z" asp-route-roleFilter="@ViewBag.RoleFilter">A-Z</a>
+        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Z-A" asp-route-roleFilter="@ViewBag.RoleFilter">Z-A</a>
+        <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="Locked" asp-route-roleFilter="@ViewBag.RoleFilter">Locked</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">Role</button>
+    <div class="dropdown-content">
+        @foreach (var role in ViewBag.Roles)
+        {
+            <a asp-controller="Donors" asp-action="Donors" asp-all-pageNumber="1" asp-route-filterBy="@ViewBag.FilterBy" asp-route-roleFilter="@role">@role</a>
+        }
     </div>
 </div>
 <div class="d-flex justify-content-end">
@@ -67,26 +76,26 @@
         var $input = $('#searchDonors');
 
         //on keyup, start the countdown
-        $input.on('keyup', function() {
+        $input.on('keyup', function () {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
 
         });
 
         //on keydown, clear the countdown
-        $input.on('keydown', function() {
+        $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
 
         function doneTyping() {
 
-            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function(data, status) {
+            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function (data, status) {
 
                 if (status == 'success') {
 
                     $("#donorSuggestions").empty();
 
-                    $.each(data, function(index, value) {
+                    $.each(data, function (index, value) {
                         console.log('<option value="' + value + '"></option>');
 
                         $("#donorSuggestions")
@@ -102,39 +111,39 @@
 </div>
 <div class="card container">
     <div class="card-body">
-        <h5 class="card-title">List of all donors</h5>
+        <h5 class="card-title">List of all users</h5>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Surname</th>
+                    <th scope="col">Username</th>
                     <th scope="col">Date of Birth</th>
-                    <th scope="col">Personal No.</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Blood Type</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var donor in Model)
+                @foreach (var user in Model)
                 {
                     <tr>
-                        <td>@donor.Name</td>
-                        <td>@donor.Surname</td>
-                        <td>@donor.DateOfBirth.ToShortDateString()</td>
-                        <td>@donor.PersonalNumber</td>
-                        <td>@donor.Gender</td>
-                        <td>@donor.BloodTypeName</td>
-                        <td>@donor.CityName</td>
+                        <td>@user.Name</td>
+                        <td>@user.Surname</td>
+                        <td>@user.UserName</td>
+                        <td>@user.DateOfBirth.ToShortDateString()</td>
+                        <td>
+                            <a type="button" class="btn btn-primary" asp-controller="Roles" asp-action="GetUserRoles" asp-route-userId="@user.Id">
+                                Roles
+                            </a>
+                        </td>
                         <td>
                             @{
-                                var idName = "lockUser" + donor.PersonalNumber + "a";
-                                var idUnlockName = "unlockUser" + donor.PersonalNumber + "a";
-                                var lockButton = "#lockUser" + donor.PersonalNumber + "a";
-                                var unlockButton = "#unlockUser" + donor.PersonalNumber + "a";
+                                var idName = "lockUser" + user.Id + "a";
+                                var idUnlockName = "unlockUser" + user.Id + "a";
+                                var lockButton = "#lockUser" + user.Id + "a";
+                                var unlockButton = "#unlockUser" + user.Id + "a";
                             }
-                            @if (!donor.Locked)
+                            @if (!user.Locked)
                             {
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@lockButton">
                                     Lockout
@@ -151,7 +160,7 @@
                                                     <div class="container col-8">
                                                         <div class="mb-3 mt-2">
                                                             <label style="margin-top:1%;" class="form-label">Are you sure you want to lockout this User? </label>
-                                                            <input type="hidden" name="donorId" value="@donor.DonorId" />
+                                                            <input type="hidden" name="userId" value="@user.Id" />
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -182,7 +191,7 @@
                                                     <div class="container col-8">
                                                         <div class="mb-3 mt-2">
                                                             <label style="margin-top:1%;" class="form-label">Are you sure you want to unlock this User? </label>
-                                                            <input type="hidden" name="donorId" value="@donor.DonorId" />
+                                                            <input type="hidden" name="userId" value="@user.Id" />
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>

@@ -19,17 +19,26 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     {
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _usersManager;
         private readonly IUsersService _usersService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService, IMapper mapper)
+        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService, IMapper mapper, UserManager<User> usersManager)
         {
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
             _usersService = usersService;
             _mapper = mapper;
+            _usersManager = usersManager;
+        }
+
+        public async Task<List<string>> GetAllRoleNames()
+        {
+            var roles = await GetAllRoles();
+            var roleNames = roles.Where(x=>x.Name!="SuperAdmin").Select(x => x.Name).ToList();
+            return roleNames;
         }
 
         public async Task<List<SelectedRoleModel>> GetAllSelectedRoles()
@@ -129,6 +138,44 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<IdentityResult> UpdateRole(IdentityRole<Guid> role)
         {
             return await _roleManager.UpdateAsync(role);
+        }
+
+        public async Task<UserRoleModel> GetUserRoles(Guid id)
+        {
+            var user = await _usersService.GetUser(id);
+            var roles = await _roleManager.Roles.ToListAsync();
+            var model = new UserRoleModel
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                Roles = new List<SelectedRoleModel>()
+            };
+
+            for (var i = 0; i < roles.Count; i++)
+            {
+                model.Roles.Add(new SelectedRoleModel { RoleName = roles[i].Name });
+                if (await _usersService.UserIsInRole(user, roles[i].Name))
+                {
+                    model.Roles[i].IsSelected = true;
+                }
+            }
+            
+            return model;
+        }
+
+        public async Task<IdentityResult> SetUserRoles(UserRoleModel model)
+        {
+            var user = await _usersService.GetUser(model.UserId);
+            var roles = await _usersManager.GetRolesAsync(user);
+            var result = await _usersManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+            if (result.Succeeded)
+            {
+                var selectedRoles = model.Roles.Where(x => x.IsSelected).Select(x => x.RoleName);
+                result = await _usersManager.AddToRolesAsync(user, selectedRoles);
+            }
+
+            return result;
         }
     }
 }

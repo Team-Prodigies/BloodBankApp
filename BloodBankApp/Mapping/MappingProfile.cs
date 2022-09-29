@@ -94,6 +94,7 @@ namespace BloodBankApp.Mapping
             CreateMap<SelectedRoleModel, IdentityRole<Guid>>()
                 .ForPath(dest => dest.Name,
                     opts => opts.MapFrom(src => src.RoleName)).ReverseMap();
+            CreateMap<User, ManageUserModel>().ReverseMap();
         }
     }
 }

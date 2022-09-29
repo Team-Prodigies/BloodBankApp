@@ -1,0 +1,62 @@
+﻿@model UserRoleModel
+
+<div class="d-flex justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <div class="my-2">
+                    <h5 class="card-title">Update roles of user: @Model.Username</h5>
+                </div>
+                <form asp-controller="Roles" asp-action="SetUserRoles" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="d-flex justify-content-center">
+                        <table class="table table-hover table-responsive" id="permissionTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Role
+                                    </th>
+                                    <th>
+                                        Assigned
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <input type="hidden" asp-for="@Model.UserId" />
+                                <input type="hidden" asp-for="@Model.Username" />
+                                @for (var i = 0; i < Model.Roles.Count(); i++)
+                                {
+                                    <tr>
+                                        @if (!@Model.Roles[i].RoleName.Equals("SuperAdmin"))
+                                        {
+                                            <td>
+                                                <input class="form-control" asp-for="@Model.Roles[i].RoleName" type="hidden" />
+                                                @Model.Roles[i].RoleName
+                                            </td>
+                                            <td>
+                                                <div class="form-check m-1">
+                                                    @if (@Model.Roles[i].RoleName.Equals("Donor") || @Model.Roles[i].RoleName.Equals("HospitalAdmin"))
+                                                    {
+                                                        @Html.DisplayFor(m => @Model.Roles[i].IsSelected)
+                                                        @Html.HiddenFor(m => @Model.Roles[i].IsSelected)
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" />
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
