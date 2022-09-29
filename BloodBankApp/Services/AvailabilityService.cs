@@ -26,6 +26,17 @@ namespace BloodBankApp.Services
             return false;
         }
 
+        public async Task<bool> DonorCodeIsTaken(string codeValue)
+        {
+            var codeIsTaken = await _context.Codes
+                .FirstOrDefaultAsync(c => c.CodeValue == codeValue);
+            if (codeIsTaken != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> PersonalNumberIsTaken(int personalNumber)
         {
             var personalNumberInUse = await _context.Donors
