@@ -13,68 +13,75 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     [Authorize]
     public class DonorsController : Controller
     {
-        private readonly IDonorsService _donorsService;
+        private readonly IRolesService _rolesService;
         private readonly IUsersService _usersService;
         private readonly INotyfService _notyfService;
-        public DonorsController(IDonorsService donorsService,
+        public DonorsController(IRolesService rolesService,
             IUsersService usersService, INotyfService notyfService)
         {
-            _donorsService = donorsService;
+            _rolesService = rolesService;
             _usersService = usersService;
             _notyfService = notyfService;
-        }
-        [HttpGet]
-        [Authorize(Policy = Permissions.Donors.View)]
-        public async Task<IActionResult> Donors(int pageNumber = 1, string filterBy = "A-Z")
-        {
-            var donors = await _donorsService.GetDonors(pageNumber, filterBy);
-            ViewBag.FilterBy = filterBy;
-            ViewBag.PageNumber = pageNumber;
-            return View(donors);
         }
 
         [HttpGet]
         [Authorize(Policy = Permissions.Donors.View)]
-        public async Task<IActionResult> DonorSearchResults(string searchTerm, int pageNumber = 1)
+        public async Task<IActionResult> Donors(string roleFilter = null, int pageNumber = 1, string filterBy = "A-Z")
+        {
+            var users = await _usersService.GetUsers(roleFilter,pageNumber, filterBy);
+
+            ViewBag.FilterBy = filterBy;
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.RoleFilter = roleFilter;
+            ViewBag.Roles = await _rolesService.GetAllRoleNames();
+
+            return View(users);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Donors.View)]
+        public async Task<IActionResult> DonorSearchResults(string searchTerm, string roleFilter = null, int pageNumber = 1)
         {
             if (searchTerm == null || searchTerm.Trim() == "")
             {
                 return RedirectToAction(nameof(Donors));
             }
-            var donors = await _donorsService.DonorSearchResults(searchTerm, pageNumber);
+            var users = await _usersService.UserSearchResults(searchTerm, roleFilter, pageNumber);
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchTerm = searchTerm;
+            ViewBag.RoleFilter = roleFilter;
+            ViewBag.Roles = await _rolesService.GetAllRoleNames();
 
-            return View(donors);
+            return View(users);
         }
         [HttpPost]
         [Authorize(Policy = Permissions.Donors.Lock)]
-        public async Task<IActionResult> LockoutDonor(Guid donorId)
+        public async Task<IActionResult> LockoutDonor(Guid userId)
         {
-            var donor = await _usersService.GetUser(donorId);
-            if (donor == null)
+            var user = await _usersService.GetUser(userId);
+            if (user == null)
             {
-                _notyfService.Warning("Donor was not found!");
+                _notyfService.Warning("User was not found!");
                 return RedirectToAction(nameof(Donors));
             }
-            await _donorsService.LockoutDonor(donor);
-            _notyfService.Success("Donor "+donor.UserName+" has been locked out!");
+            await _usersService.LockoutUser(user);
+            _notyfService.Success("User " + user.UserName+" has been locked out!");
             return RedirectToAction(nameof(Donors));
         }
 
         [HttpPost]
         [Authorize(Policy = Permissions.Donors.Unlock)]
-        public async Task<IActionResult> UnlockDonor(Guid donorId)
+        public async Task<IActionResult> UnlockDonor(Guid userId)
         {
-            var donor = await _usersService.GetUser(donorId);
-            if (donor == null)
+            var user = await _usersService.GetUser(userId);
+            if (user == null)
             {
-                _notyfService.Warning("Donor was not found!");
+                _notyfService.Warning("User was not found!");
                 return RedirectToAction(nameof(Donors));
             }
-            await _donorsService.UnlockDonor(donor);
-            _notyfService.Success("Donor " + donor.UserName + " has been unlocekd!");
+            await _usersService.UnlockUser(user);
+            _notyfService.Success("User " + user.UserName + " has been unlocked!");
             return RedirectToAction(nameof(Donors));
         }
     }
