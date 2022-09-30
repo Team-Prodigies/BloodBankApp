@@ -27,26 +27,23 @@
                                 @for (var i = 0; i < Model.Roles.Count(); i++)
                                 {
                                     <tr>
-                                        @if (!@Model.Roles[i].RoleName.Equals("SuperAdmin"))
-                                        {
-                                            <td>
-                                                <input class="form-control" asp-for="@Model.Roles[i].RoleName" type="hidden" />
-                                                @Model.Roles[i].RoleName
-                                            </td>
-                                            <td>
-                                                <div class="form-check m-1">
-                                                    @if (@Model.Roles[i].RoleName.Equals("Donor") || @Model.Roles[i].RoleName.Equals("HospitalAdmin"))
-                                                    {
-                                                        @Html.DisplayFor(m => @Model.Roles[i].IsSelected)
-                                                        @Html.HiddenFor(m => @Model.Roles[i].IsSelected)
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" />
-                                                    }
-                                                </div>
-                                            </td>
-                                        }
+                                        <td>
+                                            <input class="form-control" asp-for="@Model.Roles[i].RoleName" type="hidden" />
+                                            @Model.Roles[i].RoleName
+                                        </td>
+                                        <td>
+                                            <div class="form-check m-1">
+                                                @if (@Model.Roles[i].RoleName.Equals("Donor") || @Model.Roles[i].RoleName.Equals("HospitalAdmin"))
+                                                {
+                                                    @Html.DisplayFor(m => @Model.Roles[i].IsSelected)
+                                                    @Html.HiddenFor(m => @Model.Roles[i].IsSelected)
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" />
+                                                }
+                                            </div>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
