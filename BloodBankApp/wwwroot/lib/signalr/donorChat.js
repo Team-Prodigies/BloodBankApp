@@ -63,8 +63,11 @@ connection.on("loadChatConversation", function (data, donorId, hospitalId) {
 
 });
 
+connection.on("deleteChat", function () {
+    $("#chatBox").children().remove();
+});
+
 function sendMessage() {
- 
     connection.invoke("SendMessages", $("#message").val(), chatWithDonorId, chatWithHospitalId, 0).catch(function (err) {
         return console.error(err.toString());
     });
@@ -93,9 +96,7 @@ connection.on("receiveMessage", function (data) {
                 .append(
                     $('<div class="chat-message-right pb-4"><div><div class="text-muted small text-nowrap mt-2">' + data.hour + ":" + data.minute + '</div></div><div class="flex-shrink-1 bg-info rounded py-2 px-3 mr-3"><div class="font-weight-bold mb-1">You:</div>' + data.content + '</div></div>')
             );
-           
         }
-
         $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
     }
 });

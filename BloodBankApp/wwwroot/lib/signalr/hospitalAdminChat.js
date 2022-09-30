@@ -20,7 +20,6 @@ function onLoadWaitinDonors(hospitalAdminId) {
     connection.invoke("GetWaitingDonors", hospitalAdminId).catch(function (err) {
         return console.error(err.toString());
     });;
-
 }
 
 connection.on("loadChatConversation", function (data) {
@@ -60,19 +59,19 @@ connection.on("loadWaitingDonors", function (data) {
             divdonorId = "donor" + value.donorId+"a";
             $("#waitingDonors") 
                 .append(
-                    $('<div class="list-group-item list-group-item-action border-0" id=' + divdonorId + '><div class="d-flex align-items-start"><img src="https://ui-avatars.com/api/?name=' + value.name + '+' + value.surname + '& background=d1001f&color=fff" alt="Profile" class="p-2" width="60" height="60"><div class="flex-grow-1 ml-3 p-2"><button class="btn btn-outline-secondary p-2" onclick="onSelectDonor(' + "'" + value.donorId + "'" + ',' + "'" + value.name + "'" + ',' + "'" + value.surname + "'" + ',)">' + value.name + ' ' + value.surname + '</button></div><div class="icon"><button onclick="DeleteChat(' + "'" + value.donorId + "'" + ')"><div class="label"><i class="bi bi-trash-fill"></i></div></button></div></div><hr /></div>')
+                    $('<div class="list-group-item list-group-item-action border-0" id=' + divdonorId + '><div class="d-flex align-items-start"><img src="https://ui-avatars.com/api/?name=' + value.name + '+' + value.surname + '& background=d1001f&color=fff" alt="Profile" class="p-2" width="60" height="60"><div class="flex-grow-1 ml-3 p-2"><button class="btn btn-outline-secondary p-2" onclick="onSelectDonor(' + "'" + value.donorId + "'" + ',' + "'" + value.name + "'" + ',' + "'" + value.surname + "'" + ',)">' + value.name + ' ' + value.surname + '</button></div><div class="icon"><button class="btn" onclick="DeleteChat(' + "'" + value.donorId + "'" + ')"><div class="label"><i class="bi bi-trash-fill"></i></div></button></div></div><hr /></div>')
             );
         }             
     });
 });
-
 
 function onSelectDonor(donorId, donorName, donorSurname) {
 
     chatWithDonorId = donorId;
     chatWithDonorFullName = donorName + " " + donorSurname;
     $("#talkingToDonorFullName").text(chatWithDonorFullName);
-    console.log(chatWithDonorFullName);
+    $("#typing").css("display", "none");
+
     connection.invoke("GetChatConversation", chatWithDonorId, chatWithHospitalId).catch(function (err) {
         return console.error(err.toString());
     });
@@ -84,12 +83,17 @@ function DeleteChat(donorId) {
     });
 }
 
-connection.on("removeWaitingDonor", function (donorId) {
-    console.log(donorId);
-    var divdonorId = "#donor" + donorId + "a";
-    $(divdonorId).remove();
+connection.on("deleteChat", function () {
+    chatWithDonorFullName = ""; 
+    $("#chatBox").children().remove();
 });
 
+connection.on("removeWaitingDonor", function (donorId) {
+    var divdonorId = "#donor" + donorId + "a";
+    $(divdonorId).remove();
+
+    waitingDonors.pop(donorId);
+});
 
 function sendMessage() {
 
@@ -133,11 +137,10 @@ connection.on("receiveMessage", function (data) {
 
     if (data.donorId === chatWithDonorId) {
         if (data.sender === 0) {
-
             $("#chatBox")
                 .append(
-                    $('<div class="chat-message-left pb-4"><div><div class="text-muted small text-nowrap">' + data.hour + ":" + data.minute + '</div></div><div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3"><div class="font-weight-bold mb-1">' + chatWithDonorFullName+':</div>' + data.content + '</div></div>')
-            );
+                    $('<div class="chat-message-left pb-4"><div><div class="text-muted small text-nowrap">' + data.hour + ":" + data.minute + '</div></div><div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3"><div class="font-weight-bold mb-1">' + chatWithDonorFullName + ':</div>' + data.content + '</div></div>')
+                );
             connection.invoke("SetMessageToSeen", data.messageId).catch(function (err) {
                 return console.error(err.toString());
             });
@@ -150,5 +153,4 @@ connection.on("receiveMessage", function (data) {
         }
         $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
     }
-    
 });

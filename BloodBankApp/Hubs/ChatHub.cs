@@ -94,8 +94,14 @@ namespace BloodBankApp.Hubs
         public async Task DeleteChat(string donorId, string hospitalId)
         {
             var currentUser = _userManager.GetUserId(Context.User);
-            await _messagesService.DeleteChat(donorId, hospitalId);        
+            string roomName = "ChatRoom-" + donorId + "Donor";
+            
+            await _messagesService.DeleteChat(donorId, hospitalId);
+
+            await Clients.Group(roomName).SendAsync("deleteChat");
             await Clients.User(currentUser).SendAsync("removeWaitingDonor", donorId);
+             
+
         }
     }
 }

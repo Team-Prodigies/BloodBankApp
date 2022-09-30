@@ -14,12 +14,9 @@ namespace BloodBankApp.Services
 {
     public class MessagesService : IMessagesService   
      {
-        private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
-
-        public MessagesService(UserManager<User> userManager, ApplicationDbContext context)
+        public MessagesService( ApplicationDbContext context)
         {
-            _userManager = userManager;
             _context = context;
         }
         public async Task<List<SendMessage>> GetChatConversation(string donorId, string hospitalId)
@@ -37,7 +34,6 @@ namespace BloodBankApp.Services
                    HospitalId = new Guid(hospitalId),
                    Sender = m.Sender
                }).ToListAsync();
-
 
             return messages;
         }
