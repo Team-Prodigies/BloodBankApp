@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220927130012_DbQuesitonnaire")]
+    partial class DbQuesitonnaire
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,23 +102,6 @@ namespace BloodBankApp.Migrations
                     b.HasKey("CityId");
 
                     b.ToTable("Cities");
-                });
-
-            modelBuilder.Entity("BloodBankApp.Models.Code", b =>
-                {
-                    b.Property<Guid>("CodeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CodeValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CodeId");
-
-                    b.HasIndex("CodeValue")
-                        .IsUnique();
-
-                    b.ToTable("Codes");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.DonationPost", b =>
@@ -607,18 +592,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Hospital");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.Code", b =>
-                {
-                    b.HasOne("BloodBankApp.Models.Donor", "Donor")
-                        .WithOne("Code")
-                        .HasForeignKey("BloodBankApp.Models.Code", "CodeId")
-                        .HasConstraintName("CodeDonor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Donor");
-                });
-
             modelBuilder.Entity("BloodBankApp.Models.DonationPost", b =>
                 {
                     b.HasOne("BloodBankApp.Models.BloodType", "BloodType")
@@ -836,10 +809,6 @@ namespace BloodBankApp.Migrations
             modelBuilder.Entity("BloodBankApp.Models.Donor", b =>
                 {
                     b.Navigation("BloodDonations");
-
-                    b.Navigation("Code");
-
-                    b.Navigation("HealthFormQuestionnaire");
 
                     b.Navigation("Messages");
                 });

@@ -76,18 +76,6 @@ namespace BloodBankApp.Data
 
             builder.Entity<Donor>(d =>
             {
-                d.HasOne(b => b.HealthFormQuestionnaire)
-               .WithOne(d => d.Donor)
-               .HasForeignKey<Donor>(d => d.DonorId)
-               .HasConstraintName("FormDonor")
-               .OnDelete(DeleteBehavior.Cascade);
-
-                d.HasOne(c => c.Code)
-                    .WithOne(d => d.Donor)
-                    .HasForeignKey<Donor>(d => d.DonorId)
-                    .HasConstraintName("DonorCode")
-                    .OnDelete(DeleteBehavior.Cascade);
-
                 d.HasOne(b => b.BloodType)
                .WithMany(d => d.Donors)
                .HasForeignKey(fk => fk.BloodTypeId)
@@ -122,12 +110,7 @@ namespace BloodBankApp.Data
                .OnDelete(DeleteBehavior.Cascade);
             });
 
-            builder.Entity<HealthFormQuestionnaire>()
-             .HasOne(b => b.Donor)
-             .WithOne(d => d.HealthFormQuestionnaire)
-             .HasForeignKey<HealthFormQuestionnaire>(d => d.HealthFormQuestionnaireId)
-             .HasConstraintName("DonorForms")
-             .OnDelete(DeleteBehavior.Cascade);
+            
 
             builder.Entity<Hospital>(h =>
             {
@@ -178,6 +161,8 @@ namespace BloodBankApp.Data
                 .HasForeignKey<Code>(c => c.CodeId)
                 .HasConstraintName("CodeDonor")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Code>().HasIndex(u => u.CodeValue).IsUnique();
         }
     }
 }

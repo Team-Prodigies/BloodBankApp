@@ -25,6 +25,15 @@ namespace BloodBankApp.Models
 
         public MessageSender Sender { get; set; }
 
+        public Message(){}
+        public Message(DateTime DateSent,string Content, Guid DonorId, Guid HospitalId, int Sender)
+        {
+            this.DateSent = DateSent;
+            this.Content = Content;
+            this.DonorId = DonorId;
+            this.HospitalId = HospitalId;
+            this.Sender = (MessageSender)Sender;
+        }
     }
 
 }
