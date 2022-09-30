@@ -151,12 +151,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 Roles = new List<SelectedRoleModel>()
             };
 
-            for (var i = 0; i < roles.Count; i++)
+            foreach (var role in roles)
             {
-                model.Roles.Add(new SelectedRoleModel { RoleName = roles[i].Name });
-                if (await _usersService.UserIsInRole(user, roles[i].Name))
+                if (role.Name == "SuperAdmin")
                 {
-                    model.Roles[i].IsSelected = true;
+                    continue;
+                }
+                if (await _usersService.UserIsInRole(user, role.Name))
+                {
+                    model.Roles.Add(new SelectedRoleModel { RoleName = role.Name, IsSelected = true });
+                }
+                else
+                {
+                    model.Roles.Add(new SelectedRoleModel { RoleName = role.Name });
                 }
             }
             
