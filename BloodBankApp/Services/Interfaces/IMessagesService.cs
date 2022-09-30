@@ -9,17 +9,17 @@ namespace BloodBankApp.Services.Interfaces
 {
     public interface IMessagesService
     {
-        public Task<List<SendMessage>> GetChatConversation(string donorId, string hospitalId);
+        public Task<List<SendMessage>> GetChatConversation(Guid donorId, Guid hospitalId);
 
-        public Task<SendMessage> SaveMessage(string content, string donorId, string hospitalId, int sender);
+        public Task<SendMessage> SaveMessage(string content, Guid donorId, Guid hospitalId, int sender);
 
-        public Task<List<WaitingDonor>> GetWaitingDonors(string hospitalId);
+        public Task<List<WaitingDonor>> GetWaitingDonors(Guid hospitalId);
 
-        public Task SetDonorMessagesToSeen(string donorId, string hospitalId);
-        public Task SetHospitalMessagesToSeen(string donorId, string hospitalId);
+        public Task SetDonorMessagesToSeen(Guid donorId, Guid hospitalId);
+        public Task SetHospitalMessagesToSeen(Guid donorId, Guid hospitalId);
 
-        public Task SetMessageToSeen(string messageId);
+        public Task SetMessageToSeen(Guid messageId);
 
-        public Task DeleteChat(string donorId, string hospitalId);
+        public Task DeleteChat(Guid donorId, Guid hospitalId);
     }
 }

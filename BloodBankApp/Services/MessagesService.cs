@@ -19,10 +19,10 @@ namespace BloodBankApp.Services
         {
             _context = context;
         }
-        public async Task<List<SendMessage>> GetChatConversation(string donorId, string hospitalId)
-        {
+        public async Task<List<SendMessage>> GetChatConversation(Guid donorId, Guid hospitalId)
+        {           
             var messages = await _context.Messages
-               .Where(u => u.DonorId == new Guid(donorId) && u.HospitalId == new Guid(hospitalId))
+               .Where(u => u.DonorId == donorId && u.HospitalId == hospitalId)
                .OrderBy(t => t.DateSent)
                .Select(m => new SendMessage {
                    MessageId = m.MessageId,
@@ -30,19 +30,19 @@ namespace BloodBankApp.Services
                    Content = m.Content,
                    Hour = m.DateSent.Hour.ToString(),
                    Minute = m.DateSent.Minute.ToString(),
-                   DonorId = new Guid(donorId),
-                   HospitalId = new Guid(hospitalId),
+                   DonorId = donorId,
+                   HospitalId = hospitalId,
                    Sender = m.Sender
                }).ToListAsync();
 
             return messages;
         }
 
-        public async Task<List<WaitingDonor>> GetWaitingDonors(string hospitalId)
+        public async Task<List<WaitingDonor>> GetWaitingDonors(Guid hospitalId)
         {
             var waitingDonors = await _context.Messages
                 .Include(user => user.Donor.User)
-                .Where(h => h.HospitalId == new Guid(hospitalId))
+                .Where(h => h.HospitalId == hospitalId)
                 .Select(u => new WaitingDonor{
                     DonorId = u.DonorId,
                     HospitalId = u.HospitalId,
@@ -55,28 +55,28 @@ namespace BloodBankApp.Services
             return waitingDonors;
         }
 
-        public async Task<SendMessage> SaveMessage(string content, string donorId, string hospitalId, int sender)
+        public async Task<SendMessage> SaveMessage(string content, Guid donorId, Guid hospitalId, int sender)
         {
-            var newMessage = new Message(DateTime.Now, content, new Guid(donorId), new Guid(hospitalId), sender);
+            var newMessage = new Message(DateTime.Now, content, donorId, hospitalId, sender);
             await _context.AddAsync(newMessage);
             await _context.SaveChangesAsync();
 
-            var sendMessage = new SendMessage{
+            var sendMessage = new SendMessage {
                 MessageId = newMessage.MessageId,
                 Seen = newMessage.Seen,
                 Content = newMessage.Content,
                 Hour = newMessage.DateSent.Hour.ToString(),
                 Minute = newMessage.DateSent.Minute.ToString(),
-                DonorId = new Guid(donorId),
-                HospitalId = new Guid(hospitalId),
+                DonorId = donorId,
+                HospitalId = hospitalId,
                 Sender = (MessageSender)sender
             };
 
             return sendMessage;
         }
 
-        public async Task SetDonorMessagesToSeen(string donorId, string hospitalId)
-        {
+        public async Task SetDonorMessagesToSeen(Guid donorId, Guid hospitalId)
+        {        
             try {
                 var query = $"UPDATE Messages SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 0 AND Seen = 'false'";
                 await _context.Database.ExecuteSqlRawAsync(query);
@@ -85,7 +85,7 @@ namespace BloodBankApp.Services
             }
         }
 
-        public async Task SetHospitalMessagesToSeen(string donorId, string hospitalId)
+        public async Task SetHospitalMessagesToSeen(Guid donorId, Guid hospitalId)
         {
             try {
                 var query = $"UPDATE Message SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 1 AND Seen = 'false'";
@@ -95,9 +95,9 @@ namespace BloodBankApp.Services
             }
         }
 
-        public async Task SetMessageToSeen(string messageId)
+        public async Task SetMessageToSeen(Guid messageId)
         {
-            var message = await _context.Messages.FindAsync(new Guid(messageId));
+            var message = await _context.Messages.FindAsync(messageId);
 
             if(message != null)
             {
@@ -107,7 +107,7 @@ namespace BloodBankApp.Services
             }
         }
 
-        public async Task DeleteChat(string donorId, string hospitalId)
+        public async Task DeleteChat(Guid donorId, Guid hospitalId)
         {
             try {
                 var query = $"DELETE FROM Messages WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}'";

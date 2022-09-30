@@ -15,16 +15,14 @@ namespace BloodBankApp.Hubs
     public class ChatHub : Hub
     {
         private readonly UserManager<User> _userManager;
-        private readonly ApplicationDbContext _context;
         private readonly IMessagesService _messagesService;
-        public ChatHub(UserManager<User> userManager, IMessagesService messagesService, ApplicationDbContext context)
+        public ChatHub(UserManager<User> userManager, IMessagesService messagesService)
         {
             _userManager = userManager;
             _messagesService = messagesService;
-            _context = context;
         }
 
-        public async Task GetChatConversation(string donorId, string hospitalId)          
+        public async Task GetChatConversation(Guid donorId, Guid hospitalId)          
         {
             var messages = await _messagesService.GetChatConversation(donorId,hospitalId);
 
@@ -35,7 +33,7 @@ namespace BloodBankApp.Hubs
             await Clients.User(currentUser).SendAsync("loadChatConversation", messages, donorId, hospitalId);            
         }
 
-        public async Task SendMessages(string content, string donorId, string hospitalId, int sender)
+        public async Task SendMessages(string content, Guid donorId, Guid hospitalId, int sender)
         {
             var sendMessage = await _messagesService.SaveMessage(content, donorId, hospitalId, sender);
 
@@ -44,17 +42,17 @@ namespace BloodBankApp.Hubs
             await Clients.Group(roomName).SendAsync("receiveMessage", sendMessage);
         }
 
-        public async Task SetMessageToSeen(string messageId)
+        public async Task SetMessageToSeen(Guid messageId)
         {
             await _messagesService.SetMessageToSeen(messageId);
         }
 
-        public async Task SetDonorMessagesToSeen(string donorId, string hospitalId)
+        public async Task SetDonorMessagesToSeen(Guid donorId, Guid hospitalId)
         {
             await _messagesService.SetDonorMessagesToSeen(donorId, hospitalId);
         }
 
-        public async Task SetHospitalMessagesToSeen(string donorId, string hospitalId)
+        public async Task SetHospitalMessagesToSeen(Guid donorId, Guid hospitalId)
         {
             await _messagesService.SetHospitalMessagesToSeen(donorId, hospitalId);
         }
@@ -67,13 +65,13 @@ namespace BloodBankApp.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
         }
-        public async Task Typing(string donorId, int typingIndicator)
+        public async Task Typing(Guid donorId, int typingIndicator)
         {
             string roomName = "ChatRoom-" + donorId + "Donor";
             await Clients.Group(roomName).SendAsync("typing", typingIndicator, donorId);
         }
 
-        public async Task NotTyping(string donorId, int typingIndicator) {
+        public async Task NotTyping(Guid donorId, int typingIndicator) {
             string roomName = "ChatRoom-" + donorId + "Donor";
             await Clients.Group(roomName).SendAsync("notTyping", typingIndicator);
         }
@@ -82,7 +80,7 @@ namespace BloodBankApp.Hubs
         {        
             return Context.ConnectionId;
         }
-        public async Task GetWaitingDonors(string hospitalId)
+        public async Task GetWaitingDonors(Guid hospitalId)
         {
             var currentUser = _userManager.GetUserId(Context.User);
 
@@ -91,7 +89,7 @@ namespace BloodBankApp.Hubs
             await Clients.User(currentUser).SendAsync("loadWaitingDonors", waitingDonors);
         }
 
-        public async Task DeleteChat(string donorId, string hospitalId)
+        public async Task DeleteChat(Guid donorId, Guid hospitalId)
         {
             var currentUser = _userManager.GetUserId(Context.User);
             string roomName = "ChatRoom-" + donorId + "Donor";
@@ -101,7 +99,6 @@ namespace BloodBankApp.Hubs
             await Clients.Group(roomName).SendAsync("deleteChat");
             await Clients.User(currentUser).SendAsync("removeWaitingDonor", donorId);
              
-
         }
     }
 }
