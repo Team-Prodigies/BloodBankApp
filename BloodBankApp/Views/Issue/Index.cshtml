@@ -1,0 +1,27 @@
+﻿@model List<Issue>
+
+<section class="section">
+    <div class="row">
+        @foreach (var issue in Model)
+        {
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="d-flex">
+                            <div class="icon mx-2">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h5 class="text-primary">@issue.Title</h5>
+                        </div>
+                        <div class="m-4">
+                            <p>Issue Status: @issue.IssueStatus</p>
+                            <p>Date Reported: @issue.DateReported</p>
+                            <a class="btn btn-outline-info" asp-controller="Issue" asp-action="Edit" asp-route-id="@issue.IssueId">Edit</a>
+                            <a class="btn btn-danger" asp-controller="Issue" asp-action="Delete" asp-route-id="@issue.IssueId">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
