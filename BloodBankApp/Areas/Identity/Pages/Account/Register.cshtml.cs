@@ -12,6 +12,7 @@ using BloodBankApp.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.CustomValidation;
+using BloodBankApp.Models;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -44,6 +45,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public class RegisterInputModel
         {
+            public Guid Id { get; set; }
+            public Code Code { get; set; }
             [Required]
             [Numbers]
             public string Name { get; set; }
@@ -54,7 +57,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
-            [StringLength(20,ErrorMessage ="Username cannot be longer than 20 characters")]
+            [StringLength(20, ErrorMessage = "Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
@@ -123,6 +126,13 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var donorExists = await _usersService.DonorExists(Input);
+
+                if (donorExists)
+                {
+                    return RedirectToPage("CheckCode");
+                }
+
                 var result = await _usersService.AddDonor(Input);
                 if (result.Succeeded)
                 {
@@ -137,6 +147,18 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ViewData["BloodType"] = BloodTypeList;
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostCheckCodeAsync(Guid id, string codeValue)
+        {
+            var code = await _usersService.CheckDonorsCode(id, codeValue);
+
+            if (code == false)
+            {
+                return Page();
+            }
+
+            return RedirectToAction("Index", "Home", new { area = "Donator" }); 
         }
     }
 }

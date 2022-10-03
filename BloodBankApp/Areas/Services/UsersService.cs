@@ -66,7 +66,7 @@ namespace BloodBankApp.Areas.Services
         {
             foreach (var role in roles)
             {
-                if(role.IsSelected && !role.RoleName.Equals("Donor") && !role.RoleName.Equals("HospitalAdmin"))
+                if (role.IsSelected && !role.RoleName.Equals("Donor") && !role.RoleName.Equals("HospitalAdmin"))
                 {
                     var result = await _userManager.AddToRoleAsync(user, role.RoleName);
                     if (!result.Succeeded)
@@ -127,7 +127,63 @@ namespace BloodBankApp.Areas.Services
         {
             input.Name = input.Name.ToTitleCase();
             input.Surname = input.Surname.ToTitleCase();
-            using (var transaction = _context.Database.BeginTransaction())
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var user = _mapper.Map<User>(input);
+            user.Id = Guid.NewGuid();
+            var donor = _mapper.Map<Donor>(input);
+
+            try
+            {
+                var result = await _userManager.CreateAsync(user, input.Password);
+                if (!result.Succeeded) return result;
+                var addToRoleResult = await _userManager.AddToRoleAsync(user, "Donor");
+                if (addToRoleResult.Succeeded)
+                {
+                    donor.DonorId = user.Id;
+                    await _donorsService.AddDonor(donor);
+                    await transaction.CommitAsync();
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                }
+                else
+                    return addToRoleResult;
+                return result;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return IdentityResult.Failed();
+            }
+        }
+
+        public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input)
+        {
+            input.Name = input.Name.ToTitleCase();
+            input.Surname = input.Surname.ToTitleCase();
+
+            var donorExists = await _context.Donors
+                .Where(donor => donor.User.Name.Equals(input.Name)
+                                && donor.BloodTypeId == input.BloodTypeId
+                                && donor.PersonalNumber == input.PersonalNumber)
+                .FirstOrDefaultAsync();
+            if (donorExists == null)
+            {
+                return IdentityResult.Failed();
+            };
+            var userExists = await _context.Users
+                .Where(user => user.UserName == null)
+                .FirstOrDefaultAsync(u => u.Id == donorExists.DonorId);
+
+            if (userExists == null)
+            {
+                return IdentityResult.Failed();
+            };
+
+            var code = await _context.Codes.FirstOrDefaultAsync(x => x.CodeId == donorExists.DonorId);
+
+            var bloodDonations = await _context.BloodDonations
+                .FirstOrDefaultAsync(x => x.DonorId == donorExists.DonorId);
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
             {
                 var user = _mapper.Map<User>(input);
                 user.Id = Guid.NewGuid();
@@ -136,24 +192,35 @@ namespace BloodBankApp.Areas.Services
                 try
                 {
                     var result = await _userManager.CreateAsync(user, input.Password);
-                    if (result.Succeeded)
+                    if (!result.Succeeded) return result;
+                    var addToRoleResult = await _userManager.AddToRoleAsync(user, "Donor");
+                    if (addToRoleResult.Succeeded)
                     {
-                        var addToRoleResult = await _userManager.AddToRoleAsync(user, "Donor");
-                        if (addToRoleResult.Succeeded)
+                        donor.DonorId = user.Id;
+                        await _donorsService.AddDonor(donor);
+
+                        bloodDonations.DonorId = donor.DonorId;
+
+                        var newCode = new Code
                         {
-                            donor.DonorId = user.Id;
-                            await _donorsService.AddDonor(donor);
-                            transaction.Commit();
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                        }
-                        else
-                            return addToRoleResult;
+                            CodeId = donor.DonorId,
+                            CodeValue = code.CodeValue
+                        };
+                        await _context.Codes.AddAsync(newCode);
+                        _context.Users.Remove(userExists);
+                        await _context.SaveChangesAsync();
+
+
+                        await transaction.CommitAsync();
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                     }
+                    else
+                        return addToRoleResult;
                     return result;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    transaction.Rollback();
+                    await transaction.RollbackAsync();
                     return IdentityResult.Failed();
                 }
             }
@@ -209,5 +276,38 @@ namespace BloodBankApp.Areas.Services
             return await _userManager.IsInRoleAsync(user, role);
         }
 
+        public async Task<bool> CheckDonorsCode(Guid id, string codeValue)
+        {
+            var code = await _context.Codes
+                .Where(x=>x.CodeValue == codeValue)
+                .FirstOrDefaultAsync(code=>code.CodeId == id);
+            if(code == null) return false;
+            return true;
+        }
+
+        public async Task<bool> DonorExists(RegisterModel.RegisterInputModel input)
+        {
+            input.Name = input.Name.ToTitleCase();
+            input.Surname = input.Surname.ToTitleCase();
+
+            var donorExists = await _context.Donors
+                .Where(donor => donor.User.Name.Equals(input.Name)
+                                && donor.BloodTypeId == input.BloodTypeId
+                                && donor.PersonalNumber == input.PersonalNumber)
+                .FirstOrDefaultAsync();
+            if (donorExists == null)
+            {
+                return false;
+            };
+            var userExists = await _context.Users
+                .Where(user => user.UserName == null)
+                .FirstOrDefaultAsync(u => u.Id == donorExists.DonorId);
+
+            if (userExists == null)
+            {
+                return false;
+            };
+            return true;
+        }
     }
 }
