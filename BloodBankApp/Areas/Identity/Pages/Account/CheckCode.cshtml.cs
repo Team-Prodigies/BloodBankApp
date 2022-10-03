@@ -1,12 +1,8 @@
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Data;
-using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -25,19 +21,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public RegisterModel.RegisterInputModel Input { get; set; }
         public async Task<IActionResult> OnGetAsync(RegisterModel.RegisterInputModel model)
         {
-            var donor = await _context.Donors
-                .FirstOrDefaultAsync(donor => donor.DonorId == model.Id);
-
-            if (donor == null) return NotFound();
+            Input = model;
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid id, string codeValue)
+        public async Task<IActionResult> OnPostAsync()
         {
-            var code = await _usersService.CheckDonorsCode(id, codeValue);
+            var code = await _usersService.AddNonRegisteredDonor(Input);
 
-            if (code == false)
+            if (!code.Succeeded)
             {
+                foreach (var error in code.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
                 return Page();
             }
 
