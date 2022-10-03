@@ -3,55 +3,19 @@
 @{
     ViewData["Title"] = "Posts";
 }
-<h1 class="text-center" style="font-weight: 900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Search results for "@ViewBag.SearchTerm"</h1>
+<h1 class="text-center" style="font-weight: 900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Search results from "@ViewBag.CityName"</h1>
 <div class="d-flex justify-content-between">
     <a asp-controller="Home" asp-action="Index">Back to all</a>
 
     <div class="search-bar row g-3">
-        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Home" asp-action="DonationPostSearchResults">
-            <input type="text" placeholder="Search by Hospital Name" name="searchTerm" class="form-control" list="hospitalsSuggestions" required id="searchHospital" autocomplete="off">
+        <form class="search-form d-flex align-items-center mb-2" asp-action="DonationPostCityResults" asp-controller="Home" method="get">
+            <select name="id" class="form-select" required asp-items="ViewBag.CityId" aria-label="Default select example">
+                <option value="">Select by City</option>
+            </select>
             <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
         </form>
-
-        <datalist id="hospitalsSuggestions"></datalist>
     </div>
-    </div>
-    <script>
-        var typingTimer;
-        var doneTypingInterval = 1000;
-        var $input = $('#searchHospital');
-
-        //on keyup, start the countdown
-        $input.on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(doneTyping, doneTypingInterval);
-        });
-
-        //on keydown, clear the countdown
-        $input.on('keydown', function () {
-            clearTimeout(typingTimer);
-        });
-
-        function doneTyping() {
-
-            $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
-
-                if (status == 'success') {
-
-                    $("#hospitalsSuggestions").empty();
-
-                    $.each(data, function (index, value) {
-                        console.log('<option value="' + value + '"></option>');
-
-                        $("#hospitalsSuggestions")
-                            .append(
-                                $('<option value="' + value + '"></option>')
-                            );
-                    });
-                }
-            });
-        }
-    </script>
+</div>
 
 <div class="container-fluid w-100 p-0 d-flex justify-content-center">
     <div class="container ms-2 me-2 w-75 mt-5 mb-5">
@@ -83,7 +47,7 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         <li class="page-item">
-            <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
+            <a class="page-link" asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="1" asp-route-id="@ViewBag.id">First Page</a>
         </li>
         @if (ViewBag.pageNumber < 6)
         {
@@ -93,14 +57,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Home"
-                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults"
-                           asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                        <a class="page-link" asp-controller="Home" asp-action="DonationPostCityResults"
+                           asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
             }
@@ -114,14 +78,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                           asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Home"
-                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
             }

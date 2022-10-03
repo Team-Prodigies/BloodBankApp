@@ -138,6 +138,20 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return result;
         }
 
+        public async Task<List<DonationPost>> GetPostsByCity(Guid id, int pageNumber = 1)
+        {
+            var skipRows = (pageNumber - 1) * 10;
+            var posts = await _context.DonationPosts
+                .Include(x => x.BloodType)
+                .Include(x => x.Hospital)
+                .Where(x => x.PostStatus == Enums.PostStatus.ACTIVE && x.Hospital.CityId == id)
+                .Skip(skipRows).Take(10)
+                .ToListAsync();
+
+            return posts;
+
+        }
+
         public async Task<List<DonationPost>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
