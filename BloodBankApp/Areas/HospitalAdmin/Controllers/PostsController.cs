@@ -69,12 +69,14 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers {
         [HttpPost]
         public async Task<IActionResult> CreatePosts(DonationPost post) {
             if (!ModelState.IsValid) {
+                ViewBag.BloodType = BloodTypeList;
                 _notyfService.Error("You form is not correct. Please try again!");
                 return View(nameof(CreatePosts));
             }
 
             var result = await _postService.AddPost(post);
             if (result == false) {
+                ViewBag.BloodType = BloodTypeList;
                 _notyfService.Error("The Date of the post is not correct!");
                 return View(nameof(CreatePosts));
             }
@@ -106,7 +108,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers {
             }
 
             _notyfService.Success("Post edited!");
-            return View(nameof(ManagePosts));
+            return RedirectToAction(nameof(ManagePosts));
         }
 
         public async Task<IActionResult> DeletePost(Guid notificationId) {

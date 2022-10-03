@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -29,21 +28,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<DonorModel>> DonorSearchResults(string searchTerm, int pageNumber = 1)
-        {
-            var skipRows = (pageNumber - 1) * 10;
-            var donors = await _context.Donors
-                .Include(user => user.User)
-                .Include(blood => blood.BloodType)
-                .Include(city => city.City)
-                .Where(donor => (donor.User.Name + donor.User.Surname.ToUpper())
-                .Contains(searchTerm.Replace(" ", "").ToUpper()))
-                .Skip(skipRows)
-                .Take(10)
-                .ToListAsync();
-
-            return _mapper.Map<List<DonorModel>>(donors);
-        }
 
         public List<Gender> GetGenders()
         {
@@ -71,76 +55,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .FirstOrDefaultAsync(x => x.DonorId == donorId);
             
             return donor;
-        }
-
-        public async Task<List<DonorModel>> GetDonors(int pageNumber = 1, string filterBy = "A-Z")
-        {
-            var skipRows = (pageNumber - 1) * 10;
-            List<Donor> donors;
-
-            switch (filterBy)
-            {
-                case "A-Z":
-                    donors = await _context.Donors
-                        .Include(user => user.User)
-                        .Include(blood => blood.BloodType)
-                        .Include(city => city.City)
-                        .OrderBy(donor => donor.User.Name)
-                        .Skip(skipRows)
-                        .Take(10)
-                        .ToListAsync();
-                    break;
-
-                case "Z-A":
-                    donors = await _context.Donors
-                        .Include(user => user.User)
-                        .Include(blood => blood.BloodType)
-                        .Include(city => city.City)
-                        .OrderByDescending(donor => donor.User.Name)
-                        .Skip(skipRows)
-                        .Take(10)
-                        .ToListAsync();
-                    break;
-
-                case "Locked":
-                    donors = await _context.Donors
-                        .Include(user => user.User)
-                        .Include(blood => blood.BloodType)
-                        .Include(city => city.City)
-                        .Where(donor => donor.User.Locked == true)
-                        .Skip(skipRows)
-                        .Take(10)
-                        .ToListAsync();
-                    break;
-
-                default:
-                    donors = await _context.Donors
-                        .Include(user => user.User)
-                        .Include(blood => blood.BloodType)
-                        .Include(city => city.City)
-                        .OrderBy(donor => donor.User.Name)
-                        .Skip(skipRows)
-                        .Take(10)
-                        .ToListAsync();
-                    break;
-            }
-            var result = _mapper.Map<List<DonorModel>>(donors);
-
-            return result;
-        }
-
-        public async Task LockoutDonor(User user)
-        {
-            user.Locked = true;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UnlockDonor(User user)
-        {
-            user.Locked = false;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
         }
     }
 }

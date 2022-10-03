@@ -255,7 +255,7 @@ namespace BloodBankApp.Areas.Services
                         {
                             medicalStaff.MedicalStaffId = user.Id;
                             await _medicalStaffService.AddMedicalStaff(medicalStaff);
-                            transaction.Commit();
+                            await transaction.CommitAsync();
                             await _signInManager.SignInAsync(user, isPersistent: false);
                         }
                         else
@@ -283,6 +283,89 @@ namespace BloodBankApp.Areas.Services
                 .FirstOrDefaultAsync(code=>code.CodeId == id);
             if(code == null) return false;
             return true;
+        }
+
+        public Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1 )
+        {
+            var skipRows = (pageNumber - 1) * 10;
+            var users = _context.Users
+                .Where(user => (user.Name + user.Surname.ToUpper())
+                    .Contains(searchTerm.Replace(" ", "").ToUpper()))
+                .ToList()
+                .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false: UserIsInRole(user,roleFilter).Result )
+                .Skip(skipRows)
+                .Take(10)
+                .ToList();
+
+            var result = new List<ManageUserModel>();
+            users.ForEach(user => result.Add(_mapper.Map<ManageUserModel>(user)));
+
+            return Task.FromResult(result);
+        }
+
+        public Task<List<ManageUserModel>> GetUsers(string roleFilter, int pageNumber = 1, string filterBy = "A-Z")
+        {
+            var skipRows = (pageNumber - 1) * 10;
+            List<User> users;
+            switch (filterBy)
+            {
+                case "A-Z":
+                    users = _context.Users
+                        .OrderBy(user => user.Name)
+                        .ToList()
+                        .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false : UserIsInRole(user, roleFilter).Result)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToList();
+                    break;
+
+                case "Z-A":
+                    users = _context.Users
+                        .OrderByDescending(user => user.Name)
+                        .ToList()
+                        .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false : UserIsInRole(user, roleFilter).Result)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToList();
+                    break;
+
+                case "Locked":
+                    users = _context.Users
+                        .Where(user => user.Locked == true)
+                        .ToList()
+                        .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false : UserIsInRole(user, roleFilter).Result)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToList();
+                    break;
+
+                default:
+                    users = _context.Users
+                        .OrderBy(user => user.Name)
+                        .ToList()
+                        .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false : UserIsInRole(user, roleFilter).Result)
+                        .Skip(skipRows)
+                        .Take(10)
+                        .ToList();
+                    break;
+            }
+            var result = new List<ManageUserModel>();
+            users.ForEach(user => result.Add(_mapper.Map<ManageUserModel>(user)));
+            return Task.FromResult(result);
+        }
+
+        public async Task LockoutUser(User user)
+        {
+            user.Locked = true;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UnlockUser(User user)
+        {
+            user.Locked = false;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> DonorExists(RegisterModel.RegisterInputModel input)
