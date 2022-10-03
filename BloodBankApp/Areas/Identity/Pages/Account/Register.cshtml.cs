@@ -126,12 +126,12 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var donorExists = await _usersService.DonorExists(Input);
+                /*var donorExists = await _usersService.DonorExists(Input);
 
                 if (donorExists)
                 {
                     return RedirectToPage("CheckCode");
-                }
+                }*/
 
                 var result = await _usersService.AddDonor(Input);
                 if (result.Succeeded)
