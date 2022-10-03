@@ -1,0 +1,27 @@
+﻿@page
+@model BloodBankApp.Areas.Identity.Pages.Account.CheckCodeModel
+@{
+}
+@{
+    ViewData["Title"] = "CheckCode";
+}
+<div class="m-5">
+    <div class="container col-7 card">
+        <div class="card-body">
+            <h5 class="card-title">Enter your Code here:</h5>
+            <form class="row g-3 justify-content-center" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="container col-8 row">
+                    <div class="mb-3 mt-2">
+                        <input asp-for="Code.CodeId" type="hidden" class="form-control">
+                        <label asp-for="Code.CodeValue" class="form-label"></label>
+                        <input asp-for="Code.CodeValue" class="form-control" required>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -105,6 +105,8 @@ namespace BloodBankApp.Mapping
 
             CreateMap<NotRegisteredDonor, User>();
             CreateMap<User, ManageUserModel>().ReverseMap();
+
+            CreateMap<CodeModel,Code>().ReverseMap();
         }
     }
 }
