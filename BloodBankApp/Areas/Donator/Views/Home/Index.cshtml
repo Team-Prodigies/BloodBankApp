@@ -130,6 +130,13 @@
                                 <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
                             </div>
                             <p class="card-text">Data Required:<span class="ps-3" style="color: #d1001f"> @posts.DateRequired </span></p>
+
+                                                   
+                            <a asp-controller="DonorsChat" asp-action="DonorChatRoom" asp-route-hospitalId="@posts.HospitalId">
+                                <div class="icon">
+                                   <i class="bi bi-chat-dots-fill">Chat with us</i>                            
+                                </div>
+                            </a>
                         </div>
                         <div class="text-center card-footer">
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#verticalycentered">
