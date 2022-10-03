@@ -63,6 +63,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return false;
         }
 
+        public async Task<List<DonationPost>> GetAllPosts()
+        {
+            var posts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
+            return posts;
+        }
+
         public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
             List<DonationPost> getPost;
 
@@ -87,6 +93,77 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
 
             var result = _mapper.Map<List<DonationPost>>(getPost);
             return result;
+        }
+
+        public async Task<List<DonationPost>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1)
+        {
+            List<DonationPost> getPosts;
+            var skipRows = (pageNumber - 1) * 10;
+
+            switch (filterBy)
+            {
+                case "A+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "A+" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "A-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "A-" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "B+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "B+" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "B-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "B-" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "AB+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "AB+" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "AB-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "AB-" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "O+":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "O+" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "O-":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.BloodType.BloodTypeName == "O-" && x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+                case "Normal":
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+
+                default:
+                    getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
+                    break;
+            }
+            var result = _mapper.Map<List<DonationPost>>(getPosts);
+            return result;
+        }
+
+        public async Task<List<DonationPost>> GetPostsByCity(Guid id, int pageNumber = 1)
+        {
+            var skipRows = (pageNumber - 1) * 10;
+            var posts = await _context.DonationPosts
+                .Include(x => x.BloodType)
+                .Include(x => x.Hospital)
+                .Where(x => x.PostStatus == Enums.PostStatus.ACTIVE && x.Hospital.CityId == id)
+                .Skip(skipRows).Take(10)
+                .ToListAsync();
+
+            return posts;
+
+        }
+
+        public async Task<List<DonationPost>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
+        {
+            var skipRows = (pageNumber - 1) * 10;
+            var posts = await _context.DonationPosts
+                .Include(x => x.Hospital)
+                .Include(x => x.BloodType)
+                .Where(x => x.Hospital.HospitalName.Replace(" ", "").ToUpper()
+                .Contains(searchTerm.Replace(" ", "").ToUpper()))
+                .Skip(skipRows).Take(10)
+                .ToListAsync();
+
+            return posts;
         }
     }
 }
