@@ -46,6 +46,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class RegisterInputModel
         {
             public Guid Id { get; set; }
+
+            public Guid CodeId { get; set; }
             public Code Code { get; set; }
             [Required]
             [Numbers]
@@ -127,10 +129,10 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var donorExists = await _usersService.DonorExists(Input);
-
-                if (donorExists)
+                
+                if (donorExists.Id != Guid.Empty)
                 {
-                    return RedirectToPage("CheckCode");
+                    return RedirectToPage("CheckCode",donorExists);
                 }
 
                 var result = await _usersService.AddDonor(Input);
@@ -147,18 +149,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ViewData["BloodType"] = BloodTypeList;
 
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostCheckCodeAsync(Guid id, string codeValue)
-        {
-            var code = await _usersService.CheckDonorsCode(id, codeValue);
-
-            if (code == false)
-            {
-                return Page();
-            }
-
-            return RedirectToAction("Index", "Home", new { area = "Donator" }); 
         }
     }
 }

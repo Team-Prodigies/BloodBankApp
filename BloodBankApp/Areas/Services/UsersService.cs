@@ -157,31 +157,29 @@ namespace BloodBankApp.Areas.Services
 
         public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input)
         {
-            input.Name = input.Name.ToTitleCase();
-            input.Surname = input.Surname.ToTitleCase();
 
             var donorExists = await _context.Donors
                 .Where(donor => donor.User.Name.Equals(input.Name)
                                 && donor.BloodTypeId == input.BloodTypeId
                                 && donor.PersonalNumber == input.PersonalNumber)
                 .FirstOrDefaultAsync();
-            if (donorExists == null)
-            {
-                return IdentityResult.Failed();
-            };
+
             var userExists = await _context.Users
                 .Where(user => user.UserName == null)
                 .FirstOrDefaultAsync(u => u.Id == donorExists.DonorId);
 
-            if (userExists == null)
-            {
-                return IdentityResult.Failed();
-            };
 
-            var code = await _context.Codes.FirstOrDefaultAsync(x => x.CodeId == donorExists.DonorId);
+            var code = await _context.Codes
+                .FirstOrDefaultAsync(x => x.CodeId == donorExists.DonorId);
+
+            if (code == null) return IdentityResult.Failed();
+
+            if (code.CodeValue != input.Code.CodeValue)
+                return IdentityResult.Failed(new IdentityError { Description = "You've entered the wrong code" });
+
 
             var bloodDonations = await _context.BloodDonations
-                .FirstOrDefaultAsync(x => x.DonorId == donorExists.DonorId);
+                .Where(x => x.DonorId == donorExists.DonorId).ToListAsync();
 
             await using var transaction = await _context.Database.BeginTransactionAsync();
             {
@@ -197,20 +195,16 @@ namespace BloodBankApp.Areas.Services
                     if (addToRoleResult.Succeeded)
                     {
                         donor.DonorId = user.Id;
+                        donor.Code = null;
                         await _donorsService.AddDonor(donor);
 
-                        bloodDonations.DonorId = donor.DonorId;
-
-                        var newCode = new Code
+                        foreach (var bloodDonation in bloodDonations)
                         {
-                            CodeId = donor.DonorId,
-                            CodeValue = code.CodeValue
-                        };
-                        await _context.Codes.AddAsync(newCode);
+                            bloodDonation.DonorId = donor.DonorId;
+                        }
                         _context.Users.Remove(userExists);
+                        _context.Codes.Remove(code);
                         await _context.SaveChangesAsync();
-
-
                         await transaction.CommitAsync();
                         await _signInManager.SignInAsync(user, isPersistent: false);
                     }
@@ -279,20 +273,20 @@ namespace BloodBankApp.Areas.Services
         public async Task<bool> CheckDonorsCode(Guid id, string codeValue)
         {
             var code = await _context.Codes
-                .Where(x=>x.CodeValue == codeValue)
-                .FirstOrDefaultAsync(code=>code.CodeId == id);
-            if(code == null) return false;
+                .Where(x => x.CodeValue == codeValue)
+                .FirstOrDefaultAsync(code => code.CodeId == id);
+            if (code == null) return false;
             return true;
         }
 
-        public Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1 )
+        public Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
             var users = _context.Users
                 .Where(user => (user.Name + user.Surname.ToUpper())
                     .Contains(searchTerm.Replace(" ", "").ToUpper()))
                 .ToList()
-                .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false: UserIsInRole(user,roleFilter).Result )
+                .Where(user => string.IsNullOrEmpty(roleFilter) ? UserIsInRole(user, "SuperAdmin").Result == false : UserIsInRole(user, roleFilter).Result)
                 .Skip(skipRows)
                 .Take(10)
                 .ToList();
@@ -368,7 +362,7 @@ namespace BloodBankApp.Areas.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DonorExists(RegisterModel.RegisterInputModel input)
+        public async Task<RegisterModel.RegisterInputModel> DonorExists(RegisterModel.RegisterInputModel input)
         {
             input.Name = input.Name.ToTitleCase();
             input.Surname = input.Surname.ToTitleCase();
@@ -380,17 +374,22 @@ namespace BloodBankApp.Areas.Services
                 .FirstOrDefaultAsync();
             if (donorExists == null)
             {
-                return false;
+                return input;
             };
+
             var userExists = await _context.Users
                 .Where(user => user.UserName == null)
                 .FirstOrDefaultAsync(u => u.Id == donorExists.DonorId);
 
             if (userExists == null)
             {
-                return false;
+                return input;
             };
-            return true;
+            input.Id = donorExists.DonorId;
+            input.CodeId = donorExists.DonorId;
+            input.DateOfBirth = userExists.DateOfBirth;
+
+            return input;
         }
     }
 }
