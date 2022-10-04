@@ -1,5 +1,10 @@
 ﻿@model List<Issue>
 
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/SuperAdmin/Views/Shared/_SuperAdminLayout.cshtml";
+}
+
 <section class="section">
     <div class="row">
         @foreach (var issue in Model)

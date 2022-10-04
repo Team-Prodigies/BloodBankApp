@@ -3,10 +3,12 @@ using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BloodBankApp.Controllers
 {
@@ -21,10 +23,9 @@ namespace BloodBankApp.Controllers
             _notyfService = notyfService;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var issueList = _db.Issues.ToList();
-            return View(issueList);
+            return View(await _db.Issues.ToListAsync());
         }
 
         public IActionResult ReportIssue()
@@ -33,26 +34,27 @@ namespace BloodBankApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReportIssue(Issue obj)
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ReportIssue([Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
         {
             if (ModelState.IsValid)
             {
-                _db.Issues.Add(obj);
-                _db.SaveChanges();
-                _notyfService.Success("Issue reported successfully! The support team will deal with it.");
+                issue.IssueId = Guid.NewGuid();
+                _db.Add(issue);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("ReportIssue");
             }
             return View();
         }
 
-        public IActionResult Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if(id == null)
             {
                 return NotFound();
             }
 
-            var issueFromDatabase = _db.Issues.FirstOrDefault(u => u.IssueId == id);
+            var issueFromDatabase = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
 
             if (issueFromDatabase == null)
             {
@@ -64,7 +66,7 @@ namespace BloodBankApp.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(Guid? id,[Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
+        public async Task<IActionResult> Edit(Guid? id,[Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
         {
             if (id != issue.IssueId)
             {
@@ -74,20 +76,20 @@ namespace BloodBankApp.Controllers
             if (ModelState.IsValid)
             {
                 _db.Issues.Update(issue);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(issue);
         }
 
-        public IActionResult Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var issueFromDatabase = _db.Issues.FirstOrDefault(u => u.IssueId == id);
+            var issueFromDatabase = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
 
             if (issueFromDatabase == null)
             {
@@ -99,9 +101,9 @@ namespace BloodBankApp.Controllers
 
         [HttpPost, ActionName("Delete")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult DeletePOST(Guid? id)
+        public async Task<IActionResult> DeletePOST(Guid? id)
         {
-            var issue = _db.Issues.FirstOrDefault(u => u.IssueId == id);
+            var issue = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
 
             if(issue == null)
             {
@@ -109,7 +111,7 @@ namespace BloodBankApp.Controllers
             }
 
             _db.Issues.Remove(issue);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
