@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
+﻿using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Models;
@@ -31,10 +32,12 @@ namespace BloodBankApp.Areas.Donator.Controllers
         public async Task<IActionResult> Index(string filterBy = "Normal", int pageNumber = 1)
         {
             var result = await _postService.GetPostsByBloodType(filterBy, pageNumber);
+            var questionnaireQuestions = await _postService.GetQuestionnaireQuestions();
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.FilterBy = filterBy;
             ViewBag.CityId = _cityList;
+            ViewBag.QuestionnaireQuestions = questionnaireQuestions;
 
             return View(result);
         }
@@ -54,8 +57,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
         }
 
         public async Task<IActionResult> DonationPostCityResults(Guid id, int pageNumber = 1)
-        {
-            
+        {          
             var posts = await _postService.GetPostsByCity(id, pageNumber);
             var cityName = await _citiesService.GetCity(id);
 
@@ -67,5 +69,12 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(posts);
         }
 
+        [HttpPost]
+        public IActionResult QuestionnaireAnswers(QuestionnaireAnswers answers)
+        {
+            Console.WriteLine(answers);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+﻿using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -16,5 +17,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
         Task<List<DonationPost>> GetPostsBySearch(string searchTerm, int pageNumber = 1);
         Task<PostModel> EditPost(Guid notificationId);
         Task<bool> EditPosts(PostModel post, Guid notificationId);
+
+        Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
     }
 }

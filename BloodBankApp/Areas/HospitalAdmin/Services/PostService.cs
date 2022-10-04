@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Data;
@@ -10,19 +11,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.HospitalAdmin.Services {
-    public class PostService : IPostService {
+namespace BloodBankApp.Areas.HospitalAdmin.Services
+{
+    public class PostService : IPostService
+    {
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public PostService(ApplicationDbContext context, IMapper mapper) {
+        public PostService(ApplicationDbContext context, IMapper mapper)
+        {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<bool> AddPost(DonationPost post) {
-            if(post != null) {
-                if (post.DateRequired.Hour <= DateTime.Today.Hour || post.DateRequired.Day < DateTime.Now.Day) {
+        public async Task<bool> AddPost(DonationPost post)
+        {
+            if(post != null)
+            {
+                if (post.DateRequired.Hour <= DateTime.Today.Hour || post.DateRequired.Day < DateTime.Now.Day)
+                {
                    return false;
                 }
                 
@@ -33,10 +40,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return false;
         }
 
-        public async Task<PostModel> EditPost(Guid notificationId) {
+        public async Task<PostModel> EditPost(Guid notificationId)
+        {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
 
-            var postModel = new PostModel {
+            var postModel = new PostModel
+            {
                 NotificationId = getPost.NotificationId,
                 DateRequired = getPost.DateRequired,
                 Description = getPost.Description,
@@ -47,15 +56,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return postModel;
         }
 
-        public async Task<bool> EditPosts(PostModel post, Guid notificationId) {
+        public async Task<bool> EditPosts(PostModel post, Guid notificationId)
+        {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
             getPost.PostStatus = post.PostStatus;
             getPost.Description = post.Description;
             getPost.BloodTypeId = post.BloodTypeId;
             getPost.AmountRequested = post.AmountRequested;
             getPost.DateRequired = post.DateRequired;
-            if (getPost != null) {
-
+            if (getPost != null)
+            {
                 _context.DonationPosts.Update(getPost);
                 await _context.SaveChangesAsync();
                 return true;
@@ -69,7 +79,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return posts;
         }
 
-        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
+        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal")
+        {
             List<DonationPost> getPost;
 
             switch (filterBy) {
@@ -149,7 +160,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                 .ToListAsync();
 
             return posts;
-
         }
 
         public async Task<List<DonationPost>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
@@ -164,6 +174,14 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                 .ToListAsync();
 
             return posts;
+        }
+
+        public async Task<QuestionnaireAnswers> GetQuestionnaireQuestions()
+        {
+            var questions = await _context.Questions.ToListAsync();
+            var questionsList = new QuestionnaireAnswers(questions);
+
+            return questionsList;
         }
     }
 }
