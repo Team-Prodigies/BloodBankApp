@@ -10,6 +10,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
     public interface IDonorsService
     {
         Task<Donor> GetDonor(Guid donorId);
+        Task<Donor> FindDonor(long personalNumber);
         List<Gender> GetGenders();
         Task<bool> EditDonor(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto);
         Task AddDonor(Donor donor);

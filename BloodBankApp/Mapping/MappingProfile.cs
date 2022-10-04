@@ -6,7 +6,7 @@ using System;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Areas.Identity.Pages.Account.Manage;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
-using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
+using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;using System.Collections.Generic;
 
 namespace BloodBankApp.Mapping
 {
@@ -107,6 +107,7 @@ namespace BloodBankApp.Mapping
             CreateMap<User, ManageUserModel>().ReverseMap();
 
             CreateMap<CodeModel,Code>().ReverseMap();
+            CreateMap<BloodDonation,BloodDonationModel>().ReverseMap();
         }
     }
 }
