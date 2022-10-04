@@ -1,9 +1,7 @@
 ﻿using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -16,13 +14,13 @@ namespace BloodBankApp.Areas.Donator.Controllers
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
-        private readonly IBloodTypesService _bloodTypesService;
         private readonly ICitiesService _citiesService;
         private readonly SelectList _cityList;
-        public HomeController(IPostService postService, IBloodTypesService bloodTypesService,ICitiesService citiesService)
+        public HomeController(IPostService postService,
+            IBloodTypesService bloodTypesService,
+            ICitiesService citiesService)
         {
             _postService = postService;
-            _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
         }
@@ -55,7 +53,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
 
         public async Task<IActionResult> DonationPostCityResults(Guid id, int pageNumber = 1)
         {
-            
+
             var posts = await _postService.GetPostsByCity(id, pageNumber);
             var cityName = await _citiesService.GetCity(id);
 
@@ -66,6 +64,5 @@ namespace BloodBankApp.Areas.Donator.Controllers
 
             return View(posts);
         }
-
     }
 }
