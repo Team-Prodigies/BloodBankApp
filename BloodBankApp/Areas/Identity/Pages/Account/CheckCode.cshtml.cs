@@ -8,18 +8,16 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 {
     public class CheckCodeModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUsersService _usersService;
 
-        public CheckCodeModel(ApplicationDbContext context, IUsersService usersService)
+        public CheckCodeModel(IUsersService usersService)
         {
-            _context = context;
             _usersService = usersService;
         }
 
         [BindProperty]
         public RegisterModel.RegisterInputModel Input { get; set; }
-        public async Task<IActionResult> OnGetAsync(RegisterModel.RegisterInputModel model)
+        public IActionResult OnGet(RegisterModel.RegisterInputModel model)
         {
             Input = model;
             return Page();
@@ -37,7 +35,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 }
                 return Page();
             }
-
             return RedirectToAction("Index", "Home", new { area = "Donator" });
         }
     }

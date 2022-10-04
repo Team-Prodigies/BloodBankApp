@@ -13,7 +13,6 @@ namespace BloodBankApp.Areas.Identity.Services
         {
             _context = context;
         }
-
         public async Task AddMedicalStaff(MedicalStaff medicalStaff)
         {
             await _context.MedicalStaffs.AddAsync(medicalStaff);
