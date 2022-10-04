@@ -6,9 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Donator\Data\**" />
+    <Compile Remove="Areas\Donator\Models\**" />
+    <Compile Remove="Areas\Donator\Services\**" />
     <Compile Remove="Areas\HospitalAdmin\Models\**" />
+    <Content Remove="Areas\Donator\Data\**" />
+    <Content Remove="Areas\Donator\Models\**" />
+    <Content Remove="Areas\Donator\Services\**" />
     <Content Remove="Areas\HospitalAdmin\Models\**" />
+    <EmbeddedResource Remove="Areas\Donator\Data\**" />
+    <EmbeddedResource Remove="Areas\Donator\Models\**" />
+    <EmbeddedResource Remove="Areas\Donator\Services\**" />
     <EmbeddedResource Remove="Areas\HospitalAdmin\Models\**" />
+    <None Remove="Areas\Donator\Data\**" />
+    <None Remove="Areas\Donator\Models\**" />
+    <None Remove="Areas\Donator\Services\**" />
     <None Remove="Areas\HospitalAdmin\Models\**" />
   </ItemGroup>
 
@@ -29,12 +41,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Donator\Data\" />
-    <Folder Include="Areas\Donator\Models\" />
-    <Folder Include="Areas\Donator\Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

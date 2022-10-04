@@ -63,12 +63,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return false;
         }
 
-        public async Task<List<DonationPost>> GetAllPosts()
-        {
-            var posts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).ToListAsync();
-            return posts;
-        }
-
         public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
             List<DonationPost> getPost;
 
@@ -95,7 +89,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return result;
         }
 
-        public async Task<List<DonationPost>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1)
+        public async Task<List<PostModel>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1)
         {
             List<DonationPost> getPosts;
             var skipRows = (pageNumber - 1) * 10;
@@ -134,11 +128,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                     getPosts = await _context.DonationPosts.Include(x => x.BloodType).Include(x => x.Hospital).Where(x => x.PostStatus == Enums.PostStatus.ACTIVE).Skip(skipRows).Take(10).ToListAsync();
                     break;
             }
-            var result = _mapper.Map<List<DonationPost>>(getPosts);
+            var result = _mapper.Map<List<PostModel>>(getPosts);
             return result;
         }
 
-        public async Task<List<DonationPost>> GetPostsByCity(Guid id, int pageNumber = 1)
+        public async Task<List<PostModel>> GetPostsByCity(Guid id, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
             var posts = await _context.DonationPosts
@@ -147,12 +141,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                 .Where(x => x.PostStatus == Enums.PostStatus.ACTIVE && x.Hospital.CityId == id)
                 .Skip(skipRows).Take(10)
                 .ToListAsync();
-
-            return posts;
+            var result = _mapper.Map<List<PostModel>>(posts);
+            return result;
 
         }
 
-        public async Task<List<DonationPost>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
+        public async Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
             var posts = await _context.DonationPosts
@@ -162,8 +156,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                 .Contains(searchTerm.Replace(" ", "").ToUpper()))
                 .Skip(skipRows).Take(10)
                 .ToListAsync();
-
-            return posts;
+            var result = _mapper.Map<List<PostModel>>(posts);
+            return result;
         }
     }
 }

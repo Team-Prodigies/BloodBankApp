@@ -1,4 +1,5 @@
-﻿@model List<DonationPost>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<BloodBankApp.Areas.HospitalAdmin.ViewModels.PostModel>
 
 @{
     ViewData["Title"] = "Posts";
@@ -22,23 +23,23 @@
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
             @foreach (var posts in Model)
             {
-            <div class="col">
-                <div class="card" style="min-height: 100%">
-                    <div class="card-body me-3 ms-3 mt-2">
-                        <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
-                        <p class="card-text">BloodType:<span class="ps-3" style="color: #d1001f"> @posts.BloodType.BloodTypeName </span></p>
-                        <p class="card-text">Description: <span style="color: #d1001f"> @posts.Description </span></p>
-                        <div class="d-flex justify-content-around">
-                            <p class="card-text">City:<span style="color: #d1001f"> @posts.Hospital.City.CityName </span></p>
-                            <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
+                <div class="col">
+                    <div class="card" style="min-height: 100%">
+                        <div class="card-body me-3 ms-3 mt-2">
+                            <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
+                            <p class="card-text">BloodType:<span class="ps-3" style="color: #d1001f"> @posts.BloodType.BloodTypeName </span></p>
+                            <p class="card-text">Description: <span style="color: #d1001f"> @posts.Description </span></p>
+                            <div class="d-flex justify-content-around">
+                                <p class="card-text">City:<span style="color: #d1001f"> @posts.Hospital.City.CityName </span></p>
+                                <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
+                            </div>
+                            <p class="card-text">Data Required:<span class="ps-3" style="color: #d1001f"> @posts.DateRequired </span></p>
                         </div>
-                        <p class="card-text">Data Required:<span class="ps-3" style="color: #d1001f"> @posts.DateRequired </span></p>
-                    </div>
-                    <div class="text-center card-footer">
-                        <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                        <div class="text-center card-footer">
+                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                        </div>
                     </div>
                 </div>
-            </div>
             }
         </div>
     </div>
@@ -51,20 +52,20 @@
         </li>
         @if (ViewBag.pageNumber < 6)
         {
-            for (int i = 1; i <= 6; i++)
+            for (var i = 1; i <= 6; i++)
             {
                 if (i == ViewBag.pageNumber)
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Home"
-                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+               asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Home" asp-action="DonationPostCityResults"
-                           asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+               asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
             }
@@ -78,14 +79,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+               asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Home"
-                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+               asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
                     </li>
                 }
             }
