@@ -52,6 +52,7 @@
         .border-top {
             border-top: 1px solid #dee2e6 !important;
         }
+
     </style>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -59,11 +60,11 @@
 
 <main class="content">
     <div class="container p-0">
-        
+
         <div class="card">
             <div class="row g-0">
-                
-                <div class="col-12 col-lg-5 col-xl-3 border-right shadow-sm p-3 mb-5 bg-white rounded" id="waitingDonors">
+
+                <div class="col-12 col-lg-5 col-xl-3 border-right shadow-sm p-3 mb-5 bg-white rounded" style=" height:700px; overflow: scroll;" id="waitingDonors">
                     <script>
                         var chatWithDonorId = '';
                         var chatWithHospitalId = '@ViewBag.HospitalId';
@@ -83,10 +84,9 @@
 
                     <div class="position-relative">
                         <div class="chat-messages p-4" id="chatBox">
-
                         </div>
                     </div>
-                    <div class="m-1 text-muted small" id="typing" style="display:none"><em>Typing...</em></div>
+                    <div class="m-1 text-muted small" id="typing" style="display:none; margin-left:10px;"><em>Typing...</em></div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
                         <div class="input-group">
 

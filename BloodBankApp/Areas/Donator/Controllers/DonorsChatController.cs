@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.Donator.Controllers
@@ -21,7 +19,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             _hospitalService = hospitalService;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Hospitals(int pageNumber=1)
+        public async Task<IActionResult> Hospitals(int pageNumber = 1)
         {
             var hospitals = await _hospitalService.GetHospitals(pageNumber);
             ViewBag.PageNumber = pageNumber;
@@ -29,9 +27,8 @@ namespace BloodBankApp.Areas.Donator.Controllers
         }
         public async Task<IActionResult> DonorChatRoomAsync(Guid hospitalId)
         {
-            ViewBag.DonorId = _userManager.GetUserId(User);            
+            ViewBag.DonorId = _userManager.GetUserId(User);
             var hospital = await _hospitalService.GetHospital(hospitalId);
-
             return View(hospital);
         }
     }

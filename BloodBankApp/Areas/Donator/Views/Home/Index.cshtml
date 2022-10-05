@@ -1,76 +1,192 @@
-﻿<div class="container-fluid w-100 p-0 d-flex justify-content-center">
-    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
-        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <div class="d-flex flex-row">
-                                <h6 class="card-title">Blood type: A+</h6>
-                                <h6 class="card-title">Date required: 09.09.2022</h6>
-                                <h6 class="card-title">Location: Ferizaj</h6>
-                            </div>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<BloodBankApp.Areas.HospitalAdmin.ViewModels.PostModel>
 
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
+<style>
+    .dropbtn {
+        background-color: #d1001f;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #7790b4;
+        border-radius: 5px;
+    }
 
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
+    #dropdown-custom {
+        position: relative;
+        display: inline-block;
+        width: 100px;
+    }
 
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <img src="~/Images/card1.jpg" class="card-img-top h-50 image-card" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <h6 class="card-title">Blood type: A+</h6>
-                            <h6 class="card-title">Date required: 09.09.2022</h6>
-                            <h6 class="card-title">Location: Ferizaj</h6>
-                        </div>
-                        <p class="card-text">We need two blood bags of 300ml at "Spitali Rajonal Idriz Seferi". </p>
+    #dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #d1001f;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
 
-                    </div>
-                    <div class="card-footer border-0 bg-white">
-                        <a href="#" class="btn text-white" style="background-color: #d1001f">Donate Now</a>
-                    </div>
-                </div>
+        #dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            #dropdown-content a:hover {
+                background-color: darkred;
+            }
+
+    #dropdown-custom:hover #dropdown-content {
+        display: block;
+        border-radius: 5px;
+        
+    }
+</style>
+<div class="container-fluid w-100 p-0">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-4  d-flex justify-content-between">
+        <div class="dropdown" id="dropdown-custom">
+            <button class="dropbtn">@ViewBag.FilterBy</button>
+            <div class="dropdown-content" id="dropdown-content">
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="Normal">Normal</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="A+">A+</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="A-">A-</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="B+">B+</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="B-">B-</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="AB+">AB+</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="AB-">AB-</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="O+">O+</a>
+                <a asp-controller="Home" asp-action="Index" asp-route-filterBy="O-">O-</a>
             </div>
+        </div>
+        <div class="search-bar row g-3 col">
+            <form class="search-form d-flex align-items-center mb-2" asp-action="DonationPostCityResults" asp-controller="Home" method="get">
+                <select name="id" class="form-select" required asp-items="ViewBag.CityId" aria-label="Default select example">
+                    <option value="">Select by City</option>
+                </select>
+                <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+        <div class="search-bar row g-3 col">
+            <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Home" asp-action="DonationPostSearchResults">
+                <input type="text" placeholder="Search by Hospital Name" name="searchTerm" class="form-control" required list="hospitalsSuggestions" id="searchHospital" autocomplete="off">
+                <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+            </form>
+
+            <datalist id="hospitalsSuggestions"></datalist>
         </div>
     </div>
 </div>
+<script>
+    var typingTimer;
+    var doneTypingInterval = 1000;
+    var $input = $('#searchHospital');
+
+    //on keyup, start the countdown
+    $input.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    function doneTyping() {
+
+        $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
+
+            if (status == 'success') {
+
+                $("#hospitalsSuggestions").empty();
+
+                $.each(data, function (index, value) {
+                    console.log('<option value="' + value + '"></option>');
+
+                    $("#hospitalsSuggestions")
+                        .append(
+                            $('<option value="' + value + '"></option>')
+                        );
+                });
+            }
+        });
+    }
+</script>
+
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            @foreach (var posts in Model)
+            {
+                <div class="col">
+                    <div class="card" style="min-height: 100%">
+                        <div class="card-body me-3 ms-3 mt-2">
+                            <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
+                            <p class="card-text"><strong>BloodType:</strong>  @posts.BloodType.BloodTypeName </p>
+                            <p class="card-text"><strong>Description:</strong>  @posts.Description </p>
+                            <div class="d-flex justify-content-around">
+                                <p class="card-text"><strong>City:</strong> @posts.Hospital.City.CityName</p>
+                                <p class="card-text"><strong>Amount:</strong> @posts.AmountRequested ml </p>
+                            </div>
+                            <p class="card-text"><strong>Date Required:</strong> @posts.DateRequired</p>
+                        </div>
+                        <div class="text-center card-footer">
+                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pageNumber="1" asp-route-filterBy="@ViewBag.FilterBy">First Page</a>
+        </li>
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (var i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="Index" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="Index"
+                           asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+            }
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
+                if
+                (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           asp-controller="Home" asp-action="Index" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="Index" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>

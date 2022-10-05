@@ -134,6 +134,12 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
                 return Page();
             }
+            var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
+            if (PersonalNumberTaken)
+            {
+                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                return Page();
+            }
             var result = await _donorsService.EditDonor(user.Id, Input);
             if (!result)
             {

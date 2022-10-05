@@ -16,15 +16,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
         private readonly ICitiesService _citiesService;
         private readonly INotyfService _notyfService;
-        public CitiesController(ICitiesService citiesService, INotyfService notyfService)
+        public CitiesController(ICitiesService citiesService,
+            INotyfService notyfService)
         {
             _citiesService = citiesService;
             _notyfService = notyfService;
         }
-        
+
         [Authorize(Policy = Permissions.Cities.View)]
         public async Task<IActionResult> Cities()
-
         {
             var cities = await _citiesService.GetCities();
             return View(cities.ToList());

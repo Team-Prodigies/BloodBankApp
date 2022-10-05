@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.CustomValidation;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Areas.SuperAdmin.ViewModels
@@ -43,5 +44,6 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Compare(nameof(Password), ErrorMessage = "Passwords don't match.")]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+        public List<SelectedRoleModel> Roles { get; set; }
     }
 }

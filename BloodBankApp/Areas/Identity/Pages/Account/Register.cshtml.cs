@@ -12,6 +12,7 @@ using BloodBankApp.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.CustomValidation;
+using BloodBankApp.Models;
 
 namespace BloodBankApp.Areas.Identity.Pages.Account
 {
@@ -21,17 +22,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
         private readonly ICitiesService _citiesService;
+        private readonly IDonorsService _donorsService;
         private readonly IBloodTypesService _bloodTypesService;
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
             IBloodTypesService bloodTypesService,
-            ICitiesService citiesService)
+            ICitiesService citiesService,
+            IDonorsService donorsService)
         {
             _usersService = usersService;
             _signInService = signInService;
             _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
+            _donorsService = donorsService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
             BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
         }
@@ -44,6 +48,10 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public class RegisterInputModel
         {
+            public Guid Id { get; set; }
+
+            public Guid CodeId { get; set; }
+            public Code Code { get; set; }
             [Required]
             [Numbers]
             public string Name { get; set; }
@@ -54,7 +62,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
-            [StringLength(20,ErrorMessage ="Username cannot be longer than 20 characters")]
+            [StringLength(20, ErrorMessage = "Username cannot be longer than 20 characters")]
             public string UserName { get; set; }
 
             [Required]
@@ -123,6 +131,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var donorExists = await _usersService.DonorExists(Input);
+                
+                if (donorExists.Id != Guid.Empty)
+                {
+                    return RedirectToPage("CheckCode",donorExists);
+                }
+                var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
+                if (personalNumberInUse)
+                {
+                    ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                    ViewData["City"] = CityList;
+                    ViewData["BloodType"] = BloodTypeList;
+                    return Page();
+                }
                 var result = await _usersService.AddDonor(Input);
                 if (result.Succeeded)
                 {
@@ -133,9 +155,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError("UserName", error.Description);
                 }
             }
+
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
-
             return Page();
         }
     }

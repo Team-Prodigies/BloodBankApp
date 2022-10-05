@@ -12,6 +12,5 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         public Guid BloodTypeId { get; set; }
         public BloodType BloodType{ get; set; }
         public Guid CityId { get; set; }
-
     }
 }

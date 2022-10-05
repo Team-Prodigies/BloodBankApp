@@ -17,7 +17,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         private readonly IRolesService _rolesService;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
-        public RolesController(IRolesService rolesService, IMapper mapper, INotyfService notyfService)
+        public RolesController(IRolesService rolesService,
+            IMapper mapper,
+            INotyfService notyfService)
         {
             _rolesService = rolesService;
             _mapper = mapper;
@@ -103,7 +105,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             dbRole.Name = role.RoleName;
 
             var result = await _rolesService.UpdateRole(dbRole);
-           
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -118,6 +120,37 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             _notyfService.Success("Role was updated!");
             return RedirectToAction(nameof(AllRoles));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserRoles(Guid userId)
+        {
+            var model = await _rolesService.GetUserRoles(userId);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetUserRoles(UserRoleModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(GetUserRoles), model);
+            }
+            var result = await _rolesService.SetUserRoles(model);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    if (!ModelState.ContainsKey(error.Code))
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                }
+                _notyfService.Error("Something went wrong");
+                return RedirectToAction(nameof(GetUserRoles), model);
+            }
+            _notyfService.Success("Roles updated successfully");
+            return View(nameof(GetUserRoles), model);
         }
     }
 }

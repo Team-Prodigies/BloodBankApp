@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using BloodBankApp.Areas.Services.Interfaces;
-using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -19,15 +19,45 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     {
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _usersManager;
         private readonly IUsersService _usersService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService)
+        public RolesService(
+            RoleManager<IdentityRole<Guid>> roleManager,
+            IHttpContextAccessor httpContextAccessor,
+            SignInManager<User> signInManager,
+            IUsersService usersService,
+            UserManager<User> usersManager,
+            IMapper mapper)
         {
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
             _usersService = usersService;
+            _mapper = mapper;
+            _usersManager = usersManager;
+        }
+
+        public async Task<List<string>> GetAllRoleNames()
+        {
+            var roles = await GetAllRoles();
+            var roleNames = roles
+                .Where(x=>x.Name!="SuperAdmin")
+                .Select(x => x.Name)
+                .ToList();
+
+            return roleNames;
+        }
+
+        public async Task<List<SelectedRoleModel>> GetAllSelectedRoles()
+        {
+            var roles = await GetAllRoles();
+            var selectedRoles = new List<SelectedRoleModel>();
+            roles.ForEach(role => selectedRoles.Add(_mapper.Map<SelectedRoleModel>(role)));
+
+            return selectedRoles;
         }
 
         public async Task<IdentityResult> CreateRole(PermissionViewModel model)
@@ -92,7 +122,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task UpdatePermissions(PermissionViewModel model)
         {
-
             var role = await GetRole(model.RoleId);
             var claims = await _roleManager.GetClaimsAsync(role);
             foreach (var claim in claims)
@@ -119,6 +148,49 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<IdentityResult> UpdateRole(IdentityRole<Guid> role)
         {
             return await _roleManager.UpdateAsync(role);
+        }
+
+        public async Task<UserRoleModel> GetUserRoles(Guid id)
+        {
+            var user = await _usersService.GetUser(id);
+            var roles = await _roleManager.Roles.ToListAsync();
+            var model = new UserRoleModel
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                Roles = new List<SelectedRoleModel>()
+            };
+
+            foreach (var role in roles)
+            {
+                if (role.Name == "SuperAdmin")
+                {
+                    continue;
+                }
+                if (await _usersService.UserIsInRole(user, role.Name))
+                {
+                    model.Roles.Add(new SelectedRoleModel { RoleName = role.Name, IsSelected = true });
+                }
+                else
+                {
+                    model.Roles.Add(new SelectedRoleModel { RoleName = role.Name });
+                }
+            }
+            return model;
+        }
+
+        public async Task<IdentityResult> SetUserRoles(UserRoleModel model)
+        {
+            var user = await _usersService.GetUser(model.UserId);
+            var roles = await _usersManager.GetRolesAsync(user);
+            var result = await _usersManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+            if (result.Succeeded)
+            {
+                var selectedRoles = model.Roles.Where(x => x.IsSelected).Select(x => x.RoleName);
+                result = await _usersManager.AddToRolesAsync(user, selectedRoles);
+            }
+            return result;
         }
     }
 }

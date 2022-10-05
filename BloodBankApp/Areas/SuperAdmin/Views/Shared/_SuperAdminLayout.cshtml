@@ -1,6 +1,5 @@
 ﻿@inject UserManager<User> UserManager
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +27,6 @@
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/css/style.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
 </head>
 
 <body>
@@ -36,7 +34,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a asp-area="SuperAdmin" asp-controller="AdminHome" asp-action="Index" class="d-flex align-items-center">
                 <img src="~/Images/logo.png" alt="" class="img-fluid me-2 me-md-5" style="height: 50px">
-                
+
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
@@ -109,11 +107,11 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item dropdown pe-3">
 
-                    @{    
-                        var user = UserManager.GetUserAsync(User);   
+                    @{
+                        var user = UserManager.GetUserAsync(User);
                         string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
                     }
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -149,6 +147,7 @@
             </ul>
         </nav>
     </header>
+
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
@@ -167,7 +166,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" asp-controller="SuperAdminRegister" asp-action="CreateSuperAdmin">
                     <i class="bi bi-card-list"></i>
-                    <span>Register Super Admin</span>
+                    <span>Register new user</span>
                 </a>
             </li>
             <li class="nav-item"> <hr class="nav-link" /></li>
@@ -177,25 +176,47 @@
                 </a>
                 <ul id="hospitals-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-area="SuperAdmin" asp-controller="Hospital" asp-action="CreateHospital">
-                            <i class="bi bi-circle"></i><span>Add new hospital</span>
+                        <a asp-area="SuperAdmin" asp-controller="Hospital" asp-action="ManageHospitals">
+                            <i class="bi bi-circle"></i><span>Manage Hospitals</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-area="SuperAdmin" asp-controller="Hospital" asp-action="ManageHospitals">
-                            <i class="bi bi-circle"></i><span>Manage hospitals</span>
+                        <a asp-area="SuperAdmin" asp-controller="Hospital" asp-action="CreateHospital">
+                            <i class="bi bi-circle"></i><span>Add Hospital</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#question-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Questionnaire</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="question-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="CreateQuestionnaire">
+                            <i class="bi bi-circle"></i><span>Create Questionnaire</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="ManageQuestions">
+                            <i class="bi bi-circle"></i><span>Manage Questions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Questionnaire" asp-action="CreateQuestion">
+                            <i class="bi bi-circle"></i><span>Create Questions</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#donors-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>Donors</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-menu-button-wide"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="donors-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a asp-action="Donors" asp-controller="Donors">
-                            <i class="bi bi-circle"></i><span>Manage donors</span>
+                            <i class="bi bi-circle"></i><span>Manage users</span>
                         </a>
                     </li>
                 </ul>
@@ -207,12 +228,12 @@
                 <ul id="roles-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a asp-action="AllRoles" asp-controller="Roles" asp-area="SuperAdmin">
-                            <i class="bi bi-circle"></i><span>Manage roles</span>
+                            <i class="bi bi-circle"></i><span>Manage Roles</span>
                         </a>
                     </li>
                     <li>
                         <a asp-action="CreateRole" asp-controller="Roles" asp-area="SuperAdmin">
-                            <i class="bi bi-circle"></i><span>Add Roles</span>
+                            <i class="bi bi-circle"></i><span>Add Role</span>
                         </a>
                     </li>
                 </ul>
@@ -229,7 +250,7 @@
                     </li>
                     <li>
                         <a asp-controller="Cities" asp-action="AddNewCity">
-                            <i class="bi bi-circle"></i><span>Add city</span>
+                            <i class="bi bi-circle"></i><span>Add City</span>
                         </a>
                     </li>
                 </ul>

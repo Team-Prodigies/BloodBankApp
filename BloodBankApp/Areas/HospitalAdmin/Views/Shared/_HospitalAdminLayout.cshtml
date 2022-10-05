@@ -180,7 +180,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" asp-controller="Home" asp-action="Profile">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -200,8 +200,9 @@
                                 </form>
                             </a>
                         </li>
-
                     </ul>
+                </li>
+            </ul>
         </nav>
     </header>
     <aside id="sidebar" class="sidebar">
@@ -238,10 +239,10 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#hospitals-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link collapsed" data-bs-target="#post-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Posts</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="hospitals-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="post-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a asp-area="HospitalAdmin" asp-controller="Posts" asp-action="CreatePosts">
                             <i class="bi bi-circle"></i><span>Create new post</span>
@@ -262,6 +263,11 @@
                     <li>
                         <a asp-area="HospitalAdmin" asp-controller="Donators" asp-action="ManageDonators">
                             <i class="bi bi-circle"></i><span>Manage Donators</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="Donators" asp-action="AddDonor">
+                            <i class="bi bi-circle"></i><span>Add Donor</span>
                         </a>
                     </li>
                 </ul>

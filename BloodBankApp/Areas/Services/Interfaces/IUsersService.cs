@@ -1,11 +1,11 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
-using BloodBankApp.Areas.SuperAdmin.ViewModels;
+﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.Identity.Pages.Account;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
@@ -21,7 +21,14 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<IdentityResult> EditSuperAdmin(ProfileAdminModel user);
         Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword);
         Task<IdentityResult> AddDonor(RegisterInputModel input);
+        Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input);
         Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input);
         Task<bool> UserIsInRole(User user,string role);
+        Task<bool> CheckDonorsCode(Guid id, string codeValue);
+        Task<RegisterInputModel> DonorExists(RegisterInputModel input);
+        Task<List<ManageUserModel>> GetUsers(string roleFilter, int pageNumber = 1, string filterBy = "A-Z");
+        Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1);
+        Task LockoutUser(User user);
+        Task UnlockUser(User user);
     }
 }

@@ -102,6 +102,23 @@ namespace BloodBankApp.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.Code", b =>
+                {
+                    b.Property<Guid>("CodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CodeValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CodeId");
+
+                    b.HasIndex("CodeValue")
+                        .IsUnique();
+
+                    b.ToTable("Codes");
+                });
+
             modelBuilder.Entity("BloodBankApp.Models.DonationPost", b =>
                 {
                     b.Property<Guid>("NotificationId")
@@ -162,6 +179,11 @@ namespace BloodBankApp.Migrations
                     b.HasIndex("BloodTypeId");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("HealthFormQuestionnaireId");
+
+                    b.HasIndex("PersonalNumber")
+                        .IsUnique();
 
                     b.ToTable("Donors");
                 });
@@ -610,6 +632,18 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Hospital");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.Code", b =>
+                {
+                    b.HasOne("BloodBankApp.Models.Donor", "Donor")
+                        .WithOne("Code")
+                        .HasForeignKey("BloodBankApp.Models.Code", "CodeId")
+                        .HasConstraintName("CodeDonor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Donor");
+                });
+
             modelBuilder.Entity("BloodBankApp.Models.DonationPost", b =>
                 {
                     b.HasOne("BloodBankApp.Models.BloodType", "BloodType")
@@ -834,7 +868,7 @@ namespace BloodBankApp.Migrations
                 {
                     b.Navigation("BloodDonations");
 
-                    b.Navigation("HealthFormQuestionnaire");
+                    b.Navigation("Code");
 
                     b.Navigation("Messages");
                 });

@@ -17,7 +17,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         private readonly ISignInService _signInService;
         private readonly INotyfService _notyfService;
         private readonly IMapper _mapper;
-        public ProfileController(IUsersService usersService, ISignInService signInService, INotyfService notyfService,IMapper mapper)
+        public ProfileController(IUsersService usersService,
+            ISignInService signInService,
+            INotyfService notyfService, IMapper mapper)
         {
             _usersService = usersService;
             _signInService = signInService;
@@ -29,9 +31,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             var superadmin = await _usersService.GetUser(User);
-
             ProfileAdminModel profileAdminUser = _mapper.Map<ProfileAdminModel>(superadmin);
-
             return View(profileAdminUser);
         }
 
@@ -54,7 +54,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
-                _notyfService.Error(error.Description.Replace("'",""));
+                _notyfService.Error(error.Description.Replace("'", ""));
             }
             return View(nameof(Index));
         }
@@ -73,11 +73,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View(nameof(ChangePassword));
             }
-
             var superadmin = await _usersService.GetUser(User);
             var result = await _usersService.ChangePassword(superadmin, pass.OldPassword, pass.NewPassword);
-
-
             if (result.Succeeded)
             {
                 _notyfService.Success("Password changed successfully!");
@@ -91,6 +88,5 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             }
             return View(nameof(ChangePassword));
         }
-
     }
 }

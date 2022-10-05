@@ -1,0 +1,131 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<BloodBankApp.Areas.HospitalAdmin.ViewModels.PostModel>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+<h1 class="text-center" style="font-weight: 900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Search results for "@ViewBag.SearchTerm"</h1>
+<div class="d-flex justify-content-between">
+    <a asp-controller="Home" asp-action="Index">Back to all</a>
+
+    <div class="search-bar row g-3">
+        <form class="search-form d-flex align-items-center mb-2" method="get" asp-controller="Home" asp-action="DonationPostSearchResults">
+            <input type="text" placeholder="Search by Hospital Name" name="searchTerm" class="form-control" list="hospitalsSuggestions" required id="searchHospital" autocomplete="off">
+            <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+        </form>
+
+        <datalist id="hospitalsSuggestions"></datalist>
+    </div>
+    </div>
+    <script>
+        var typingTimer;
+        var doneTypingInterval = 1000;
+        var $input = $('#searchHospital');
+
+        //on keyup, start the countdown
+        $input.on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+        $input.on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+
+        function doneTyping() {
+
+            $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
+
+                if (status == 'success') {
+
+                    $("#hospitalsSuggestions").empty();
+
+                    $.each(data, function (index, value) {
+                        console.log('<option value="' + value + '"></option>');
+
+                        $("#hospitalsSuggestions")
+                            .append(
+                                $('<option value="' + value + '"></option>')
+                            );
+                    });
+                }
+            });
+        }
+    </script>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            @foreach (var posts in Model)
+            {
+                <div class="col">
+                    <div class="card" style="min-height: 100%">
+                        <div class="card-body me-3 ms-3 mt-2">
+                            <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
+                            <p class="card-text"><strong>BloodType:</strong>  @posts.BloodType.BloodTypeName </p>
+                            <p class="card-text"><strong>Description:</strong>  @posts.Description </p>
+                            <div class="d-flex justify-content-around">
+                                <p class="card-text"><strong>City:</strong> @posts.Hospital.City.CityName</p>
+                                <p class="card-text"><strong>Amount:</strong> @posts.AmountRequested ml </p>
+                            </div>
+                            <p class="card-text"><strong>Date Required:</strong> @posts.DateRequired</p>
+                        </div>
+                        <div class="text-center card-footer">
+                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="1" asp-route-searchTerm="@ViewBag.SearchTerm">First Page</a>
+        </li>
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (var i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="DonationPostSearchResults"
+                           asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+            }
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
+                if
+                (i == ViewBag.pageNumber)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           asp-controller="Home" asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="DonationPostSearchResults" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>

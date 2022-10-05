@@ -1,0 +1,98 @@
+﻿@using BloodBankApp.Enums
+@using BloodBankApp.ExtensionMethods
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model NotRegisteredDonor
+@{
+    ViewData["Title"] = "AddDonor";
+}
+<div class="container col-9 card">
+    <div class="card-body">
+        <h5 class="card-title">Add Donor</h5>
+        <form class="row g-5" asp-controller="Donators" asp-action="AddDonor" asp-area="HospitalAdmin" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="container col-8">
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Name" class="mb-1 mt-2">Name</label>
+                            <input class="form-control text-capitalize" asp-for="Name" required />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Surname" class="mb-1 mt-2">Surname</label>
+                            <input class="form-control text-capitalize" asp-for="Surname" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="mb-1 mt-2">Date of birth</label>
+                            <input class="form-control text-capitalize" asp-for="DateOfBirth" required />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="PersonalNumber" class="mb-1 mt-2">Personal number</label>
+                            <input class="form-control text-capitalize" asp-for="PersonalNumber" required />
+                            @if (ViewBag.PersonalNumberInUse != null)
+                            {
+                                <p class="text-danger">@ViewBag.PersonalNumberInUse</p>
+                            }
+                            <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="CityId" class="mb-1 mt-2"></label>
+                            <select class="form-select" asp-items="@ViewBag.CityId" asp-for="CityId" aria-label="Default select example">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="BloodTypeId" class="mb-1 mt-2"></label>
+                            <select class="form-select" asp-items="@ViewBag.BloodTypeId" asp-for="BloodTypeId" aria-label="Default select example">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Gender" class="mb-1 mt-2"></label>
+                            <div class="d-flex align-items-center justify-content-evenly">
+                                @foreach (var c in Enum.GetValues(typeof(Gender)))
+                                {
+                                    <div class="form-check">
+                                        <label class="form-check-label me-2" asp-for="Gender">@c.ToString().ToTitleCase()</label>
+                                        <input class="form-check-input" type="radio" asp-for="Gender" value="@((int)c)" required />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="CodeId" class="mb-1 mt-2">Code</label>
+                            <input class="form-control text-capitalize" asp-for="Code.CodeValue" id="CodeValue" required />
+                            @if (ViewBag.codeInUse != null)
+                            {
+                                <p class="text-danger">@ViewBag.codeInUse</p>
+                            }
+                            <span class="text-danger d-none" id="DonorCodeIsTaken">This code is already taken!!!!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/js/AvailableDonorCode.js"></script>
+<script src="~/js/AvailablePersonalNumber.js"></script>
