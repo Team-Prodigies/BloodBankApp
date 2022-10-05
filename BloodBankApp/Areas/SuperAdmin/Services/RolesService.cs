@@ -43,7 +43,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<List<string>> GetAllRoleNames()
         {
             var roles = await GetAllRoles();
-            var roleNames = roles.Where(x=>x.Name!="SuperAdmin").Select(x => x.Name).ToList();
+            var roleNames = roles
+                .Where(x=>x.Name!="SuperAdmin")
+                .Select(x => x.Name)
+                .ToList();
 
             return roleNames;
         }
@@ -119,7 +122,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task UpdatePermissions(PermissionViewModel model)
         {
-
             var role = await GetRole(model.RoleId);
             var claims = await _roleManager.GetClaimsAsync(role);
             foreach (var claim in claims)
@@ -174,7 +176,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                     model.Roles.Add(new SelectedRoleModel { RoleName = role.Name });
                 }
             }
-            
             return model;
         }
 
@@ -189,7 +190,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 var selectedRoles = model.Roles.Where(x => x.IsSelected).Select(x => x.RoleName);
                 result = await _usersManager.AddToRolesAsync(user, selectedRoles);
             }
-
             return result;
         }
     }

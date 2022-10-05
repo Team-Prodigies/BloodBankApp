@@ -80,26 +80,26 @@
         var $input = $('#searchDonors');
 
         //on keyup, start the countdown
-        $input.on('keyup', function () {
+        $input.on('keyup', function() {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
 
         });
 
         //on keydown, clear the countdown
-        $input.on('keydown', function () {
+        $input.on('keydown', function() {
             clearTimeout(typingTimer);
         });
 
         function doneTyping() {
 
-            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function (data, status) {
+            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(), function(data, status) {
 
                 if (status == 'success') {
 
                     $("#donorSuggestions").empty();
 
-                    $.each(data, function (index, value) {
+                    $.each(data, function(index, value) {
                         console.log('<option value="' + value + '"></option>');
 
                         $("#donorSuggestions")
@@ -229,14 +229,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors" asp-action="Donors"
-                           asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
             }
@@ -250,14 +250,14 @@
                 {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-controller="Donors" asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Donors"
-                           asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
+               asp-action="Donors" asp-route-pageNumber="@i" asp-route-filterBy="@ViewBag.FilterBy">@i</a>
                     </li>
                 }
             }

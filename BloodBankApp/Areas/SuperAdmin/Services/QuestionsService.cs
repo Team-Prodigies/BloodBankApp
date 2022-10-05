@@ -21,7 +21,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services {
                 Answer = getQuestion.Answer,
                 QuestionId = getQuestion.HealthFormQuestionnaireId
             };
-
             return question;
         }
 
