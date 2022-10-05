@@ -30,6 +30,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services {
             var getQuestion = await _context.Questions.FindAsync(QuestionId);
             getQuestion.Description = questionModel.Description;
             getQuestion.Answer = questionModel.Answer;
+
             if (getQuestion != null) {
                 _context.Questions.Update(getQuestion);
                 await _context.SaveChangesAsync();

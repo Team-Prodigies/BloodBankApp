@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.Donator.ViewModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
@@ -23,13 +24,15 @@ namespace BloodBankApp.Areas.Donator.Controllers
         private readonly IBloodTypesService _bloodTypesService;
         private readonly ICitiesService _citiesService;
         private readonly SelectList _cityList;
-        public HomeController(ApplicationDbContext context, IPostService postService, IBloodTypesService bloodTypesService,ICitiesService citiesService)
+        private readonly INotyfService _notyfService;
+        public HomeController(ApplicationDbContext context, IPostService postService, IBloodTypesService bloodTypesService, ICitiesService citiesService, INotyfService notyfService)
         {
             _context = context;
             _postService = postService;
             _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
+            _notyfService = notyfService;
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]
@@ -76,12 +79,24 @@ namespace BloodBankApp.Areas.Donator.Controllers
         [HttpGet]
         public async Task<IActionResult> QuestionnaireAnswers(Guid postId)
         {
-            var getQuestion = await _postService.GetQuestionnaireQuestions();
-            return View(getQuestion);
+            var getQuestions = await _postService.GetQuestionnaireQuestions();
+            return View(getQuestions);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckQuestion(List<QuestionViewModel> answers) {
+        public async Task<IActionResult> CheckQuestion(QuestionnaireAnswers answers)
+        {
+            var getQuestions = await _postService.GetAllQuestions();
+
+            for(int i = 0; i < getQuestions.Count; i++)
+            {
+                if(getQuestions[i].Answer != answers.Questions[i].Answer)
+                {
+                    _notyfService.Error("Sorry you are not in condition to donate now");
+                    return RedirectToAction(nameof(QuestionnaireAnswers));
+                }
+             }
+            _notyfService.Success("Donation request has been recorded!");
             return RedirectToAction(nameof(QuestionnaireAnswers));
         }
     }

@@ -1,34 +1,36 @@
 ﻿@using BloodBankApp.Areas.Donator.ViewModels
-@model List<QuestionViewModel>
+@model QuestionnaireAnswers
 
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">General Form Elements</h5>
 
             <!-- General Form Elements -->
-            <form asp-controller="Home" asp-action="CheckQuestion">
-                @foreach (var getQuestion in Model) {
-                <fieldset class="row mb-3">
-                    <legend class="col-form-label col-sm-2 pt-0">@getQuestion.Description</legend>
+            <form asp-controller="Home" asp-action="CheckQuestion">            
+
+            <fieldset class="row mb-3">
+                @for (int i = 0; i < Model.Questions.Count(); i++) {
+                    <legend class="col-form-label col-sm-2 pt-0">@Model.Questions[i].Description</legend>
                     <div class="col-sm-10">
+                        <input type="hidden" asp-for="@Model.Questions[i].QuestionId" />
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" asp-for="@getQuestion.Answer" value="1">
+                            <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="1">
                             <label class="form-check-label">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" asp-for="@getQuestion.Answer" value="2">
+                            <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="2">
                             <label class="form-check-label">No</label>
                         </div>
                     </div>
-                </fieldset>
                 }
-                <div class="row mb-3">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Submit Form</button>
+            </fieldset>
+                    <div class="row mb-3">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Submit Form</button>
+                        </div>
                     </div>
-                </div>
 
-            </form><!-- End General Form Elements -->
+                </form>
 
         </div>
     </div>
