@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Identity.Pages.Account.Manage;
 using BloodBankApp.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -20,6 +21,15 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .Where(d => d.PersonalNumber == personalNumber)
+                .FirstOrDefaultAsync();
+            if (donor == null) return false;
+            return true;
         }
 
         public async Task AddDonor(Donor donor)
@@ -44,7 +54,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
            _mapper.Map(donorDto, user);
            _mapper.Map(donorDto, donor);
 
-           return await _context.SaveChangesAsync() > 0;
+         return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<Donor> GetDonor(Guid donorId)

@@ -37,9 +37,14 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mt-3">
-                        <label asp-for="Input.PersonalNumber"></label>
-                        <input asp-for="Input.PersonalNumber" class="form-control" required />
+                    <div class="form-group">
+                        <label asp-for="Input.PersonalNumber" class="mb-1 mt-2"></label>
+                        <input asp-for="Input.PersonalNumber" class="form-control" id="PersonalNumber" required />
+                        @if (ViewBag.PersonalNumberInUse != null)
+                        {
+                            <p class="text-danger">@ViewBag.PersonalNumberInUse</p>
+                        }
+                        <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
                     </div>
                 </div>
                 <div class="col">
@@ -72,3 +77,5 @@
     </div>
 </div>
 @await Component.InvokeAsync("Notyf")
+
+<script src="~/js/AvailablePersonalNumber.js"></script>
