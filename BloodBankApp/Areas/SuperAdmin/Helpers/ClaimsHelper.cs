@@ -1,11 +1,7 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using System;
-using System.Linq;
 
 public static class ClaimsHelper
 {
