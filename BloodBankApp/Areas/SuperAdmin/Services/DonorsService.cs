@@ -23,10 +23,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> PersonalNumberIsInUse(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto)
+        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
         {
             var donor = await _context.Donors
-                .Where(d => d.PersonalNumber == donorDto.PersonalNumber)
+                .Where(d => d.PersonalNumber == personalNumber)
                 .FirstOrDefaultAsync();
             if (donor == null) return false;
             return true;

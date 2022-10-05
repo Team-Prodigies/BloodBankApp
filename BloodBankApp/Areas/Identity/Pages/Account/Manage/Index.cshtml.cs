@@ -134,7 +134,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
 
                 return Page();
             }
-            var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(user.Id, Input);
+            var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
             if (PersonalNumberTaken)
             {
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
