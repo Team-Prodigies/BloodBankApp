@@ -58,10 +58,6 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
         [Route("PhoneNumberIsTaken")]
         public async Task<bool> PhoneNumberIsTaken(string phoneNumber)
         {
-            if (phoneNumber == null || phoneNumber.Trim() == "")
-            {
-                return false;
-            }
             return await _availabilityService.PhoneNumberIsTaken(phoneNumber);
         }
     }

@@ -62,8 +62,8 @@ namespace BloodBankApp.Services
         public async Task<bool> PhoneNumberIsTaken(string phoneNumber)
         {
             var phoneNumberInUse = await _context.Users
-                .FirstOrDefaultAsync(user => user.PhoneNumber == phoneNumber);
-            if (phoneNumber != null)
+                 .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+            if (phoneNumberInUse != null)
             {
                 return true;
             }

@@ -29,6 +29,8 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1);
         Task LockoutUser(User user);
         Task UnlockUser(User user);
+        Task<bool> PhoneNumberIsInUse(Guid id, string phoneNumber);
         Task<bool> PhoneNumberIsInUse(string phoneNumber);
+
     }
 }

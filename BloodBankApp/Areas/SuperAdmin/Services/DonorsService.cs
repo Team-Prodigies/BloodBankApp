@@ -24,11 +24,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        public async Task<bool> PersonalNumberIsInUse(Guid id, long personalNumber)
         {
             var donor = await _context.Donors
-                .Where(d => d.PersonalNumber == personalNumber)
-                .FirstOrDefaultAsync();
+                .Where(donor=>donor.DonorId != id)
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
             if (donor != null) return true;
             return false;
         }
@@ -65,6 +65,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .FirstOrDefaultAsync(x => x.DonorId == donorId);
             
             return donor;
+        }
+
+        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
+            if (donor != null) return true;
+            return false;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿nvar typingTimer;
+﻿var typingTimer;
 var doneTypingInterval = 1000;
 var $phoneNumber = $('#PhoneNumber');
 
