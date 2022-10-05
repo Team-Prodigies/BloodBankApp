@@ -74,7 +74,11 @@
                         <div class="form-group">
                             <label asp-for="Input.PersonalNumber" class="mb-1 mt-2"></label>
                             <input asp-for="Input.PersonalNumber" class="form-control" id="PersonalNumber" required />
-                            <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
+                             @if (ViewBag.PersonalNumberInUse != null)
+                        {
+                            <p class="text-danger">@ViewBag.PersonalNumberInUse</p>
+                        }
+                        <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
                         </div>
                     </div>
                 </div>

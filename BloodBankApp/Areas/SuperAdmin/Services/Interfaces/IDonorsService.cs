@@ -13,7 +13,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task<Donor> GetDonor(Guid donorId);
         List<Gender> GetGenders();
         Task<bool> EditDonor(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto);
-        Task<bool> PersonalNumberIsInUse(Guid donorId, PersonalProfileIndexModel.ProfileInputModel donorDto);
+        Task<bool> PersonalNumberIsInUse(long personalNumber);
         Task AddDonor(Donor donor);
     }
 }
