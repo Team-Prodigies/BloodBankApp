@@ -4,6 +4,7 @@ using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -18,17 +19,23 @@ namespace BloodBankApp.Controllers
         private readonly ApplicationDbContext _db;
         private readonly INotyfService _notyfService;
         private readonly IIssueService _issueService;
+        private SelectList IssueStatus { get; set; }
 
         public IssueController(ApplicationDbContext db, INotyfService notyfService, IIssueService issueService)
         {
             _db = db;
             _notyfService = notyfService;
             _issueService = issueService;
+
+            IssueStatus = new SelectList(Enum.GetValues(typeof(IssueStatus))
+               .Cast<IssueStatus>()
+               .ToList(), "IssueStatus");
         }
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filterBy = "Date")
         {
-            var issues = await _issueService.GetIssues();
+            var issues = await _issueService.GetIssues(filterBy);
+            ViewBag.FilterBy = filterBy;
             return View(issues.ToList());
         }
 
@@ -109,7 +116,7 @@ namespace BloodBankApp.Controllers
             {
                 return View();
             }
-            _notyfService.Success("The issue has been edited successfuly.");
+            _notyfService.Success("The issue has been deleted successfuly.");
             return RedirectToAction("Index");
         }
 

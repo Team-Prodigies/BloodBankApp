@@ -5,8 +5,62 @@
     Layout = "~/Areas/SuperAdmin/Views/Shared/_SuperAdminLayout.cshtml";
 }
 
+<style>
+    .dropbtn {
+        background-color: #7790b4;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #7790b4;
+        border-radius: 5px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="dropdown">
+    <button class="dropbtn">@ViewBag.FilterBy</button>
+    <div class="dropdown-content">
+        <a asp-controller="Issue" asp-action="Index" asp-route-filterBy="Date">Date</a>
+        <a asp-controller="Issue" asp-action="Index" asp-route-filterBy="OnHold">On Hold</a>
+        <a asp-controller="Issue" asp-action="Index" asp-route-filterBy="InProgres">In Progress</a>
+        <a asp-controller="Issue" asp-action="Index" asp-route-filterBy="Fixed">Fixed</a>
+        <a asp-controller="Issue" asp-action="Index" asp-route-filterBy="Normal">Normal</a>
+    </div>
+</div>
+<br />
+<br />
+
 <section class="section">
-    <div class="row">
+    <div>
         @foreach (var issue in Model)
         {
             <div class="col-lg-6">

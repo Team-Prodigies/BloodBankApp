@@ -8,7 +8,7 @@ namespace BloodBankApp.Services.Interfaces
 {
     public interface IIssueService
     {
-        Task<List<Issue>> GetIssues();
+        Task<List<Issue>> GetIssues(string filterBy);
         Task<bool> AddIssue(Issue issue);
         Task<Issue> Edit(Guid id);
         Task<bool> EditIssue(Guid id, Issue issue);

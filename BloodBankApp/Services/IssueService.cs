@@ -1,10 +1,12 @@
-﻿using BloodBankApp.Data;
+﻿using AutoMapper;
+using BloodBankApp.Data;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Services
@@ -12,15 +14,12 @@ namespace BloodBankApp.Services
     public class IssueService: IIssueService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public IssueService(ApplicationDbContext context)
+        public IssueService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-        }
-
-        public async Task<List<Issue>> GetIssues()
-        {
-            return await _context.Issues.ToListAsync();
+            _mapper = mapper;
         }
 
         public async Task<bool> AddIssue(Issue issue)
@@ -89,6 +88,36 @@ namespace BloodBankApp.Services
             var issue = await _context.Issues.FindAsync(id);
 
             return issue;
+        }
+        public async Task<List<Issue>> GetIssues(string filterBy = "Date")
+        {
+            List<Issue> getIssues;
+
+            switch (filterBy)
+            {
+                case"Date":
+                    getIssues = await _context.Issues.OrderBy(issue => issue.DateReported).ToListAsync();
+                    break;
+                case "OnHold":
+                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.ONHOLD).ToListAsync();
+                    break;
+                case "InProgres":
+                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.INPROGRES).ToListAsync();
+                    break;
+                case "Fixed":
+                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.FIXED).ToListAsync();
+                    break;
+                case "Normal":
+                    getIssues = await _context.Issues.ToListAsync();
+                    break;
+
+                default:
+                    getIssues = await _context.Issues.ToListAsync();
+                    break;
+            }
+
+            var result = _mapper.Map<List<Issue>>(getIssues);
+            return result;
         }
     }
 }
