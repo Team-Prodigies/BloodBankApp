@@ -18,6 +18,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
         Task<PostModel> EditPost(Guid notificationId);
         Task<bool> EditPosts(PostModel post, Guid notificationId);
 
-        Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
+        Task<List<QuestionViewModel>> GetQuestionnaireQuestions();
     }
 }

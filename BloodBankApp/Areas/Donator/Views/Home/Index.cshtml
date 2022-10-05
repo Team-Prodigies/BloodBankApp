@@ -140,40 +140,9 @@
                         </div>
 
                         <div class="text-center card-footer">
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                            <a asp-controller="Home" asp-action="QuestionnaireAnswers" asp-route-postId="@posts.NotificationId" class="btn btn-danger">
                                 Donate now
-                            </button>
-                            <div class="modal fade" id="verticalycentered" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Questionnaire</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <form asp-controller="Home" asp-action="QuestionnaireAnswers" method="post" class="form-check text-start">
-
-                                                @foreach (var question in ViewBag.QuestionnaireQuestions.Questions) {
-                                                    <label>@question.Description</label>
-                                                    <br/>
-                                                    <small>Yes</small>
-                                                    <input type="radio" name="@question.QuestionId" value="1">
-                                                    <small>No</small>
-                                                    <input type="radio" name="@question.QuestionId" value="2">
-                                                    <br />
-                                                }
-                                                <button class="btn btn-outline-primary">Send</button>
-                                            </form>
-                                            <ul>
-                                               
-                                            </ul>
-                                          
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -8,13 +8,13 @@ namespace BloodBankApp.Areas.Donator.ViewModels
 {
     public class QuestionnaireAnswers
     {
-        public List<Question> Questions { get; set; }
+        public List<QuestionViewModel> Questions { get; set; }
 
         public QuestionnaireAnswers()
         {
 
         }
-        public QuestionnaireAnswers(List<Question> questions)
+        public QuestionnaireAnswers(List<QuestionViewModel> questions)
         {
             Questions = questions;
         }

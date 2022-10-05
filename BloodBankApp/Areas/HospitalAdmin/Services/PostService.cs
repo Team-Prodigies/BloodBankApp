@@ -176,12 +176,17 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return posts;
         }
 
-        public async Task<QuestionnaireAnswers> GetQuestionnaireQuestions()
+        public async Task<List<QuestionViewModel>> GetQuestionnaireQuestions()
         {
-            var questions = await _context.Questions.ToListAsync();
-            var questionsList = new QuestionnaireAnswers(questions);
+            var questions = await _context.Questions
+                .Select(q => new QuestionViewModel {
+                    QuestionId = q.QuestionId,
+                    Description = q.Description
+                }).ToListAsync();
+            //var questionsList = new QuestionViewModel(questions);
 
-            return questionsList;
+
+            return questions;
         }
     }
 }

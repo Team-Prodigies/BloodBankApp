@@ -2,12 +2,14 @@
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.Donator.Controllers
@@ -16,12 +18,14 @@ namespace BloodBankApp.Areas.Donator.Controllers
     [Authorize(Roles = "Donor")]
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly IPostService _postService;
         private readonly IBloodTypesService _bloodTypesService;
         private readonly ICitiesService _citiesService;
         private readonly SelectList _cityList;
-        public HomeController(IPostService postService, IBloodTypesService bloodTypesService,ICitiesService citiesService)
+        public HomeController(ApplicationDbContext context, IPostService postService, IBloodTypesService bloodTypesService,ICitiesService citiesService)
         {
+            _context = context;
             _postService = postService;
             _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
@@ -69,12 +73,16 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(posts);
         }
 
-        [HttpPost]
-        public IActionResult QuestionnaireAnswers(QuestionnaireAnswers answers)
+        [HttpGet]
+        public async Task<IActionResult> QuestionnaireAnswers(Guid postId)
         {
-            Console.WriteLine(answers);
+            var getQuestion = await _postService.GetQuestionnaireQuestions();
+            return View(getQuestion);
+        }
 
-            return RedirectToAction(nameof(Index));
+        [HttpPost]
+        public async Task<IActionResult> CheckQuestion(List<QuestionViewModel> answers) {
+            return RedirectToAction(nameof(QuestionnaireAnswers));
         }
     }
 }
