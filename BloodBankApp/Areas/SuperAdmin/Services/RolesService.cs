@@ -24,7 +24,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService, IMapper mapper, UserManager<User> usersManager)
+        public RolesService(
+            RoleManager<IdentityRole<Guid>> roleManager,
+            IHttpContextAccessor httpContextAccessor,
+            SignInManager<User> signInManager,
+            IUsersService usersService,
+            UserManager<User> usersManager,
+            IMapper mapper)
         {
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
@@ -38,6 +44,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         {
             var roles = await GetAllRoles();
             var roleNames = roles.Where(x=>x.Name!="SuperAdmin").Select(x => x.Name).ToList();
+
             return roleNames;
         }
 
@@ -46,6 +53,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var roles = await GetAllRoles();
             var selectedRoles = new List<SelectedRoleModel>();
             roles.ForEach(role => selectedRoles.Add(_mapper.Map<SelectedRoleModel>(role)));
+
             return selectedRoles;
         }
 

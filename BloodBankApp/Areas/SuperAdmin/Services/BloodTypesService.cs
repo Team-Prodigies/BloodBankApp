@@ -1,8 +1,6 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
-using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -25,7 +23,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<List<BloodTypeModel>> GetAllBloodTypes()
         {
             var bloodTypes = await _context.BloodTypes.ToListAsync();
-
             var bloodTypeModels = _mapper.Map<List<BloodTypeModel>>(bloodTypes);
 
             return bloodTypeModels;

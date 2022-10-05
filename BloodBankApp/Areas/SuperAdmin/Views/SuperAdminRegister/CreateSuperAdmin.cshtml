@@ -50,7 +50,7 @@
                             <input class="form-control" asp-for="@Model.ConfirmPassword" required>
                         </div>
                     </div>
-                    <hr/>
+                    <hr />
                     <div class="my-2">
                         <h5 class="card-title">Select roles</h5>
                     </div>
@@ -68,8 +68,8 @@
                             </thead>
                             <tbody>
 
-                            @for (int i = 0; i < Model.Roles.Count(); i++)
-                            {
+                                @for (int i = 0; i < Model.Roles.Count(); i++)
+                                {
                                     <tr>
                                         <td>
                                             <input class="form-control" asp-for="@Model.Roles[i].RoleName" type="hidden" />
@@ -79,11 +79,11 @@
                                             <div class="form-check m-1">
                                                 @if (@Model.Roles[i].RoleName.Equals("Donor") || @Model.Roles[i].RoleName.Equals("HospitalAdmin"))
                                                 {
-                                                    <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" disabled/>
+                                                    <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" disabled />
                                                 }
                                                 else
                                                 {
-                                                    <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected"/>
+                                                    <input type="checkbox" class="form-check" asp-for="@Model.Roles[i].IsSelected" />
                                                 }
                                             </div>
                                         </td>
@@ -100,4 +100,5 @@
         </div>
     </div>
 </div>
+
 <script src="~/js/AvailableUsername.js"></script>

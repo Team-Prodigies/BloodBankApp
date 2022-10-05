@@ -2,12 +2,11 @@
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services {
-    public class QuestionsService : IQuestionService {
+    public class QuestionsService : IQuestionService 
+    {
         private readonly ApplicationDbContext _context;
 
         public QuestionsService(ApplicationDbContext context) {
