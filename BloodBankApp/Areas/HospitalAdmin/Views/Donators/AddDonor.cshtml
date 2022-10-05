@@ -36,6 +36,11 @@
                         <div class="form-group">
                             <label asp-for="PersonalNumber" class="mb-1 mt-2">Personal number</label>
                             <input class="form-control text-capitalize" asp-for="PersonalNumber" required />
+                            @if (ViewBag.PersonalNumberInUse != null)
+                            {
+                                <p class="text-danger">@ViewBag.PersonalNumberInUse</p>
+                            }
+                            <span class="text-danger d-none" id="PersonalNumberIsTaken">This personal number is already taken!</span>
                         </div>
                     </div>
                 </div>
@@ -90,3 +95,4 @@
     </div>
 </div>
 <script src="~/js/AvailableDonorCode.js"></script>
+<script src="~/js/AvailablePersonalNumber.js"></script>

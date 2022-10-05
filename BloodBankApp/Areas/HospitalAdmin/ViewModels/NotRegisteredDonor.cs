@@ -42,8 +42,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.ViewModels
         [Required]
         [Display(Name = "Code")]
         public Guid CodeId { get; set; }
-
         public Code Code { get; set; }
-      
     }
 }

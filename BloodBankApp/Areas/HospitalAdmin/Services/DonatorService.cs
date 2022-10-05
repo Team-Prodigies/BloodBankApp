@@ -21,7 +21,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IUsersService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DonatorService(ApplicationDbContext context, IMapper mapper, IUsersService usersService, IHttpContextAccessor httpContextAccessor)
+        public DonatorService(ApplicationDbContext context,
+            IMapper mapper,
+            IUsersService usersService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
@@ -41,11 +44,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                         .Include(city => city.City)
                         .Include(bloodDonations => bloodDonations.BloodDonations)
                             .ThenInclude(donationPost => donationPost.DonationPost)
-                        .Where(donators => (donators.BloodDonations.Count != 0) && (donators.BloodDonations.Any(bloodDonation => bloodDonation.DonationPost.HospitalId == hospitalId)))
+                        .Where(donators => (donators.BloodDonations.Count != 0)
+                        && (donators.BloodDonations.Any(bloodDonation => bloodDonation.DonationPost.HospitalId == hospitalId)))
                         .ToListAsync();
 
             var result = _mapper.Map<List<DonatorModel>>(donators);
-
             return result;
         }
 

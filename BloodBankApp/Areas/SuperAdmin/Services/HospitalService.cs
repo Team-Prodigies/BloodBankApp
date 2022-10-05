@@ -190,5 +190,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .ToListAsync();
             return _mapper.Map<List<HospitalModel>>(hospitals);
         }
+
+        public async Task<Hospital> GetHospitalForMedicalStaff(string currentHospitalAdminId)
+        {
+            var hospitalAdmin =await _context.MedicalStaffs
+                .Where(ms => ms.MedicalStaffId == new Guid(currentHospitalAdminId))
+                .FirstOrDefaultAsync();
+
+            var hospital = await _context.Hospitals
+                .Where(h => h.HospitalId == hospitalAdmin.HospitalId)
+                .FirstOrDefaultAsync();
+
+            return hospital;
+        }
     }
 }
