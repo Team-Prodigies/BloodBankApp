@@ -5,10 +5,7 @@ using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 
