@@ -24,7 +24,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public RolesService(RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, IUsersService usersService, IMapper mapper, UserManager<User> usersManager)
+        public RolesService(
+            RoleManager<IdentityRole<Guid>> roleManager,
+            IHttpContextAccessor httpContextAccessor,
+            SignInManager<User> signInManager,
+            IUsersService usersService,
+            UserManager<User> usersManager,
+            IMapper mapper)
         {
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
@@ -37,7 +43,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<List<string>> GetAllRoleNames()
         {
             var roles = await GetAllRoles();
-            var roleNames = roles.Where(x=>x.Name!="SuperAdmin").Select(x => x.Name).ToList();
+            var roleNames = roles
+                .Where(x=>x.Name!="SuperAdmin")
+                .Select(x => x.Name)
+                .ToList();
+
             return roleNames;
         }
 
@@ -46,6 +56,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var roles = await GetAllRoles();
             var selectedRoles = new List<SelectedRoleModel>();
             roles.ForEach(role => selectedRoles.Add(_mapper.Map<SelectedRoleModel>(role)));
+
             return selectedRoles;
         }
 
@@ -111,7 +122,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task UpdatePermissions(PermissionViewModel model)
         {
-
             var role = await GetRole(model.RoleId);
             var claims = await _roleManager.GetClaimsAsync(role);
             foreach (var claim in claims)
@@ -166,7 +176,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                     model.Roles.Add(new SelectedRoleModel { RoleName = role.Name });
                 }
             }
-            
             return model;
         }
 
@@ -181,7 +190,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 var selectedRoles = model.Roles.Where(x => x.IsSelected).Select(x => x.RoleName);
                 result = await _usersManager.AddToRolesAsync(user, selectedRoles);
             }
-
             return result;
         }
     }

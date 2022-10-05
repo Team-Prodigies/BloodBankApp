@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.SuperAdmin.Permission;
-using System.Collections.Generic;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {

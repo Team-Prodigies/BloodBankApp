@@ -25,7 +25,6 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Required]
         [Display(Name = "Hospital code")]
         [StringLength(50,MinimumLength = 2)]
- 
         public string HospitalCode { get; set; }
 
         [Required]
@@ -37,6 +36,5 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
         [Display(Name = "City")]
         public Guid CityId { get; set; }
         public City City { get; set; }
-
     }
 }

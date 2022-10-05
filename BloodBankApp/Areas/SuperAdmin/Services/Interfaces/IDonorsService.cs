@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Identity.Pages.Account.Manage;
 using BloodBankApp.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
 {

@@ -17,7 +17,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public CitiesService(ApplicationDbContext context,
+        public CitiesService(
+            ApplicationDbContext context,
             IMapper mapper)
         {
             _context = context;
@@ -63,7 +64,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<IEnumerable<CityModel>> GetCities()
         {
             var cities = await _context.Cities.ToListAsync();
-
             var cityModels = _mapper.Map<List<CityModel>>(cities);
 
             return cityModels;

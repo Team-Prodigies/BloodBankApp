@@ -14,37 +14,37 @@
                     <h6 class="card-title">Set permissions</h6>
                     <table class="table table-hover table-responsive">
                         <thead>
-                        <tr>
-                            <th scope="col">
-                                Type
-                            </th>
-                            <th scope="col">
-                                Permission
-                            </th>
-                            <th scope="col">
-                                Status
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col">
+                                    Type
+                                </th>
+                                <th scope="col">
+                                    Permission
+                                </th>
+                                <th scope="col">
+                                    Status
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @for (int i = 0; i < Model.RoleClaims.Count(); i++)
-                        {
-                            <tr>
-                                <td>
-                                    <input asp-for="@Model.RoleClaims[i].Type" type="hidden"/>
-                                    @Model.RoleClaims[i].Type
-                                </td>
-                                <td>
-                                    <input asp-for="@Model.RoleClaims[i].Value" type="hidden"/>
-                                    @Model.RoleClaims[i].Value
-                                </td>
-                                <td>
-                                    <div class="form-check m-1">
-                                        <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
+                            @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                                        @Model.RoleClaims[i].Type
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                        @Model.RoleClaims[i].Value
+                                    </td>
+                                    <td>
+                                        <div class="form-check m-1">
+                                            <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

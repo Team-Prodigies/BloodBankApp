@@ -1,9 +1,11 @@
 ﻿@model ProfileAdminModel
+
 @{
     ViewData["Title"] = "Profile";
 }
 
 <h4 class="text-center mt-4 border-bottom pb-3">@ViewData["Title"]</h4>
+
 <div class="container-fluid w-100 p-0 mb-3 d-flex justify-content-center">
     <div class="container ms-2 me-2 w-75 mt-4 mb-4 shadow rounded p-4" style="background-color: white">
         <form id="profile-form" asp-controller="Profile" asp-action="EditProfile" method="post">
@@ -50,5 +52,6 @@
         </form>
     </div>
 </div>
+
 @await Component.InvokeAsync("Notyf")
 <script src="~/js/AvailableUsername.js"></script>

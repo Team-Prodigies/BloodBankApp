@@ -1,6 +1,5 @@
 ﻿@inject UserManager<User> UserManager
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +27,6 @@
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/css/style.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
 </head>
 
 <body>
@@ -36,7 +34,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a asp-area="SuperAdmin" asp-controller="AdminHome" asp-action="Index" class="d-flex align-items-center">
                 <img src="~/Images/logo.png" alt="" class="img-fluid me-2 me-md-5" style="height: 50px">
-                
+
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
@@ -109,11 +107,11 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item dropdown pe-3">
 
-                    @{    
-                        var user = UserManager.GetUserAsync(User);   
+                    @{
+                        var user = UserManager.GetUserAsync(User);
                         string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=0D8ABC&color=fff";
                     }
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -149,6 +147,7 @@
             </ul>
         </nav>
     </header>
+
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">

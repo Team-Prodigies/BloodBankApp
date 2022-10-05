@@ -7,7 +7,6 @@ namespace BloodBankApp.Areas.SuperAdmin.ViewModels
 {
     public class PermissionViewModel
     {
-
         public Guid RoleId { get; set; }
         [Required]
         [Display(Name = "Role Name")]
