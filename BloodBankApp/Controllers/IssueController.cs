@@ -2,6 +2,7 @@
 using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
+using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -16,16 +17,19 @@ namespace BloodBankApp.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly INotyfService _notyfService;
+        private readonly IIssueService _issueService;
 
-        public IssueController(ApplicationDbContext db, INotyfService notyfService)
+        public IssueController(ApplicationDbContext db, INotyfService notyfService, IIssueService issueService)
         {
             _db = db;
             _notyfService = notyfService;
+            _issueService = issueService;
         }
         
         public async Task<IActionResult> Index()
         {
-            return View(await _db.Issues.ToListAsync());
+            var issues = await _issueService.GetIssues();
+            return View(issues.ToList());
         }
 
         public IActionResult ReportIssue()
@@ -37,81 +41,75 @@ namespace BloodBankApp.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> ReportIssue([Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                issue.IssueId = Guid.NewGuid();
-                _db.Add(issue);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("ReportIssue");
+                return View();
             }
-            return View();
+            var result = await _issueService.AddIssue(issue);
+            if (!result)
+            {
+                _notyfService.Error("The issue could not be posted in the database.");
+            }
+            _notyfService.Success("The issue reported succesfuly");
+            return RedirectToAction("ReportIssue");
+            
         }
 
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if(id == null)
-            {
-                return NotFound();
-            }
+            var issue = await _issueService.Edit(id);
 
-            var issueFromDatabase = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
-
-            if (issueFromDatabase == null)
-            {
-                return NotFound();
-            }
-
-            return View(issueFromDatabase);
+            return View(issue);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Edit(Guid? id,[Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
+        public async Task<IActionResult> Edit(Guid id,[Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
         {
             if (id != issue.IssueId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _db.Issues.Update(issue);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View();
             }
-            return View(issue);
+
+            var result = await _issueService.EditIssue(id, issue);
+
+            if (!result)
+            {
+                _notyfService.Error("Issue could not be edited!");
+                return View();
+            }
+            _notyfService.Success("The issue has been edited successfuly.");
+            return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (id == null)
+            var issue = await _issueService.Delete(id);
+
+            if (issue == null)
             {
                 return NotFound();
             }
 
-            var issueFromDatabase = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
-
-            if (issueFromDatabase == null)
-            {
-                return NotFound();
-            }
-
-            return View(issueFromDatabase);
+            return View(issue);
         }
 
         [HttpPost, ActionName("Delete")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> DeletePOST(Guid? id)
+        public async Task<IActionResult> DeletePOST(Guid id)
         {
-            var issue = await _db.Issues.FirstOrDefaultAsync(u => u.IssueId == id);
+            var issue = await _issueService.DeletePost(id);
 
-            if(issue == null)
+            if(!issue)
             {
-                return NotFound();
+                return View();
             }
-
-            _db.Issues.Remove(issue);
-            await _db.SaveChangesAsync();
+            _notyfService.Success("The issue has been edited successfuly.");
             return RedirectToAction("Index");
         }
 
