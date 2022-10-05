@@ -14,18 +14,21 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
     public class DonatorsController : Controller
     {
         private readonly IDonatorService _donatorsService;
+        private readonly IDonorsService _donorsService;
         private readonly SelectList _cityList;
         private readonly SelectList _bloodTypeList;
         private readonly INotyfService _notyfService;
 
         public DonatorsController(IDonatorService donatorsService,
+            IDonorsService donorsService,
             ICitiesService citiesService,
             IBloodTypesService bloodTypesService,
             INotyfService notyfService)
         {
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
             _bloodTypeList = new SelectList(bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
-            _donatorsService = donatorsService; 
+            _donatorsService = donatorsService;
+            _donorsService = donorsService;
             _notyfService = notyfService;
         }
 
@@ -53,12 +56,21 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             }
 
             var codeExists =await _donatorsService.CodeExists(model.Code.CodeValue);
-            var result = await _donatorsService.AddNotRegisteredDonor(model);
-            if (!result || codeExists)
+            var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(model.PersonalNumber);
+
+            if (personalNumberInUse || codeExists)
             {
                 ViewData["CityId"] = _cityList;
                 ViewData["BloodTypeId"] = _bloodTypeList;
+                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                 ViewData["codeInUse"] = "This code is already taken !!";
+                return View();
+            }
+            var result = await _donatorsService.AddNotRegisteredDonor(model);
+            if (!result)
+            {
+                ViewData["CityId"] = _cityList;
+                ViewData["BloodTypeId"] = _bloodTypeList;
                 return View();
             }
 

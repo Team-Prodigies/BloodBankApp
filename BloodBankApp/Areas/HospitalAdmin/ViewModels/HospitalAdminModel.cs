@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.HospitalAdmin.ViewModels {
-    public class HospitalAdminModel 
+namespace BloodBankApp.Areas.HospitalAdmin.ViewModels
+{
+    public class HospitalAdminModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
