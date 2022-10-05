@@ -93,6 +93,8 @@ namespace BloodBankApp.Data
                .HasForeignKey(fk => fk.BloodTypeId)
                .HasConstraintName("DonorsBloodTypes")
                .OnDelete(DeleteBehavior.Cascade);
+
+                d.HasIndex(u => u.PersonalNumber).IsUnique();
             });
 
             builder.Entity<MedicalStaff>(ms =>

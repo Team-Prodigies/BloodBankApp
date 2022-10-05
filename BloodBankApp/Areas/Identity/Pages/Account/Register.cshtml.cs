@@ -141,6 +141,8 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 if (personalNumberInUse)
                 {
                     ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                    ViewData["City"] = CityList;
+                    ViewData["BloodType"] = BloodTypeList;
                     return Page();
                 }
                 var result = await _usersService.AddDonor(Input);
@@ -153,9 +155,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError("UserName", error.Description);
                 }
             }
+
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
-
             return Page();
         }
     }
