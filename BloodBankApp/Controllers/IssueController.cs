@@ -13,14 +13,12 @@ namespace BloodBankApp.Controllers
 {
     public class IssueController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly INotyfService _notyfService;
         private readonly IIssueService _issueService;
         private SelectList IssueStatus { get; set; }
 
-        public IssueController(ApplicationDbContext db, INotyfService notyfService, IIssueService issueService)
+        public IssueController(INotyfService notyfService, IIssueService issueService)
         {
-            _db = db;
             _notyfService = notyfService;
             _issueService = issueService;
 
