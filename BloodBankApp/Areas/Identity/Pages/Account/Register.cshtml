@@ -48,6 +48,11 @@
                         <div class="form-group">
                             <label asp-for="Input.PhoneNumber" class="mb-1 mt-2"></label>
                             <input asp-for="Input.PhoneNumber" class="form-control" required />
+                             @if (ViewBag.PhoneNumberInUse != null)
+                        {
+                            <p class="text-danger">@ViewBag.PhoneNumberInUse</p>
+                        }
+                        <span class="text-danger d-none" id="PhoneNumberIsTaken">This phone number is already taken!</span>
                         </div>
                     </div>
                     <div class="col">
@@ -123,4 +128,5 @@
     </div>
 </div>
 <script src="~/js/AvailablePersonalNumber.js"></script>
+<script src="~/js/AvailablePhoneNumber.js"></script>
 <script src="~/js/AvailableUsername.js"></script>

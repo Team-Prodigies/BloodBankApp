@@ -58,5 +58,16 @@ namespace BloodBankApp.Services
             }
             return false;
         }
+
+        public async Task<bool> PhoneNumberIsTaken(string phoneNumber)
+        {
+            var phoneNumberInUse = await _context.Users
+                .FirstOrDefaultAsync(user => user.PhoneNumber == phoneNumber);
+            if (phoneNumber != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

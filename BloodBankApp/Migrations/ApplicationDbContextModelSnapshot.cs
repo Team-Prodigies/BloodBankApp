@@ -191,9 +191,7 @@ namespace BloodBankApp.Migrations
             modelBuilder.Entity("BloodBankApp.Models.HealthFormQuestionnaire", b =>
                 {
                     b.Property<Guid>("HealthFormQuestionnaireId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DonorId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdated")
@@ -340,6 +338,9 @@ namespace BloodBankApp.Migrations
                     b.Property<Guid>("QuestionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Answer")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -663,23 +664,17 @@ namespace BloodBankApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BloodBankApp.Models.HealthFormQuestionnaire", "HealthFormQuestionnaire")
+                        .WithMany()
+                        .HasForeignKey("HealthFormQuestionnaireId");
+
                     b.Navigation("BloodType");
 
                     b.Navigation("City");
 
+                    b.Navigation("HealthFormQuestionnaire");
+
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BloodBankApp.Models.HealthFormQuestionnaire", b =>
-                {
-                    b.HasOne("BloodBankApp.Models.Donor", "Donor")
-                        .WithOne("HealthFormQuestionnaire")
-                        .HasForeignKey("BloodBankApp.Models.HealthFormQuestionnaire", "HealthFormQuestionnaireId")
-                        .HasConstraintName("DonorForms")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Donor");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.Hospital", b =>

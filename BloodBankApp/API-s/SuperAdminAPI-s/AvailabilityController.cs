@@ -54,5 +54,15 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
             }
             return await _availabilityService.DonorCodeIsTaken(codeValue);
         }
+        [HttpGet]
+        [Route("PhoneNumberIsTaken")]
+        public async Task<bool> PhoneNumberIsTaken(string phoneNumber)
+        {
+            if (phoneNumber == null || phoneNumber.Trim() == "")
+            {
+                return false;
+            }
+            return await _availabilityService.PhoneNumberIsTaken(phoneNumber);
+        }
     }
 }

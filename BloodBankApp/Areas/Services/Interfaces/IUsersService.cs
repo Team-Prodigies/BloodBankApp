@@ -24,11 +24,11 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input);
         Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input);
         Task<bool> UserIsInRole(User user,string role);
-        Task<bool> CheckDonorsCode(Guid id, string codeValue);
         Task<RegisterInputModel> DonorExists(RegisterInputModel input);
         Task<List<ManageUserModel>> GetUsers(string roleFilter, int pageNumber = 1, string filterBy = "A-Z");
         Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1);
         Task LockoutUser(User user);
         Task UnlockUser(User user);
+        Task<bool> PhoneNumberIsInUse(string phoneNumber);
     }
 }

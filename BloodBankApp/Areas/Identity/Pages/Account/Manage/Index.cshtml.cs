@@ -131,13 +131,32 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 ViewData["City"] = CityList;
                 ViewData["BloodType"] = BloodTypeList;
                 ViewData["Gender"] = GenderList;
-
                 return Page();
             }
             var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
-            if (PersonalNumberTaken)
+            var phoneNumberInUse = await _usersService.PhoneNumberIsInUse(Input.PhoneNumber);
+            if(PersonalNumberTaken && phoneNumberInUse)
             {
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
+                ViewData["City"] = CityList;
+                ViewData["BloodType"] = BloodTypeList;
+                ViewData["Gender"] = GenderList;
+                return Page();
+            }
+           else if (PersonalNumberTaken)
+            {
+                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                ViewData["City"] = CityList;
+                ViewData["BloodType"] = BloodTypeList;
+                ViewData["Gender"] = GenderList;
+                return Page();
+            }
+            else if (phoneNumberInUse)
+            {
+                ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
+                ViewData["City"] = CityList;
+                ViewData["BloodType"] = BloodTypeList;
                 return Page();
             }
             var result = await _donorsService.EditDonor(user.Id, Input);

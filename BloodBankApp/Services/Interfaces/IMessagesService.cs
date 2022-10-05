@@ -1,8 +1,6 @@
 ﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
-using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Services.Interfaces

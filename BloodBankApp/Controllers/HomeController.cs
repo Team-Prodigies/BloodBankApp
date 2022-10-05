@@ -1,6 +1,5 @@
 ﻿using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -13,7 +12,8 @@ namespace BloodBankApp.Controllers
         private readonly IStatisticsService _statisticsService;
         private readonly IHospitalService _hospitalService;
 
-        public HomeController(IStatisticsService statisticsService, IHospitalService hospitalService)
+        public HomeController(IStatisticsService statisticsService,
+            IHospitalService hospitalService)
         {
             _statisticsService = statisticsService;
             _hospitalService = hospitalService;
@@ -21,7 +21,7 @@ namespace BloodBankApp.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["UsersCount"] = await _statisticsService.GetUsersCountAsync();
-            ViewData["HospitalCount"] =await _statisticsService.GetHospitalsCountAsync();
+            ViewData["HospitalCount"] = await _statisticsService.GetHospitalsCountAsync();
             ViewData["AmountOfDonations"] = await _statisticsService.GetAmountOfBloodDonatedAsync();
             ViewData["Location"] = await _hospitalService.GetAllLocations();
             ViewData["GetAllHospitals"] = await _hospitalService.GetAllHospitals();

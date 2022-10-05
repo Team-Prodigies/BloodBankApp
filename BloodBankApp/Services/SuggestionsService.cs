@@ -13,7 +13,8 @@ namespace BloodBankApp.Services
         private readonly ApplicationDbContext _context;
         private readonly IUsersService _usersService;
 
-        public SuggestionsService(ApplicationDbContext context, IUsersService usersService)
+        public SuggestionsService(ApplicationDbContext context,
+            IUsersService usersService)
         {
             _context = context;
             _usersService = usersService;

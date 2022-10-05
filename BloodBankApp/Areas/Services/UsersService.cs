@@ -270,15 +270,6 @@ namespace BloodBankApp.Areas.Services
             return await _userManager.IsInRoleAsync(user, role);
         }
 
-        public async Task<bool> CheckDonorsCode(Guid id, string codeValue)
-        {
-            var code = await _context.Codes
-                .Where(x => x.CodeValue == codeValue)
-                .FirstOrDefaultAsync(code => code.CodeId == id);
-            if (code == null) return false;
-            return true;
-        }
-
         public Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1)
         {
             var skipRows = (pageNumber - 1) * 10;
@@ -390,6 +381,14 @@ namespace BloodBankApp.Areas.Services
             input.DateOfBirth = userExists.DateOfBirth;
 
             return input;
+        }
+
+        public async Task<bool> PhoneNumberIsInUse(string phoneNumber)
+        {
+            var phoneNumberInUse = await _context.Users
+                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+            if (phoneNumberInUse != null) return true;
+            return false;
         }
     }
 }

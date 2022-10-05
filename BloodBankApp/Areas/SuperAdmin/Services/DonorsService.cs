@@ -29,8 +29,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var donor = await _context.Donors
                 .Where(d => d.PersonalNumber == personalNumber)
                 .FirstOrDefaultAsync();
-            if (donor == null) return false;
-            return true;
+            if (donor != null) return true;
+            return false;
         }
 
         public async Task AddDonor(Donor donor)
