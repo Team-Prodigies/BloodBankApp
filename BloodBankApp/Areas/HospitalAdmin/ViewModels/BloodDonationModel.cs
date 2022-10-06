@@ -7,9 +7,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.ViewModels
     public class BloodDonationModel
     {
         public Guid BloodDonationId { get; set; }
-
+        
+        [Required]
         [Display(Name = "Donation date")]
         public DateTime DonationDate { get; set; }
+        
+        [Required]
         public double Amount { get; set; }
         public Guid DonationPostId { get; set; }
         public DonationPost DonationPost { get; set; }

@@ -2,6 +2,74 @@
 @{
     ViewData["Title"] = "Donations";
 }
+
+@if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <h1>Search results for "@ViewBag.SearchTerm"</h1>
+}
+
+<div class="d-flex justify-content-between">
+    <div class=" justify-content-start pt-2">
+        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+        {
+            <a asp-controller="Donations" asp-action="Index">Back to all</a>
+        }
+    </div>
+    <div class="justify-content-end">
+        <div class="search-bar row g-3">
+            <form class="search-form d-flex align-items-center mb-2" method="get" asp-area="HospitalAdmin" asp-controller="Donations" asp-action="Index">
+                <input type="text" placeholder="Search" name="searchTerm" class="form-control" list="donorSuggestions" id="searchDonations" autocomplete="off">
+                <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+            </form>
+
+            <datalist id="donorSuggestions"></datalist>
+        </div>
+    </div>
+    <script>
+        var typingTimer;
+        var doneTypingInterval = 1000;
+        var $input = $('#searchDonations');
+
+        //on keyup, start the countdown
+        $input.on('keyup',
+            function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+
+            });
+
+        //on keydown, clear the countdown
+        $input.on('keydown',
+            function () {
+                clearTimeout(typingTimer);
+
+            });
+
+        function doneTyping() {
+
+            $.get("/api/Suggestions/GetDonorsSuggestions?search=" + $input.val(),
+                function (data, status) {
+
+                    if (status == 'success') {
+
+                        $("#donorSuggestions").empty();
+
+                        $.each(data,
+                            function (index, value) {
+                                console.log('<option value="' + value + '"></option>');
+
+                                $("#donorSuggestions")
+                                    .append(
+                                        $('<option value="' + value + '"></option>')
+                                    );
+                            });
+                    }
+                });
+        }
+
+    </script>
+</div>
+
 <div class="card container">
     <div class="card-body">
         <h5 class="card-title">List of blood donations</h5>
@@ -24,7 +92,7 @@
                         <td>@donation.Amount</td>
                         <td>@donation.DonationDate</td>
                         <td>
-                            <a href="#" type="button" class="btn btn-primary">
+                            <a asp-action="EditDonation" asp-controller="Donations" asp-route-donationId="@donation.BloodDonationId" type="button" class="btn btn-primary">
                                 Edit
                             </a>
                         </td>

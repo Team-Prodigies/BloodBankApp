@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -23,12 +26,15 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _donorsService = donorsService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            var donations = await _donationsService.GetAllDonations();
+            var donations = await _donationsService.GetAllDonations(searchTerm);
+            ViewBag.SearchTerm = searchTerm;
             return View(donations);
         }
 
+        [HttpGet]
         public async Task<IActionResult> AddDonation(long? personalNumber)
         {
             if (!personalNumber.HasValue) 
@@ -46,10 +52,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> AddDonation(BloodDonationModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)            
             {
                 return View(model);
             }
@@ -62,6 +69,30 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             }
             _notyfService.Error("Something went wrong!");
             ViewBag.DonorFound = true;
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDonation(Guid donationId)
+        {
+            var donation = await _donationsService.GetDonation(donationId);
+            return View(donation);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditDonation(BloodDonationModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await _donationsService.UpdateDonation(model);
+            if (result)
+            {
+                _notyfService.Success("Donation updated successfully");
+                return RedirectToAction(nameof(Index));
+            }
+            _notyfService.Error("Something went wrong!");
             return View(model);
         }
     }

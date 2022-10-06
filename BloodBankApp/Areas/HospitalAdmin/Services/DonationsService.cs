@@ -36,14 +36,14 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             var hospitalAdmin = await _context.MedicalStaffs.Where(staff => staff.MedicalStaffId == user.Id).FirstOrDefaultAsync();
             return await _context.Hospitals.Where(hospital => hospital.HospitalId == hospitalAdmin.HospitalId).Select(hospital => hospital.HospitalId).FirstOrDefaultAsync();
         }
-        public async Task<List<BloodDonationModel>> GetAllDonations()
+        public async Task<List<BloodDonationModel>> GetAllDonations(string? searchTerm)
         {
             var hospitalId = await GetCurrentHospitalId(); 
             var donations = await _context.BloodDonations
                 .Include(donation => donation.Hospital)
                 .Include(donation => donation.Donor)
                     .ThenInclude(donor => donor.User)
-                .Where(donation => donation.HospitalId == hospitalId)
+                .Where(donation => donation.HospitalId == hospitalId && (string.IsNullOrEmpty(searchTerm) || (donation.Donor.User.Name + donation.Donor.User.Surname).Replace(" ","").ToUpper().Contains(searchTerm.Replace(" ", "").ToUpper())))
                 .ToListAsync();
             var result = _mapper.Map<List<BloodDonationModel>>(donations);
             return result;
@@ -69,9 +69,32 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return true;
         }
 
-        public Task UpdateDonation(BloodDonationModel donation)
+        public async Task<bool> UpdateDonation(BloodDonationModel donation)
         {
-            throw new System.NotImplementedException();
+            var dbDonation = await _context.BloodDonations.FindAsync(donation.BloodDonationId);
+            dbDonation.Amount = donation.Amount;
+            dbDonation.DonationDate = donation.DonationDate;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<BloodDonationModel> GetDonation(Guid donationId)
+        {
+            var donation = await _context.BloodDonations
+                .Include(donation => donation.Donor)
+                .ThenInclude(donor => donor.BloodType)
+                .Include(donation => donation.Donor.User)
+                .FirstOrDefaultAsync(donation => donation.BloodDonationId == donationId);
+         
+            return _mapper.Map<BloodDonationModel>(donation);
         }
     }
 }
