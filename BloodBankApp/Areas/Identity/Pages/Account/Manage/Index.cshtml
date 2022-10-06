@@ -22,7 +22,7 @@
                     <div class="form-group mt-3">
                         <label asp-for="Input.PhoneNumber"></label>
                         <input asp-for="Input.PhoneNumber" id="PhoneNumber" class="form-control" required />
-                         @if (ViewBag.PhoneNumberInUse != null)
+                        @if (ViewBag.PhoneNumberInUse != null)
                         {
                             <p class="text-danger">@ViewBag.PhoneNumberInUse</p>
                         }
@@ -82,5 +82,5 @@
     </div>
 </div>
 @await Component.InvokeAsync("Notyf")
-<script src="~/js/AvailablePhoneNumber.js"></script>
-<script src="~/js/AvailablePersonalNumber.js"></script>
+<script src="~/js/AvailablePhoneNumberProfile.js"></script>
+<script src="~/js/AvailablePersonalNumberProfil.js"></script>

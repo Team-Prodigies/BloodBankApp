@@ -3,6 +3,7 @@ using BloodBankApp.Services.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BloodBankApp.Services
 {
@@ -67,6 +68,26 @@ namespace BloodBankApp.Services
             {
                 return true;
             }
+            return false;
+        }
+
+        public async Task<bool> PersonalNumberIsTaken(Guid id, int personalNumber)
+        {
+            var donor = await _context.Donors
+                .Where(u => u.DonorId != id)
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
+
+            if (donor != null) return true;
+            return false;
+        }
+
+        public async Task<bool> PhoneNumberIsTaken(Guid id, string phoneNumber)
+        {
+            var phoneNumberInUse = await _context.Users
+                .Where(u => u.Id != id)
+                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+
+            if (phoneNumberInUse != null) return true;
             return false;
         }
     }
