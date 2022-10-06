@@ -24,6 +24,7 @@ namespace BloodBankApp.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Code> Codes { get; set; }
+        public DbSet<Issue> Issues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

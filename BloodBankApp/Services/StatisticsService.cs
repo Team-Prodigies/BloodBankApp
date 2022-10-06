@@ -1,4 +1,5 @@
 ﻿using BloodBankApp.Data;
+using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -92,5 +93,6 @@ namespace BloodBankApp.Services
         {
             return await _context.Users.CountAsync();
         }
+
     }
 }
