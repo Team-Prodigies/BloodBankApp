@@ -2,7 +2,6 @@
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

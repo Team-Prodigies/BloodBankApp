@@ -4,7 +4,6 @@ using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,16 +14,11 @@ namespace BloodBankApp.Controllers
     {
         private readonly INotyfService _notyfService;
         private readonly IIssueService _issueService;
-        private SelectList IssueStatus { get; set; }
 
         public IssueController(INotyfService notyfService, IIssueService issueService)
         {
             _notyfService = notyfService;
             _issueService = issueService;
-
-            IssueStatus = new SelectList(Enum.GetValues(typeof(IssueStatus))
-               .Cast<IssueStatus>()
-               .ToList(), "IssueStatus");
         }
         
         public async Task<IActionResult> Index(string filterBy = "Date")
