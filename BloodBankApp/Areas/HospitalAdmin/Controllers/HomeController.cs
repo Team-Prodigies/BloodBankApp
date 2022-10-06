@@ -1,17 +1,13 @@
 ﻿using BloodBankApp.Areas.SuperAdmin.Permission;
 using AutoMapper;
-using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using BloodBankApp.Models;
-using Microsoft.EntityFrameworkCore;
-using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers

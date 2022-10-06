@@ -1,4 +1,5 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model BloodBankApp.Areas.Identity.Pages.Account.CheckCodeModel
 @{
     ViewData["Title"] = "CheckCode";
@@ -11,9 +12,71 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="container col-8 row">
                     <div class="mb-3 mt-2">
-                        <input asp-for="Code.CodeId" type="hidden" class="form-control">
-                        <label asp-for="Code.CodeValue" class="form-label"></label>
-                        <input asp-for="Code.CodeValue" class="form-control" required>
+                        <label asp-for="Input.Code.CodeValue"  class="form-label"></label>
+                        <input asp-for="Input.Code.CodeValue" class="form-control" required>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.Name" type="hidden" class="form-control text-capitalize" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.Surname" type="hidden" class="form-control text-capitalize" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.UserName" type="hidden" class="form-control" id="UserName" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.DateOfBirth" type="hidden" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.PhoneNumber" type="hidden" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.Email" type="hidden" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+
+                                <input asp-for="Input.Password"  type="hidden" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.ConfirmPassword" type="hidden"  class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.PersonalNumber" type="hidden" class="form-control" id="PersonalNumber" required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="d-flex align-items-center justify-content-evenly">
+                                    <input class="form-check-input" type="hidden"  asp-for="Input.Gender"  required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.CityId" type="hidden" class="form-control"  required />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input asp-for="Input.BloodTypeId" type="hidden" class="form-control"  required />
+                            </div>
+                        </div>
                     </div>
                     <div class="col-6">
                         <button type="submit" class="btn btn-danger">Submit</button>

@@ -2,7 +2,8 @@
 
 <section class="section">
     <div class="row">
-        @foreach (var hospital in Model) {
+        @foreach (var hospital in Model)
+        {
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body p-3">
@@ -22,7 +23,6 @@
                 </div>
             </div>
         }
-
     </div>
 </section>
 <nav aria-label="Page navigation example">
@@ -30,28 +30,39 @@
         <li class="page-item">
             <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">First Page</a>
         </li>
-        @if (ViewBag.pageNumber < 6) {
-            for (int i = 1; i <= 6; i++) {
-                if (i == ViewBag.pageNumber) {
+        @if (ViewBag.pageNumber < 6)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals"
-                           asp-route-pageNumber="@i">@i</a>
+               asp-route-pageNumber="@i">@i</a>
                     </li>
                 }
             }
-        } else {
-            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++) {
+        }
+        else
+        {
+            for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
+            {
                 if
-                (i == ViewBag.pageNumber) {
+                (i == ViewBag.pageNumber)
+                {
                     <li class="page-item active">
                         <a class="page-link"
-                           asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
+               asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
                     </li>
-                } else {
+                }
+                else
+                {
                     <li class="page-item">
                         <a class="page-link" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="@i">@i</a>
                     </li>
@@ -60,4 +71,3 @@
         }
     </ul>
 </nav>
-

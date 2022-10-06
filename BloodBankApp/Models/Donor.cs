@@ -23,5 +23,6 @@ namespace BloodBankApp.Models
         public Code Code { get; set; }
         public ICollection<BloodDonation> BloodDonations { get; set; } = new List<BloodDonation>();
         public virtual ICollection<Message> Messages { get; set; }
+        public ICollection<DonationRequests> DonationRequests { get; set; } = new List<DonationRequests>();
     }
 }

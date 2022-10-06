@@ -1,12 +1,8 @@
-﻿using BloodBankApp.Data;
+﻿using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
@@ -15,20 +11,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
     [Authorize(Roles = "HospitalAdmin")]
     public class MessagesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IHospitalService _hospitalService;
         private readonly UserManager<User> _userManager;
-        public MessagesController(ApplicationDbContext context, UserManager<User> userManager)
+        public MessagesController(IHospitalService hospitalService,
+            UserManager<User> userManager)
         {
-            _context = context;
+            _hospitalService = hospitalService;
             _userManager = userManager;
         }
-        public IActionResult ChatRoom()
+        public async Task<IActionResult> ChatRoom()
         {
             var currentHospitalAdminId = _userManager.GetUserId(User);
-            var hospitalAdmin = _context.MedicalStaffs.Where(ms => ms.MedicalStaffId == new Guid(currentHospitalAdminId)).FirstOrDefault();
-            var hospital = _context.Hospitals.Where(h => h.HospitalId == hospitalAdmin.HospitalId).FirstOrDefault();
+            var hospital = await _hospitalService.GetHospitalForMedicalStaff(currentHospitalAdminId);
             ViewBag.HospitalId = hospital.HospitalId;
-
             return View();
         }
     }
