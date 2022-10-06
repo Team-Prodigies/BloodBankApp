@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+﻿using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<PostModel> EditPost(Guid notificationId);
         Task<bool> EditPosts(PostModel post, Guid notificationId);
         Task<bool> DeletePost(Guid notificationId);
+        Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
+        Task<List<Question>> GetAllQuestions();
+        Task<DonationPost> GetPost(Guid postId);
     }
 }

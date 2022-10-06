@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221006094654_DonationRequestTable")]
+    partial class DonationRequestTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,29 +265,6 @@ namespace BloodBankApp.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Hospitals");
-                });
-
-            modelBuilder.Entity("BloodBankApp.Models.Issue", b =>
-                {
-                    b.Property<Guid>("IssueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateReported")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IssueStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IssueId");
-
-                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.Location", b =>
