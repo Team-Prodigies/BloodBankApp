@@ -9,23 +9,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.SuperAdmin.Controllers {
+namespace BloodBankApp.Areas.SuperAdmin.Controllers
+{
     [Area("SuperAdmin")]
     [Authorize]
-    public class QuestionnaireController : Controller {
+    public class QuestionnaireController : Controller
+    {
         private SelectList Answer { get; set; }
         private readonly ApplicationDbContext _context;
         private readonly INotyfService _notyfService;
         private readonly IQuestionService _questionService;
         public QuestionnaireController(
-            ApplicationDbContext context, 
-            INotyfService notyfService, 
+            ApplicationDbContext context,
+            INotyfService notyfService,
             IQuestionService questionService)
-            {
+        {
             _context = context;
             _notyfService = notyfService;
             _questionService = questionService;
@@ -33,14 +34,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpGet]
-        public IActionResult CreateQuestionnaire() {
+        public IActionResult CreateQuestionnaire()
+        {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuestionnaire(HealthFormQuestionnaire questionnaire) {
+        public async Task<IActionResult> CreateQuestionnaire(HealthFormQuestionnaire questionnaire)
+        {
             questionnaire.LastUpdated = DateTime.Now;
-            if (questionnaire.LastUpdated == null) {
+            if (questionnaire.LastUpdated == null)
+            {
                 _notyfService.Error("Questionnaire isnt created");
                 return View(nameof(CreateQuestionnaire));
             }
@@ -51,15 +55,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageQuestions() {
+        public async Task<IActionResult> ManageQuestions()
+        {
             var getQuestions = await _context.Questions.ToListAsync();
             return View(getQuestions);
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateQuestion() {
+        public async Task<IActionResult> CreateQuestion()
+        {
             var getQuestinnaire = _context.HealthFormQuestionnaires.ToList();
-            if(getQuestinnaire.Count == 0) {
+            if (getQuestinnaire.Count == 0)
+            {
                 _notyfService.Error("Pls create a questionnaire first!");
                 return RedirectToAction("CreateQuestionnaire");
             }
@@ -67,8 +74,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuestion(Question question) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> CreateQuestion(Question question)
+        {
+            if (!ModelState.IsValid)
+            {
                 _notyfService.Error("Pls fill all the questions!");
                 return View(nameof(CreateQuestion));
             }
@@ -83,15 +92,18 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid QuestionId) {
-            if(QuestionId == null) {
+        public async Task<IActionResult> Edit(Guid QuestionId)
+        {
+            if (QuestionId == Guid.Empty)
+            {
                 _notyfService.Error("The Question does not exist");
                 return RedirectToAction("ManageQuestions");
             }
 
             var getQuestion = await _questionService.EditQuestion(QuestionId);
             ViewBag.Answer = Answer;
-            if (getQuestion == null) {
+            if (getQuestion == null)
+            {
                 _notyfService.Error("The Question does not exist");
                 return RedirectToAction("ManageQuestions");
             }
@@ -100,19 +112,23 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(QuestionModel questionModel, Guid QuestionId) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> Edit(QuestionModel questionModel, Guid QuestionId)
+        {
+            if (!ModelState.IsValid)
+            {
                 ViewBag.Answer = Answer;
                 _notyfService.Error("Please fill form");
                 return View(nameof(Edit));
-            }if (QuestionId == null) {
+            }
+            if (QuestionId == Guid.Empty)
+            {
                 ViewBag.Answer = Answer;
                 _notyfService.Error("The Question does not exist");
                 return View(nameof(Edit));
             }
-
             var getQuestion = await _questionService.EditQuestion(questionModel, QuestionId);
-            if (getQuestion == false) {
+            if (getQuestion == false)
+            {
                 ViewBag.Answer = Answer;
                 _notyfService.Error("Something went wrong please try again");
                 return RedirectToAction("ManageQuestions");
@@ -123,8 +139,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
             return View(nameof(Edit));
         }
 
-        public async Task<IActionResult> Delete(Guid QuestionId) {
-            if(QuestionId == null) {
+        public async Task<IActionResult> Delete(Guid QuestionId)
+        {
+            if (QuestionId == Guid.Empty)
+            {
                 _notyfService.Error("The Question does not exist");
                 return View(nameof(ManageQuestions));
             }
@@ -132,10 +150,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers {
 
             _context.Questions.Remove(getQuestion);
             await _context.SaveChangesAsync();
-
             _notyfService.Success("Question Deleted!");
             return RedirectToAction("ManageQuestions");
         }
-
     }
 }

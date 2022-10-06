@@ -17,7 +17,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         private readonly IRolesService _rolesService;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
-        public RolesController(IRolesService rolesService, IMapper mapper, INotyfService notyfService)
+        public RolesController(IRolesService rolesService,
+            IMapper mapper,
+            INotyfService notyfService)
         {
             _rolesService = rolesService;
             _mapper = mapper;
@@ -103,7 +105,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             dbRole.Name = role.RoleName;
 
             var result = await _rolesService.UpdateRole(dbRole);
-           
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.Identity.Pages.Account.Manage;
 using BloodBankApp.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace BloodBankApp.Areas.SuperAdmin.Services
 {
@@ -17,7 +16,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public DonorsService(ApplicationDbContext context, IMapper mapper)
+        public DonorsService(
+            ApplicationDbContext context,
+            IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -38,7 +39,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
-
         public List<Gender> GetGenders()
         {
            return Enum.GetValues(typeof(Gender))
@@ -51,10 +51,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var user = await _context.Users.FirstOrDefaultAsync(d=>d.Id == donorId);
             var donor = await _context.Donors.FirstOrDefaultAsync(d => d.DonorId == donorId);
 
-           _mapper.Map(donorDto, user);
-           _mapper.Map(donorDto, donor);
+            _mapper.Map(donorDto, user);
+            _mapper.Map(donorDto, donor);
 
-         return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<Donor> GetDonor(Guid donorId)
