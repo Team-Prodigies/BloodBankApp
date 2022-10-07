@@ -137,10 +137,26 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("CheckCode",donorExists);
                 }
-                var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
-                if (personalNumberInUse)
+                var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
+                var phoneNumberInUse = await _usersService.PhoneNumberIsInUse(Input.PhoneNumber);
+                if (PersonalNumberTaken && phoneNumberInUse)
                 {
                     ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                    ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
+                    ViewData["City"] = CityList;
+                    ViewData["BloodType"] = BloodTypeList;
+                    return Page();
+                }
+                else if (PersonalNumberTaken)
+                {
+                    ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                    ViewData["City"] = CityList;
+                    ViewData["BloodType"] = BloodTypeList;
+                    return Page();
+                }
+                else if (phoneNumberInUse)
+                {
+                    ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
                     ViewData["City"] = CityList;
                     ViewData["BloodType"] = BloodTypeList;
                     return Page();

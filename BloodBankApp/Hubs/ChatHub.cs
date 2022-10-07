@@ -1,13 +1,8 @@
-﻿using BloodBankApp.Data;
-using BloodBankApp.Models;
+﻿using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Hubs
@@ -16,21 +11,22 @@ namespace BloodBankApp.Hubs
     {
         private readonly UserManager<User> _userManager;
         private readonly IMessagesService _messagesService;
-        public ChatHub(UserManager<User> userManager, IMessagesService messagesService)
+        public ChatHub(UserManager<User> userManager,
+            IMessagesService messagesService)
         {
             _userManager = userManager;
             _messagesService = messagesService;
         }
 
-        public async Task GetChatConversation(Guid donorId, Guid hospitalId)          
+        public async Task GetChatConversation(Guid donorId, Guid hospitalId)
         {
-            var messages = await _messagesService.GetChatConversation(donorId,hospitalId);
+            var messages = await _messagesService.GetChatConversation(donorId, hospitalId);
 
             string roomName = "ChatRoom-" + donorId + "Donor";
             await JoinRoom(roomName);
 
             var currentUser = _userManager.GetUserId(Context.User);
-            await Clients.User(currentUser).SendAsync("loadChatConversation", messages, donorId, hospitalId);            
+            await Clients.User(currentUser).SendAsync("loadChatConversation", messages, donorId, hospitalId);
         }
 
         public async Task SendMessages(string content, Guid donorId, Guid hospitalId, int sender)
@@ -71,13 +67,14 @@ namespace BloodBankApp.Hubs
             await Clients.Group(roomName).SendAsync("typing", typingIndicator, donorId);
         }
 
-        public async Task NotTyping(Guid donorId, int typingIndicator) {
+        public async Task NotTyping(Guid donorId, int typingIndicator)
+        {
             string roomName = "ChatRoom-" + donorId + "Donor";
             await Clients.Group(roomName).SendAsync("notTyping", typingIndicator);
         }
 
         public string GetConnectionId()
-        {        
+        {
             return Context.ConnectionId;
         }
         public async Task GetWaitingDonors(Guid hospitalId)
@@ -85,7 +82,7 @@ namespace BloodBankApp.Hubs
             var currentUser = _userManager.GetUserId(Context.User);
 
             var waitingDonors = await _messagesService.GetWaitingDonors(hospitalId);
-          
+
             await Clients.User(currentUser).SendAsync("loadWaitingDonors", waitingDonors);
         }
 
@@ -93,12 +90,11 @@ namespace BloodBankApp.Hubs
         {
             var currentUser = _userManager.GetUserId(Context.User);
             string roomName = "ChatRoom-" + donorId + "Donor";
-            
+
             await _messagesService.DeleteChat(donorId, hospitalId);
 
             await Clients.Group(roomName).SendAsync("deleteChat");
             await Clients.User(currentUser).SendAsync("removeWaitingDonor", donorId);
-             
         }
     }
 }

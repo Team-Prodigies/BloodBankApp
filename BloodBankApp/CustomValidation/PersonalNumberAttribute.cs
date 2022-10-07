@@ -4,7 +4,6 @@ namespace BloodBankApp.CustomValidation
 {
     public class PersonalNumberAttribute : ValidationAttribute
     {
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var personalNumber = value.ToString();

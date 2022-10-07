@@ -31,6 +31,8 @@ namespace BloodBankApp.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<User>().HasIndex(user => user.PhoneNumber).IsUnique();
+
             builder.Entity<BloodDonation>(bd =>
             {
                 bd.HasOne(b => b.Donor)

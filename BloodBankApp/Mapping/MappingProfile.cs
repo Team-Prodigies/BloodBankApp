@@ -100,7 +100,7 @@ namespace BloodBankApp.Mapping
                     opts => opts.MapFrom(src => src.CityId))
                 .ForMember(dest => dest.BloodTypeId,
                     opts => opts.MapFrom(src => src.BloodTypeId))
-               
+
                 .ReverseMap();
 
             CreateMap<NotRegisteredDonor, User>();

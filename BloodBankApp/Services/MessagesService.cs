@@ -3,7 +3,6 @@ using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,19 +11,20 @@ using System.Threading.Tasks;
 
 namespace BloodBankApp.Services
 {
-    public class MessagesService : IMessagesService   
-     {
+    public class MessagesService : IMessagesService
+    {
         private readonly ApplicationDbContext _context;
-        public MessagesService( ApplicationDbContext context)
+        public MessagesService(ApplicationDbContext context)
         {
             _context = context;
         }
         public async Task<List<SendMessage>> GetChatConversation(Guid donorId, Guid hospitalId)
-        {           
+        {
             var messages = await _context.Messages
                .Where(u => u.DonorId == donorId && u.HospitalId == hospitalId)
                .OrderBy(t => t.DateSent)
-               .Select(m => new SendMessage {
+               .Select(m => new SendMessage
+               {
                    MessageId = m.MessageId,
                    Seen = m.Seen,
                    Content = m.Content,
@@ -43,7 +43,8 @@ namespace BloodBankApp.Services
             var waitingDonors = await _context.Messages
                 .Include(user => user.Donor.User)
                 .Where(h => h.HospitalId == hospitalId)
-                .Select(u => new WaitingDonor{
+                .Select(u => new WaitingDonor
+                {
                     DonorId = u.DonorId,
                     HospitalId = u.HospitalId,
                     Name = u.Donor.User.Name,
@@ -61,7 +62,8 @@ namespace BloodBankApp.Services
             await _context.AddAsync(newMessage);
             await _context.SaveChangesAsync();
 
-            var sendMessage = new SendMessage {
+            var sendMessage = new SendMessage
+            {
                 MessageId = newMessage.MessageId,
                 Seen = newMessage.Seen,
                 Content = newMessage.Content,
@@ -76,21 +78,27 @@ namespace BloodBankApp.Services
         }
 
         public async Task SetDonorMessagesToSeen(Guid donorId, Guid hospitalId)
-        {        
-            try {
+        {
+            try
+            {
                 var query = $"UPDATE Messages SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 0 AND Seen = 'false'";
                 await _context.Database.ExecuteSqlRawAsync(query);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
 
         public async Task SetHospitalMessagesToSeen(Guid donorId, Guid hospitalId)
         {
-            try {
+            try
+            {
                 var query = $"UPDATE Message SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 1 AND Seen = 'false'";
                 await _context.Database.ExecuteSqlRawAsync(query);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -99,7 +107,7 @@ namespace BloodBankApp.Services
         {
             var message = await _context.Messages.FindAsync(messageId);
 
-            if(message != null)
+            if (message != null)
             {
                 message.Seen = true;
                 _context.Messages.Update(message);
@@ -109,10 +117,13 @@ namespace BloodBankApp.Services
 
         public async Task DeleteChat(Guid donorId, Guid hospitalId)
         {
-            try {
+            try
+            {
                 var query = $"DELETE FROM Messages WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}'";
                 await _context.Database.ExecuteSqlRawAsync(query);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }

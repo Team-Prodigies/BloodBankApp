@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BloodBankApp.Areas.SuperAdmin.Controllers;
 using System.Security.Claims;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 
