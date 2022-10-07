@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
+using BloodBankApp.Models;
 
 namespace BloodBankApp.Services
 {
@@ -71,7 +72,7 @@ namespace BloodBankApp.Services
             return false;
         }
 
-        public async Task<bool> PersonalNumberIsTaken(Guid id, int personalNumber)
+        public async Task<bool> PersonalNumberIsTaken(Guid id, long personalNumber)
         {
             var donor = await _context.Donors
                 .Where(u => u.DonorId != id)
@@ -83,9 +84,16 @@ namespace BloodBankApp.Services
 
         public async Task<bool> PhoneNumberIsTaken(Guid id, string phoneNumber)
         {
+            var phoneNo = phoneNumber;
+            var newPhoneNo = "";
+            if (!phoneNumber.StartsWith("0"))
+            {
+                newPhoneNo = phoneNo.Substring(1);
+                phoneNo = newPhoneNo.Insert(0, "+");
+            }
             var phoneNumberInUse = await _context.Users
                 .Where(u => u.Id != id)
-                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+                .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNo);
 
             if (phoneNumberInUse != null) return true;
             return false;

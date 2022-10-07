@@ -71,22 +71,18 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
         }
         [HttpGet]
         [Route("PersonalNumberIsTakenApi")]
-        public async Task<bool> PersonalNumberIsTakenApi(int personalNumber)
+        public async Task<bool> PersonalNumberIsTakenApi(long personalNumber)
         {
-            var user = await _usersService.GetUser(_httpContextAccessor.HttpContext.User);
-            Guid id = user.Id;
-            return await _availabilityService.PersonalNumberIsTaken(id, personalNumber);
+            var user = await _usersService.GetUser(User);
+          //  Guid id = user.Id;
+            return await _availabilityService.PersonalNumberIsTaken(user.Id, personalNumber);
         }
         [HttpGet]
         [Route("PhoneNumberIsTakenApi")]
         public async Task<bool> PhoneNumberIsTakenApi(string phoneNumber)
         {
-            if (phoneNumber == null || phoneNumber.Trim() == "")
-            {
-                return false;
-            }
-            var user = await _usersService.GetUser(_httpContextAccessor.HttpContext.User);
-            Guid id = user.Id;
+            var user = await _usersService.GetUser(User);
+            var id = user.Id;
             return await _availabilityService.PhoneNumberIsTaken(id,phoneNumber);
         }
     }

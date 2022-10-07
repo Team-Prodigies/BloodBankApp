@@ -14,7 +14,7 @@ $phoneNumber.on('keydown', function () {
 });
 
 function doneTypingUserName() {
-    $.get("/api/Availability/PhoneNumberIsTakenApi?phoneNumber=" + $phoneNumber.val(), function (data, status) {
+    $.get("/api/Availability/PhoneNumberIsTakenApi?phoneNumber=" + $phoneNumber.val().toString(), function (data, status) {
         console.log("Trying " + data);
         if (status == 'success') {
             if (data) {
