@@ -13,8 +13,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services {
             _context = context;
         }
 
-        public async Task<QuestionModel> EditQuestion(Guid QuestionId) {
-            var getQuestion = await _context.Questions.FindAsync(QuestionId);
+        public async Task<QuestionModel> EditQuestion(Guid questionId) {
+            var getQuestion = await _context.Questions.FindAsync(questionId);
 
             var question = new QuestionModel {
                 Description = getQuestion.Description,
@@ -24,17 +24,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Services {
             return question;
         }
 
-        public async Task<bool> EditQuestion(QuestionModel questionModel, Guid QuestionId) {
-            var getQuestion = await _context.Questions.FindAsync(QuestionId);
+        public async Task<bool> EditQuestion(QuestionModel questionModel, Guid questionId) {
+            var getQuestion = await _context.Questions.FindAsync(questionId);
             getQuestion.Description = questionModel.Description;
             getQuestion.Answer = questionModel.Answer;
 
-            if (getQuestion != null) {
-                _context.Questions.Update(getQuestion);
-                await _context.SaveChangesAsync();
-                return true;
+            if (getQuestion == null) {
+                return false;
             }
-            return false;
+            _context.Questions.Update(getQuestion);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

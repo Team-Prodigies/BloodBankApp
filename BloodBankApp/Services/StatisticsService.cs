@@ -18,14 +18,11 @@ namespace BloodBankApp.Services
             _context = context;
         }
 
-        public async Task<double> GetAmountOfBloodDonatedAsync()
+        public async Task<int> GetAmountOfBloodDonatedAsync()
         {
-            var bloodAmount = 0.0D;
-            await _context.BloodDonations
-                .Where(x => x.DonationDate.Year == DateTime.Now.Year)
-                .ForEachAsync(x => bloodAmount += x.Amount);
+            var bloodDonated = await _context.BloodDonations.CountAsync();
 
-            return bloodAmount;
+            return bloodDonated;
         }
 
         public async Task<int> GetDonorCountAsync()

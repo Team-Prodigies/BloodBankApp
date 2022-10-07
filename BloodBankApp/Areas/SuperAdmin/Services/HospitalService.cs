@@ -35,23 +35,22 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var location = _mapper.Map<Location>(model);
             await _context.AddAsync(location);
 
-            using (var transaction = _context.Database.BeginTransaction())
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    var hospital = _mapper.Map<Hospital>(model);
-                    hospital.LocationId = location.LocationId;
-                    await _context.AddAsync(hospital);
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    return false;
-                }
+                await _context.SaveChangesAsync();
+                var hospital = _mapper.Map<Hospital>(model);
+                hospital.LocationId = location.LocationId;
+                await _context.AddAsync(hospital);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
+
             return true;
         }
 

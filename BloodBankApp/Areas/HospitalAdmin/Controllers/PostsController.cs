@@ -1,9 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using AutoMapper;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +25,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly IPostService _postService;
         private readonly IBloodTypesService _bloodTypesService;
         private SelectList PostStatus { get; set; }
+
         public PostsController(IBloodTypesService bloodTypesService,
             INotyfService notyfService,
             IPostService postService,
@@ -38,10 +37,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _userManager = userManager;
             _notyfService = notyfService;
             _postService = postService;
-            BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
+            BloodTypeList =
+                new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
             PostStatus = new SelectList(Enum.GetValues(typeof(PostStatus))
-               .Cast<PostStatus>()
-               .ToList(), "PostStatus");
+                .Cast<PostStatus>()
+                .ToList(), "PostStatus");
         }
 
         public async Task<IActionResult> ManagePosts(string filterBy = "Normal")
@@ -80,6 +80,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 _notyfService.Error("The Date of the post is not correct!");
                 return View(nameof(CreatePosts));
             }
+
             _notyfService.Success("Post successfully created");
             return RedirectToAction(nameof(CreatePosts));
         }
@@ -109,6 +110,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 _notyfService.Error("You form is not correct. Please try again!");
                 return View(nameof(EditPost));
             }
+
             _notyfService.Success("Post edited!");
             return RedirectToAction(nameof(ManagePosts));
         }
@@ -121,6 +123,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 _notyfService.Error("Post not found!");
                 return View(nameof(ManagePosts));
             }
+
             _notyfService.Success("Post Deleted!");
             return RedirectToAction("ManagePosts");
         }

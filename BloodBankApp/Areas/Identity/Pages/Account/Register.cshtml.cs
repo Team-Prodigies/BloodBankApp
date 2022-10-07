@@ -49,7 +49,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public class RegisterInputModel
         {
             public Guid Id { get; set; }
-
             public Guid CodeId { get; set; }
             public Code Code { get; set; }
             [Required]
@@ -137,9 +136,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("CheckCode",donorExists);
                 }
-                var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
+                var personalNumberTaken = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
                 var phoneNumberInUse = await _usersService.PhoneNumberIsInUse(Input.PhoneNumber);
-                if (PersonalNumberTaken && phoneNumberInUse)
+                if (personalNumberTaken && phoneNumberInUse)
                 {
                     ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                     ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
@@ -147,7 +146,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ViewData["BloodType"] = BloodTypeList;
                     return Page();
                 }
-                else if (PersonalNumberTaken)
+                else if (personalNumberTaken)
                 {
                     ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                     ViewData["City"] = CityList;
