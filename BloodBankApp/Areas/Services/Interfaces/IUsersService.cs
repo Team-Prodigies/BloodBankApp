@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BloodBankApp.Areas.Identity.Pages.Account;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterMedicalStaffModel;
 using static BloodBankApp.Areas.Identity.Pages.Account.RegisterModel;
 
@@ -21,7 +20,7 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task<IdentityResult> EditSuperAdmin(ProfileAdminModel user);
         Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword);
         Task<IdentityResult> AddDonor(RegisterInputModel input);
-        Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input);
+        Task<IdentityResult> AddNonRegisteredDonor(RegisterInputModel input);
         Task<IdentityResult> AddHospitalAdmin(RegisterMedicalStaffInputModel input);
         Task<bool> UserIsInRole(User user,string role);
         Task<RegisterInputModel> DonorExists(RegisterInputModel input);

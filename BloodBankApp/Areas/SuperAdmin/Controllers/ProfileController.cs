@@ -30,8 +30,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [Authorize(Policy = Permissions.SuperAdmin.ViewProfile)]
         public async Task<IActionResult> Index()
         {
-            var superadmin = await _usersService.GetUser(User);
-            ProfileAdminModel profileAdminUser = _mapper.Map<ProfileAdminModel>(superadmin);
+            var superAdmin = await _usersService.GetUser(User);
+            ProfileAdminModel profileAdminUser = _mapper.Map<ProfileAdminModel>(superAdmin);
             return View(profileAdminUser);
         }
 
@@ -73,12 +73,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             {
                 return View(nameof(ChangePassword));
             }
-            var superadmin = await _usersService.GetUser(User);
-            var result = await _usersService.ChangePassword(superadmin, pass.OldPassword, pass.NewPassword);
+            var superAdmin = await _usersService.GetUser(User);
+            var result = await _usersService.ChangePassword(superAdmin, pass.OldPassword, pass.NewPassword);
             if (result.Succeeded)
             {
                 _notyfService.Success("Password changed successfully!");
-                await _signInService.RefreshSignInAsync(superadmin);
+                await _signInService.RefreshSignInAsync(superAdmin);
                 return RedirectToAction(nameof(ChangePassword));
             }
             foreach (var error in result.Errors)

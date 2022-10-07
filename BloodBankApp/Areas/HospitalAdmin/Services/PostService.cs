@@ -14,9 +14,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
     public class PostService : IPostService
     {
-
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+
         public PostService(ApplicationDbContext context,
             IMapper mapper)
         {
@@ -32,10 +32,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 {
                     return false;
                 }
+
                 await _context.DonationPosts.AddAsync(post);
                 await _context.SaveChangesAsync();
                 return true;
             }
+
             return false;
         }
 
@@ -67,18 +69,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         public async Task<bool> EditPosts(PostModel post, Guid notificationId)
         {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
+            if (getPost == null) return false;
             getPost.PostStatus = post.PostStatus;
             getPost.Description = post.Description;
             getPost.BloodTypeId = post.BloodTypeId;
             getPost.AmountRequested = post.AmountRequested;
             getPost.DateRequired = post.DateRequired;
-            if (getPost == null) return false;
 
             _context.DonationPosts.Update(getPost);
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
+        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal")
+        {
             List<DonationPost> getPost;
 
             switch (filterBy)
@@ -111,6 +114,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                         .ToListAsync();
                     break;
             }
+
             var result = _mapper.Map<List<DonationPost>>(getPost);
             return result;
         }
@@ -212,6 +216,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                         .ToListAsync();
                     break;
             }
+
             var result = _mapper.Map<List<PostModel>>(getPosts);
             return result;
         }
@@ -228,7 +233,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 .ToListAsync();
             var result = _mapper.Map<List<PostModel>>(posts);
             return result;
-
         }
 
         public async Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
@@ -238,7 +242,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 .Include(x => x.Hospital)
                 .Include(x => x.BloodType)
                 .Where(x => x.Hospital.HospitalName.Replace(" ", "").ToUpper()
-                .Contains(searchTerm.Replace(" ", "").ToUpper()))
+                    .Contains(searchTerm.Replace(" ", "").ToUpper()))
                 .Skip(skipRows).Take(10)
                 .ToListAsync();
             var result = _mapper.Map<List<PostModel>>(posts);
@@ -248,7 +252,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         public async Task<QuestionnaireAnswers> GetQuestionnaireQuestions()
         {
             var questions = await _context.Questions
-                .Select(q => new QuestionViewModel {
+                .Select(q => new QuestionViewModel
+                {
                     QuestionId = q.QuestionId,
                     Description = q.Description
                 }).ToListAsync();
@@ -260,10 +265,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         public async Task<List<Question>> GetAllQuestions()
         {
             var questions = await _context.Questions.ToListAsync();
-            return questions;           
+            return questions;
         }
 
-        public async Task<DonationPost> GetPost(Guid postId) {
+        public async Task<DonationPost> GetPost(Guid postId)
+        {
             var getPost = await _context.DonationPosts.FindAsync(postId);
 
             return getPost;

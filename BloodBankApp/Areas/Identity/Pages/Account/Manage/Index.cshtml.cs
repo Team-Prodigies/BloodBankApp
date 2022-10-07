@@ -133,9 +133,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 ViewData["Gender"] = GenderList;
                 return Page();
             }
-            var PersonalNumberTaken = await _donorsService.PersonalNumberIsInUse(user.Id, Input.PersonalNumber);
+            var personalNumberTaken = await _donorsService.PersonalNumberIsInUse(user.Id, Input.PersonalNumber);
             var phoneNumberInUse = await _usersService.PhoneNumberIsInUse(user.Id, Input.PhoneNumber);
-            if(PersonalNumberTaken && phoneNumberInUse)
+            if(personalNumberTaken && phoneNumberInUse)
             {
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                 ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
@@ -144,7 +144,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 ViewData["Gender"] = GenderList;
                 return Page();
             }
-           else if (PersonalNumberTaken)
+           else if (personalNumberTaken)
             {
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                 ViewData["City"] = CityList;

@@ -45,12 +45,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             questionnaire.LastUpdated = DateTime.Now;
             if (questionnaire.LastUpdated == null)
             {
-                _notyfService.Error("Questionnaire isnt created");
+                _notyfService.Error("Questionnaire isn't created");
                 return View(nameof(CreateQuestionnaire));
             }
             _notyfService.Success("Questionnaire is created");
             await _context.HealthFormQuestionnaires.AddAsync(questionnaire);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return View(nameof(CreateQuestionnaire));
         }
 
@@ -64,8 +64,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateQuestion()
         {
-            var getQuestinnaire = _context.HealthFormQuestionnaires.ToList();
-            if (getQuestinnaire.Count == 0)
+            var getQuestionnaire =await _context.HealthFormQuestionnaires.ToListAsync();
+            if (getQuestionnaire.Count == 0)
             {
                 _notyfService.Error("Pls create a questionnaire first!");
                 return RedirectToAction("CreateQuestionnaire");
@@ -81,26 +81,26 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 _notyfService.Error("Pls fill all the questions!");
                 return View(nameof(CreateQuestion));
             }
-            var getQuestinnaire = _context.HealthFormQuestionnaires.FirstOrDefault();
-            question.HealthFormQuestionnaireId = getQuestinnaire.HealthFormQuestionnaireId;
+            var getQuestionnaire = _context.HealthFormQuestionnaires.FirstOrDefault();
+            if (getQuestionnaire != null) question.HealthFormQuestionnaireId = getQuestionnaire.HealthFormQuestionnaireId;
 
             await _context.Questions.AddAsync(question);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             _notyfService.Success("Question successfully created!");
             return RedirectToAction("ManageQuestions");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid QuestionId)
+        public async Task<IActionResult> Edit(Guid questionId)
         {
-            if (QuestionId == Guid.Empty)
+            if (questionId == Guid.Empty)
             {
                 _notyfService.Error("The Question does not exist");
                 return RedirectToAction("ManageQuestions");
             }
 
-            var getQuestion = await _questionService.EditQuestion(QuestionId);
+            var getQuestion = await _questionService.EditQuestion(questionId);
             ViewBag.Answer = Answer;
             if (getQuestion == null)
             {
@@ -112,7 +112,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(QuestionModel questionModel, Guid QuestionId)
+        public async Task<IActionResult> Edit(QuestionModel questionModel, Guid questionId)
         {
             if (!ModelState.IsValid)
             {
@@ -120,13 +120,13 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 _notyfService.Error("Please fill form");
                 return View(nameof(Edit));
             }
-            if (QuestionId == Guid.Empty)
+            if (questionId == Guid.Empty)
             {
                 ViewBag.Answer = Answer;
                 _notyfService.Error("The Question does not exist");
                 return View(nameof(Edit));
             }
-            var getQuestion = await _questionService.EditQuestion(questionModel, QuestionId);
+            var getQuestion = await _questionService.EditQuestion(questionModel, questionId);
             if (getQuestion == false)
             {
                 ViewBag.Answer = Answer;
@@ -139,14 +139,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View(nameof(Edit));
         }
 
-        public async Task<IActionResult> Delete(Guid QuestionId)
+        public async Task<IActionResult> Delete(Guid questionId)
         {
-            if (QuestionId == Guid.Empty)
+            if (questionId == Guid.Empty)
             {
                 _notyfService.Error("The Question does not exist");
                 return View(nameof(ManageQuestions));
             }
-            var getQuestion = await _context.Questions.FindAsync(QuestionId);
+            var getQuestion = await _context.Questions.FindAsync(questionId);
 
             _context.Questions.Remove(getQuestion);
             await _context.SaveChangesAsync();
