@@ -24,6 +24,8 @@ namespace BloodBankApp.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Code> Codes { get; set; }
+        public DbSet<DonationRequests> DonationRequest { get; set; }
+        public DbSet<Issue> Issues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -93,6 +95,8 @@ namespace BloodBankApp.Data
                .HasForeignKey(fk => fk.BloodTypeId)
                .HasConstraintName("DonorsBloodTypes")
                .OnDelete(DeleteBehavior.Cascade);
+
+                d.HasIndex(u => u.PersonalNumber).IsUnique();
             });
 
             builder.Entity<MedicalStaff>(ms =>
@@ -163,6 +167,14 @@ namespace BloodBankApp.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Code>().HasIndex(u => u.CodeValue).IsUnique();
+
+            builder.Entity<DonationRequests>(dr => {
+                dr.HasOne(b => b.Donor)
+               .WithMany(d => d.DonationRequests)
+               .HasForeignKey(fk => fk.DonorId)
+               .HasConstraintName("DonorDonations")
+               .OnDelete(DeleteBehavior.NoAction);
+            });
         }
     }
 }

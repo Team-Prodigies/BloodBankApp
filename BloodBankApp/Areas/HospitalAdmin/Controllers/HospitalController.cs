@@ -46,6 +46,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 return RedirectToAction(nameof(ManageHospital));
             }
             ViewData["CityId"] = _cityList;
+            ViewData["Location"] = await _hospitalService.GetAllLocations();
+
             var editHospital = _mapper.Map<EditHospitalModel>(hospital);
             return View(editHospital);
         }

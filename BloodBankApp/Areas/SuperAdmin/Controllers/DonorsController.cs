@@ -28,7 +28,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [Authorize(Policy = Permissions.Donors.View)]
         public async Task<IActionResult> Donors(string roleFilter = null, int pageNumber = 1, string filterBy = "A-Z")
         {
-            var users = await _usersService.GetUsers(roleFilter,pageNumber, filterBy);
+            var users = await _usersService.GetUsers(roleFilter, pageNumber, filterBy);
 
             ViewBag.FilterBy = filterBy;
             ViewBag.PageNumber = pageNumber;
@@ -66,7 +66,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
                 return RedirectToAction(nameof(Donors));
             }
             await _usersService.LockoutUser(user);
-            _notyfService.Success("User " + user.UserName+" has been locked out!");
+            _notyfService.Success("User " + user.UserName + " has been locked out!");
             return RedirectToAction(nameof(Donors));
         }
 

@@ -37,7 +37,6 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         public RegisterMedicalStaffInputModel Input { get; set; }
         public string ReturnUrl { get; set; }
         private SelectList HospitalList { get; set; }
-
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class RegisterMedicalStaffInputModel
@@ -113,7 +112,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 var result = await _usersService.AddHospitalAdmin(Input);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home", new { area = "HospitalAdmin"});
+                    return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
                 }
                 foreach (var error in result.Errors)
                 {

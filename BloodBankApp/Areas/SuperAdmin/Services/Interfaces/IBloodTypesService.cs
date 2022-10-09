@@ -1,6 +1,4 @@
-﻿using BloodBankApp.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.SuperAdmin.ViewModels;
 

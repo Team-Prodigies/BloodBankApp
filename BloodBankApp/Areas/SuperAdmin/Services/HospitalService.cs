@@ -20,7 +20,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
-        public HospitalService(ApplicationDbContext context,
+        public HospitalService(
+            ApplicationDbContext context,
             IMapper mapper,
             UserManager<User> userManager)
         {
@@ -96,7 +97,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             return _mapper.Map<HospitalModel>(hospital);
         }
 
-
         public async Task<string> GetHospitalCode(Guid hospitalId)
         {      
             var hospital = await _context.Hospitals.AsNoTracking().FirstOrDefaultAsync(hospital => hospital.HospitalId == hospitalId);
@@ -106,7 +106,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             }
             return hospital.HospitalCode;
         }
-
 
         public async Task<EditHospitalModel> GetHospitalForHospitalAdmin(ClaimsPrincipal principal)
         {
@@ -134,10 +133,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .Where(h => h.HospitalId == hospitalId)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
+
             return _mapper.Map<EditHospitalModel>(hospital);
         }
 
-        public async Task EditHospitalForHospitalAdmin( EditHospitalModel editHospital)
+        public async Task EditHospitalForHospitalAdmin(EditHospitalModel editHospital)
         {
             var hospital = await _context.Hospitals
                 .Include(l => l.Location)
@@ -189,6 +189,19 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .Take(10)
                 .ToListAsync();
             return _mapper.Map<List<HospitalModel>>(hospitals);
+        }
+
+        public async Task<Hospital> GetHospitalForMedicalStaff(string currentHospitalAdminId)
+        {
+            var hospitalAdmin =await _context.MedicalStaffs
+                .Where(ms => ms.MedicalStaffId == new Guid(currentHospitalAdminId))
+                .FirstOrDefaultAsync();
+
+            var hospital = await _context.Hospitals
+                .Where(h => h.HospitalId == hospitalAdmin.HospitalId)
+                .FirstOrDefaultAsync();
+
+            return hospital;
         }
     }
 }

@@ -22,17 +22,20 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
         private readonly IUsersService _usersService;
         private readonly ISignInService _signInService;
         private readonly ICitiesService _citiesService;
+        private readonly IDonorsService _donorsService;
         private readonly IBloodTypesService _bloodTypesService;
         public RegisterModel(
             IUsersService usersService,
             ISignInService signInService,
             IBloodTypesService bloodTypesService,
-            ICitiesService citiesService)
+            ICitiesService citiesService,
+            IDonorsService donorsService)
         {
             _usersService = usersService;
             _signInService = signInService;
             _bloodTypesService = bloodTypesService;
             _citiesService = citiesService;
+            _donorsService = donorsService;
             CityList = new SelectList(_citiesService.GetCities().Result, "CityId", "CityName");
             BloodTypeList = new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
         }
@@ -134,7 +137,14 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("CheckCode",donorExists);
                 }
-
+                var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(Input.PersonalNumber);
+                if (personalNumberInUse)
+                {
+                    ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                    ViewData["City"] = CityList;
+                    ViewData["BloodType"] = BloodTypeList;
+                    return Page();
+                }
                 var result = await _usersService.AddDonor(Input);
                 if (result.Succeeded)
                 {
@@ -145,9 +155,9 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError("UserName", error.Description);
                 }
             }
+
             ViewData["City"] = CityList;
             ViewData["BloodType"] = BloodTypeList;
-
             return Page();
         }
     }

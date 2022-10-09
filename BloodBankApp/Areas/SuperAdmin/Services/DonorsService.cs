@@ -16,10 +16,21 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public DonorsService(ApplicationDbContext context, IMapper mapper)
+        public DonorsService(
+            ApplicationDbContext context,
+            IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .Where(d => d.PersonalNumber == personalNumber)
+                .FirstOrDefaultAsync();
+            if (donor == null) return false;
+            return true;
         }
 
         public async Task AddDonor(Donor donor)
@@ -51,10 +62,10 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             var user = await _context.Users.FirstOrDefaultAsync(d=>d.Id == donorId);
             var donor = await _context.Donors.FirstOrDefaultAsync(d => d.DonorId == donorId);
 
-           _mapper.Map(donorDto, user);
-           _mapper.Map(donorDto, donor);
+            _mapper.Map(donorDto, user);
+            _mapper.Map(donorDto, donor);
 
-           return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<Donor> GetDonor(Guid donorId)

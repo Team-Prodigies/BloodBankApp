@@ -1,4 +1,5 @@
-﻿@model List<DonationPost>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<BloodBankApp.Areas.HospitalAdmin.ViewModels.PostModel>
 
 <style>
     .dropbtn {
@@ -123,16 +124,25 @@
                     <div class="card" style="min-height: 100%">
                         <div class="card-body me-3 ms-3 mt-2">
                             <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
-                            <p class="card-text">BloodType:<span class="ps-3" style="color: #d1001f"> @posts.BloodType.BloodTypeName </span></p>
-                            <p class="card-text">Description: <span style="color: #d1001f"> @posts.Description </span></p>
+                            <p class="card-text"><strong>BloodType:</strong>  @posts.BloodType.BloodTypeName </p>
+                            <p class="card-text"><strong>Description:</strong>  @posts.Description </p>
                             <div class="d-flex justify-content-around">
-                                <p class="card-text">City:<span style="color: #d1001f"> @posts.Hospital.City.CityName </span></p>
-                                <p class="card-text">Amount:<span style="color: #d1001f"> @posts.AmountRequested ml </span></p>
+                                <p class="card-text"><strong>City:</strong> @posts.Hospital.City.CityName</p>
+                                <p class="card-text"><strong>Amount:</strong> @posts.AmountRequested ml </p>
                             </div>
-                            <p class="card-text">Data Required:<span class="ps-3" style="color: #d1001f"> @posts.DateRequired </span></p>
+                            <p class="card-text"><strong>Date Required:</strong> @posts.DateRequired</p>
+                                                   
+                            <a asp-controller="DonorsChat" asp-action="DonorChatRoom" asp-route-hospitalId="@posts.HospitalId">
+                                <div class="icon">
+                                   <i class="bi bi-chat-dots-fill">Chat with us</i>                            
+                                </div>
+                            </a>
                         </div>
+
                         <div class="text-center card-footer">
-                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                            <a asp-controller="Home" asp-action="QuestionnaireAnswers" asp-route-postId="@posts.NotificationId" class="btn btn-danger">
+                                Donate now
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -148,7 +158,7 @@
         </li>
         @if (ViewBag.pageNumber < 6)
         {
-            for (int i = 1; i <= 6; i++)
+            for (var i = 1; i <= 6; i++)
             {
                 if (i == ViewBag.pageNumber)
                 {

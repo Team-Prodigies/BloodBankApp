@@ -12,7 +12,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
     {
         Task<EditHospitalModel> GetHospitalForHospitalAdmin(ClaimsPrincipal principal);
         Task<EditHospitalModel> GetHospitalForHospitalAdm(Guid hospitalId);
-
         Task EditHospitalForHospitalAdmin( EditHospitalModel hospital);
         Task<List<HospitalModel>> GetHospitals(int pageNumber);
         Task<List<HospitalModel>> GetAllHospitals();
@@ -24,5 +23,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Services.Interfaces
         Task<string> GetHospitalCode(Guid hospitalId);
         Task<bool> HospitalCodeExists(string hospitalCode);
         Task<List<MedicalStaffModel>> GetAllHospitalAdminsByHospitalId(Guid hospitalId);
+        Task<Hospital> GetHospitalForMedicalStaff(string currentHospitalAdminId);
     }
 }

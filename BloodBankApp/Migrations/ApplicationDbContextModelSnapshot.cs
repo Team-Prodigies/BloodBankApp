@@ -159,6 +159,30 @@ namespace BloodBankApp.Migrations
                     b.ToTable("DonationPosts");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.DonationRequests", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DonationPostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DonorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonationPostId");
+
+                    b.HasIndex("DonorId");
+
+                    b.ToTable("DonationRequest");
+                });
+
             modelBuilder.Entity("BloodBankApp.Models.Donor", b =>
                 {
                     b.Property<Guid>("DonorId")
@@ -186,6 +210,9 @@ namespace BloodBankApp.Migrations
                     b.HasIndex("CityId");
 
                     b.HasIndex("HealthFormQuestionnaireId");
+
+                    b.HasIndex("PersonalNumber")
+                        .IsUnique();
 
                     b.ToTable("Donors");
                 });
@@ -241,6 +268,29 @@ namespace BloodBankApp.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Hospitals");
+                });
+
+            modelBuilder.Entity("BloodBankApp.Models.Issue", b =>
+                {
+                    b.Property<Guid>("IssueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateReported")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IssueStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IssueId");
+
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("BloodBankApp.Models.Location", b =>
@@ -650,6 +700,26 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Hospital");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.DonationRequests", b =>
+                {
+                    b.HasOne("BloodBankApp.Models.DonationPost", "DonationPost")
+                        .WithMany()
+                        .HasForeignKey("DonationPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BloodBankApp.Models.Donor", "Donor")
+                        .WithMany("DonationRequests")
+                        .HasForeignKey("DonorId")
+                        .HasConstraintName("DonorDonations")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DonationPost");
+
+                    b.Navigation("Donor");
+                });
+
             modelBuilder.Entity("BloodBankApp.Models.Donor", b =>
                 {
                     b.HasOne("BloodBankApp.Models.BloodType", "BloodType")
@@ -848,6 +918,8 @@ namespace BloodBankApp.Migrations
                     b.Navigation("BloodDonations");
 
                     b.Navigation("Code");
+
+                    b.Navigation("DonationRequests");
 
                     b.Navigation("Messages");
                 });

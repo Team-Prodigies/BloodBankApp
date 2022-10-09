@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using System;
 
 namespace BloodBankApp.Areas.SuperAdmin.Permission
 {
