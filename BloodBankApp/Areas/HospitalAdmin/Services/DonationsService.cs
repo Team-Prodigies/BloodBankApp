@@ -13,15 +13,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
-    public class DonationsService:IDonationsService
+    public class DonationsService : IDonationsService
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUsersService _usersService;
-        public DonationsService(ApplicationDbContext context, 
+        public DonationsService(ApplicationDbContext context,
             IMapper mapper,
-            IHttpContextAccessor contextAccessor, 
+            IHttpContextAccessor contextAccessor,
             IUsersService usersService)
         {
             _context = context;
@@ -38,15 +38,27 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         }
         public async Task<List<BloodDonationModel>> GetAllDonations(string? searchTerm)
         {
-            var hospitalId = await GetCurrentHospitalId(); 
+            var hospitalId = await GetCurrentHospitalId();
             var donations = await _context.BloodDonations
                 .Include(donation => donation.Hospital)
                 .Include(donation => donation.Donor)
                     .ThenInclude(donor => donor.User)
-                .Where(donation => donation.HospitalId == hospitalId && (string.IsNullOrEmpty(searchTerm) || (donation.Donor.User.Name + donation.Donor.User.Surname).Replace(" ","").ToUpper().Contains(searchTerm.Replace(" ", "").ToUpper())))
+                .Where(donation => donation.HospitalId == hospitalId && (string.IsNullOrEmpty(searchTerm) || (donation.Donor.User.Name + donation.Donor.User.Surname).Replace(" ", "").ToUpper().Contains(searchTerm.Replace(" ", "").ToUpper())))
                 .ToListAsync();
             var result = _mapper.Map<List<BloodDonationModel>>(donations);
             return result;
+        }
+
+        public async Task<List<DonationRequests>> GetAllDonationRequests()
+        {
+            var hospitalId = await GetCurrentHospitalId();
+            return await _context.DonationRequest
+                .Include(request => request.Donor)
+                    .ThenInclude(donor => donor.User)
+                .Include(request => request.DonationPost)
+                    .ThenInclude(donor => donor.Hospital)
+                .Where(request => request.DonationPost.HospitalId == hospitalId)
+                .ToListAsync();
         }
 
         public async Task<bool> AddDonation(BloodDonationModel donation)
@@ -93,8 +105,38 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 .ThenInclude(donor => donor.BloodType)
                 .Include(donation => donation.Donor.User)
                 .FirstOrDefaultAsync(donation => donation.BloodDonationId == donationId);
-         
+
             return _mapper.Map<BloodDonationModel>(donation);
+        }
+
+        public async Task<bool> ApproveDonationRequest(Guid requestId, double amount)
+        {
+            var request = await _context.DonationRequest.FindAsync(requestId);
+            var donation = _mapper.Map<BloodDonation>(request);
+            var hospitalId = await GetCurrentHospitalId();
+            donation.HospitalId = hospitalId;
+            donation.Amount = amount;
+            donation.DonationDate = DateTime.Now;
+
+            await _context.BloodDonations.AddAsync(donation);
+
+            return await RemoveDonationRequest(request.Id);
+        }
+
+        public async Task<bool> RemoveDonationRequest(Guid requestId)
+        {
+            var request = await _context.DonationRequest.FindAsync(requestId);
+            _context.DonationRequest.Remove(request);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

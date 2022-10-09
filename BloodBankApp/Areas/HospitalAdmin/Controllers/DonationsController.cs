@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
-using BloodBankApp.Areas.SuperAdmin.Services;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -35,9 +33,40 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> DonationRequests()
+        {
+            var requests = await _donationsService.GetAllDonationRequests();
+            return View(requests);
+        }
+
+        public async Task<IActionResult> ApproveRequest(Guid requestId, double amount)
+        {
+            var result = await _donationsService.ApproveDonationRequest(requestId, amount);
+            if (result)
+            {
+                _notyfService.Success("Request approved");
+                return RedirectToAction(nameof(DonationRequests));
+            }
+            _notyfService.Error("Failed to approve request");
+            return RedirectToAction(nameof(DonationRequests));
+        }
+
+        public async Task<IActionResult> RejectRequest(Guid requestId)
+        {
+            var result = await _donationsService.RemoveDonationRequest(requestId);
+            if (result)
+            {
+                _notyfService.Success("Request removed");
+                return RedirectToAction(nameof(DonationRequests));
+            }
+            _notyfService.Error("Failed to remove request");
+            return RedirectToAction(nameof(DonationRequests));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddDonation(long? personalNumber)
         {
-            if (!personalNumber.HasValue) 
+            if (!personalNumber.HasValue)
                 return View();
 
             var donor = await _donorsService.FindDonor(personalNumber.Value);
@@ -56,7 +85,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDonation(BloodDonationModel model)
         {
-            if (!ModelState.IsValid)            
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }

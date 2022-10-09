@@ -278,12 +278,17 @@
                 </a>
                 <ul id="donors-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-area ="HospitalAdmin" asp-controller="Donations" asp-action="Index">
+                        <a asp-area="HospitalAdmin" asp-controller="Donations" asp-action="Index">
                             <i class="bi bi-circle"></i><span>Manage donations</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-area ="HospitalAdmin" asp-controller="Donations" asp-action="AddDonation">
+                        <a asp-area="HospitalAdmin" asp-controller="Donations" asp-action="DonationRequests">
+                            <i class="bi bi-circle"></i><span>Donation requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="Donations" asp-action="AddDonation">
                             <i class="bi bi-circle"></i><span>Add donation</span>
                         </a>
                     </li>
@@ -309,7 +314,7 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/signalr/hospitalAdminChat.js"></script>
 
-@await Component.InvokeAsync("Notyf")
+    @await Component.InvokeAsync("Notyf")
 
 </body>
 </html>
