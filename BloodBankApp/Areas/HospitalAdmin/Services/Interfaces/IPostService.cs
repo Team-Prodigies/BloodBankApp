@@ -5,10 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
-{
-    public interface IPostService
-    {
+namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
+    public interface IPostService {
         Task<bool> AddPost(DonationPost post);
         Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal");
         Task<List<PostModel>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1);
