@@ -52,6 +52,15 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
+        public async Task<List<Donor>> FindPotencialDonors(BloodType bloodType, City city)
+        {
+            List<Donor> potencialDonors;
+
+            potencialDonors = await _context.Donors.Where(donor => donor.BloodType == bloodType && donor.City == city).ToListAsync();
+            
+            return potencialDonors;
+        }
+
         public async Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor)
         {
             notRegisteredDonor.Name = notRegisteredDonor.Name.ToTitleCase();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BloodBankApp.Models;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -76,6 +77,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
             _notyfService.Success("Donor added successfully!");
             return RedirectToAction(nameof(ManageDonators));
+        }
+
+        //Get
+        public async Task<IActionResult> PotencialDonors(BloodType bloodType, City city)
+        {
+            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodType, city);
+            return View(potencialDonors);
         }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model List<Donor>
+@{
+    ViewData["Title"] = "PotencialDonors";
+    Layout = "~/Areas/HospitalAdmin/Views/Shared/_HospitalAdminLayout.cshtml";
+}
+
+<select>
+    <option value="">All</option>
+</select>
+
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">List of all users</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donor in Model)
+                {
+                    <tr>
+                        <td>@donor.User.Name</td>
+                        <td>@donor.User.Surname</td>
+                        <td>@donor.User.PhoneNumber</td>
+                        <td>@donor.User.DateOfBirth.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
