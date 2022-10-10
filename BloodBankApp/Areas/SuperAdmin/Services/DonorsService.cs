@@ -39,6 +39,17 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             await _context.SaveChangesAsync();
         }
 
+
+        public async Task<Donor> FindDonor(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .Include(donor => donor.User)
+                .Include(donor => donor.BloodType)
+                .Where(donor => donor.PersonalNumber == personalNumber)
+                .FirstOrDefaultAsync();
+            return donor;
+        }
+
         public List<Gender> GetGenders()
         {
            return Enum.GetValues(typeof(Gender))
