@@ -224,59 +224,48 @@ namespace BloodBankApp.Areas.Services
         {
             input.Name = input.Name.ToTitleCase();
             input.Surname = input.Surname.ToTitleCase();
-            using (var transaction = _context.Database.BeginTransaction())
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var hospital = await _context.Hospitals
+                .Where(x => x.HospitalId == input.HospitalId)
+                .FirstOrDefaultAsync();
+
+            if (!hospital.HospitalCode.Equals(input.HospitalCode))
             {
-                var hospital = await _context.Hospitals
-                           .Where(x => x.HospitalId == input.HospitalId)
-                           .FirstOrDefaultAsync();
+                return IdentityResult.Failed(new IdentityError { Description = "This code doesn't belong to the hospital you entered" });
+            }
 
-                if (!hospital.HospitalCode.Equals(input.HospitalCode))
+            var user = _mapper.Map<User>(input);
+            user.Id = Guid.NewGuid();
+            var medicalStaff = _mapper.Map<MedicalStaff>(input);
+
+            try
+            {
+                var result = await _userManager.CreateAsync(user, input.Password);
+                if (result.Succeeded)
                 {
-                    return IdentityResult.Failed(new IdentityError { Description = "This code doesn't belong to the hospital you entered" });
-                }
-
-                var user = _mapper.Map<User>(input);
-                user.Id = Guid.NewGuid();
-                var medicalStaff = _mapper.Map<MedicalStaff>(input);
-
-                try
-                {
-                    var result = await _userManager.CreateAsync(user, input.Password);
-                    if (result.Succeeded)
+                    var addToRoleResult = await _userManager.AddToRoleAsync(user, "HospitalAdmin");
+                    if (addToRoleResult.Succeeded)
                     {
-                        var addToRoleResult = await _userManager.AddToRoleAsync(user, "HospitalAdmin");
-                        if (addToRoleResult.Succeeded)
-                        {
-                            medicalStaff.MedicalStaffId = user.Id;
-                            await _medicalStaffService.AddMedicalStaff(medicalStaff);
-                            await transaction.CommitAsync();
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                        }
-                        else
-                            return addToRoleResult;
+                        medicalStaff.MedicalStaffId = user.Id;
+                        await _medicalStaffService.AddMedicalStaff(medicalStaff);
+                        await transaction.CommitAsync();
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                     }
-                    return result;
+                    else
+                        return addToRoleResult;
                 }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    return IdentityResult.Failed();
-                }
+                return result;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return IdentityResult.Failed();
             }
         }
 
         public async Task<bool> UserIsInRole(User user, string role)
         {
             return await _userManager.IsInRoleAsync(user, role);
-        }
-
-        public async Task<bool> CheckDonorsCode(Guid id, string codeValue)
-        {
-            var code = await _context.Codes
-                .Where(x => x.CodeValue == codeValue)
-                .FirstOrDefaultAsync(code => code.CodeId == id);
-            if (code == null) return false;
-            return true;
         }
 
         public Task<List<ManageUserModel>> UserSearchResults(string searchTerm, string roleFilter, int pageNumber = 1)
@@ -390,6 +379,23 @@ namespace BloodBankApp.Areas.Services
             input.DateOfBirth = userExists.DateOfBirth;
 
             return input;
+        }
+
+        public async Task<bool> PhoneNumberIsInUse(Guid id, string phoneNumber)
+        {
+            var phoneNumberInUse = await _context.Users
+                .Where(u=>u.Id != id)
+                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+            if (phoneNumberInUse != null) return true;
+            return false;
+        }
+
+        public async Task<bool> PhoneNumberIsInUse(string phoneNumber)
+        {
+            var phoneNumberInUse = await _context.Users
+                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+            if (phoneNumberInUse != null) return true;
+            return false;
         }
     }
 }

@@ -24,19 +24,30 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        public async Task<bool> PersonalNumberIsInUse(Guid id, long personalNumber)
         {
             var donor = await _context.Donors
-                .Where(d => d.PersonalNumber == personalNumber)
-                .FirstOrDefaultAsync();
-            if (donor == null) return false;
-            return true;
+                .Where(donor=>donor.DonorId != id)
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
+            if (donor != null) return true;
+            return false;
         }
 
         public async Task AddDonor(Donor donor)
         {
             await _context.Donors.AddAsync(donor);
             await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<Donor> FindDonor(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .Include(donor => donor.User)
+                .Include(donor => donor.BloodType)
+                .Where(donor => donor.PersonalNumber == personalNumber)
+                .FirstOrDefaultAsync();
+            return donor;
         }
 
         public List<Gender> GetGenders()
@@ -65,6 +76,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
                 .FirstOrDefaultAsync(x => x.DonorId == donorId);
             
             return donor;
+        }
+
+        public async Task<bool> PersonalNumberIsInUse(long personalNumber)
+        {
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
+            if (donor != null) return true;
+            return false;
         }
     }
 }

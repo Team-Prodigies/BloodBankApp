@@ -6,7 +6,7 @@ namespace BloodBankApp.Services.Interfaces
     public interface IStatisticsService
     {
         Task<int> GetNumberOfDonationPostsAsync();
-        Task<double> GetAmountOfBloodDonatedAsync();
+        Task<int> GetAmountOfBloodDonatedAsync();
         Task<int> GetDonorCountAsync();
         Task<int> GetUsersCountAsync();
         Task<int> GetHospitalsCountAsync();

@@ -131,9 +131,18 @@
                                 <p class="card-text"><strong>Amount:</strong> @posts.AmountRequested ml </p>
                             </div>
                             <p class="card-text"><strong>Date Required:</strong> @posts.DateRequired</p>
+                                                   
+                            <a asp-controller="DonorsChat" asp-action="DonorChatRoom" asp-route-hospitalId="@posts.HospitalId">
+                                <div class="icon">
+                                   <i class="bi bi-chat-dots-fill">Chat with us</i>                            
+                                </div>
+                            </a>
                         </div>
+
                         <div class="text-center card-footer">
-                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                            <a asp-controller="Home" asp-action="QuestionnaireAnswers" asp-route-postId="@posts.NotificationId" class="btn btn-danger">
+                                Donate now
+                            </a>
                         </div>
                     </div>
                 </div>

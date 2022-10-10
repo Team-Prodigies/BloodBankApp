@@ -98,7 +98,7 @@
     <div class="container ms-2 me-2 w-75 mt-5 mb-4">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-3">
             <div class="col">
-                <img src="~/Images/doctor-ipad(1).png" class="img-fluid" />
+                <img src="~/Images/doctor-ipad(1).png" class="img-fluid"/>
             </div>
             <div class="col">
                 <div class="container col-9">
@@ -110,12 +110,20 @@
                     </p>
                     <div class="row row-cols-2 row-cols-sm-2 justify-content-start fs-6">
                         <div class="col">
-                            <p><span></span><strong>Good Service</strong></p>
-                            <p><span></span><strong>Help People</strong></p>
+                            <p>
+                                <span></span><strong>Good Service</strong>
+                            </p>
+                            <p>
+                                <span></span><strong>Help People</strong>
+                            </p>
                         </div>
                         <div class="col">
-                            <p><span></span><strong>24h Service</strong></p>
-                            <p><span></span><strong>Blood Bank</strong></p>
+                            <p>
+                                <span></span><strong>24h Service</strong>
+                            </p>
+                            <p>
+                                <span></span><strong>Blood Bank</strong>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -196,7 +204,7 @@
         <h1 class="d-flex justify-content-center mb-5" style="font-weight:800">Donation Process</h1>
         <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-2 gy-4">
             <div class="col">
-                <img src="~/Images/dp1.jpg" class="img-thumbnail" alt="..." />
+                <img src="~/Images/dp1.jpg" class="img-thumbnail" alt="..."/>
             </div>
             <div class="col ps-5">
                 <h1 class="text-muted">01</h1>
@@ -224,12 +232,12 @@
                 </div>
             </div>
             <div class="col">
-                <img src="~/Images/dp2.jpg" class="img-thumbnail" alt="..." />
+                <img src="~/Images/dp2.jpg" class="img-thumbnail" alt="..."/>
             </div>
         </div>
         <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-2 gy-4 mt-5">
             <div class="col">
-                <img src="~/Images/dp3.jpg" class="img-thumbnail" alt="..." />
+                <img src="~/Images/dp3.jpg" class="img-thumbnail" alt="..."/>
             </div>
             <div class="col ps-5">
                 <h1 class="text-muted">03</h1>
@@ -269,7 +277,7 @@
                 </div>
             </div>
             <div class="col">
-                <img src="~/Images/dp4.jpg" class="img-thumbnail" alt="..." />
+                <img src="~/Images/dp4.jpg" class="img-thumbnail" alt="..."/>
             </div>
         </div>
     </div>
@@ -370,9 +378,7 @@ function initMap() {
 
     @for (int i = 0; i < ViewBag.GetAllHospitals.Count; i++)
     {
-
-     @:addMarker({ lat: parseFloat('@ViewBag.GetAllHospitals[i].Location.Latitude'), lng: parseFloat('@ViewBag.GetAllHospitals[i].Location.Longitude') }, { name: ('@ViewBag.GetAllHospitals[i].HospitalName'), contact: ('@ViewBag.GetAllHospitals[i].ContactNumber')});
-                   
+        @:addMarker({ lat: parseFloat('@ViewBag.GetAllHospitals[i].Location.Latitude'), lng: parseFloat('@ViewBag.GetAllHospitals[i].Location.Longitude') }, { name: ('@ViewBag.GetAllHospitals[i].HospitalName'), contact: ('@ViewBag.GetAllHospitals[i].ContactNumber')});
     }
 
 
@@ -404,16 +410,8 @@ function initMap() {
         };
 
         google.maps.event.addListener(map, 'click', closeInfoWindow);
-
     }
-
-
-
-
-
-
-
-    }
+}
 
 
 </script>

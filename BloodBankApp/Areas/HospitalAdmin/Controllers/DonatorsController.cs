@@ -55,15 +55,28 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 ViewData["BloodTypeId"] = _bloodTypeList;
                 return View();
             }
-
             var codeExists =await _donatorsService.CodeExists(model.Code.CodeValue);
             var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(model.PersonalNumber);
-
-            if (personalNumberInUse || codeExists)
+           
+            if (personalNumberInUse && codeExists)
             {
                 ViewData["CityId"] = _cityList;
                 ViewData["BloodTypeId"] = _bloodTypeList;
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                ViewData["codeInUse"] = "This code is already taken !!";
+                return View();
+            }
+            else if (personalNumberInUse)
+            {
+                ViewData["CityId"] = _cityList;
+                ViewData["BloodTypeId"] = _bloodTypeList;
+                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                return View();
+            }
+            else if (codeExists)
+            {
+                ViewData["CityId"] = _cityList;
+                ViewData["BloodTypeId"] = _bloodTypeList;
                 ViewData["codeInUse"] = "This code is already taken !!";
                 return View();
             }
