@@ -95,6 +95,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         public async Task<List<BloodDonationsModel>> GetBloodDonationsHistory()
         {
+            if (_httpContextAccessor.HttpContext == null)
+            {
+                return null;
+            }
+
             var user = await _userService.GetUser(_httpContextAccessor.HttpContext.User);
             var bloodDonation = await _context.BloodDonations
                 .Include(hospital => hospital.Hospital)
@@ -104,6 +109,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             var result = _mapper.Map<List<BloodDonationsModel>>(bloodDonation);
 
             return result;
+
         }
     }
 }
