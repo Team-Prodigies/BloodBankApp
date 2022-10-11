@@ -97,9 +97,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             var user = await _userService.GetUser(_httpContextAccessor.HttpContext.User);
             var bloodDonation = await _context.BloodDonations
-                .Include(x => x.Hospital)
-                .Include(x => x.Donor)
-                .Include(x => x.DonationPost)
+                .Include(hospital => hospital.Hospital)
+                .Include(donor => donor.Donor)
                 .Where(x => x.DonorId == user.Id)
                 .ToListAsync();
             var result = _mapper.Map<List<BloodDonationsModel>>(bloodDonation);
