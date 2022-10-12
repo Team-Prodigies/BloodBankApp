@@ -17,18 +17,21 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IDonationsService _donationsService;
+        private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
 
         public BloodReservesService(ApplicationDbContext context,
             IDonationsService donationsService,
             IMapper mapper, 
-            INotyfService notyfService)
+            INotyfService notyfService, 
+            INotificationService notificationService)
         {
             _context = context;
             _donationsService = donationsService;
             _mapper = mapper;
             _notyfService = notyfService;
+            _notificationService = notificationService;
         }
 
         public async Task<List<BloodReserveModel>> GetBloodReserves()
@@ -94,28 +97,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             if (model.Amount < 10)
             {
-                var potentialDonors = await GetPotentialDonors(model, hospitalId);
-                //TODO: Send notification to potentialDonors
+                var result = await _notificationService.SendNotificationToDonors(model, hospitalId);
+                if (result)
+                {
+                    _notyfService.Warning("Blood reserves are below the threshold level, all potential donors have been notified!");
+                }
             }
             return true;
-        }
-
-        private async Task<List<Donor>> GetPotentialDonors(BloodReserveModel reserve, Guid hospitalId)
-        {
-            var cityId = await _context.Hospitals.Where(hospital => hospital.HospitalId == hospitalId).Select(hospital => hospital.CityId).FirstOrDefaultAsync();
-
-            //TODO: Change "donor.BloodTypeId == reserve.BloodTypeId" to take into account any blood type compatible with the required bloodType
-            var potentialDonors = await _context.Donors
-                .Include(donor => donor.BloodDonations)
-                .Where(donor => donor.BloodTypeId == reserve.BloodTypeId 
-                                && donor.CityId == cityId)
-                .ToListAsync();
-
-            potentialDonors = potentialDonors.Where(donor => donor.Gender == Gender.FEMALE
-                ? donor.BloodDonations.All(donation => (DateTime.Now - donation.DonationDate).Days > 120)
-                : donor.BloodDonations.All(donation => (DateTime.Now - donation.DonationDate).Days > 90))
-                .ToList();
-            return potentialDonors;
         }
     }
 }

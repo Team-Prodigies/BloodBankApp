@@ -12,7 +12,7 @@ namespace BloodBankApp.Models
         [Required]
         [StringLength(1000)]
         public string Description { get; set; }
-        public Guid DonationPostId { get; set; }
+        public Guid? DonationPostId { get; set; }
         public DonationPost DonationPost { get; set; }
         public ICollection<UserNotifications> Users { get; set; } = new List<UserNotifications>();
 
