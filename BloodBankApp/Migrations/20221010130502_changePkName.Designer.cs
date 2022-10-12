@@ -4,14 +4,16 @@ using BloodBankApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodBankApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221010130502_changePkName")]
+    partial class changePkName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -495,21 +497,6 @@ namespace BloodBankApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.UserNotifications", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NotificationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id", "NotificationId");
-
-                    b.HasIndex("NotificationId");
-
-                    b.ToTable("UserNotifications");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -858,27 +845,6 @@ namespace BloodBankApp.Migrations
                     b.Navigation("HealthFormQuestionnaire");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.UserNotifications", b =>
-                {
-                    b.HasOne("BloodBankApp.Models.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("Id")
-                        .HasConstraintName("User_UserNotifications")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BloodBankApp.Models.Notification", "Notification")
-                        .WithMany("Users")
-                        .HasForeignKey("NotificationId")
-                        .HasConstraintName("Notification_UserNotifications")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Notification");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -985,18 +951,11 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Hospitals");
                 });
 
-            modelBuilder.Entity("BloodBankApp.Models.Notification", b =>
-                {
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("BloodBankApp.Models.User", b =>
                 {
                     b.Navigation("Donor");
 
                     b.Navigation("MedicalStaff");
-
-                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

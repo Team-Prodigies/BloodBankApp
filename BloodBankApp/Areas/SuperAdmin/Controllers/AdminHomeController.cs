@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
+using BloodBankApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -12,9 +15,16 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
     {
 
         private readonly IStatisticsService _statisticsService;
-        public AdminHomeController(IStatisticsService statisticsService)
+        private readonly INotificationService _notificationService;
+        private readonly UserManager<User> _userManager;
+
+        public AdminHomeController(IStatisticsService statisticsService,
+            INotificationService notificationService,
+            UserManager<User> userManager)
         {
             _statisticsService = statisticsService;
+            _notificationService = notificationService;
+            _userManager = userManager;
         }
         [Authorize(Policy = Permissions.SuperAdmin.ViewStatistics)]
         public async Task<IActionResult> Index()

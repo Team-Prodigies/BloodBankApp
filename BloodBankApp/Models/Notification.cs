@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BloodBankApp.Models
@@ -13,5 +14,7 @@ namespace BloodBankApp.Models
         public string Description { get; set; }
         public Guid DonationPostId { get; set; }
         public DonationPost DonationPost { get; set; }
+        public ICollection<UserNotifications> Users { get; set; } = new List<UserNotifications>();
+
     }
 }
