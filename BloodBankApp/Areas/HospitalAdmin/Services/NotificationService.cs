@@ -42,10 +42,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             {
                 var notification = new Notification
                 {
-                    Description = "In the city of " + city.CityName
-                                                    + " on hospital " + hospital.HospitalName + ", "
-                                                    + post.AmountRequested + "ml of "
-                                                    + bloodType.BloodTypeName
+                    Description = $"In the city of {city.CityName} on hospital {hospital.HospitalName} ,{post.AmountRequested} ml of {bloodType.BloodTypeName}"
                                                     + " blood type are needed.",
                     DonationPostId = post.DonationPostId
                 };
@@ -53,10 +50,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 await _context.SaveChangesAsync();
 
                 foreach (var userNotification in potentialDonors.Select(donor => new UserNotifications
-                {
-                    Id = donor.DonorId,
-                    NotificationId = notification.NotificationId
-                }))
+                         {
+                             Id = donor.DonorId,
+                             NotificationId = notification.NotificationId
+                         }))
                 {
                     _context.UserNotifications.Add(userNotification);
                     await _context.SaveChangesAsync();
@@ -116,9 +113,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         public async Task<List<Notification>> GetNotificationsForUser(string userId)
         {
             var notifications = await _context.UserNotifications
-                .Include(x => x.Notification)
+                .Include(x=>x.Notification)
                 .Where(x => x.Id == Guid.Parse(userId))
-                .Select(x => x.Notification)
+                .Select(x=>x.Notification)
+                .Take(4)
                 .ToListAsync();
 
             return notifications;
@@ -130,96 +128,96 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             switch (bloodTypeName)
             {
                 case "A+":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
-                                         || x.BloodType.BloodTypeName.Equals("AB+"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
+                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "A-":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
-                                         || x.BloodType.BloodTypeName.Equals("A-")
-                                         || x.BloodType.BloodTypeName.Equals("AB+")
-                                         || x.BloodType.BloodTypeName.Equals("AB-"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
+                                     || x.BloodType.BloodTypeName.Equals("A-")
+                                     || x.BloodType.BloodTypeName.Equals("AB+")
+                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "B+":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
-                                         || x.BloodType.BloodTypeName.Equals("AB+"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
+                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "B-":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
-                                         || x.BloodType.BloodTypeName.Equals("AB+")
-                                         || x.BloodType.BloodTypeName.Equals("B-")
-                                         || x.BloodType.BloodTypeName.Equals("AB-"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
+                                     || x.BloodType.BloodTypeName.Equals("AB+")
+                                     || x.BloodType.BloodTypeName.Equals("B-")
+                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "O+":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("O+")
-                                         || x.BloodType.BloodTypeName.Equals("A+")
-                                         || x.BloodType.BloodTypeName.Equals("B+")
-                                         || x.BloodType.BloodTypeName.Equals("AB+"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("O+")
+                                     || x.BloodType.BloodTypeName.Equals("A+")
+                                     || x.BloodType.BloodTypeName.Equals("B+")
+                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "O-":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "AB+":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => x.BloodType.BloodTypeName.Equals("AB+")
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => x.BloodType.BloodTypeName.Equals("AB+")
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
                 case "AB-":
-                    {
-                        var donors = await _context.Donors
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("AB+")
-                                         || x.BloodType.BloodTypeName.Equals("AB-"))
-                                        && x.CityId == cityId)
-                            .ToListAsync();
-                        if (!donors.Any()) break;
-                        await CheckLastDonation(donors, potentialDonors);
-                        break;
-                    }
+                {
+                    var donors = await _context.Donors
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("AB+")
+                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                                    && x.CityId == cityId)
+                        .ToListAsync();
+                    if (!donors.Any()) break;
+                    await CheckLastDonation(donors, potentialDonors);
+                    break;
+                }
             }
 
             return potentialDonors;

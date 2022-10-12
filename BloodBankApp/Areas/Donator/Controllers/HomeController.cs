@@ -24,13 +24,15 @@ namespace BloodBankApp.Areas.Donator.Controllers
         private readonly SelectList _cityList;
         private readonly INotyfService _notyfService;
         private readonly UserManager<User> _userManager;
+        private readonly IDonatorService _donatorService;
         private readonly ApplicationDbContext _context;
 
         public HomeController(IPostService postService,
             ICitiesService citiesService,
             INotyfService notyfService,
             ApplicationDbContext context,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IDonatorService donatorService)
         {
             _postService = postService;
             _citiesService = citiesService;
@@ -38,6 +40,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             _notyfService = notyfService;
             _context = context;
             _userManager = userManager;
+            _donatorService = donatorService;
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]
@@ -133,6 +136,13 @@ namespace BloodBankApp.Areas.Donator.Controllers
 
             _notyfService.Success("Donation request has been recorded!");
             return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
+        }
+
+        public async Task<IActionResult> DonationsHistory()
+        {
+            var donationsHistory = await _donatorService.GetBloodDonationsHistory();
+
+            return View(donationsHistory);
         }
     }
 }

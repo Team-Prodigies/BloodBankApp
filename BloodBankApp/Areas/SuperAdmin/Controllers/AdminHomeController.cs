@@ -34,9 +34,6 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             ViewData["DonorCount"] = await _statisticsService.GetDonorCountAsync();
             ViewData["BloodAmount"] = await _statisticsService.GetAmountOfBloodDonatedAsync();
             ViewData["DonationPostsCount"] = await _statisticsService.GetNumberOfDonationPostsAsync();
-            var user =  _userManager.GetUserId(User);
-            var notifications = await _notificationService.GetNotificationsForUser(user);
-            ViewBag.Notifications = notifications;
             return View();
         }
     }
