@@ -41,10 +41,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             {
                 var notification = new Notification
                 {
-                    Description = "In the city of " + city.CityName
-                                                    + " on hospital " + hospital.HospitalName + ", "
-                                                    + post.AmountRequested + "ml of "
-                                                    + bloodType.BloodTypeName
+                    Description = $"In the city of {city.CityName} on hospital {hospital.HospitalName} ,{post.AmountRequested} ml of {bloodType.BloodTypeName}"
                                                     + " blood type are needed.",
                     DonationPostId = post.DonationPostId
                 };
@@ -67,10 +64,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         public async Task<List<Notification>> GetNotificationsForUser(string userId)
         {
-            var notifications = await _context.UserNotifications
+            var notifications =await  _context.UserNotifications
                 .Include(x=>x.Notification)
                 .Where(x => x.Id == Guid.Parse(userId))
                 .Select(x=>x.Notification)
+                .Take(4)
                 .ToListAsync();
 
             return notifications;
