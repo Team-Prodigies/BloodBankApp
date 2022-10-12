@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+﻿using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Services
 {
@@ -126,6 +128,36 @@ namespace BloodBankApp.Services
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public async Task<List<MessageNotification>> GetUnSeenDonorMessages(Guid donorId)
+        {
+                var messagesNotifications = _context.Messages
+                    .Include(ms => ms.Hospital)
+                    .Where(ms => ms.DonorId == donorId && ms.Sender == Enums.MessageSender.SenderHospitalAdmin && ms.Seen == false)
+                    .OrderByDescending(ms => ms.DateSent)                  
+                    .Select(ms => new MessageNotification
+                     {
+                         HospitalId = ms.Hospital.HospitalId,
+                         HospitalName = ms.Hospital.HospitalName
+                     })
+                    .Distinct()
+                    .ToList(); 
+
+            return messagesNotifications;
+        }
+
+        public async Task<List<MessageNotification>> GetUnSeenHospitalMessages(Guid hospitalId)
+        {
+            /*var messages = await _context.Messages
+                .Where(ms => ms.HospitalId == hospitalId && ms.Sender == Enums.MessageSender.SenderDonor && ms.Seen == false)
+                .Select(ms => new {
+                    DonorId = ms.DonorId,
+                    Content = ms.Content
+                })
+                .Distinct()
+                .ToListAsync();*/
+            return null;
         }
     }
 }

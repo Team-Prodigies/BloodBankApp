@@ -1,4 +1,5 @@
-﻿using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+﻿using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,5 +20,8 @@ namespace BloodBankApp.Services.Interfaces
         public Task SetMessageToSeen(Guid messageId);
 
         public Task DeleteChat(Guid donorId, Guid hospitalId);
+
+        public Task<List<MessageNotification>> GetUnSeenDonorMessages(Guid donorId);
+        public Task<List<MessageNotification>> GetUnSeenHospitalMessages(Guid hospitalId);
     }
 }
