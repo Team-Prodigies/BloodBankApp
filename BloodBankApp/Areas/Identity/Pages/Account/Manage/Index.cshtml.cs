@@ -143,16 +143,16 @@ namespace BloodBankApp.Areas.Identity.Pages.Account.Manage
                 ViewData["BloodType"] = BloodTypeList;
                 ViewData["Gender"] = GenderList;
                 return Page();
-            }
-           else if (personalNumberTaken)
+            } 
+            if (personalNumberTaken)
             {
                 ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
                 ViewData["City"] = CityList;
                 ViewData["BloodType"] = BloodTypeList;
                 ViewData["Gender"] = GenderList;
                 return Page();
-            }
-            else if (phoneNumberInUse)
+            } 
+            if (phoneNumberInUse)
             {
                 ViewData["PhoneNumberInUse"] = "This phone number is already taken!";
                 ViewData["City"] = CityList;

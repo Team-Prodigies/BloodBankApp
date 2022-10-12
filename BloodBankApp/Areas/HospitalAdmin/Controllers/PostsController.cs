@@ -19,6 +19,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
     public class PostsController : Controller
     {
         private readonly IHospitalService _hospitalService;
+        private readonly INotificationService _notificationService;
         private readonly UserManager<User> _userManager;
         private SelectList BloodTypeList { get; set; }
         private readonly INotyfService _notyfService;
@@ -30,10 +31,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             INotyfService notyfService,
             IPostService postService,
             IHospitalService hospitalService,
+            INotificationService notificationService,
             UserManager<User> userManager)
         {
             _bloodTypesService = bloodTypesService;
             _hospitalService = hospitalService;
+            _notificationService = notificationService;
             _userManager = userManager;
             _notyfService = notyfService;
             _postService = postService;
@@ -54,12 +57,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreatePosts()
+        public IActionResult CreatePosts()
         {
-            var getUser = _userManager.GetUserId(User);
-            var getHospital = await _hospitalService.GetHospitalForMedicalStaff(getUser);
+            _userManager.GetUserId(User);
             ViewBag.BloodType = BloodTypeList;
-            ViewBag.Hospital = getHospital.HospitalId;
             return View();
         }
 
@@ -72,8 +73,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 _notyfService.Error("Your form is not correct. Please try again!");
                 return View(nameof(CreatePosts));
             }
-
-            var result = await _postService.AddPost(post);
+            var getUser = _userManager.GetUserId(User);
+            var result = await _postService.AddPost(post, getUser);
             if (result == false)
             {
                 ViewBag.BloodType = BloodTypeList;
@@ -81,8 +82,18 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 return View(nameof(CreatePosts));
             }
 
-            _notyfService.Success("Post successfully created");
-            return RedirectToAction(nameof(CreatePosts));
+            var sendNotification = await _notificationService.SendNotificationToDonors(post);
+            if (sendNotification)
+            {
+                _notyfService.Success("Post was created successfully and will notify" +
+                                                                      " potential donors");
+                return RedirectToAction(nameof(CreatePosts));
+            }
+            else
+            {
+                _notyfService.Success("Post successfully created");
+                return RedirectToAction(nameof(CreatePosts));
+            }
         }
 
         [HttpGet]

@@ -126,7 +126,7 @@ namespace BloodBankApp.Migrations
 
             modelBuilder.Entity("BloodBankApp.Models.DonationPost", b =>
                 {
-                    b.Property<Guid>("NotificationId")
+                    b.Property<Guid>("DonationPostId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -150,7 +150,7 @@ namespace BloodBankApp.Migrations
                     b.Property<int>("PostStatus")
                         .HasColumnType("int");
 
-                    b.HasKey("NotificationId");
+                    b.HasKey("DonationPostId");
 
                     b.HasIndex("BloodTypeId");
 
@@ -458,7 +458,7 @@ namespace BloodBankApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -488,7 +488,26 @@ namespace BloodBankApp.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique()
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("BloodBankApp.Models.UserNotifications", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id", "NotificationId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.ToTable("UserNotifications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -839,6 +858,27 @@ namespace BloodBankApp.Migrations
                     b.Navigation("HealthFormQuestionnaire");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.UserNotifications", b =>
+                {
+                    b.HasOne("BloodBankApp.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("Id")
+                        .HasConstraintName("User_UserNotifications")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BloodBankApp.Models.Notification", "Notification")
+                        .WithMany("Users")
+                        .HasForeignKey("NotificationId")
+                        .HasConstraintName("Notification_UserNotifications")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -945,11 +985,18 @@ namespace BloodBankApp.Migrations
                     b.Navigation("Hospitals");
                 });
 
+            modelBuilder.Entity("BloodBankApp.Models.Notification", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("BloodBankApp.Models.User", b =>
                 {
                     b.Navigation("Donor");
 
                     b.Navigation("MedicalStaff");
+
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }
