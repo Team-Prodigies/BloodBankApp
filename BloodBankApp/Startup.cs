@@ -72,6 +72,8 @@ namespace BloodBankApp
             services.AddScoped<IIssueService, IssueService>();
             services.AddScoped<IDonationsService, DonationsService>();
             services.AddScoped<IBloodReservesService, BloodReservesService>();
+            services.AddScoped<INotificationService, NotificationService>();
+
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
