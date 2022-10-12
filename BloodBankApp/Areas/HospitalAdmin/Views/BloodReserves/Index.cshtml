@@ -1,0 +1,34 @@
+﻿@model List<BloodReserveModel>
+
+<div class="d-flex justify-content-start py-2">
+<a asp-controller="BloodReserves" asp-action="AddReserve">Add blood reserve</a>
+</div>
+
+<div class="card container">
+    <div class="card-body">
+        <h5 class="card-title">Blood reserves</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Blood type</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bloodReserve in Model)
+                {
+                    <tr>
+                        <td>@bloodReserve.BloodType</td>
+                        <td>@bloodReserve.Amount l</td>
+                        <td>
+                            <a asp-action="AddReserve" asp-controller="BloodReserves" asp-route-reserveId="@bloodReserve.BloodReserveId" type="button" class="btn btn-primary">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@model BloodReserveModel
+
+<div class="d-flex justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-5">
+                <h5 class="card-title">Set blood reserve</h5>
+                <form asp-action="AddReserve" asp-controller="BloodReserves" asp-area="HospitalAdmin" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="BloodReserveId" type="hidden" style="display:none"/>
+                    <div class="row mb-3 px-5">
+                        <label asp-for="BloodType" class="form-label"></label>
+                        <select class="form-select" asp-items="ViewBag.BloodTypes" asp-for="BloodTypeId"></select>
+                    </div>
+                    <div class="row mb-3 px-5">
+                        <label asp-for="Amount" class="form-label"> Amount (in liters)</label>
+                        <input asp-for="Amount" class="form-control" />
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="Add" class="btn btn-info" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
