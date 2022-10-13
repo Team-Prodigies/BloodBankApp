@@ -30,7 +30,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             _usersService = usersService;
         }
 
-        private async Task<Guid> GetCurrentHospitalId()
+        public async Task<Guid> GetCurrentHospitalId()
         {
             var user = await _usersService.GetUser(_contextAccessor.HttpContext.User);
             var hospitalAdmin = await _context.MedicalStaffs.Where(staff => staff.MedicalStaffId == user.Id).FirstOrDefaultAsync();

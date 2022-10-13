@@ -20,44 +20,28 @@ namespace BloodBankApp.Services
         {
             var hospitalCodeInUse = await _context.Hospitals
                 .FirstOrDefaultAsync(hospital => hospital.HospitalCode == hospitalCode);
-            if (hospitalCodeInUse != null)
-            {
-                return true;
-            }
-            return false;
+            return hospitalCodeInUse != null;
         }
 
         public async Task<bool> DonorCodeIsTaken(string codeValue)
         {
             var codeIsTaken = await _context.Codes
                 .FirstOrDefaultAsync(c => c.CodeValue == codeValue);
-            if (codeIsTaken != null)
-            {
-                return true;
-            }
-            return false;
+            return codeIsTaken != null;
         }
 
         public async Task<bool> PersonalNumberIsTaken(int personalNumber)
         {
             var personalNumberInUse = await _context.Donors
                 .FirstOrDefaultAsync(donor => donor.PersonalNumber == personalNumber);
-            if (personalNumberInUse != null)
-            {
-                return true;
-            }
-            return false;
+            return personalNumberInUse != null;
         }
 
         public async Task<bool> UsernameIsTaken(string username)
         {
             var personalNumberInUse = await _context.Users
                 .FirstOrDefaultAsync(user => user.NormalizedUserName == username.ToUpper());
-            if (personalNumberInUse != null)
-            {
-                return true;
-            }
-            return false;
+            return personalNumberInUse != null;
         }
 
         public async Task<bool> PhoneNumberIsTaken(string phoneNumber)
@@ -71,8 +55,7 @@ namespace BloodBankApp.Services
             var phoneNumberInUse = await _context.Users
                 .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNo);
 
-            if (phoneNumberInUse != null) return true;
-            return false;
+            return phoneNumberInUse != null;
         }
 
         public async Task<bool> PersonalNumberIsTaken(Guid id, long personalNumber)
@@ -81,8 +64,7 @@ namespace BloodBankApp.Services
                 .Where(u => u.DonorId != id)
                 .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
 
-            if (donor != null) return true;
-            return false;
+            return donor != null;
         }
 
         public async Task<bool> PhoneNumberIsTaken(Guid id, string phoneNumber)
@@ -97,8 +79,7 @@ namespace BloodBankApp.Services
                 .Where(u => u.Id != id)
                 .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNo);
 
-            if (phoneNumberInUse != null) return true;
-            return false;
+            return phoneNumberInUse != null;
         }
     }
 }

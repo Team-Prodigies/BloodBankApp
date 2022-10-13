@@ -295,6 +295,23 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#reserves-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Blood reserves</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="reserves-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="BloodReserves" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Manage blood reserves</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="HospitalAdmin" asp-controller="BloodReserves" asp-action="AddReserve">
+                            <i class="bi bi-circle"></i><span>Add blood reserve</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" asp-controller="Donators" asp-action="PotencialDonors">
                     <i class="bi bi-menu-button-wide"></i><span>Find potencial donor</span>
                 </a>

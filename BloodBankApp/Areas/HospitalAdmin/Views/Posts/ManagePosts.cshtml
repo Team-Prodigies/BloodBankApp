@@ -61,7 +61,7 @@
                     <h5 class="card-title">@getPost.Hospital.HospitalName</h5>
                     <p class="card-text">@getPost.Description</p>
                     <p class="card-text">Tipi: @getPost.BloodType.BloodTypeName</p>
-                    <p class="card-text">Sasia: @getPost.AmountRequested</p>
+                    <p class="card-text">Sasia: @getPost.AmountRequested ml</p>
                     <p class="card-text">Data: @getPost.DateRequired</p>
                     @if (((int)getPost.PostStatus) == 1)
                     {
@@ -71,8 +71,8 @@
                     {
                         <p class="card-text text-danger">Statusi: @getPost.PostStatus</p>
                     }
-                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.NotificationId">Edit</a>
-                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.NotificationId">Delete</a>
+                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.DonationPostId">Edit</a>
+                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.DonationPostId">Delete</a>
                 </div>
             </div>
         </div>

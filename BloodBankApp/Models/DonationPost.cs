@@ -8,7 +8,7 @@ namespace BloodBankApp.Models
     public class DonationPost
     {
         [Key]
-        public Guid NotificationId { get; set; }
+        public Guid DonationPostId { get; set; }
         public DateTime DateRequired { get; set; }
 
         [Required]
