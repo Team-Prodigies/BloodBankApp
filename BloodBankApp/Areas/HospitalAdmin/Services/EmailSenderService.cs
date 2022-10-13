@@ -31,7 +31,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             emailBodyBuilder.TextBody = emailData.EmailBody;
             emailMessage.Body = emailBodyBuilder.ToMessageBody();
             SmtpClient emailClient = new SmtpClient();
-            emailClient.Connect(_emailSettings.Host, _emailSettings.Port, _emailSettings.UseSSL);
+            emailClient.Connect(_emailSettings.Host, _emailSettings.Port, false);
             emailClient.Authenticate(_emailSettings.EmailId, _emailSettings.Password);
             emailClient.Send(emailMessage);
             emailClient.Disconnect(true);
