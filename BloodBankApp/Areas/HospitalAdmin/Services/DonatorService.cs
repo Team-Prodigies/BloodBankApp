@@ -53,11 +53,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
-        public async Task<List<Donor>> FindPotencialDonors(BloodType bloodType, City city)
+        public async Task<List<Donor>> FindPotencialDonors(BloodType bloodTypeRequired, City city)
         {
             List<Donor> potencialDonors;
 
-            potencialDonors = await _context.Donors.Where(donor => donor.BloodType == bloodType && donor.City == city).ToListAsync();
+            potencialDonors = await _context.Donors.Where(donor => donor.BloodType == bloodTypeRequired && donor.City == city).ToListAsync();
             
             return potencialDonors;
         }

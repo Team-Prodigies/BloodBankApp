@@ -96,6 +96,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         public async Task<IActionResult> PotencialDonors(BloodType bloodType, City city)
         {
             var potencialDonors = await _donatorsService.FindPotencialDonors(bloodType, city);
+
+            ViewData["CityId"] = _cityList;
+            ViewData["BloodTypeId"] = _bloodTypeList;
+
             return View(potencialDonors);
         }
     }

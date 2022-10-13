@@ -1,12 +1,73 @@
 ﻿@model List<Donor>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "PotencialDonors";
+    ViewData["CityId"] = "cityList";
+    ViewData["BloodTypeId"] = "bloodTypeList";
     Layout = "~/Areas/HospitalAdmin/Views/Shared/_HospitalAdminLayout.cshtml";
 }
 
-<select>
-    <option value="">All</option>
-</select>
+<header>
+    <style>
+        .dropbtn {
+            background-color: #7790b4;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #7790b4;
+            border-radius: 5px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-radius: 5px;
+        }
+    </style>
+</header>
+
+<div class="dropdown">
+    <button class="dropbtn">@ViewBag.CityId</button>
+    <div class="dropdown-content">
+        @foreach(var city in ViewBag.CityId){
+            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-city="@city.CityName"></a>
+        }
+    </div>
+</div>
+
+<div class="dropdown">
+    <button class="dropbtn">BloodType</button>
+    <div class="dropdown-content">
+        @foreach (var bloodType in ViewBag.BloodTypeId)
+        {
+            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-bloodType="@bloodType.BloodTypeName">@bloodType.BloodTypeName</a>
+        }
+    </div>
+</div>
 
 <div class="card container">
     <div class="card-body">
@@ -18,8 +79,8 @@
                     <th scope="col">Surname</th>
                     <th scope="col">Username</th>
                     <th scope="col">Date of Birth</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">City</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +91,8 @@
                         <td>@donor.User.Surname</td>
                         <td>@donor.User.PhoneNumber</td>
                         <td>@donor.User.DateOfBirth.ToShortDateString()</td>
+                        <td>@donor.Gender</td>
+                        <td>@donor.City</td>
                     </tr>
                 }
             </tbody>
