@@ -43,14 +43,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         public async Task<IActionResult> CreateQuestionnaire(HealthFormQuestionnaire questionnaire)
         {
             questionnaire.LastUpdated = DateTime.Now;
-            if (questionnaire.LastUpdated == null)
-            {
-                _notyfService.Error("Questionnaire isn't created");
-                return View(nameof(CreateQuestionnaire));
-            }
             _notyfService.Success("Questionnaire is created");
+
             await _context.HealthFormQuestionnaires.AddAsync(questionnaire);
             await _context.SaveChangesAsync();
+
             return View(nameof(CreateQuestionnaire));
         }
 

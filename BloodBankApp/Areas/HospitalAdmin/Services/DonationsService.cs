@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using BloodBankApp.Areas.HospitalAdmin.Model;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
@@ -19,15 +22,20 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUsersService _usersService;
+        private readonly IEmail _mailService;
+        private readonly INotyfService _notyfService;
         public DonationsService(ApplicationDbContext context,
             IMapper mapper,
             IHttpContextAccessor contextAccessor,
-            IUsersService usersService)
+            IUsersService usersService, 
+            IEmail mailService, INotyfService notyfService)
         {
             _context = context;
             _mapper = mapper;
             _contextAccessor = contextAccessor;
             _usersService = usersService;
+            _mailService = mailService;
+            _notyfService = notyfService;
         }
 
         public async Task<Guid> GetCurrentHospitalId()
@@ -73,12 +81,40 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 bloodDonation.DonationPostId = null;
                 await _context.BloodDonations.AddAsync(bloodDonation);
                 await _context.SaveChangesAsync();
+                var numberOfDonations = await GetNumberOfDonations(donation.Donor.DonorId) % 3;
+                if (numberOfDonations == 0)
+                {
+                   var result = await SendEMailToDonor(donation.Donor.DonorId);
+                   if (result)
+                   {
+                       _notyfService.Success("Email was sent to the donor for free check up");
+                   }
+                }
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
+        }
+
+        private async Task<bool> SendEMailToDonor(Guid donorId)
+        {
+            var user = await _context.Users.FindAsync(donorId);
+            var emailData = new EmailData
+            {
+                EmailToId = user.Email,
+                EmailToName = user.Name + user.Surname,
+                EmailSubject = "Free Check-Up",
+                EmailBody = "Congratulations!" +
+                            "\nYou have earned a free check up!"
+            };
+            return _mailService.SendEmail(emailData);
+        }
+
+        private async Task<int> GetNumberOfDonations(Guid donorId)
+        {
+            return await _context.BloodDonations.Where(donation => donation.DonorId == donorId).CountAsync();
         }
 
         public async Task<bool> UpdateDonation(BloodDonationModel donation)
@@ -119,7 +155,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             donation.DonationDate = DateTime.Now;
 
             await _context.BloodDonations.AddAsync(donation);
-
+            
             return await RemoveDonationRequest(request.Id);
         }
 
@@ -130,6 +166,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             try
             {
                 await _context.SaveChangesAsync();
+                var numberOfDonations = await GetNumberOfDonations(request.DonorId) % 3;
+                if (numberOfDonations == 0) {
+                    var result = await SendEMailToDonor(request.DonorId);
+                    if (result) {
+                        _notyfService.Success("Email was sent to the donor for free check up");
+                    }
+                }
             }
             catch (Exception)
             {
