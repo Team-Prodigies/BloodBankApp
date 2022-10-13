@@ -9,7 +9,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
     public interface IDonatorService
     {
         Task<List<DonatorModel>> GetDonators();
-        Task<List<Donor>> FindPotencialDonors(BloodType bloodType, City city);
+        Task<List<Donor>> FindPotencialDonors(string bloodTypeName, string cityName);
         Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor);
         Task<bool> CodeExists(string codeValue);
         Task<List<BloodDonationsModel>> GetBloodDonationsHistory();

@@ -7,6 +7,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Models;
+using BloodBankApp.Areas.SuperAdmin.Services;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -19,6 +20,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly SelectList _cityList;
         private readonly SelectList _bloodTypeList;
         private readonly INotyfService _notyfService;
+        private readonly IBloodTypesService _bloodTypesService;
+        private readonly ICitiesService _citiesServices;
 
         public DonatorsController(IDonatorService donatorsService,
             IDonorsService donorsService,
@@ -31,6 +34,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _donatorsService = donatorsService;
             _donorsService = donorsService;
             _notyfService = notyfService;
+            _citiesServices = citiesService;
+            _bloodTypesService = bloodTypesService;
         }
 
         public async Task<IActionResult> ManageDonators()
@@ -93,12 +98,15 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         //Get
-        public async Task<IActionResult> PotencialDonors(BloodType bloodType, City city)
+        public async Task<IActionResult> PotencialDonors(string bloodTypeName, string cityName = "Ferizaj")
         {
-            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodType, city);
+            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeName, cityName);
 
-            ViewData["CityId"] = _cityList;
-            ViewData["BloodTypeId"] = _bloodTypeList;
+            //ViewBag.Cities = await _citiesServices.GetCities();
+            ViewBag.BloodTypes = await _bloodTypesService.GetAllBloodTypes();
+
+            ViewBag.BloodType = bloodTypeName;
+            //ViewBag.CityName = cityName;
 
             return View(potencialDonors);
         }

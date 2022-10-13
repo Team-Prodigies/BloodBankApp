@@ -1,9 +1,8 @@
 ﻿@model List<Donor>
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
     ViewData["Title"] = "PotencialDonors";
-    ViewData["CityId"] = "cityList";
-    ViewData["BloodTypeId"] = "bloodTypeList";
     Layout = "~/Areas/HospitalAdmin/Views/Shared/_HospitalAdminLayout.cshtml";
 }
 
@@ -50,21 +49,22 @@
     </style>
 </header>
 
-<div class="dropdown">
-    <button class="dropbtn">@ViewBag.CityId</button>
+@*<div class="dropdown">
+    <button class="dropbtn">Cities</button>
     <div class="dropdown-content">
-        @foreach(var city in ViewBag.CityId){
-            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-city="@city.CityName"></a>
+        @foreach (var city in ViewBag.Cities)
+        {
+            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-cityName="@city.CityName" asp-route-bloodTypeName="@ViewBag.BloodType">@city.CityName</a>
         }
     </div>
 </div>
-
+*@
 <div class="dropdown">
     <button class="dropbtn">BloodType</button>
     <div class="dropdown-content">
-        @foreach (var bloodType in ViewBag.BloodTypeId)
+        @foreach (var bloodType in ViewBag.BloodTypes)
         {
-            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-bloodType="@bloodType.BloodTypeName">@bloodType.BloodTypeName</a>
+            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-bloodTypeName="@bloodType.BloodTypeName" asp-route-cityName="@ViewBag.CityName">@bloodType.BloodTypeName</a>
         }
     </div>
 </div>
@@ -92,7 +92,7 @@
                         <td>@donor.User.PhoneNumber</td>
                         <td>@donor.User.DateOfBirth.ToShortDateString()</td>
                         <td>@donor.Gender</td>
-                        <td>@donor.City</td>
+                        <td>@donor.City.CityName</td>
                     </tr>
                 }
             </tbody>
