@@ -57,7 +57,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             List<Donor> potencialDonors;
 
-            potencialDonors = await _context.Donors.Include(x => x.User).Where(donor => donor.BloodType.BloodTypeName == bloodTypeName && donor.City.CityName == cityName).ToListAsync();
+            potencialDonors = await _context.Donors
+                .Include(x => x.User)
+                .Where(donor => donor.BloodType.BloodTypeName == bloodTypeName && donor.City.CityName == cityName).ToListAsync();
             
             return potencialDonors;
         }
@@ -119,6 +121,36 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             return result;
 
+        }
+
+        public async Task<bool> CanDonateAgain(Donor donor)
+        {
+            var lastDonation = await _context.BloodDonations
+                .OrderBy(bloodDonation => bloodDonation.DonationDate)
+                .LastAsync();
+            
+            var months = (DateTime.Now.Year - lastDonation.DonationDate.Year) * 12;
+
+            if(DateTime.Now.Month != lastDonation.DonationDate.Month)
+            {
+                months = months + DateTime.Now.Month - lastDonation.DonationDate.Month;
+            }
+            else
+            {
+                if (DateTime.Now.Day < lastDonation.DonationDate.Day)
+                {
+                    months--;
+                }
+            }
+
+            if(donor.Gender == Enums.Gender.MALE)
+            {
+                return (months > 3) ;
+            }
+            else
+            {
+                return (months > 4);
+            }
         }
     }
 }

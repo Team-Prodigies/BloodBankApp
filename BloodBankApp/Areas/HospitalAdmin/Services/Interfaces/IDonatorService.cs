@@ -13,5 +13,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor);
         Task<bool> CodeExists(string codeValue);
         Task<List<BloodDonationsModel>> GetBloodDonationsHistory();
+        Task<bool> CanDonateAgain(Donor donor);
     }
 }
