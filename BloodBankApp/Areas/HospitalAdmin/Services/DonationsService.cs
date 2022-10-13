@@ -155,16 +155,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             donation.DonationDate = DateTime.Now;
 
             await _context.BloodDonations.AddAsync(donation);
-
-            var numberOfDonations = await GetNumberOfDonations(donation.Donor.DonorId) % 3;
-            if (numberOfDonations == 0)
-            {
-                var result = await SendEMailToDonor(donation.Donor.DonorId);
-                if (result)
-                {
-                    _notyfService.Success("Email was sent to the donor for free check up");
-                }
-            }
+            
             return await RemoveDonationRequest(request.Id);
         }
 
@@ -175,6 +166,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             try
             {
                 await _context.SaveChangesAsync();
+                var numberOfDonations = await GetNumberOfDonations(request.DonorId) % 3;
+                if (numberOfDonations == 0) {
+                    var result = await SendEMailToDonor(request.DonorId);
+                    if (result) {
+                        _notyfService.Success("Email was sent to the donor for free check up");
+                    }
+                }
             }
             catch (Exception)
             {
