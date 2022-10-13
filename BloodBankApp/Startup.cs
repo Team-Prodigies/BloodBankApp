@@ -40,6 +40,7 @@ namespace BloodBankApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>
             (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -71,6 +72,7 @@ namespace BloodBankApp
             services.AddScoped<IQuestionService, QuestionsService>();
             services.AddScoped<IIssueService, IssueService>();
             services.AddScoped<IDonationsService, DonationsService>();
+            services.AddTransient<IEmail, EmailSenderService>();
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -79,6 +81,8 @@ namespace BloodBankApp
             services.AddNotyf(config => {
                 config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; 
             });
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {

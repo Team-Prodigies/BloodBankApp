@@ -1,0 +1,45 @@
+﻿@using BloodBankApp.Areas.HospitalAdmin.Model
+@model EmailModel
+
+<div class="container-fluid">
+    <form asp-action="SendMail" method="post">
+        <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">To</label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="To" class="form-control">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Subject</label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Subject" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Textarea</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" asp-for="Body" style="height: 100px"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Email" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" asp-for="Password" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Submit Button</label>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit Form</button>
+            </div>
+        </div>
+
+    </form>
+</div>
