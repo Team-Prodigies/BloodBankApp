@@ -62,8 +62,8 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="postsNotificationsBell">
                         <li class="dropdown-header">
-                            You have 4 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                            You have new notifications
+                            <a asp-area="Donator" asp-controller="Home" asp-action="Notifications"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -77,8 +77,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="messagesNotificationsBell">
                       <li class="dropdown-header">
-                            You have 4 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                            <a ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -151,6 +150,12 @@
                     <span>My Donations</span>
                 </a>
             </li>
+            <li class="nav-item">
+                            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Notifications">
+                                <i class="bi bi-card-list" style="color: black"></i>
+                                <span>My Notifications</span>
+                            </a>
+                        </li>
             <li class="nav-item">
                 <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">
                     <i class="bi bi-card-list" style="color: black"></i>
