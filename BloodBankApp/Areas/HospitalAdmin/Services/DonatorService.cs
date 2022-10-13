@@ -130,22 +130,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 .LastAsync();
             
             var months = (DateTime.Now.Year - lastDonation.DonationDate.Year) * 12;
-
-            if(DateTime.Now.Month != lastDonation.DonationDate.Month)
+            months = months + DateTime.Now.Month - lastDonation.DonationDate.Month;
+            
+            if (DateTime.Now.Day < lastDonation.DonationDate.Day)
             {
-                months = months + DateTime.Now.Month - lastDonation.DonationDate.Month;
-            }
-            else
-            {
-                if (DateTime.Now.Day < lastDonation.DonationDate.Day)
-                {
-                    months--;
-                }
+                months--;
             }
 
             if(donor.Gender == Enums.Gender.MALE)
             {
-                return (months > 3) ;
+                return (months > 3);
             }
             else
             {
