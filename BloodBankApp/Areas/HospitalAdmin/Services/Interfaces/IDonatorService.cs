@@ -1,5 +1,6 @@
 ﻿using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor);
         Task<bool> CodeExists(string codeValue);
         Task<List<BloodDonationsModel>> GetBloodDonationsHistory();
-        Task<bool> CanDonateAgain(Donor donor);
+        Task<bool> CanDonateAgain(DonorModels donor);
     }
 }

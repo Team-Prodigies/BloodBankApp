@@ -131,7 +131,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         }
 
-        public async Task<bool> CanDonateAgain(Donor donor)
+        public async Task<bool> CanDonateAgain(DonorModels donor)
         {
             var lastDonation = await _context.BloodDonations
                 .OrderBy(bloodDonation => bloodDonation.DonationDate)
