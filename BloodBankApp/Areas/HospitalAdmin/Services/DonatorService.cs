@@ -130,5 +130,29 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
 
         }
+
+        public async Task<bool> CanDonateAgain(Donor donor)
+        {
+            var lastDonation = await _context.BloodDonations
+                .OrderBy(bloodDonation => bloodDonation.DonationDate)
+                .LastAsync();
+            
+            var months = (DateTime.Now.Year - lastDonation.DonationDate.Year) * 12;
+            months = months + DateTime.Now.Month - lastDonation.DonationDate.Month;
+            
+            if (DateTime.Now.Day < lastDonation.DonationDate.Day)
+            {
+                months--;
+            }
+
+            if(donor.Gender == Enums.Gender.MALE)
+            {
+                return (months > 3);
+            }
+            else
+            {
+                return (months > 4);
+            }
+        }
     }
 }
