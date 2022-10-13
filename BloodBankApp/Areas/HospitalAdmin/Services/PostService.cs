@@ -9,28 +9,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Enums;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services {
     public class PostService : IPostService {
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IHospitalService _hospitalService;
+
         public PostService(ApplicationDbContext context,
-            IMapper mapper) {
+            IMapper mapper,
+            IHospitalService hospitalService) {
             _context = context;
             _mapper = mapper;
+            _hospitalService = hospitalService;
         }
 
-        public async Task<bool> AddPost(DonationPost post) {
-            if (post != null) {
-                if (post.DateRequired.Day < DateTime.Now.Day) {
-                    return false;
-                }
-                await _context.DonationPosts.AddAsync(post);
-                await _context.SaveChangesAsync();
-                return true;
+        public async Task<bool> AddPost(DonationPost post, string id) {
+            if (post == null) return false;
+            if (post.DateRequired.Day < DateTime.Now.Day) {
+                return false;
             }
-            return false;
+
+            var hospital = await _hospitalService.GetHospitalForMedicalStaff(id);
+            if (hospital == null) return false;
+            
+            post.HospitalId = hospital.HospitalId;
+            await _context.DonationPosts.AddAsync(post);
+            await _context.SaveChangesAsync();
+            
+            return true;
         }
 
         public async Task<bool> DeletePost(Guid notificationId) {
@@ -45,7 +55,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
 
             var postModel = new PostModel {
-                NotificationId = getPost.NotificationId,
+                NotificationId = getPost.DonationPostId,
                 DateRequired = getPost.DateRequired,
                 Description = getPost.Description,
                 AmountRequested = getPost.AmountRequested,
@@ -57,12 +67,12 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
 
         public async Task<bool> EditPosts(PostModel post, Guid notificationId) {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
+            if (getPost == null) return false;
             getPost.PostStatus = post.PostStatus;
             getPost.Description = post.Description;
             getPost.BloodTypeId = post.BloodTypeId;
             getPost.AmountRequested = post.AmountRequested;
             getPost.DateRequired = post.DateRequired;
-            if (getPost == null) return false;
 
             _context.DonationPosts.Update(getPost);
             return await _context.SaveChangesAsync() > 0;

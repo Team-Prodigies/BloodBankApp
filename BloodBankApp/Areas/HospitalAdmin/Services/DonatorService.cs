@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Models;
+using BloodBankApp.Areas.Donator.ViewModels;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
@@ -90,6 +91,25 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             if (code != null) return true;
             return false;
+        }
+
+        public async Task<List<BloodDonationsModel>> GetBloodDonationsHistory()
+        {
+            if (_httpContextAccessor.HttpContext == null)
+            {
+                return null;
+            }
+
+            var user = await _userService.GetUser(_httpContextAccessor.HttpContext.User);
+            var bloodDonation = await _context.BloodDonations
+                .Include(hospital => hospital.Hospital)
+                .Include(donor => donor.Donor)
+                .Where(x => x.DonorId == user.Id)
+                .ToListAsync();
+            var result = _mapper.Map<List<BloodDonationsModel>>(bloodDonation);
+
+            return result;
+
         }
     }
 }

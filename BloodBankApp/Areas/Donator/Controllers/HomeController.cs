@@ -24,13 +24,15 @@ namespace BloodBankApp.Areas.Donator.Controllers
         private readonly SelectList _cityList;
         private readonly INotyfService _notyfService;
         private readonly UserManager<User> _userManager;
+        private readonly IDonatorService _donatorService;
         private readonly ApplicationDbContext _context;
 
         public HomeController(IPostService postService,
             ICitiesService citiesService,
             INotyfService notyfService,
             ApplicationDbContext context,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IDonatorService donatorService)
         {
             _postService = postService;
             _citiesService = citiesService;
@@ -38,6 +40,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             _notyfService = notyfService;
             _context = context;
             _userManager = userManager;
+            _donatorService = donatorService;
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]
@@ -88,7 +91,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             var getQuestions = await _postService.GetQuestionnaireQuestions();
             var getPost = await _postService.GetPost(postId);
 
-            ViewBag.Post = getPost.NotificationId;
+          //  ViewBag.Post = getPost.NotificationId;
 
             return View(getQuestions);
         }
@@ -104,7 +107,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
                 if (getQuestions[i].Answer != answers.Questions[i].Answer)
                 {
                     _notyfService.Error("Sorry you are not in condition to donate now");
-                    return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.NotificationId });
+                    return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
                 }
             }
 
@@ -114,16 +117,16 @@ namespace BloodBankApp.Areas.Donator.Controllers
             var getRequests = await _context.DonationRequest.ToListAsync();
             foreach (var req in getRequests)
             {
-                if (req.DonationPostId == getPost.NotificationId)
+                if (req.DonationPostId == getPost.DonationPostId)
                 {
                     _notyfService.Error("Sorry but you already made a request");
-                    return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.NotificationId });
+                    return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
                 }
             }
 
             var request = new DonationRequests
             {
-                DonationPostId = getPost.NotificationId,
+                DonationPostId = getPost.DonationPostId,
                 DonorId = getDonor.DonorId,
                 RequestDate = DateTime.Now
             };
@@ -132,7 +135,14 @@ namespace BloodBankApp.Areas.Donator.Controllers
             await _context.SaveChangesAsync();
 
             _notyfService.Success("Donation request has been recorded!");
-            return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.NotificationId });
+            return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
+        }
+
+        public async Task<IActionResult> DonationsHistory()
+        {
+            var donationsHistory = await _donatorService.GetBloodDonationsHistory();
+
+            return View(donationsHistory);
         }
     }
 }

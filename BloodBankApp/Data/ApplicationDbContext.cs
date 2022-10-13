@@ -26,12 +26,27 @@ namespace BloodBankApp.Data
         public DbSet<Code> Codes { get; set; }
         public DbSet<DonationRequests> DonationRequest { get; set; }
         public DbSet<Issue> Issues { get; set; }
+        public DbSet<UserNotifications> UserNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<User>().HasIndex(user => user.PhoneNumber).IsUnique();
+
+            builder.Entity<UserNotifications>(x => x.HasKey(u => new { u.Id, u.NotificationId }));
+
+            builder.Entity<UserNotifications>()
+                .HasOne(u => u.User)
+                .WithMany(n => n.Notifications)
+                .HasConstraintName("User_UserNotifications")
+                .HasForeignKey(fk => fk.Id);
+
+            builder.Entity<UserNotifications>()
+                 .HasOne(n => n.Notification)
+                 .WithMany(u => u.Users)
+                 .HasConstraintName("Notification_UserNotifications")
+                 .HasForeignKey(fk => fk.NotificationId);
 
             builder.Entity<BloodDonation>(bd =>
             {

@@ -40,7 +40,6 @@ namespace BloodBankApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>
             (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -72,7 +71,10 @@ namespace BloodBankApp
             services.AddScoped<IQuestionService, QuestionsService>();
             services.AddScoped<IIssueService, IssueService>();
             services.AddScoped<IDonationsService, DonationsService>();
+            services.AddScoped<IBloodReservesService, BloodReservesService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddTransient<IEmail, EmailSenderService>();
+
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -126,6 +128,7 @@ namespace BloodBankApp
                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<NotificationsHub>("/notificationsHub");
 
                 endpoints.MapControllerRoute(
                     name: "default",

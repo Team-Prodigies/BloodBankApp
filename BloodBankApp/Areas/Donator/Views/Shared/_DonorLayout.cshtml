@@ -27,7 +27,7 @@
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="~/SuperAdminTemplate/NiceAdmin/assets/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/StyleSheet.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
@@ -55,124 +55,36 @@
                         <i class="bi bi-search"></i>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" >
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">4</span>
+                        <span class="badge bg-primary badge-number" id="postsNotificationsNumber"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="postsNotificationsBell">
                         <li class="dropdown-header">
                             You have 4 new notifications
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
-                        </li>
-                        <li class="notification-item">
-                            <i class="bi bi-exclamation-circle text-warning"></i>
-                            <div>
-                                <h4>Lorem Ipsum</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>30 min. ago</p>
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="notification-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <div>
-                                <h4>Atque rerum nesciunt</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>1 hr. ago</p>
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="notification-item">
-                            <i class="bi bi-check-circle text-success"></i>
-                            <div>
-                                <h4>Sit rerum fuga</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>2 hrs. ago</p>
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="notification-item">
-                            <i class="bi bi-info-circle text-primary"></i>
-                            <div>
-                                <h4>Dicta reprehenderit</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>4 hrs. ago</p>
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li>
+                        </li>                        
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-chat-left-text"></i>
-                        <span class="badge bg-success badge-number">3</span>
+                        <span class="badge bg-success badge-number" id="messagesNotificationsNumber"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                        <li class="dropdown-header">
-                            You have 3 new messages
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="messagesNotificationsBell">
+                      <li class="dropdown-header">
+                            You have 4 new notifications
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
-                        </li>
-                        <li class="message-item">
-                            <a href="#">
-                                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                                <div>
-                                    <h4>Maria Hudson</h4>
-                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="message-item">
-                            <a href="#">
-                                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                                <div>
-                                    <h4>Anna Nelson</h4>
-                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                    <p>6 hrs. ago</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="message-item">
-                            <a href="#">
-                                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                                <div>
-                                    <h4>David Muldon</h4>
-                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                    <p>8 hrs. ago</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="dropdown-footer">
-                            <a href="#">Show all messages</a>
-                        </li>
+                        </li>                   
+                        
+                       
                     </ul>
                 </li>
                 <li class="nav-item dropdown pe-3">
@@ -234,7 +146,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Index">
+                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="DonationsHistory">
                     <i class="bi bi-card-list" style="color: black"></i>
                     <span>My Donations</span>
                 </a>
@@ -248,26 +160,27 @@
         </ul>
     </aside>
 
-    <main id="main" class="main">
-        @RenderBody()
-    </main>
+<main id="main" class="main">
+    @RenderBody()
+</main>
 
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/js/main.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/chart.js/chart.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/echarts/echarts.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/quill/quill.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/php-email-form/validate.js"></script>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/js/NameValidate.js"></script>
-    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/lib/signalr/donorChat.js"></script>
-    @await Component.InvokeAsync("Notyf")
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/js/main.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/chart.js/chart.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/quill/quill.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/SuperAdminTemplate/NiceAdmin/assets/vendor/php-email-form/validate.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/NameValidate.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/signalr/donorChat.js"></script>
+<script src="~/lib/signalr/notifications.js"></script>
+@await Component.InvokeAsync("Notyf")
 </body>
 </html>

@@ -1,0 +1,40 @@
+﻿@model List<BloodBankApp.Areas.Donator.ViewModels.BloodDonationsModel>
+
+<style>
+    .card-body {
+        padding: 0px 20px 0px 20px;
+    }
+</style>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        @if (Model.Count == 0)
+        {
+            <h1 class="text-center text-danger">You haven't donated blood yet!</h1>
+        }
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            @foreach (var posts in Model)
+            {
+
+                <div class="col">
+                    <div class="card" style="min-height: 100%">
+                        <div class="card-body me-3 ms-3 mt-2">
+                            <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 gy-4">
+                                <div class="col text-center">
+                                    <p class="card-text"><strong>City: </strong> @posts.Hospital.City.CityName</p>
+                                </div>
+                                <div class="col text-center text-xs">
+                                    <p class="card-text"><strong>Amount: </strong> @posts.Amount ml </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end text-muted">
+                            <p class="card-text">@posts.DonationDate</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
