@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Models;
 using BloodBankApp.Areas.Donator.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
@@ -21,16 +22,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IMapper _mapper;
         private readonly IUsersService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHospitalService _hospitalService;
 
         public DonatorService(ApplicationDbContext context,
             IMapper mapper,
             IUsersService usersService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IHospitalService hospitalService)
         {
             _context = context;
             _mapper = mapper;
             _userService = usersService;
             _httpContextAccessor = httpContextAccessor;
+            _hospitalService = hospitalService;
         }
 
         public async Task<List<DonatorModel>> GetDonators()
@@ -53,13 +57,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
-        public async Task<List<Donor>> FindPotencialDonors(string bloodTypeName, string cityName)
+        public async Task<List<DonorModels>> FindPotencialDonors(Guid bloodTypeId, Guid cityId)
         {
-            List<Donor> potencialDonors;
 
-            potencialDonors = await _context.Donors.Include(x => x.User).Where(donor => donor.BloodType.BloodTypeName == bloodTypeName && donor.City.CityName == cityName).ToListAsync();
+            var hospital = await _hospitalService.GetHospitalForHospitalAdmin(_httpContextAccessor.HttpContext.User);
+
+            var potencialDonors = await _context.Donors
+                .Include(x => x.User)
+                .Where(donor => donor.BloodType.BloodTypeId == bloodTypeId && donor.CityId == cityId)
+                .ToListAsync();
+
+            var result = _mapper.Map<List<DonorModels>>(potencialDonors);
             
-            return potencialDonors;
+            return result;
         }
 
         public async Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor)

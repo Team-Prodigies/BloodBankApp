@@ -1,5 +1,4 @@
-﻿@model List<Donor>
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@model List<DonorModels>
 
 @{
     ViewData["Title"] = "PotencialDonors";
@@ -59,15 +58,27 @@
     </div>
 </div>
 *@
-<div class="dropdown">
-    <button class="dropbtn">BloodType</button>
-    <div class="dropdown-content">
-        @foreach (var bloodType in ViewBag.BloodTypes)
-        {
-            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-bloodTypeName="@bloodType.BloodTypeName" asp-route-cityName="@ViewBag.CityName">@bloodType.BloodTypeName</a>
-        }
-    </div>
+
+
+<div class="search-bar row g-3 col">
+    <form class="search-form d-flex align-items-center mb-2" asp-action="PotencialDonors" asp-controller="Donators" method="get">
+        <select name="bloodTypeId" class="form-select" required asp-items="ViewBag.BloodTypeId" aria-label="Default select example">
+            <option value="">Select By Blood Type</option>
+        </select>
+        <select name="cityId" class="form-select" required asp-items="ViewBag.CityId" aria-label="Default select example">
+            <option value="">Select by City</option>
+        </select>
+        <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+    </form>
 </div>
+
+@if(Model.Count > 0)
+{
+<div>
+    <p>Showing results for blood type @ViewBag.BloodTypeName and city @ViewBag.CityName</p>
+</div>    
+}
+
 
 <div class="card container">
     <div class="card-body">
@@ -80,6 +91,7 @@
                     <th scope="col">Username</th>
                     <th scope="col">Date of Birth</th>
                     <th scope="col">Gender</th>
+                    <th scope="col">BloodType</th>
                     <th scope="col">City</th>
                 </tr>
             </thead>
@@ -92,6 +104,7 @@
                         <td>@donor.User.PhoneNumber</td>
                         <td>@donor.User.DateOfBirth.ToShortDateString()</td>
                         <td>@donor.Gender</td>
+                        <td>@donor.BloodType.BloodTypeName</td>
                         <td>@donor.City.CityName</td>
                     </tr>
                 }

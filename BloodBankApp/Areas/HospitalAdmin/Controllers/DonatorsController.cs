@@ -8,6 +8,7 @@ using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BloodBankApp.Models;
 using BloodBankApp.Areas.SuperAdmin.Services;
+using System;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -98,15 +99,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         //Get
-        public async Task<IActionResult> PotencialDonors(string bloodTypeName, string cityName = "Ferizaj")
+        public async Task<IActionResult> PotencialDonors(Guid bloodTypeId, Guid cityId)
         {
-            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeName, cityName);
+            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);
+            //var cityName = await _citiesServices.GetCity(cityId);
+            //var bloodTypeName = await _bloodTypesService.GetBloodType(bloodTypeId);
 
-            //ViewBag.Cities = await _citiesServices.GetCities();
-            ViewBag.BloodTypes = await _bloodTypesService.GetAllBloodTypes();
-
-            ViewBag.BloodType = bloodTypeName;
-            //ViewBag.CityName = cityName;
+            ViewData["BloodTypeId"] = _bloodTypeList;
+            ViewData["CityId"] = _cityList;
+            //ViewData["CityName"] = cityName.CityName;
+            //ViewData["BloodTypeName"] = bloodTypeName.BloodTypeName;
 
             return View(potencialDonors);
         }
