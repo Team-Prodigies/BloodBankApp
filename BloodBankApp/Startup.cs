@@ -125,6 +125,7 @@ namespace BloodBankApp
                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<NotificationsHub>("/notificationsHub");
 
                 endpoints.MapControllerRoute(
                     name: "default",

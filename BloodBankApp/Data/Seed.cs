@@ -142,15 +142,18 @@ namespace BloodBankApp.Data
                 {
                     new IdentityRole<Guid>
                     {
-                        Name = "Donor"
+                        Name = "Donor",
+                        NormalizedName = "DONOR"
                     },
                     new IdentityRole<Guid>
                     {
-                        Name = "HospitalAdmin"
+                        Name = "HospitalAdmin",
+                        NormalizedName = "HOSPITALADMIN"
                     },
                     new IdentityRole<Guid>
                     {
-                        Name = "SuperAdmin"
+                        Name = "SuperAdmin",
+                        NormalizedName = "SUPERADMIN"
                     }
                 };
                 context.Roles.AddRange(roles);
@@ -186,6 +189,7 @@ namespace BloodBankApp.Data
                 };
                 context.BloodTypes.AddRange(bloodTypes);
             }
+            await context.SaveChangesAsync();
 
             if (!context.RoleClaims.Any())
             {

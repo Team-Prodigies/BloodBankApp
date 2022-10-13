@@ -244,5 +244,35 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     }
             }
         }
+
+        public async Task<List<MessageNotification>> GetUnSeenDonorMessages(Guid donorId)
+        {
+            var messagesNotifications = await _context.Messages
+                .Include(ms => ms.Hospital)
+                .Where(ms => ms.DonorId == donorId && ms.Sender == Enums.MessageSender.SenderHospitalAdmin && ms.Seen == false)
+                .OrderByDescending(ms => ms.DateSent)
+                .Select(ms => new MessageNotification
+                {
+                    HospitalId = ms.Hospital.HospitalId,
+                    HospitalName = ms.Hospital.HospitalName
+                })
+                .Distinct()
+                .ToListAsync();
+
+            return messagesNotifications;
+        }
+
+        public async Task<List<MessageNotification>> GetUnSeenHospitalMessages(Guid hospitalId)
+        {
+            /*var messages = await _context.Messages
+                .Where(ms => ms.HospitalId == hospitalId && ms.Sender == Enums.MessageSender.SenderDonor && ms.Seen == false)
+                .Select(ms => new {
+                    DonorId = ms.DonorId,
+                    Content = ms.Content
+                })
+                .Distinct()
+                .ToListAsync();*/
+            return null;
+        }
     }
 }
