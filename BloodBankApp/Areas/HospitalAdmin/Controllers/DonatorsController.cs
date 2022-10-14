@@ -98,17 +98,23 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             return RedirectToAction(nameof(ManageDonators));
         }
 
-        //Get
+        public IActionResult PotencialDonors()
+        {
+            ViewData["BloodTypeId"] = _bloodTypeList;
+            ViewData["CityId"] = _cityList;
+            ViewData["EmptyModel"] = true;
+
+            return View();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> PotencialDonors(Guid bloodTypeId, Guid cityId)
         {
             var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);
-            //var cityName = await _citiesServices.GetCity(cityId);
-            //var bloodTypeName = await _bloodTypesService.GetBloodType(bloodTypeId);
 
             ViewData["BloodTypeId"] = _bloodTypeList;
             ViewData["CityId"] = _cityList;
-            //ViewData["CityName"] = cityName.CityName;
-            //ViewData["BloodTypeName"] = bloodTypeName.BloodTypeName;
+            ViewData["EmptyModel"] = false;
 
             return View(potencialDonors);
         }

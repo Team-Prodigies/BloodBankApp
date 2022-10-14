@@ -13,6 +13,7 @@ using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Models;
 using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.Services;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
@@ -23,18 +24,24 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IUsersService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHospitalService _hospitalService;
+        private readonly INotificationService _notificationService;
+        private readonly IBloodTypesService _bloodTypesService;
 
         public DonatorService(ApplicationDbContext context,
             IMapper mapper,
             IUsersService usersService,
             IHttpContextAccessor httpContextAccessor,
-            IHospitalService hospitalService)
+            IHospitalService hospitalService,
+            INotificationService notificationService,
+            IBloodTypesService bloodTypesService)
         {
             _context = context;
             _mapper = mapper;
             _userService = usersService;
             _httpContextAccessor = httpContextAccessor;
             _hospitalService = hospitalService;
+            _notificationService = notificationService;
+            _bloodTypesService = bloodTypesService;
         }
 
         public async Task<List<DonatorModel>> GetDonators()
@@ -59,17 +66,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         public async Task<List<DonorModels>> FindPotencialDonors(Guid bloodTypeId, Guid cityId)
         {
+            var bloodType = await _bloodTypesService.GetBloodType(bloodTypeId);
+            var potencialDonors = await _notificationService.GetPotentialDonors(bloodType.BloodTypeName, cityId);
 
-            var hospital = await _hospitalService.GetHospitalForHospitalAdmin(_httpContextAccessor.HttpContext.User);
+            var donorDonation = new List<DonorModels>();
 
-            var potencialDonors = await _context.Donors
-                .Include(x => x.User)
-                .Where(donor => donor.BloodType.BloodTypeId == bloodTypeId && donor.CityId == cityId)
-                .ToListAsync();
+            foreach(var donor in potencialDonors)
+            {
+                donorDonation.Add(new DonorModels { Donor = donor, DonationsCount = donor.BloodDonations.Count });
+            }
 
-            var result = _mapper.Map<List<DonorModels>>(potencialDonors);
+            donorDonation = donorDonation.OrderBy(donation => donation.DonationsCount).Take(15).ToList();
             
-            return result;
+            return donorDonation;
         }
 
         public async Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor)
@@ -129,16 +138,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             return result;
 
-        }
-
-        public async Task<BloodDonation> GetLastDonation(Guid donorId)
-        {
-            var lastDonation = await _context.BloodDonations
-                .Include(donor => donor.DonorId == donorId)
-                .OrderBy(bloodDonation => bloodDonation.DonationDate)
-                .LastAsync();
-
-            return lastDonation;
         }
     }
 }

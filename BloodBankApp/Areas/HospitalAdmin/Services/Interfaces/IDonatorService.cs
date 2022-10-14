@@ -14,6 +14,5 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<bool> AddNotRegisteredDonor(NotRegisteredDonor notRegisteredDonor);
         Task<bool> CodeExists(string codeValue);
         Task<List<BloodDonationsModel>> GetBloodDonationsHistory();
-        Task<BloodDonation> GetLastDonation(Guid donorId);
     }
 }

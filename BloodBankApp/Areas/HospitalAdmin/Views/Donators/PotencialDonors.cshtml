@@ -56,12 +56,12 @@
             <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-cityName="@city.CityName" asp-route-bloodTypeName="@ViewBag.BloodType">@city.CityName</a>
         }
     </div>
-</div>
-*@
+</div>*@
+
 
 
 <div class="search-bar row g-3 col">
-    <form class="search-form d-flex align-items-center mb-2" asp-action="PotencialDonors" asp-controller="Donators" method="get">
+    <form class="search-form d-flex align-items-center mb-2" asp-action="PotencialDonors" asp-controller="Donators" method="post">
         <select name="bloodTypeId" class="form-select" required asp-items="ViewBag.BloodTypeId" aria-label="Default select example">
             <option value="">Select By Blood Type</option>
         </select>
@@ -72,44 +72,44 @@
     </form>
 </div>
 
-@if(Model.Count > 0)
+@if (!ViewBag.EmptyModel)
 {
-<div>
-    <p>Showing results for blood type @ViewBag.BloodTypeName and city @ViewBag.CityName</p>
-</div>    
-}
+    <div>
+        <p>Showing results for blood type @ViewBag.BloodTypeName and city @ViewBag.CityName</p>
+    </div>    
 
 
-<div class="card container">
-    <div class="card-body">
-        <h5 class="card-title">List of all users</h5>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Date of Birth</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">BloodType</th>
-                    <th scope="col">City</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var donor in Model)
-                {
+
+    <div class="card container">
+        <div class="card-body">
+            <h5 class="card-title">List of all users</h5>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@donor.User.Name</td>
-                        <td>@donor.User.Surname</td>
-                        <td>@donor.User.PhoneNumber</td>
-                        <td>@donor.User.DateOfBirth.ToShortDateString()</td>
-                        <td>@donor.Gender</td>
-                        <td>@donor.BloodType.BloodTypeName</td>
-                        <td>@donor.City.CityName</td>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">BloodType</th>
+                        <th scope="col">City</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var donor in Model)
+                    {
+                        <tr>
+                            <td>@donor.Donor.User.Name</td>
+                            <td>@donor.Donor.User.Surname</td>
+                            <td>@donor.Donor.User.PhoneNumber</td>
+                            <td>@donor.Donor.User.DateOfBirth.ToShortDateString()</td>
+                            <td>@donor.Donor.Gender</td>
+                            <td>@donor.Donor.BloodType.BloodTypeName</td>
+                            <td>@donor.Donor.City.CityName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
+}

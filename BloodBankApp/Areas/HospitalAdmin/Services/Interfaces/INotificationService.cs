@@ -11,5 +11,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<bool> SendNotificationToDonors(DonationPost post);
         Task<List<Notification>> GetNotificationsForUser(string userId);
         Task<bool> SendNotificationToDonors(BloodReserveModel reserve, Guid hospitalId);
+        Task<List<Donor>> GetPotentialDonors(string bloodTypeName, Guid cityId);
     }
 }
