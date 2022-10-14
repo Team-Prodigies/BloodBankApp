@@ -1,0 +1,115 @@
+﻿@model List<DonorModels>
+
+@{
+    ViewData["Title"] = "PotencialDonors";
+    Layout = "~/Areas/HospitalAdmin/Views/Shared/_HospitalAdminLayout.cshtml";
+}
+
+<header>
+    <style>
+        .dropbtn {
+            background-color: #7790b4;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #7790b4;
+            border-radius: 5px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-radius: 5px;
+        }
+    </style>
+</header>
+
+@*<div class="dropdown">
+    <button class="dropbtn">Cities</button>
+    <div class="dropdown-content">
+        @foreach (var city in ViewBag.Cities)
+        {
+            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-cityName="@city.CityName" asp-route-bloodTypeName="@ViewBag.BloodType">@city.CityName</a>
+        }
+    </div>
+</div>*@
+
+
+
+<div class="search-bar row g-3 col">
+    <form class="search-form d-flex align-items-center mb-2" asp-action="PotencialDonors" asp-controller="Donators" method="post">
+        <select name="bloodTypeId" class="form-select" required asp-items="ViewBag.BloodTypeId" aria-label="Default select example">
+            <option value="">Select By Blood Type</option>
+        </select>
+        <select name="cityId" class="form-select" required asp-items="ViewBag.CityId" aria-label="Default select example">
+            <option value="">Select by City</option>
+        </select>
+        <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+
+@if (!ViewBag.EmptyModel)
+{
+    <div>
+        <p>Showing results for blood type @ViewBag.BloodTypeName and city @ViewBag.CityName</p>
+    </div>    
+
+
+
+    <div class="card container">
+        <div class="card-body">
+            <h5 class="card-title">List of all users</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">BloodType</th>
+                        <th scope="col">City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var donor in Model)
+                    {
+                        <tr>
+                            <td>@donor.Donor.User.Name</td>
+                            <td>@donor.Donor.User.Surname</td>
+                            <td>@donor.Donor.User.PhoneNumber</td>
+                            <td>@donor.Donor.User.DateOfBirth.ToShortDateString()</td>
+                            <td>@donor.Donor.Gender</td>
+                            <td>@donor.Donor.BloodType.BloodTypeName</td>
+                            <td>@donor.Donor.City.CityName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

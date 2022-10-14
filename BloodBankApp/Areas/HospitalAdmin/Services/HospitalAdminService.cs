@@ -13,6 +13,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+
         public HospitalAdminService(
            UserManager<User> userManager,
            IHttpContextAccessor httpContextAccessor)

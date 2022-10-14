@@ -115,6 +115,8 @@ namespace BloodBankApp.Mapping
                 .ReverseMap();
             CreateMap<BloodDonation, BloodDonationsModel>();
 
+            CreateMap<Donor, DonorModels>().ReverseMap();
+
         }
     }
 }

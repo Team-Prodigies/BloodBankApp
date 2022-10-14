@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BloodBankApp.Models;
+using BloodBankApp.Areas.SuperAdmin.Services;
+using System;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
@@ -18,6 +21,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly SelectList _cityList;
         private readonly SelectList _bloodTypeList;
         private readonly INotyfService _notyfService;
+        private readonly IBloodTypesService _bloodTypesService;
+        private readonly ICitiesService _citiesServices;
 
         public DonatorsController(IDonatorService donatorsService,
             IDonorsService donorsService,
@@ -30,6 +35,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _donatorsService = donatorsService;
             _donorsService = donorsService;
             _notyfService = notyfService;
+            _citiesServices = citiesService;
+            _bloodTypesService = bloodTypesService;
         }
 
         public async Task<IActionResult> ManageDonators()
@@ -89,6 +96,27 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
             _notyfService.Success("Donor added successfully!");
             return RedirectToAction(nameof(ManageDonators));
+        }
+
+        public IActionResult PotencialDonors()
+        {
+            ViewData["BloodTypeId"] = _bloodTypeList;
+            ViewData["CityId"] = _cityList;
+            ViewData["EmptyModel"] = true;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PotencialDonors(Guid bloodTypeId, Guid cityId)
+        {
+            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);
+
+            ViewData["BloodTypeId"] = _bloodTypeList;
+            ViewData["CityId"] = _cityList;
+            ViewData["EmptyModel"] = false;
+
+            return View(potencialDonors);
         }
     }
 }
