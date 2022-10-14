@@ -1,0 +1,25 @@
+@model List<Notification>
+
+<style>
+    .card-body {
+        padding: 0px 20px 0px 20px;
+    }
+</style>
+
+<div class="container-fluid p-5 d-flex justify-content-center">
+        @if (Model.Count == 0)
+        {
+            <h1 class="text-center text-danger">You don't have any notifications yet!</h1>
+        }
+        <div class="row row-cols-1 w-250 row-cols-sm-1 row-cols-md gy-4">
+            @foreach (var notification in Model)
+            {
+                <div class="card">
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            <p>@notification.Description</p>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                </div>
+            }
+    </div>
+</div>

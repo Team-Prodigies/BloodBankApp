@@ -73,6 +73,7 @@ namespace BloodBankApp
             services.AddScoped<IDonationsService, DonationsService>();
             services.AddScoped<IBloodReservesService, BloodReservesService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddTransient<IEmail, EmailSenderService>();
 
 
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
@@ -82,6 +83,8 @@ namespace BloodBankApp
             services.AddNotyf(config => {
                 config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; 
             });
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             var mapperConfig = new MapperConfiguration(mapper =>
             {
@@ -125,6 +128,7 @@ namespace BloodBankApp
                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<NotificationsHub>("/notificationsHub");
 
                 endpoints.MapControllerRoute(
                     name: "default",

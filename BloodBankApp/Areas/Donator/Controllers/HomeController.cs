@@ -25,6 +25,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
         private readonly INotyfService _notyfService;
         private readonly UserManager<User> _userManager;
         private readonly IDonatorService _donatorService;
+        private readonly INotificationService _notificationService;
         private readonly ApplicationDbContext _context;
 
         public HomeController(IPostService postService,
@@ -32,7 +33,8 @@ namespace BloodBankApp.Areas.Donator.Controllers
             INotyfService notyfService,
             ApplicationDbContext context,
             UserManager<User> userManager,
-            IDonatorService donatorService)
+            IDonatorService donatorService,
+            INotificationService notificationService)
         {
             _postService = postService;
             _citiesService = citiesService;
@@ -41,6 +43,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             _context = context;
             _userManager = userManager;
             _donatorService = donatorService;
+            _notificationService = notificationService;
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDashboard)]
@@ -143,6 +146,13 @@ namespace BloodBankApp.Areas.Donator.Controllers
             var donationsHistory = await _donatorService.GetBloodDonationsHistory();
 
             return View(donationsHistory);
+        }
+
+        public async Task<IActionResult> Notifications()
+        {
+            var userId = _userManager.GetUserId(User);
+            var notifications = await _notificationService.GetNotificationsForUser(userId);
+            return View(notifications);
         }
     }
 }
