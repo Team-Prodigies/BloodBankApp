@@ -3,13 +3,16 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
+    [Authorize]
     public class BloodReservesController : Controller
     {
         private readonly IBloodReservesService _bloodReservesService;
@@ -26,6 +29,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewBloodReserves)]
+
         public async Task<IActionResult> Index()
         {
             var reserves = await _bloodReservesService.GetBloodReserves();
@@ -33,6 +38,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.SetBloodReserves)]
         public async Task<IActionResult> AddReserve(Guid reserveId)
         {
             ViewBag.BloodTypes = new SelectList(await _bloodTypesService.GetAllBloodTypes(), "BloodTypeId", "BloodTypeName");
@@ -43,6 +49,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.SetBloodReserves)]
         public async Task<IActionResult> AddReserve(BloodReserveModel model)
         {
             ViewBag.BloodTypes = new SelectList(await _bloodTypesService.GetAllBloodTypes(), "BloodTypeId", "BloodTypeName");

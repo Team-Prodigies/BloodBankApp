@@ -208,14 +208,24 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Roles.ViewPermissions));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Roles.EditPermissions));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Roles.AddPermissions));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Roles.ViewUserRoles));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Roles.SetUserRoles));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.Create));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ViewStatistics));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.EditProfile));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ViewProfile));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ChangePassword));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.CreateQuestionnaire));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.AddQuestions));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.ManageQuestions));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.EditQuestions));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.SuperAdmin.DeleteQuestions));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.View));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.Lock));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Donors.Unlock));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Issues.View));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Issues.Delete));
+            await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Issues.Edit));
         }
         public async static Task SeedClaimsForDonor(RoleManager<IdentityRole<Guid>> roleManager)
         {
@@ -224,7 +234,13 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.EditProfile));
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.DeleteAccount));
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ChangePassword));
-            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewDashboard));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewDonationPosts));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewDonationHistory));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewNotifications));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewQuestionnaire));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.FillQuestionnaire));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.SendMessageToHospital));
+            await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewHospitalChatRooms));
         }
         public async static Task SeedClaimsForHospitalAdmin(RoleManager<IdentityRole<Guid>> roleManager)
         {
@@ -235,6 +251,22 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.EditProfile));
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewProfile));
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ChangePassword));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewBloodReserves));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.SetBloodReserves));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewBloodDonations));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.AddBloodDonations));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.UpdateBloodDonations));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewDonationRequests));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ApproveDonationRequests));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.RejectDonationRequests));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ManageDonors));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.AddDonors));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.MessageDonors));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.FindPotentialDonors));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ManagePosts));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.AddPosts));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.DeletePosts));
+            await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.EditPosts));
         }
         public static async Task AddPermissionClaim(this RoleManager<IdentityRole<Guid>> roleManager, IdentityRole<Guid> role, string module)
         {

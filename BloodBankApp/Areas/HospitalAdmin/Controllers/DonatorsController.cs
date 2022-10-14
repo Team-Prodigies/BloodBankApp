@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using BloodBankApp.Models;
-using BloodBankApp.Areas.SuperAdmin.Services;
 using System;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
-    [Authorize(Roles = "HospitalAdmin")]
+    [Authorize]
     public class DonatorsController : Controller
     {
         private readonly IDonatorService _donatorsService;
@@ -21,8 +20,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly SelectList _cityList;
         private readonly SelectList _bloodTypeList;
         private readonly INotyfService _notyfService;
-        private readonly IBloodTypesService _bloodTypesService;
-        private readonly ICitiesService _citiesServices;
 
         public DonatorsController(IDonatorService donatorsService,
             IDonorsService donorsService,
@@ -35,10 +32,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _donatorsService = donatorsService;
             _donorsService = donorsService;
             _notyfService = notyfService;
-            _citiesServices = citiesService;
-            _bloodTypesService = bloodTypesService;
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.ManageDonors)]
         public async Task<IActionResult> ManageDonators()
         {
             var donators = await _donatorsService.GetDonators();
@@ -53,6 +49,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.AddDonors)]
         public async Task<IActionResult> AddDonor(NotRegisteredDonor model)
         {
             if (!ModelState.IsValid)
@@ -98,6 +95,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             return RedirectToAction(nameof(ManageDonators));
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.FindPotentialDonors)]
         public IActionResult PotencialDonors()
         {
             ViewData["BloodTypeId"] = _bloodTypeList;
@@ -108,6 +106,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.FindPotentialDonors)]
         public async Task<IActionResult> PotencialDonors(Guid bloodTypeId, Guid cityId)
         {
             var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);

@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
-    [Authorize(Roles = "HospitalAdmin")]
+    [Authorize]
     public class MessagesController : Controller
     {
         private readonly IHospitalService _hospitalService;
@@ -19,6 +20,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _hospitalService = hospitalService;
             _userManager = userManager;
         }
+
+        [Authorize(Policy = Permissions.HospitalAdmin.MessageDonors)]
         public async Task<IActionResult> ChatRoom()
         {
             var currentHospitalAdminId = _userManager.GetUserId(User);

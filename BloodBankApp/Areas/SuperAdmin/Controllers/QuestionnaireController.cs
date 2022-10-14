@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
@@ -34,12 +35,14 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateQuestionnaire()
+        [Authorize(Policy = Permissions.SuperAdmin.CreateQuestionnaire)]
+        public IActionResult CreateQuestionnaire()        
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.CreateQuestionnaire)]
         public async Task<IActionResult> CreateQuestionnaire(HealthFormQuestionnaire questionnaire)
         {
             questionnaire.LastUpdated = DateTime.Now;
@@ -52,6 +55,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.SuperAdmin.ManageQuestions)]
         public async Task<IActionResult> ManageQuestions()
         {
             var getQuestions = await _context.Questions.ToListAsync();
@@ -59,6 +63,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.SuperAdmin.AddQuestions)]
         public async Task<IActionResult> CreateQuestion()
         {
             var getQuestionnaire =await _context.HealthFormQuestionnaires.ToListAsync();
@@ -71,6 +76,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.AddQuestions)]
         public async Task<IActionResult> CreateQuestion(Question question)
         {
             if (!ModelState.IsValid)
@@ -89,6 +95,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.SuperAdmin.EditQuestions)]
         public async Task<IActionResult> Edit(Guid questionId)
         {
             if (questionId == Guid.Empty)
@@ -109,6 +116,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.SuperAdmin.EditQuestions)]
         public async Task<IActionResult> Edit(QuestionModel questionModel, Guid questionId)
         {
             if (!ModelState.IsValid)
@@ -136,6 +144,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             return View(nameof(Edit));
         }
 
+        [Authorize(Policy = Permissions.SuperAdmin.DeleteQuestions)]
         public async Task<IActionResult> Delete(Guid questionId)
         {
             if (questionId == Guid.Empty)

@@ -12,6 +12,7 @@ using BloodBankApp.Areas.SuperAdmin.ViewModels;
 namespace BloodBankApp.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
+    [Authorize]
     public class CitiesController : Controller
     {
         private readonly ICitiesService _citiesService;
