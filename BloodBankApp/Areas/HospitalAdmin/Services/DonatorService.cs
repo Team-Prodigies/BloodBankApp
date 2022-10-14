@@ -131,28 +131,14 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         }
 
-        public async Task<bool> CanDonateAgain(DonorModels donor)
+        public async Task<BloodDonation> GetLastDonation(Guid donorId)
         {
             var lastDonation = await _context.BloodDonations
+                .Include(donor => donor.DonorId == donorId)
                 .OrderBy(bloodDonation => bloodDonation.DonationDate)
                 .LastAsync();
-            
-            var months = (DateTime.Now.Year - lastDonation.DonationDate.Year) * 12;
-            months = months + DateTime.Now.Month - lastDonation.DonationDate.Month;
-            
-            if (DateTime.Now.Day < lastDonation.DonationDate.Day)
-            {
-                months--;
-            }
 
-            if(donor.Gender == Enums.Gender.MALE)
-            {
-                return (months > 3);
-            }
-            else
-            {
-                return (months > 4);
-            }
+            return lastDonation;
         }
     }
 }
