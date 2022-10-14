@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
-    [Authorize(Roles = "HospitalAdmin")]
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly IHospitalService _hospitalService;
@@ -47,6 +48,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 .ToList(), "PostStatus");
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.ManagePosts)]
         public async Task<IActionResult> ManagePosts(string filterBy = "Normal")
         {
             var getUser = _userManager.GetUserId(User);
@@ -57,6 +59,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.AddPosts)]
         public IActionResult CreatePosts()
         {
             _userManager.GetUserId(User);
@@ -65,6 +68,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.AddPosts)]
         public async Task<IActionResult> CreatePosts(DonationPost post)
         {
             if (!ModelState.IsValid)
@@ -97,6 +101,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.EditPosts)]
         public async Task<IActionResult> EditPost(Guid notificationId)
         {
             var changePost = await _postService.EditPost(notificationId);
@@ -107,6 +112,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.EditPosts)]
         public async Task<IActionResult> EditPost(PostModel post, Guid notificationId)
         {
             if (!ModelState.IsValid)
@@ -126,6 +132,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             return RedirectToAction(nameof(ManagePosts));
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.DeletePosts)]
         public async Task<IActionResult> DeletePost(Guid notificationId)
         {
             var deletePost = await _postService.DeletePost(notificationId);

@@ -1,15 +1,16 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BloodBankApp.Data;
-using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 
 namespace BloodBankApp.Controllers
 {
+    [Authorize]
     public class IssueController : Controller
     {
         private readonly INotyfService _notyfService;
@@ -20,7 +21,8 @@ namespace BloodBankApp.Controllers
             _notyfService = notyfService;
             _issueService = issueService;
         }
-        
+
+        [Authorize(Policy = Permissions.Issues.View)]
         public async Task<IActionResult> Index(string filterBy = "Date")
         {
             var issues = await _issueService.GetIssues(filterBy);
@@ -51,6 +53,7 @@ namespace BloodBankApp.Controllers
             
         }
 
+        [Authorize(Policy = Permissions.Issues.Edit)]
         public async Task<IActionResult> Edit(Guid id)
         {
             var issue = await _issueService.Edit(id);
@@ -60,6 +63,7 @@ namespace BloodBankApp.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [Authorize(Policy = Permissions.Issues.Edit)]
         public async Task<IActionResult> Edit(Guid id,[Bind("IssueId,Title,Description,DateReported,IssueStatus")] Issue issue)
         {
             if (id != issue.IssueId)
@@ -83,6 +87,7 @@ namespace BloodBankApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Policy = Permissions.Issues.Delete)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var issue = await _issueService.Delete(id);
@@ -97,6 +102,7 @@ namespace BloodBankApp.Controllers
 
         [HttpPost, ActionName("Delete")]
         [AutoValidateAntiforgeryToken]
+        [Authorize(Policy = Permissions.Issues.Delete)]
         public async Task<IActionResult> DeletePOST(Guid id)
         {
             var issue = await _issueService.DeletePost(id);

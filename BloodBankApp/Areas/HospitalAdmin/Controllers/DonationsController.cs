@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
+    [Authorize]
     public class DonationsController : Controller
     {
         private readonly IDonationsService _donationsService;
@@ -25,6 +28,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewBloodDonations)]
         public async Task<IActionResult> Index(string? searchTerm)
         {
             var donations = await _donationsService.GetAllDonations(searchTerm);
@@ -33,12 +37,14 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewDonationRequests)]
         public async Task<IActionResult> DonationRequests()
         {
             var requests = await _donationsService.GetAllDonationRequests();
             return View(requests);
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.ApproveDonationRequests)]
         public async Task<IActionResult> ApproveRequest(Guid requestId, double amount)
         {
             var result = await _donationsService.ApproveDonationRequest(requestId, amount);
@@ -51,6 +57,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             return RedirectToAction(nameof(DonationRequests));
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.RejectDonationRequests)]
         public async Task<IActionResult> RejectRequest(Guid requestId)
         {
             var result = await _donationsService.RemoveDonationRequest(requestId);
@@ -64,6 +71,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.AddBloodDonations)]
         public async Task<IActionResult> AddDonation(long? personalNumber)
         {
             if (!personalNumber.HasValue)
@@ -83,6 +91,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.AddBloodDonations)]
         public async Task<IActionResult> AddDonation(BloodDonationModel model)
         {
             if (!ModelState.IsValid)
@@ -102,6 +111,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.UpdateBloodDonations)]
         public async Task<IActionResult> EditDonation(Guid donationId)
         {
             var donation = await _donationsService.GetDonation(donationId);
@@ -109,6 +119,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.UpdateBloodDonations)]
         public async Task<IActionResult> EditDonation(BloodDonationModel model)
         {
             if (!ModelState.IsValid)

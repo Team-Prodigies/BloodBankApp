@@ -9,14 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
 namespace BloodBankApp.Areas.Donator.Controllers
 {
     [Area("Donator")]
-    [Authorize(Roles = "Donor")]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
@@ -46,7 +45,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             _notificationService = notificationService;
         }
 
-        [Authorize(Policy = Permissions.Donors.ViewDashboard)]
+        [Authorize(Policy = Permissions.Donors.ViewDonationPosts)]
         public async Task<IActionResult> Index(string filterBy = "Normal", int pageNumber = 1)
         {
             var result = await _postService.GetPostsByBloodType(filterBy, pageNumber);
@@ -60,6 +59,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(result);
         }
 
+        [Authorize(Policy = Permissions.Donors.ViewDonationPosts)]
         public async Task<IActionResult> DonationPostSearchResults(string searchTerm, int pageNumber = 1)
         {
             if (searchTerm == null || searchTerm.Trim() == "")
@@ -75,6 +75,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(posts);
         }
 
+        [Authorize(Policy = Permissions.Donors.ViewDonationPosts)]
         public async Task<IActionResult> DonationPostCityResults(Guid id, int pageNumber = 1)
         {
             var posts = await _postService.GetPostsByCity(id, pageNumber);
@@ -88,6 +89,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(posts);
         }
 
+        [Authorize(Policy = Permissions.Donors.ViewQuestionnaire)]
         [HttpGet]
         public async Task<IActionResult> QuestionnaireAnswers(Guid postId)
         {
@@ -99,6 +101,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(getQuestions);
         }
 
+        [Authorize(Policy = Permissions.Donors.FillQuestionnaire)]
         [HttpPost]
         public async Task<IActionResult> CheckQuestion(QuestionnaireAnswers answers, Guid postId)
         {
@@ -130,6 +133,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
         }
 
+        [Authorize(Policy = Permissions.Donors.ViewDonationHistory)]
         public async Task<IActionResult> DonationsHistory()
         {
             var donationsHistory = await _donatorService.GetBloodDonationsHistory();
@@ -137,6 +141,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
             return View(donationsHistory);
         }
 
+        [Authorize(Policy = Permissions.Donors.ViewNotifications)]
         public async Task<IActionResult> Notifications()
         {
             var userId = _userManager.GetUserId(User);

@@ -39,7 +39,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = Permissions.SuperAdmin.ViewStatistics)]
+        [Authorize(Policy = Permissions.SuperAdmin.Create)]
         public async Task<IActionResult> CreateSuperAdmin(SuperAdminModel user)
         {
             if (ModelState.IsValid)

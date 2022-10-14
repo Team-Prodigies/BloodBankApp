@@ -123,6 +123,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.Roles.ViewUserRoles)]
         public async Task<IActionResult> GetUserRoles(Guid userId)
         {
             var model = await _rolesService.GetUserRoles(userId);
@@ -130,6 +131,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.Roles.SetUserRoles)]
         public async Task<IActionResult> SetUserRoles(UserRoleModel model)
         {
             if (!ModelState.IsValid)

@@ -3,13 +3,16 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
+using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 {
     [Area("HospitalAdmin")]
+    [Authorize]
     public class HospitalController : Controller
     {
         private readonly IHospitalService _hospitalService;
@@ -28,6 +31,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
         }
 
+        [Authorize(Policy = Permissions.HospitalAdmin.ViewHospital)]
         public async Task<IActionResult> ManageHospital()
         {
             var hospitalAdmin = await _hospitalService.GetHospitalForHospitalAdmin(User);
@@ -36,6 +40,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.HospitalAdmin.EditHospital)]
         public async Task<IActionResult> EditHospital(Guid hospitalId)
         {
             var hospital = await _hospitalService.GetHospitalForHospitalAdm(hospitalId);
@@ -53,6 +58,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.HospitalAdmin.EditHospital)]
         public async Task<IActionResult> EditHospital(EditHospitalModel hospital)
         {
 
