@@ -55,7 +55,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             var getPost = await _context.DonationPosts.FindAsync(notificationId);
 
             var postModel = new PostModel {
-                NotificationId = getPost.DonationPostId,
+                DonationPostId = getPost.DonationPostId,
                 DateRequired = getPost.DateRequired,
                 Description = getPost.Description,
                 AmountRequested = getPost.AmountRequested,

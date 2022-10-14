@@ -8,7 +8,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.ViewModels
     public class PostModel
     {
         [Key]
-        public Guid NotificationId { get; set; }
+        public Guid DonationPostId { get; set; }
         public DateTime DateRequired { get; set; }
 
         [Required]
