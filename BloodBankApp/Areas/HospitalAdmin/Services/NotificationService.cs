@@ -63,6 +63,17 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             }
         }
 
+        public async Task<List<Notification>> GetNotificationsForDonor(string donorId)
+        {
+            var notifications = await _context.UserNotifications
+                .Include(x=>x.Notification)
+                .Where(x => x.Id == Guid.Parse(donorId))
+                .Select(x=>x.Notification)
+                .ToListAsync();
+
+            return notifications;
+        }
+
         public async Task<bool> SendNotificationToDonors(BloodReserveModel reserve, Guid hospitalId)
         {
             var potentialDonors = await GetPotentialDonors(reserve, hospitalId);

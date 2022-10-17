@@ -86,17 +86,17 @@
             <tbody>
                 @foreach (var donation in Model)
                 {
-                    <tr>
-                        <td>@donation.Donor.User.Name</td>
-                        <td>@donation.Donor.User.Surname</td>
-                        <td>@donation.Amount</td>
-                        <td>@donation.DonationDate</td>
-                        <td>
-                            <a asp-action="EditDonation" asp-controller="Donations" asp-route-donationId="@donation.BloodDonationId" type="button" class="btn btn-primary">
-                                Edit
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@donation.Donor.User.Name</td>
+                    <td>@donation.Donor.User.Surname</td>
+                    <td>@donation.Amount</td>
+                    <td>@donation.DonationDate</td>
+                    <td>
+                        <a asp-action="EditDonation" asp-controller="Donations" asp-route-donationId="@donation.BloodDonationId" type="button" class="btn btn-primary">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

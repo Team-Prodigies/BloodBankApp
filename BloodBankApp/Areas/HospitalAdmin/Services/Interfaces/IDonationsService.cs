@@ -16,5 +16,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces
         Task<bool> ApproveDonationRequest(Guid requestId, double amount);
         Task<bool> RemoveDonationRequest(Guid requestId);
         Task<Guid> GetCurrentHospitalId();
+        Task<bool> AddDonationRequest(Guid postId, Guid donorId);
     }
 }

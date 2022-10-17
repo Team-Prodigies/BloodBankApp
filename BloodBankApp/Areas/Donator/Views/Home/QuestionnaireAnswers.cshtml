@@ -4,41 +4,42 @@
     var post = ViewBag.Post;
 }
 
-    <div class="card text-center">
-        <div class="card-body">
-            <h2 class="p-3">Post Questionnaire</h2>
-            <p class="card-text">
-                Before sending a request for wanting to donate, first we need from you to fill some information regarding your health.
-            </p>
-            <hr />
-            <br />
-            <!-- General Form Elements -->
-            <div class="container">
-                <form asp-controller="Home" asp-action="CheckQuestion" asp-route-postId="@post">
-                    <fieldset class="row mb-5 pb-5 align-content-center">
-                        @for (int i = 0; i < Model.Questions.Count(); i++) {
-                            <legend class="col-form-label col-sm-9 pb-3 mb-2 text-start">@Model.Questions[i].Description</legend>
-                            <div class="col-sm-1 pb-3 mb-2">
-                                <input type="hidden" asp-for="@Model.Questions[i].QuestionId" />
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="1">
-                                    <label class="form-check-label">Yes</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="2">
-                                    <label class="form-check-label">No</label>
-                                </div>
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="p-3">Post Questionnaire</h2>
+        <p class="card-text">
+            Before sending a request for wanting to donate, first we need from you to fill some information regarding your health.
+        </p>
+        <hr/>
+        <br/>
+        <!-- General Form Elements -->
+        <div class="container">
+            <form asp-controller="Home" asp-action="CheckQuestion" asp-route-postId="@post">
+                <fieldset class="row mb-5 pb-5 align-content-center">
+                    @for (int i = 0; i < Model.Questions.Count(); i++)
+                    {
+                        <legend class="col-form-label col-sm-9 pb-3 mb-2 text-start">@Model.Questions[i].Description</legend>
+                        <div class="col-sm-1 pb-3 mb-2">
+                            <input type="hidden" asp-for="@Model.Questions[i].QuestionId"/>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="1">
+                                <label class="form-check-label">Yes</label>
                             </div>
-                        }
-                    </fieldset>
-                    <div class="row mb-3">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit Form</button>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].Answer" value="2">
+                                <label class="form-check-label">No</label>
+                            </div>
                         </div>
+                    }
+                </fieldset>
+                <div class="row mb-3">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit Form</button>
                     </div>
-                </form>
-            </div>
-            
-            <br />
+                </div>
+            </form>
         </div>
+
+        <br/>
     </div>
+</div>
