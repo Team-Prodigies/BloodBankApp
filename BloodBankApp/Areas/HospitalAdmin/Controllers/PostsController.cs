@@ -101,9 +101,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
         [HttpGet]
         [Authorize(Policy = Permissions.HospitalAdmin.EditPosts)]
-        public async Task<IActionResult> EditPost(Guid notificationId)
+        public async Task<IActionResult> EditPost(Guid DonationPostId)
         {
-            var changePost = await _postService.EditPost(notificationId);
+            var changePost = await _postService.EditPost(DonationPostId);
             ViewBag.BloodType = _bloodTypeList;
             ViewData["PostStatus"] = _postStatus;
 
@@ -136,9 +136,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [Authorize(Policy = Permissions.HospitalAdmin.DeletePosts)]
-        public async Task<IActionResult> DeletePost(Guid notificationId)
+        public async Task<IActionResult> DeletePost(Guid DonationPostId)
         {
-            var deletePost = await _postService.DeletePost(notificationId);
+            var deletePost = await _postService.DeletePost(DonationPostId);
             if (deletePost == false)
             {
                 _notyfService.Error("Post not found!");

@@ -92,6 +92,12 @@ namespace BloodBankApp.Areas.Donator.Controllers
         [HttpGet]
         public async Task<IActionResult> QuestionnaireAnswers(Guid postId)
         {
+            var getUser = await _userManager.GetUserAsync(User);
+            var getDonationRequest = _postService.GetDonationRequest(postId, getUser.Id);
+            if (getDonationRequest) {
+                _notyfService.Error("Cant Donate in the same post");
+                return RedirectToAction("Index");
+            }
             var getQuestions = await _postService.GetQuestionnaireQuestions();
             var getPost = await _postService.GetPost(postId);
 
@@ -112,14 +118,14 @@ namespace BloodBankApp.Areas.Donator.Controllers
             {
                 if (getQuestions[i].Answer == answers.Questions[i].Answer) continue;
                 _notyfService.Error("Sorry you are not in a good health condition to donate");
-                return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
+                return RedirectToAction(nameof(Index), new { postId = getPost.DonationPostId });
             }
 
-            var result =await _donationsService.AddDonationRequest(getPost.DonationPostId, getUser.Result.Id);
+            var result = await _donationsService.AddDonationRequest(getPost.DonationPostId, getUser.Result.Id);
             if(!result) _notyfService.Error("There was a problem sending your request");
 
             _notyfService.Success("Donation request has been recorded!");
-            return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
+            return RedirectToAction(nameof(Index), new { postId = getPost.DonationPostId });
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDonationHistory)]
