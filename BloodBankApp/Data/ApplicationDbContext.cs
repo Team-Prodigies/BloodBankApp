@@ -131,8 +131,6 @@ namespace BloodBankApp.Data
                .OnDelete(DeleteBehavior.Cascade);
             });
 
-            
-
             builder.Entity<Hospital>(h =>
             {
                 h.HasOne(b => b.Location)

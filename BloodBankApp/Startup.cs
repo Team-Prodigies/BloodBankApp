@@ -81,7 +81,9 @@ namespace BloodBankApp
 
             services.AddRazorPages();
             services.AddNotyf(config => {
-                config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; 
+                config.DurationInSeconds = 10; 
+                config.IsDismissable = true; 
+                config.Position = NotyfPosition.TopRight; 
             });
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
@@ -90,7 +92,7 @@ namespace BloodBankApp
             {
                 mapper.AddProfile(new MappingProfile());
             });
-            IMapper mapper = mapperConfig.CreateMapper();
+            var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
             services.AddSignalR();

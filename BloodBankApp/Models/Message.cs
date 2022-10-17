@@ -35,5 +35,4 @@ namespace BloodBankApp.Models
             this.Sender = (MessageSender)Sender;
         }
     }
-
 }
