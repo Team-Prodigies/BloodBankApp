@@ -43,16 +43,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return true;
         }
 
-        public async Task<bool> DeletePost(Guid notificationId) {
-            var deletePost = await _context.DonationPosts.FindAsync(notificationId);
+        public async Task<bool> DeletePost(Guid DonationPostId) {
+            var deletePost = await _context.DonationPosts.FindAsync(DonationPostId);
             if (deletePost == null) return false;
             _context.DonationPosts.Remove(deletePost);
 
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<PostModel> EditPost(Guid notificationId) {
-            var getPost = await _context.DonationPosts.FindAsync(notificationId);
+        public async Task<PostModel> EditPost(Guid DonationPostId) {
+            var getPost = await _context.DonationPosts.FindAsync(DonationPostId);
 
             var postModel = new PostModel {
                 DonationPostId = getPost.DonationPostId,
