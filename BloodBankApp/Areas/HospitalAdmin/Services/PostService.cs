@@ -247,7 +247,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
                     Description = q.Description
                 }).ToListAsync();
             var questionsList = new QuestionnaireAnswers(questions);
-
             return questionsList;
         }
 
@@ -260,6 +259,19 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             var getPost = await _context.DonationPosts.FindAsync(postId);
 
             return getPost;
+        }
+
+        public bool GetDonationRequest(Guid postId,Guid donorId) 
+        {
+            var donationRequestExists = _context.DonationRequest
+                .Where(x => x.DonationPostId == postId && x.DonorId == donorId)
+                .FirstOrDefault();
+
+            if (donationRequestExists != null) 
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

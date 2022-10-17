@@ -18,5 +18,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
         Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
         Task<List<Question>> GetAllQuestions();
         Task<DonationPost> GetPost(Guid postId);
+        bool GetDonationRequest(Guid postId, Guid donorId);
     }
 }

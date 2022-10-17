@@ -192,17 +192,17 @@
                 </a>
                 <ul id="question-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-controller="Questionnaire" asp-action="CreateQuestionnaire">
+                        <a asp-area="SuperAdmin" asp-controller="Questionnaire" asp-action="CreateQuestionnaire">
                             <i class="bi bi-circle"></i><span>Create Questionnaire</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Questionnaire" asp-action="ManageQuestions">
+                        <a asp-area="SuperAdmin" asp-controller="Questionnaire" asp-action="ManageQuestions">
                             <i class="bi bi-circle"></i><span>Manage Questions</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Questionnaire" asp-action="CreateQuestion">
+                        <a asp-area="SuperAdmin" asp-controller="Questionnaire" asp-action="CreateQuestion">
                             <i class="bi bi-circle"></i><span>Create Questions</span>
                         </a>
                     </li>
@@ -214,7 +214,7 @@
                 </a>
                 <ul id="donors-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-action="Donors" asp-controller="Donors">
+                        <a asp-area="SuperAdmin" asp-action="Donors" asp-controller="Donors">
                             <i class="bi bi-circle"></i><span>Manage users</span>
                         </a>
                     </li>
@@ -226,12 +226,12 @@
                 </a>
                 <ul id="roles-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-action="AllRoles" asp-controller="Roles" asp-area="SuperAdmin">
+                        <a asp-area="SuperAdmin" asp-action="AllRoles" asp-controller="Roles" asp-area="SuperAdmin">
                             <i class="bi bi-circle"></i><span>Manage Roles</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-action="CreateRole" asp-controller="Roles" asp-area="SuperAdmin">
+                        <a asp-area="SuperAdmin" asp-action="CreateRole" asp-controller="Roles" asp-area="SuperAdmin">
                             <i class="bi bi-circle"></i><span>Add Role</span>
                         </a>
                     </li>
@@ -243,12 +243,12 @@
                 </a>
                 <ul id="cities-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-controller="Cities" asp-action="Cities">
+                        <a asp-area="SuperAdmin" asp-controller="Cities" asp-action="Cities">
                             <i class="bi bi-circle"></i><span>Manage Cities</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Cities" asp-action="AddNewCity">
+                        <a asp-area="SuperAdmin" asp-controller="Cities" asp-action="AddNewCity">
                             <i class="bi bi-circle"></i><span>Add City</span>
                         </a>
                     </li>
