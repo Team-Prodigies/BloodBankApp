@@ -3,6 +3,10 @@
     ViewData["Title"] = "Donations";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+</head>
+
 @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
 {
     <h1>Search results for "@ViewBag.SearchTerm"</h1>
@@ -70,40 +74,44 @@
     </script>
 </div>
 
-<div class="card container">
-    <div class="card-body">
-        <h5 class="card-title">List of blood donations</h5>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Date</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var donation in Model)
-                {
-                <tr>
-                    <td>@donation.Donor.User.Name</td>
-                    <td>@donation.Donor.User.Surname</td>
-                    <td>@donation.Amount</td>
-                    <td>@donation.DonationDate</td>
-                    <td>
-                        <a asp-action="EditDonation" asp-controller="Donations" asp-route-donationId="@donation.BloodDonationId" type="button" class="btn btn-primary">
-                            Edit
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="SendMail" asp-controller="SendEmail" type="button" class="btn btn-primary">
-                            SendEmail
-                        </a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+<div class="container-fluid bg-white">
+    <div>
+        <div class="table-responsive">
+            <div class="container-fluid">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr class="donator-table">
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Edit</th>
+                        <th>Send Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var donation in Model)
+                        {
+                            <tr class="donator-table">
+                                <td>@donation.Donor.User.Name</td>
+                                <td>@donation.Donor.User.Surname</td>
+                                <td>@donation.Amount ml</td>
+                                <td>@donation.DonationDate.ToShortDateString()</td>
+                                <td>
+                                    <a asp-action="EditDonation" asp-controller="Donations" asp-route-donationId="@donation.BloodDonationId" type="button" class="btn btn-primary">
+                                        Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="SendMail" asp-controller="SendEmail" type="button" class="btn btn-primary">
+                                        SendEmail
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

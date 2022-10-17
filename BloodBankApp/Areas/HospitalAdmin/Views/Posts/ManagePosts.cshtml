@@ -50,31 +50,40 @@
 
     </div>
 </div>
-<br />
-<br />
-<div class="row justify-content-start">
-    @foreach (var getPost in Model)
-    {
-        <div class="col-md-5">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@getPost.Hospital.HospitalName</h5>
-                    <p class="card-text">@getPost.Description</p>
-                    <p class="card-text">Tipi: @getPost.BloodType.BloodTypeName</p>
-                    <p class="card-text">Sasia: @getPost.AmountRequested ml</p>
-                    <p class="card-text">Data: @getPost.DateRequired</p>
-                    @if (((int)getPost.PostStatus) == 1)
-                    {
-                        <p class="card-text text-success">Statusi: @getPost.PostStatus</p>
-                    }
-                    else
-                    {
-                        <p class="card-text text-danger">Statusi: @getPost.PostStatus</p>
-                    }
-                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.DonationPostId">Edit</a>
-                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.DonationPostId">Delete</a>
+
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-75 mt-5 mb-5">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-4">
+            @foreach (var getPost in Model)
+            {
+                <div class="col">
+                    <div class="card" style="min-height: 100%;">
+                        <div class="card-body me-3 ms-3 mt-2">
+                            <h5 class="card-title">@getPost.Hospital.HospitalName</h5>
+                            <p class="card-text"><strong>Description: </strong>@getPost.Description</p>
+                            <p class="card-text"><strong>BloodType: </strong> @getPost.BloodType.BloodTypeName</p>
+                            <p class="card-text"><strong>Amount: </strong> @getPost.AmountRequested ml</p>
+                            <p class="card-text"><strong>Date: </strong> @getPost.DateRequired</p>
+                            @if (((int)getPost.PostStatus) == 1)
+                            {
+                                <p class="card-text text-success"><strong>Statusi: </strong> @getPost.PostStatus</p>
+                            }
+                            else
+                            {
+                                <p class="card-text text-danger"><strong>Statusi: </strong>@getPost.PostStatus</p>
+                            }
+                            <div class="d-flex justify-content-center">
+                                <div class="pe-2">
+                                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.DonationPostId">Edit</a>
+                                </div>
+                                <div class="ps-2">
+                                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.DonationPostId">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-    }
+    </div>
 </div>

@@ -31,18 +31,13 @@
 <body>
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
-            <a asp-area="SuperAdmin" asp-controller="AdminHome" asp-action="Index" class="d-flex align-items-center">
+            <a asp-area="HospitalAdmin" asp-controller="Hospital" asp-action="ManageHospital" class="d-flex align-items-center">
                 <img src="~/Images/logo.png" alt="" class="img-fluid me-2 me-md-5" style="height: 50px">
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle" href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>

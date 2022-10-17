@@ -5,49 +5,49 @@
 }
 
 <div class="d-flex justify-content-center">
-    <div class="col-lg-10">
+    <div class="col-10">
         <div class="card">
             <div class="card-body p-5">
                 <h5 class="card-title">Update Donation</h5>
                 <form asp-action="EditDonation" asp-controller="Donations" asp-area="HospitalAdmin" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row mb-3">
-                        <input asp-for="Donor.DonorId" type="hidden" style="display:none" />
-                        <input asp-for="BloodDonationId" type="hidden" style="display:none" />
+                        <input asp-for="Donor.DonorId" type="hidden" class="d-none" />
+                        <input asp-for="BloodDonationId" type="hidden" class="d-none" />
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="Donor.User.Name" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="Donor.User.Name" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="Donor.User.Name" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="Donor.User.Surname" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="Donor.User.Surname" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="Donor.User.Surname" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="Donor.PersonalNumber" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="Donor.PersonalNumber" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="Donor.PersonalNumber" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="Donor.BloodType.BloodTypeName" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="Donor.BloodType.BloodTypeName" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="Donor.BloodType.BloodTypeName" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="Amount" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="Amount" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="Amount" class="form-control" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label asp-for="DonationDate" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
+                        <label asp-for="DonationDate" class="col-lg-2 col-10 col-form-label"></label>
+                        <div class="col-lg-10">
                             <input asp-for="DonationDate" class="form-control" />
                         </div>
                     </div>
