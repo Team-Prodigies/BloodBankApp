@@ -27,18 +27,13 @@
                         <td>@request.DonationPost.Description</td>
                         <td>@request.RequestDate</td>
                         <td style="margin: 0; padding: 0;">
-
                             @{
                                 var idName = "approveRequest" + request.Id + "a";
                                 var approveButton = "#approveRequest" + request.Id + "a";
                             }
-                            <a type="button" class="bi-check-square-fill" style="font-size: 30px; color: green;" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-                            </a>@*
 
-                            <a asp-action="ApproveRequest" asp-controller="Donations" asp-route-requestId="@request.Id" type="button" class="bi-check-square-fill" style="font-size: 30px; color: green;">
-                            </a>*@
-                            <a asp-action="RejectRequest" asp-controller="Donations" asp-route-requestId="@request.Id" type="button" class="bi-x-square-fill" style="font-size: 30px; color: red;">
-                            </a>
+                            <a type="button" class="bi-check-square-fill" style="font-size: 30px; color: green;" data-bs-toggle="modal" data-bs-target="#verticalycentered"></a>
+                            <a type="button" asp-action="RejectRequest" asp-controller="Donations" asp-route-requestId="@request.Id" class="bi-x-square-fill" style="font-size: 30px; color: red;"></a>
 
                             <div class="modal fade" id="verticalycentered" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">

@@ -61,7 +61,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [Authorize(Policy = Permissions.HospitalAdmin.EditHospital)]
         public async Task<IActionResult> EditHospital(EditHospitalModel hospital)
         {
-
             if (!ModelState.IsValid)
             {
                 ViewData["CityId"] = _cityList;

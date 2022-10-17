@@ -1,10 +1,10 @@
 ﻿@model List<DonatorModel>
 
 @{
-    ViewData["Title"] = "ManageDonators";
+    ViewData["Title"] = "Manage Donors";
 }
 
-<h1>Manage Donators</h1>
+<h1>Manage Donors</h1>
 
 <div class="card container">
     <div class="card-body">
@@ -23,17 +23,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var donator in Model)
+                @foreach (var donor in Model)
                 {
                     <tr>
-                        <td>@donator.Name</td>
-                        <td>@donator.Surname</td>
-                        <td>@donator.DateOfBirth.ToShortDateString()</td>
-                        <td>@donator.PersonalNumber</td>
-                        <td>@donator.Gender</td>
-                        <td>@donator.BloodTypeName</td>
-                        <td>@donator.CityName</td>
-                        <td>@donator.Locked</td>
+                        <td>@donor.Name</td>
+                        <td>@donor.Surname</td>
+                        <td>@donor.DateOfBirth.ToShortDateString()</td>
+                        <td>@donor.PersonalNumber</td>
+                        <td>@donor.Gender</td>
+                        <td>@donor.BloodTypeName</td>
+                        <td>@donor.CityName</td>
+                        <td>@donor.Locked</td>
                     </tr>
                 }
             </tbody>
