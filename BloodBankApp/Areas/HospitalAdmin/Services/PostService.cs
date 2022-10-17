@@ -65,8 +65,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services {
             return postModel;
         }
 
-        public async Task<bool> EditPosts(PostModel post, Guid notificationId) {
-            var getPost = await _context.DonationPosts.FindAsync(notificationId);
+        public async Task<bool> EditPosts(PostModel post) {
+            var getPost = await _context.DonationPosts.FindAsync(post.DonationPostId);
             if (getPost == null) return false;
             getPost.PostStatus = post.PostStatus;
             getPost.Description = post.Description;

@@ -20,7 +20,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly INotyfService _notyfService;
 
         public BloodReservesController(IBloodReservesService bloodReservesService,
-            INotyfService notyfService, 
+            INotyfService notyfService,
             IBloodTypesService bloodTypesService)
         {
             _bloodReservesService = bloodReservesService;

@@ -13,7 +13,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
         Task<List<PostModel>> GetPostsByCity(Guid id, int pageNumber = 1);
         Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1);
         Task<PostModel> EditPost(Guid notificationId);
-        Task<bool> EditPosts(PostModel post, Guid notificationId);
+        Task<bool> EditPosts(PostModel post);
         Task<bool> DeletePost(Guid notificationId);
         Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
         Task<List<Question>> GetAllQuestions();

@@ -1,8 +1,7 @@
 ﻿@model List<DonorModels>
 
 @{
-    ViewData["Title"] = "PotencialDonors";
-    Layout = "~/Areas/HospitalAdmin/Views/Shared/_HospitalAdminLayout.cshtml";
+    ViewData["Title"] = "Potential Donors";
 }
 
 <header>
@@ -48,18 +47,6 @@
     </style>
 </header>
 
-@*<div class="dropdown">
-    <button class="dropbtn">Cities</button>
-    <div class="dropdown-content">
-        @foreach (var city in ViewBag.Cities)
-        {
-            <a asp-controller="Donators" asp-action="PotencialDonors" asp-route-cityName="@city.CityName" asp-route-bloodTypeName="@ViewBag.BloodType">@city.CityName</a>
-        }
-    </div>
-</div>*@
-
-
-
 <div class="search-bar row g-3 col">
     <form class="search-form d-flex align-items-center mb-2" asp-action="PotencialDonors" asp-controller="Donators" method="post">
         <select name="bloodTypeId" class="form-select" required asp-items="ViewBag.BloodTypeId" aria-label="Default select example">
@@ -76,9 +63,7 @@
 {
     <div>
         <p>Showing results for blood type @ViewBag.BloodTypeName and city @ViewBag.CityName</p>
-    </div>    
-
-
+    </div>
 
     <div class="card container">
         <div class="card-body">

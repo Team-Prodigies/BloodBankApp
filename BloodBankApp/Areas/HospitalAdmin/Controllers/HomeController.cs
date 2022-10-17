@@ -39,18 +39,18 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
         [HttpGet]
         [Authorize(Policy = Permissions.HospitalAdmin.ViewProfile)]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var user = _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
             var hospitalAdmin = new HospitalAdminModel
             {
-                Id = user.Result.Id,
-                Name = user.Result.Name,
-                Surname = user.Result.Surname,
-                UserName = user.Result.UserName,
-                PhoneNumber = user.Result.PhoneNumber,
-                DateOfBirth = user.Result.DateOfBirth,
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
             };
             return View(hospitalAdmin);
         }
@@ -65,9 +65,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
                 return View(nameof(ChangePassword));
             }
 
-            var getUser = _userManager.GetUserAsync(User);
+            var getUser = await _userManager.GetUserAsync(User);
 
-            if (getUser.Result.Id != hospitalModel.Id)
+            if (getUser.Id != hospitalModel.Id)
             {
                 _notyfService.Error("Your changes are not right.");
                 return View(nameof(Profile));
