@@ -97,7 +97,7 @@
 
         $.get("/api/Suggestions/GetHospitalsSuggestions?search=" + $input.val(), function (data, status) {
 
-            if (status == 'success') {
+            if (status === 'success') {
 
                 $("#hospitalsSuggestions").empty();
 

@@ -13,7 +13,9 @@
             <select name="id" class="form-select" required asp-items="ViewBag.CityId" aria-label="Default select example">
                 <option value="">Select by City</option>
             </select>
-            <button type="submit" title="Search" class="btn btn-outline-info"><i class="bi bi-search"></i></button>
+            <button type="submit" title="Search" class="btn btn-outline-info">
+                <i class="bi bi-search"></i>
+            </button>
         </form>
     </div>
 </div>
@@ -27,16 +29,26 @@
                     <div class="card" style="min-height: 100%">
                         <div class="card-body me-3 ms-3 mt-2">
                             <h5 class="card-title text-center" style="color: #d1001f">@posts.Hospital.HospitalName</h5>
-                            <p class="card-text"><strong>BloodType:</strong>  @posts.BloodType.BloodTypeName </p>
-                            <p class="card-text"><strong>Description:</strong>  @posts.Description </p>
+                            <p class="card-text">
+                                <strong>BloodType:</strong> @posts.BloodType.BloodTypeName
+                            </p>
+                            <p class="card-text">
+                                <strong>Description:</strong> @posts.Description
+                            </p>
                             <div class="d-flex justify-content-around">
-                                <p class="card-text"><strong>City:</strong> @posts.Hospital.City.CityName</p>
+                                <p class="card-text">
+                                    <strong>City:</strong> @posts.Hospital.City.CityName
+                                </p>
                                 <p class="card-text"><strong>Amount:</strong> @posts.AmountRequested ml </p>
                             </div>
-                            <p class="card-text"><strong>Date Required:</strong> @posts.DateRequired</p>
+                            <p class="card-text">
+                                <strong>Date Required:</strong> @posts.DateRequired
+                            </p>
                         </div>
                         <div class="text-center card-footer">
-                            <a href="#" class="btn btn-outline-danger w-100">Donate Now</a>
+                            <a asp-controller="Home" asp-action="QuestionnaireAnswers" asp-route-postId="@posts.DonationPostId" class="btn btn-danger">
+                                Donate now
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -58,14 +70,18 @@
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-controller="Home"
-               asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">
+                            @i
+                        </a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Home" asp-action="DonationPostCityResults"
-               asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+                           asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">
+                            @i
+                        </a>
                     </li>
                 }
             }
@@ -75,18 +91,22 @@
             for (int i = ViewBag.pageNumber - 3, j = 1; j <= 6; i++, j++)
             {
                 if
-                (i == ViewBag.pageNumber)
+                    (i == ViewBag.pageNumber)
                 {
                     <li class="page-item active">
                         <a class="page-link"
-               asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+                           asp-controller="Home" asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">
+                            @i
+                        </a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-controller="Home"
-               asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">@i</a>
+                           asp-action="DonationPostCityResults" asp-route-pageNumber="@i" asp-route-id="@ViewBag.id">
+                            @i
+                        </a>
                     </li>
                 }
             }

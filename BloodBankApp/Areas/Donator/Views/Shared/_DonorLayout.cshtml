@@ -1,6 +1,5 @@
 ﻿@inject UserManager<User> UserManager
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,136 +33,140 @@
 </head>
 
 <body style="background-color: #fff">
-    <header id="header" class="header fixed-top d-flex align-items-center bg-custom1">
-        <h1>
-            @{
-                var user = UserManager.GetUserAsync(User);
+<header id="header" class="header fixed-top d-flex align-items-center bg-custom1">
+    <h1>
+        @{
+            var user = UserManager.GetUserAsync(User);
 
-            }
+        }
 
-        </h1>
-        <div class="d-flex justify-content-center">
-            <a asp-area="Donator" asp-controller="Home" asp-action="Index" class="d-flex align-items-center">
-                <img src="~/Images/logo.png" alt="" class="img-fluid me-2 me-md-5" style="height: 50px">
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn" style="color: #d1001f"></i>
-        </div>
-        <nav class="header-nav ms-auto">
-            <ul class="d-flex align-items-center">
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li>
-                <li class="nav-item dropdown" >
-                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number" id="postsNotificationsNumber"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="postsNotificationsBell">
-                        <li class="dropdown-header">
-                            You have new notifications
-                            <a asp-area="Donator" asp-controller="Home" asp-action="Notifications"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>                        
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-chat-left-text"></i>
-                        <span class="badge bg-success badge-number" id="messagesNotificationsNumber"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="messagesNotificationsBell">
-                      <li class="dropdown-header">
-                            <a ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>                   
-                        
-                       
-                    </ul>
-                </li>
-                <li class="nav-item dropdown pe-3">
-
-                    @{
-                        string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=d1001f&color=fff";
-                    }
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="@initialsUrl" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2" style="color: #d1001f">@user.Result.Name @user.Result.Surname</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li class="dropdown-header">
-                            <h6>@user.Result.Name @user.Result.Surname</h6>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-area="" asp-controller="Issue" asp-action="ReportIssue">
-                                <i class="bi bi-exclamation-square-fill"></i>
-                                <span>Report an issue</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <aside id="sidebar" class="sidebar bg-custom1">
-        <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item  bg-custom1">
-                <a class="bg-custom1-h nav-link" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-grid" style="color: black"></i>
-                    <span>Posts</span>
+    </h1>
+    <div class="d-flex justify-content-center">
+        <a asp-area="Donator" asp-controller="Home" asp-action="Index" class="d-flex align-items-center">
+            <img src="~/Images/logo.png" alt="" class="img-fluid me-2 me-md-5" style="height: 50px">
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn" style="color: #d1001f"></i>
+    </div>
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " href="#">
+                    <i class="bi bi-search"></i>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-house-door" style="color: black"></i>
-                    <span>Home Page</span>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-primary badge-number" id="postsNotificationsNumber"></span>
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="postsNotificationsBell">
+                    <li class="dropdown-header">
+                        You have new notifications
+                        <a asp-area="Donator" asp-controller="Home" asp-action="Notifications">
+                            <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                </ul>
             </li>
-            <li class="nav-item">
-                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="DonationsHistory">
-                    <i class="bi bi-card-list" style="color: black"></i>
-                    <span>My Donations</span>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="badge bg-success badge-number" id="messagesNotificationsNumber"></span>
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="messagesNotificationsBell">
+                    <li class="dropdown-header">
+                        <a >
+                            <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+
+                </ul>
             </li>
-            <li class="nav-item">
-                            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Notifications">
-                                <i class="bi bi-card-list" style="color: black"></i>
-                                <span>My Notifications</span>
-                            </a>
-                        </li>
-            <li class="nav-item">
-                <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">
-                    <i class="bi bi-card-list" style="color: black"></i>
-                    <span>Chat Rooms</span>
+            <li class="nav-item dropdown pe-3">
+
+                @{
+                    string initialsUrl = "https://ui-avatars.com/api/?name=" + @user.Result.Name + "+" + @user.Result.Surname + "& background=d1001f&color=fff";
+                }
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <img src="@initialsUrl" alt="Profile" class="rounded-circle">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" style="color: #d1001f">@user.Result.Name @user.Result.Surname</span>
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>@user.Result.Name @user.Result.Surname</h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="bi bi-person"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" asp-area="" asp-controller="Issue" asp-action="ReportIssue">
+                            <i class="bi bi-exclamation-square-fill"></i>
+                            <span>Report an issue</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
-    </aside>
+    </nav>
+</header>
+<aside id="sidebar" class="sidebar bg-custom1">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item  bg-custom1">
+            <a class="bg-custom1-h nav-link" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-grid" style="color: black"></i>
+                <span>Posts</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-house-door" style="color: black"></i>
+                <span>Home Page</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="DonationsHistory">
+                <i class="bi bi-card-list" style="color: black"></i>
+                <span>My Donations</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="Home" asp-action="Notifications">
+                <i class="bi bi-card-list" style="color: black"></i>
+                <span>My Notifications</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="bg-custom1-h nav-link collapsed" style="color: black" asp-area="Donator" asp-controller="DonorsChat" asp-action="Hospitals" asp-route-pageNumber="1">
+                <i class="bi bi-card-list" style="color: black"></i>
+                <span>Chat Rooms</span>
+            </a>
+        </li>
+    </ul>
+</aside>
 
 <main id="main" class="main">
     @RenderBody()

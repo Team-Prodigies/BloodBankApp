@@ -15,7 +15,9 @@ namespace BloodBankApp.Areas.Donator.Controllers
     {
         private readonly IHospitalService _hospitalService;
         private readonly UserManager<User> _userManager;
-        public DonorsChatController(IHospitalService hospitalService, UserManager<User> userManager)
+
+        public DonorsChatController(IHospitalService hospitalService,
+            UserManager<User> userManager)
         {
             _hospitalService = hospitalService;
             _userManager = userManager;

@@ -3,7 +3,6 @@ using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.SuperAdmin.Permission;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,24 +24,24 @@ namespace BloodBankApp.Areas.Donator.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IDonatorService _donatorService;
         private readonly INotificationService _notificationService;
-        private readonly ApplicationDbContext _context;
+        private readonly IDonationsService _donationsService;
 
         public HomeController(IPostService postService,
             ICitiesService citiesService,
             INotyfService notyfService,
-            ApplicationDbContext context,
             UserManager<User> userManager,
             IDonatorService donatorService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IDonationsService donationsService)
         {
             _postService = postService;
             _citiesService = citiesService;
             _cityList = new SelectList(citiesService.GetCities().Result, "CityId", "CityName");
             _notyfService = notyfService;
-            _context = context;
             _userManager = userManager;
             _donatorService = donatorService;
             _notificationService = notificationService;
+            _donationsService = donationsService;
         }
 
         [Authorize(Policy = Permissions.Donors.ViewDonationPosts)]
@@ -107,27 +106,17 @@ namespace BloodBankApp.Areas.Donator.Controllers
         {
             var getQuestions = await _postService.GetAllQuestions();
             var getPost = await _postService.GetPost(postId);
+            var getUser = _userManager.GetUserAsync(User);
 
             for (var i = 0; i < getQuestions.Count; i++)
             {
-                if (getQuestions[i].Answer != answers.Questions[i].Answer)
-                {
-                    _notyfService.Error("Sorry you are not in condition to donate now");
-                    return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
-                }
+                if (getQuestions[i].Answer == answers.Questions[i].Answer) continue;
+                _notyfService.Error("Sorry you are not in a good health condition to donate");
+                return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
             }
 
-            var getUser = _userManager.GetUserAsync(User);
-            var getDonor = await _context.Donors.FindAsync(getUser.Result.Id);
-            var request = new DonationRequests
-            {
-                DonationPostId = getPost.DonationPostId,
-                DonorId = getDonor.DonorId,
-                RequestDate = DateTime.Now
-            };
-
-            await _context.DonationRequest.AddAsync(request);
-            await _context.SaveChangesAsync();
+            var result =await _donationsService.AddDonationRequest(getPost.DonationPostId, getUser.Result.Id);
+            if(!result) _notyfService.Error("There was a problem sending your request");
 
             _notyfService.Success("Donation request has been recorded!");
             return RedirectToAction(nameof(QuestionnaireAnswers), new { postId = getPost.DonationPostId });
@@ -137,7 +126,6 @@ namespace BloodBankApp.Areas.Donator.Controllers
         public async Task<IActionResult> DonationsHistory()
         {
             var donationsHistory = await _donatorService.GetBloodDonationsHistory();
-
             return View(donationsHistory);
         }
 
@@ -145,7 +133,7 @@ namespace BloodBankApp.Areas.Donator.Controllers
         public async Task<IActionResult> Notifications()
         {
             var userId = _userManager.GetUserId(User);
-            var notifications = await _notificationService.GetNotificationsForUser(userId);
+            var notifications = await _notificationService.GetNotificationsForDonor(userId);
             return View(notifications);
         }
     }
