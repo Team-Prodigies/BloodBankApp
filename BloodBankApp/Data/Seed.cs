@@ -199,7 +199,7 @@ namespace BloodBankApp.Data
             }
             await context.SaveChangesAsync();
         }
-        public async static Task SeedClaimsForSuperAdmin(RoleManager<IdentityRole<Guid>> roleManager)
+        private static async Task SeedClaimsForSuperAdmin(RoleManager<IdentityRole<Guid>> roleManager)
         {
             var adminRole = await roleManager.FindByNameAsync("SuperAdmin");
             await roleManager.AddPermissionClaim(adminRole, "Cities");
@@ -227,7 +227,7 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Issues.Delete));
             await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.Issues.Edit));
         }
-        public async static Task SeedClaimsForDonor(RoleManager<IdentityRole<Guid>> roleManager)
+        private static async Task SeedClaimsForDonor(RoleManager<IdentityRole<Guid>> roleManager)
         {
             var donorRole = await roleManager.FindByNameAsync("Donor");
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewProfile));
@@ -242,7 +242,7 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.SendMessageToHospital));
             await roleManager.AddClaimAsync(donorRole, new Claim("Permission", Permissions.Donors.ViewHospitalChatRooms));
         }
-        public async static Task SeedClaimsForHospitalAdmin(RoleManager<IdentityRole<Guid>> roleManager)
+        private static async Task SeedClaimsForHospitalAdmin(RoleManager<IdentityRole<Guid>> roleManager)
         {
             var hospitalAdminRole = await roleManager.FindByNameAsync("HospitalAdmin");
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.ViewDashboard));
@@ -268,7 +268,7 @@ namespace BloodBankApp.Data
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.DeletePosts));
             await roleManager.AddClaimAsync(hospitalAdminRole, new Claim("Permission", Permissions.HospitalAdmin.EditPosts));
         }
-        public static async Task AddPermissionClaim(this RoleManager<IdentityRole<Guid>> roleManager, IdentityRole<Guid> role, string module)
+        private static async Task AddPermissionClaim(this RoleManager<IdentityRole<Guid>> roleManager, IdentityRole<Guid> role, string module)
         {
             var allClaims = await roleManager.GetClaimsAsync(role);
             var allPermissions = Permissions.GeneratePermissionsForModule(module);

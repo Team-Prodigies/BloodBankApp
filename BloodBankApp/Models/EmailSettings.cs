@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BloodBankApp.Models {
-    public class EmailSettings 
+﻿namespace BloodBankApp.Models
+{
+    public class EmailSettings
     {
         public string EmailId { get; set; }
         public string Name { get; set; }

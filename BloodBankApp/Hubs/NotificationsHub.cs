@@ -1,7 +1,5 @@
 ﻿using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Models;
-using BloodBankApp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;

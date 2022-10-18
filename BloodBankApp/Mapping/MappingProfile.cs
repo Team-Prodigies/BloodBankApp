@@ -101,22 +101,16 @@ namespace BloodBankApp.Mapping
                     opts => opts.MapFrom(src => src.CityId))
                 .ForMember(dest => dest.BloodTypeId,
                     opts => opts.MapFrom(src => src.BloodTypeId))
-
                 .ReverseMap();
 
             CreateMap<NotRegisteredDonor, User>();
-
             CreateMap<User, ManageUserModel>().ReverseMap();
-
             CreateMap<DonationPost, PostModel>().ReverseMap();
             CreateMap<BloodDonation,BloodDonationModel>().ReverseMap();
             CreateMap<DonationRequests,BloodDonation>().ReverseMap();
-            CreateMap<BloodReserve, BloodReserveModel>()
-                .ReverseMap();
+            CreateMap<BloodReserve, BloodReserveModel>().ReverseMap();
             CreateMap<BloodDonation, BloodDonationsModel>();
-
             CreateMap<Donor, DonorModels>().ReverseMap();
-
         }
     }
 }

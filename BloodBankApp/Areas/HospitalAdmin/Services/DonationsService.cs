@@ -12,7 +12,6 @@ using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
@@ -132,7 +131,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 EmailBody = "Congratulations!" +
                             "\nYou have earned a free check up!"
             };
-            return _mailService.SendEmail(emailData);
+            return await _mailService.SendEmail(emailData);
         }
 
         private async Task<int> GetNumberOfDonations(Guid donorId)
