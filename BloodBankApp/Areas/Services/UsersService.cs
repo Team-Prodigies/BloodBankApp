@@ -59,6 +59,7 @@ namespace BloodBankApp.Areas.Services
             {
                 return await AddUserToRoles(newUser, user.Roles);
             }
+
             return result;
         }
 
@@ -75,6 +76,7 @@ namespace BloodBankApp.Areas.Services
                     }
                 }
             }
+
             return IdentityResult.Success;
         }
 
@@ -157,7 +159,6 @@ namespace BloodBankApp.Areas.Services
 
         public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input)
         {
-
             var donorExists = await _context.Donors
                 .Where(donor => donor.User.Name.Equals(input.Name)
                                 && donor.BloodTypeId == input.BloodTypeId
@@ -332,8 +333,10 @@ namespace BloodBankApp.Areas.Services
                         .ToList();
                     break;
             }
+
             var result = new List<ManageUserModel>();
             users.ForEach(user => result.Add(_mapper.Map<ManageUserModel>(user)));
+
             return Task.FromResult(result);
         }
 
@@ -387,6 +390,7 @@ namespace BloodBankApp.Areas.Services
                 .Where(u=>u.Id != id)
                  .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
             if (phoneNumberInUse != null) return true;
+
             return false;
         }
 
@@ -395,6 +399,7 @@ namespace BloodBankApp.Areas.Services
             var phoneNumberInUse = await _context.Users
                  .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
             if (phoneNumberInUse != null) return true;
+
             return false;
         }
     }
