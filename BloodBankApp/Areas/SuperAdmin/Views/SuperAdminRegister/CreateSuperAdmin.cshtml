@@ -1,52 +1,52 @@
 ﻿@model SuperAdminModel
 
 <div class="d-flex justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-10">
         <div class="card">
             <div class="card-body p-4">
                 <h5 class="card-title">Add new user account</h5>
                 <form method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Name</label>
+                        <div class="col-lg-10">
                             <input class="form-control text-capitalize" asp-for="@Model.Name" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Surname</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Surname</label>
+                        <div class="col-lg-10">
                             <input class="form-control text-capitalize" asp-for="@Model.Surname" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Date of birth</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Date of birth</label>
+                        <div class="col-lg-10">
                             <input class="form-control" asp-for="@Model.DateOfBirth" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">UserName</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">UserName</label>
+                        <div class="col-lg-10">
                             <input class="form-control" asp-for="@Model.UserName" required id="UserName" />
                             <span class="text-danger d-none" id="UserNameIsTaken">This username is already taken!</span>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Email</label>
+                        <div class="col-lg-10">
                             <input class="form-control" asp-for="@Model.Email" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Password</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Password</label>
+                        <div class="col-lg-10">
                             <input class="form-control" asp-for="@Model.Password" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Confirm Password</label>
-                        <div class="col-sm-10">
+                        <label class="col-lg-2 col-10 col-form-label">Confirm Password</label>
+                        <div class="col-lg-10">
                             <input class="form-control" asp-for="@Model.ConfirmPassword" required>
                         </div>
                     </div>

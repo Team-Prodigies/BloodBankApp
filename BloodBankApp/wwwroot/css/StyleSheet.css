@@ -22,7 +22,6 @@ a:hover {
 .social-links {
     display: flex;
     justify-content: center;
-    gap: 1rem;
 }
 
 .footer-links {
@@ -46,7 +45,6 @@ a:hover {
     .footer-row {
         flex-direction: column;
         align-items: center;
-        gap: 2rem;
         margin-left: 0rem;
         margin-right: 0rem;
     }
@@ -174,5 +172,15 @@ h1 {
 
     .donator-table {
         font-size: 10px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #container-issue {
+        width: 100% !important;
+    }
+
+    #container-issue-inside {
+        width: 100% !important;
     }
 }

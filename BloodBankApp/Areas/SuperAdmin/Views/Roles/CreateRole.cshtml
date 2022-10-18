@@ -1,11 +1,11 @@
 ﻿@model PermissionViewModel
 
-<div class="container col-8 card">
+<div class="container col-12 col-md-10 bg-white">
     <div class="card-body">
         <h5 class="card-title">Create Role</h5>
         <form class="row g-3" asp-controller="Roles" asp-action="CreateRole" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="container col-8">
+            <div class="container col-12">
                 <div class="mb-3">
                     <label asp-for="RoleName" class="form-label"></label>
                     <input asp-for="RoleName" class="form-control" id="inputName" required>
@@ -48,7 +48,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="text-start mt-2">
+                <div class="text-start mt-3">
                     <button type="submit" class="btn btn-info">Create</button>
                 </div>
             </div>

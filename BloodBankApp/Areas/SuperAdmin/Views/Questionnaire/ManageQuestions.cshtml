@@ -2,20 +2,24 @@
 
 <h1 class="bg-white p-3 text-center">Manage Questions</h1>
 
-<div class="row">
-    @foreach (var q in Model)
-    {
-        <div class="col-4">
-            <div class="card p-2">
-                <div class="card-body">
-                    <h5>@q.Description</h5>
-                    <p>@q.Answer</p>
-                    <div>
-                        <a class="btn btn-outline-info" asp-controller="Questionnaire" asp-action="Edit" asp-route-QuestionId="@q.QuestionId">Edit</a>
-                        <a class="btn btn-outline-danger" asp-controller="Questionnaire" asp-action="Delete" asp-route-QuestionId="@q.QuestionId">Delete</a>
+<div class="container-fluid w-100 p-0 d-flex justify-content-center">
+    <div class="container ms-2 me-2 w-100 mt-5 mb-5">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 gy-4">
+            @foreach (var q in Model)
+            {
+                <div class="col">
+                    <div class="card p-2 text-center">
+                        <div class="card-body">
+                            <h5>@q.Description</h5>
+                            <p>@q.Answer</p>
+                            <div>
+                                <a class="btn btn-outline-info" asp-controller="Questionnaire" asp-action="Edit" asp-route-QuestionId="@q.QuestionId">Edit</a>
+                                <a class="btn btn-outline-danger" asp-controller="Questionnaire" asp-action="Delete" asp-route-QuestionId="@q.QuestionId">Delete</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    }
+    </div>
 </div>
