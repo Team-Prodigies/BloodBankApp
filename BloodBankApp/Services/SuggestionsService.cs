@@ -45,6 +45,7 @@ namespace BloodBankApp.Services
             {
                 return null;
             }
+
             var suggestions = await _context.Hospitals
                 .Where(hospital => hospital.HospitalName.ToUpper()
                 .Contains(search.ToUpper()))
