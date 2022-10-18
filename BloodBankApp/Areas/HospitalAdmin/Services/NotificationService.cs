@@ -10,7 +10,6 @@ using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
-using static BloodBankApp.Areas.SuperAdmin.Permission.Permissions;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {

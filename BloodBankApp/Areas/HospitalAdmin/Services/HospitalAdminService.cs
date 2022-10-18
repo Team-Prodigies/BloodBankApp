@@ -52,7 +52,5 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             return await _userManager.GetUserAsync(principal);
         }
-
-
     }
 }
