@@ -45,6 +45,12 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
         [Authorize(Policy = Permissions.SuperAdmin.CreateQuestionnaire)]
         public async Task<IActionResult> CreateQuestionnaire(HealthFormQuestionnaire questionnaire)
         {
+            var getQuestionnaire = _context.HealthFormQuestionnaires.FirstOrDefault();
+            if (getQuestionnaire != null) {
+                _notyfService.Error("Questionnaire exists!");
+                return View(nameof(CreateQuestionnaire));
+            }
+
             questionnaire.LastUpdated = DateTime.Now;
             _notyfService.Success("Questionnaire is created");
 

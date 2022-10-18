@@ -71,8 +71,8 @@
                     {
                         <p class="card-text text-danger">Statusi: @getPost.PostStatus</p>
                     }
-                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-notificationId="@getPost.DonationPostId">Edit</a>
-                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-notificationId="@getPost.DonationPostId">Delete</a>
+                    <a class="btn btn-outline-info" asp-controller="Posts" asp-action="EditPost" asp-route-DonationPostId="@getPost.DonationPostId">Edit</a>
+                    <a class="btn btn-outline-danger" asp-controller="Posts" asp-action="DeletePost" asp-route-DonationPostId="@getPost.DonationPostId">Delete</a>
                 </div>
             </div>
         </div>
