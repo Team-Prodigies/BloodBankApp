@@ -94,7 +94,7 @@ namespace BloodBankApp.Services
         {
             try
             {
-                var query = $"UPDATE Message SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 1 AND Seen = 'false'";
+                var query = $"UPDATE Messages SET Seen = 'true' WHERE DonorId = '{donorId}' AND HospitalId = '{hospitalId}' AND Sender = 1 AND Seen = 'false'";
                 await _context.Database.ExecuteSqlRawAsync(query);
             }
             catch (Exception e)
