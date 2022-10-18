@@ -1,5 +1,4 @@
 ﻿using BloodBankApp.Data;
-using BloodBankApp.Models;
 using BloodBankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -62,6 +61,7 @@ namespace BloodBankApp.Services
             {
                 data.Add(entry.BloodType, entry.DonorCount);
             }
+
             return data;
         }
 
@@ -83,6 +83,7 @@ namespace BloodBankApp.Services
             {
                 data.Add(entry.Role, entry.UserCount);
             }
+
             return data;
         }
 
@@ -90,6 +91,5 @@ namespace BloodBankApp.Services
         {
             return await _context.Users.CountAsync();
         }
-
     }
 }

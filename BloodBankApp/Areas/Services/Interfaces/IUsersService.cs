@@ -30,6 +30,5 @@ namespace BloodBankApp.Areas.Services.Interfaces
         Task UnlockUser(User user);
         Task<bool> PhoneNumberIsInUse(Guid id, string phoneNumber);
         Task<bool> PhoneNumberIsInUse(string phoneNumber);
-
     }
 }
