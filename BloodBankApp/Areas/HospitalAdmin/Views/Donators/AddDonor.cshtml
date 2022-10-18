@@ -11,31 +11,31 @@
         <form class="row g-5" asp-controller="Donators" asp-action="AddDonor" asp-area="HospitalAdmin" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="container col-8">
-                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-2">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Name" class="mb-1 mt-2">Name</label>
-                            <input class="form-control text-capitalize" asp-for="Name" required />
+                            <input class="form-control text-capitalize" asp-for="Name" required placeholder="Name" />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Surname" class="mb-1 mt-2">Surname</label>
-                            <input class="form-control text-capitalize" asp-for="Surname" required />
+                            <input class="form-control text-capitalize" asp-for="Surname" required placeholder="Sername" />
                         </div>
                     </div>
                 </div>
-                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-2 mt-2">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="DateOfBirth" class="mb-1 mt-2">Date of birth</label>
-                            <input class="form-control text-capitalize" asp-for="DateOfBirth" required />
+                            <input class="form-control" asp-for="DateOfBirth" required />
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="PersonalNumber" class="mb-1 mt-2">Personal number</label>
-                            <input class="form-control text-capitalize" asp-for="PersonalNumber" required />
+                            <input class="form-control text-capitalize" asp-for="PersonalNumber" required placeholder="Personal Number" />
                             @if (ViewBag.PersonalNumberInUse != null)
                             {
                                 <p class="text-danger">@ViewBag.PersonalNumberInUse</p>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-2 mt-2">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="CityId" class="mb-1 mt-2"></label>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 gy-2 mt-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-2 mt-2">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Gender" class="mb-1 mt-2"></label>
@@ -78,7 +78,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="CodeId" class="mb-1 mt-2">Code</label>
-                            <input class="form-control text-capitalize" asp-for="Code.CodeValue" id="CodeValue" required />
+                            <input class="form-control text-capitalize" asp-for="Code.CodeValue" id="CodeValue" required placeholder="Code" />
                             @if (ViewBag.codeInUse != null)
                             {
                                 <p class="text-danger">@ViewBag.codeInUse</p>

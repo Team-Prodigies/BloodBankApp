@@ -39,11 +39,6 @@
         </div>
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
@@ -137,7 +132,7 @@
                             <a class="dropdown-item d-flex align-items-center">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                    <input type="submit" class="nav-link btn btn-link text-dark" value="Logout" />
                                 </form>
                             </a>
                         </li>

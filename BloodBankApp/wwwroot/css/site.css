@@ -27,10 +27,10 @@
     font-family: "Poppins", sans-serif;
 }
 
-        #header .logo a {
-            color: red;
-            text-decoration: none;
-        }
+    #header .logo a {
+        color: red;
+        text-decoration: none;
+    }
 
 @media (max-width: 768px) {
     .appointment-btn {
@@ -47,6 +47,7 @@
     .navbar ul {
         display: none;
     }
+
     .navbar-mobile {
         position: fixed;
         overflow: hidden;
@@ -58,6 +59,7 @@
         transition: 0.3s;
         z-index: 999;
     }
+
         .navbar-mobile .mobile-nav-toggle {
             position: absolute;
             top: 15px;
@@ -65,12 +67,15 @@
         }
 
         .navbar-mobile ul {
-            display: block;
+            display: flex;
             position: absolute;
-            top: 55px;
-            right: 15px;
-            bottom: 15px;
-            left: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            top: 30%;
+            right: 50px;
+            bottom: 30%;
+            left: 50px;
             padding: 10px 0;
             background-color: #fff;
             overflow-y: auto;
@@ -108,7 +113,7 @@ html {
 }
 
 @media (min-width: 768px) {
-    html{
+    html {
         font-size: 16px;
     }
 
@@ -183,74 +188,6 @@ html {
             color: #fff;
         }
 
-    @media (max-width: 991px) {
-        .mobile-nav-toggle {
-            display: block;
-        }
-
-        .navbar ul {
-            display: none;
-        }
-    }
-
-    .navbar-mobile {
-        position: fixed;
-        overflow: hidden;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        background: rgba(28, 47, 65, 0.9);
-        transition: 0.3s;
-        z-index: 999;
-    }
-
-        .navbar-mobile .mobile-nav-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-
-        .navbar-mobile ul {
-            display: block;
-            position: absolute;
-            top: 55px;
-            right: 15px;
-            bottom: 15px;
-            left: 15px;
-            padding: 10px 0;
-            background-color: #fff;
-            overflow-y: auto;
-            transition: 0.3s;
-        }
-
-        .navbar-mobile > ul > li {
-            padding: 0;
-        }
-
-        .navbar-mobile a,
-        .navbar-mobile a:focus {
-            padding: 10px 20px;
-            font-size: 15px;
-            color: #2c4964;
-            border: none;
-        }
-
-            .navbar-mobile a:hover,
-            .navbar-mobile .active,
-            .navbar-mobile li:hover > a {
-                color: #1977cc;
-            }
-
-        .navbar-mobile .getstarted,
-        .navbar-mobile .getstarted:focus {
-            margin: 15px;
-        }
-
-    html {
-        font-size: 14px;
-    }
-
     @media (min-width: 768px) {
         html {
             font-size: 16px;
@@ -261,7 +198,7 @@ html {
         position: relative;
         min-height: 100%;
     }
-   
+
 
     .valuesBox h1 {
         font-weight: 700;
@@ -411,4 +348,8 @@ html {
         bottom: 30px;
         padding: 40px 20px;
     }
+}
+
+#vh {
+    min-height: 75vh;
 }

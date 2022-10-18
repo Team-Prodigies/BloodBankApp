@@ -1,21 +1,21 @@
 ﻿@model BloodBankApp.Areas.HospitalAdmin.ViewModels.EditHospitalModel
 
-<section>
+<section style="padding-top: 8%;">
     <div class="d-flex justify-content-center">
         <div class="col-lg-6 pt-5">
-            <div class="card">
+            <div class="card text-center">
                 <div class="card-body p-5">
-                    <div class="d-flex">
+                    <div class="d-flex justify-content-center">
                         <div class="icon mx-2">
                             <i class="bi bi-building"></i>
                         </div>
                         <h5 class="text-primary">@Model.HospitalName</h5>
                     </div>
-                    <div class="m-4">
-                        <p>Contact Number: @Model.ContactNumber</p>
-                        <p>Hospital Code: @Model.HospitalCode</p>
+                    <div class="m-4 mb-0">
                         <p>City: @Model.City.CityName</p>
-                        <a class="btn btn-outline-info" asp-area="HospitalAdmin" asp-controller="Hospital" asp-action="EditHospital" asp-route-hospitalId="@Model.HospitalId">Edit</a>
+                        <p>Hospital Code: @Model.HospitalCode</p>
+                        <p>Contact Number: @Model.ContactNumber</p>
+                        <a class="btn btn-outline-info ps-5 pe-5" asp-area="HospitalAdmin" asp-controller="Hospital" asp-action="EditHospital" asp-route-hospitalId="@Model.HospitalId">Edit</a>
                     </div>
                 </div>
             </div>
