@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
     public interface IEmail 
     {
-        bool SendEmail(EmailData emailData);
+        Task<bool> SendEmail(EmailData emailData);
     }
 }

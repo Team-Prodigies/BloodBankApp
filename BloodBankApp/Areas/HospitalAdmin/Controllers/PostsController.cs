@@ -22,11 +22,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         private readonly IHospitalService _hospitalService;
         private readonly INotificationService _notificationService;
         private readonly UserManager<User> _userManager;
-        private SelectList BloodTypeList { get; set; }
+        private readonly SelectList _bloodTypeList;
         private readonly INotyfService _notyfService;
         private readonly IPostService _postService;
         private readonly IBloodTypesService _bloodTypesService;
-        private SelectList PostStatus { get; set; }
+        private readonly SelectList _postStatus;
 
         public PostsController(IBloodTypesService bloodTypesService,
             INotyfService notyfService,
@@ -41,9 +41,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             _userManager = userManager;
             _notyfService = notyfService;
             _postService = postService;
-            BloodTypeList =
+            _bloodTypeList =
                 new SelectList(_bloodTypesService.GetAllBloodTypes().Result, "BloodTypeId", "BloodTypeName");
-            PostStatus = new SelectList(Enum.GetValues(typeof(PostStatus))
+            _postStatus = new SelectList(Enum.GetValues(typeof(PostStatus))
                 .Cast<PostStatus>()
                 .ToList(), "PostStatus");
         }
@@ -62,8 +62,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [Authorize(Policy = Permissions.HospitalAdmin.AddPosts)]
         public IActionResult CreatePosts()
         {
-            _userManager.GetUserId(User);
-            ViewBag.BloodType = BloodTypeList;
+            ViewBag.BloodType = _bloodTypeList;
             return View();
         }
 
@@ -73,7 +72,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.BloodType = BloodTypeList;
+                ViewBag.BloodType = _bloodTypeList;
                 _notyfService.Error("Your form is not correct. Please try again!");
                 return View(nameof(CreatePosts));
             }
@@ -81,7 +80,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             var result = await _postService.AddPost(post, getUser);
             if (result == false)
             {
-                ViewBag.BloodType = BloodTypeList;
+                ViewBag.BloodType = _bloodTypeList;
                 _notyfService.Error("The Date of the post is not correct!");
                 return View(nameof(CreatePosts));
             }
@@ -102,29 +101,33 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
 
         [HttpGet]
         [Authorize(Policy = Permissions.HospitalAdmin.EditPosts)]
-        public async Task<IActionResult> EditPost(Guid notificationId)
+        public async Task<IActionResult> EditPost(Guid DonationPostId)
         {
-            var changePost = await _postService.EditPost(notificationId);
-            ViewBag.BloodType = BloodTypeList;
-            ViewData["PostStatus"] = PostStatus;
+            var changePost = await _postService.EditPost(DonationPostId);
+            ViewBag.BloodType = _bloodTypeList;
+            ViewData["PostStatus"] = _postStatus;
 
             return View(changePost);
         }
 
         [HttpPost]
         [Authorize(Policy = Permissions.HospitalAdmin.EditPosts)]
-        public async Task<IActionResult> EditPost(PostModel post, Guid notificationId)
+        public async Task<IActionResult> EditPost(PostModel post)
         {
             if (!ModelState.IsValid)
             {
                 _notyfService.Error("You form is not correct. Please try again!");
+                ViewBag.BloodType = _bloodTypeList;
+                ViewData["PostStatus"] = _postStatus;
                 return View(nameof(EditPost));
             }
 
-            var res = await _postService.EditPosts(post, notificationId);
+            var res = await _postService.EditPosts(post);
             if (res == false)
             {
                 _notyfService.Error("You form is not correct. Please try again!");
+                ViewBag.BloodType = _bloodTypeList;
+                ViewData["PostStatus"] = _postStatus;
                 return View(nameof(EditPost));
             }
 
@@ -133,9 +136,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         }
 
         [Authorize(Policy = Permissions.HospitalAdmin.DeletePosts)]
-        public async Task<IActionResult> DeletePost(Guid notificationId)
+        public async Task<IActionResult> DeletePost(Guid DonationPostId)
         {
-            var deletePost = await _postService.DeletePost(notificationId);
+            var deletePost = await _postService.DeletePost(DonationPostId);
             if (deletePost == false)
             {
                 _notyfService.Error("Post not found!");

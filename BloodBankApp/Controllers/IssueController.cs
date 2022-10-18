@@ -47,8 +47,9 @@ namespace BloodBankApp.Controllers
             if (!result)
             {
                 _notyfService.Error("The issue could not be posted in the database.");
+                return View();
             }
-            _notyfService.Success("The issue reported succesfuly");
+            _notyfService.Success("The issue reported successfully");
             return RedirectToAction("ReportIssue");
             
         }
@@ -57,7 +58,6 @@ namespace BloodBankApp.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var issue = await _issueService.Edit(id);
-
             return View(issue);
         }
 
@@ -83,7 +83,7 @@ namespace BloodBankApp.Controllers
                 _notyfService.Error("Issue could not be edited!");
                 return View();
             }
-            _notyfService.Success("The issue has been edited successfuly.");
+            _notyfService.Success("The issue has been edited successfully.");
             return RedirectToAction(nameof(Index));
         }
 
@@ -111,9 +111,8 @@ namespace BloodBankApp.Controllers
             {
                 return View();
             }
-            _notyfService.Success("The issue has been deleted successfuly.");
+            _notyfService.Success("The issue has been deleted successfully.");
             return RedirectToAction("Index");
         }
-
     }
 }

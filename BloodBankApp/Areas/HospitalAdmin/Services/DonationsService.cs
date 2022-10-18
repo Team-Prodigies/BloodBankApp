@@ -8,10 +8,10 @@ using BloodBankApp.Areas.HospitalAdmin.Model;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Areas.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
 using BloodBankApp.Data;
 using BloodBankApp.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
@@ -24,11 +24,15 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IUsersService _usersService;
         private readonly IEmail _mailService;
         private readonly INotyfService _notyfService;
+        private readonly IDonorsService _donorsService;
+
         public DonationsService(ApplicationDbContext context,
             IMapper mapper,
             IHttpContextAccessor contextAccessor,
             IUsersService usersService, 
-            IEmail mailService, INotyfService notyfService)
+            IEmail mailService,
+            INotyfService notyfService,
+            IDonorsService donorsService)
         {
             _context = context;
             _mapper = mapper;
@@ -36,6 +40,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             _usersService = usersService;
             _mailService = mailService;
             _notyfService = notyfService;
+            _donorsService = donorsService;
         }
 
         public async Task<Guid> GetCurrentHospitalId()
@@ -44,6 +49,23 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             var hospitalAdmin = await _context.MedicalStaffs.Where(staff => staff.MedicalStaffId == user.Id).FirstOrDefaultAsync();
             return await _context.Hospitals.Where(hospital => hospital.HospitalId == hospitalAdmin.HospitalId).Select(hospital => hospital.HospitalId).FirstOrDefaultAsync();
         }
+
+        public async Task<bool> AddDonationRequest(Guid postId, Guid donorId)
+        {
+            var getDonor = await _donorsService.GetDonor(donorId);
+
+            if (getDonor == null) return false;
+            
+            var request = new DonationRequests
+            {
+                DonationPostId = postId,
+                DonorId = getDonor.DonorId,
+                RequestDate = DateTime.Now
+            };
+            await _context.DonationRequest.AddAsync(request);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
         public async Task<List<BloodDonationModel>> GetAllDonations(string? searchTerm)
         {
             var hospitalId = await GetCurrentHospitalId();
@@ -109,7 +131,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                 EmailBody = "Congratulations!" +
                             "\nYou have earned a free check up!"
             };
-            return _mailService.SendEmail(emailData);
+            return await _mailService.SendEmail(emailData);
         }
 
         private async Task<int> GetNumberOfDonations(Guid donorId)

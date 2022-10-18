@@ -37,8 +37,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [Authorize(Policy = Permissions.HospitalAdmin.ManageDonors)]
         public async Task<IActionResult> ManageDonators()
         {
-            var donators = await _donatorsService.GetDonators();
-            return View(donators);
+            var donors = await _donatorsService.GetDonators();
+            return View(donors);
         }
 
         public IActionResult AddDonor()
@@ -52,42 +52,31 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [Authorize(Policy = Permissions.HospitalAdmin.AddDonors)]
         public async Task<IActionResult> AddDonor(NotRegisteredDonor model)
         {
+            ViewData["CityId"] = _cityList;
+            ViewData["BloodTypeId"] = _bloodTypeList;
             if (!ModelState.IsValid)
             {
-                ViewData["CityId"] = _cityList;
-                ViewData["BloodTypeId"] = _bloodTypeList;
                 return View();
             }
-            var codeExists =await _donatorsService.CodeExists(model.Code.CodeValue);
+            var codeExists = await _donatorsService.CodeExists(model.Code.CodeValue);
             var personalNumberInUse = await _donorsService.PersonalNumberIsInUse(model.PersonalNumber);
            
-            if (personalNumberInUse && codeExists)
+            if (personalNumberInUse || codeExists)
             {
-                ViewData["CityId"] = _cityList;
-                ViewData["BloodTypeId"] = _bloodTypeList;
-                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
-                ViewData["codeInUse"] = "This code is already taken !!";
+                if (personalNumberInUse)
+                {
+                    ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
+                }
+                if (codeExists)
+                {
+                    ViewData["codeInUse"] = "This code is already taken !!";
+                }
                 return View();
-            }
-            else if (personalNumberInUse)
-            {
-                ViewData["CityId"] = _cityList;
-                ViewData["BloodTypeId"] = _bloodTypeList;
-                ViewData["PersonalNumberInUse"] = "This personal number is already taken!";
-                return View();
-            }
-            else if (codeExists)
-            {
-                ViewData["CityId"] = _cityList;
-                ViewData["BloodTypeId"] = _bloodTypeList;
-                ViewData["codeInUse"] = "This code is already taken !!";
-                return View();
-            }
+            } 
+            
             var result = await _donatorsService.AddNotRegisteredDonor(model);
             if (!result)
             {
-                ViewData["CityId"] = _cityList;
-                ViewData["BloodTypeId"] = _bloodTypeList;
                 return View();
             }
 
@@ -109,13 +98,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
         [Authorize(Policy = Permissions.HospitalAdmin.FindPotentialDonors)]
         public async Task<IActionResult> PotencialDonors(Guid bloodTypeId, Guid cityId)
         {
-            var potencialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);
+            var potentialDonors = await _donatorsService.FindPotencialDonors(bloodTypeId, cityId);
 
             ViewData["BloodTypeId"] = _bloodTypeList;
             ViewData["CityId"] = _cityList;
             ViewData["EmptyModel"] = false;
 
-            return View(potencialDonors);
+            return View(potentialDonors);
         }
     }
 }

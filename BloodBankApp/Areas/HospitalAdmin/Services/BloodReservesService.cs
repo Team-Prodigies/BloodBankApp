@@ -7,7 +7,6 @@ using AutoMapper;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Data;
-using BloodBankApp.Enums;
 using BloodBankApp.Models;
 using Microsoft.EntityFrameworkCore;
 

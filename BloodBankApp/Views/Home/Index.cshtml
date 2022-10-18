@@ -2,7 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -98,7 +97,7 @@
     <div class="container ms-2 me-2 w-75 mt-5 mb-4">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 gy-3">
             <div class="col">
-                <img src="~/Images/doctor-ipad(1).png" class="img-fluid"/>
+                <img src="~/Images/doctor-ipad(1).png" class="img-fluid" />
             </div>
             <div class="col">
                 <div class="container col-9">
@@ -204,7 +203,7 @@
         <h1 class="d-flex justify-content-center mb-5" style="font-weight:800">Donation Process</h1>
         <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-2 gy-4">
             <div class="col">
-                <img src="~/Images/dp1.jpg" class="img-thumbnail" alt="..."/>
+                <img src="~/Images/dp1.jpg" class="img-thumbnail" alt="..." />
             </div>
             <div class="col ps-5">
                 <h1 class="text-muted">01</h1>
@@ -232,12 +231,12 @@
                 </div>
             </div>
             <div class="col">
-                <img src="~/Images/dp2.jpg" class="img-thumbnail" alt="..."/>
+                <img src="~/Images/dp2.jpg" class="img-thumbnail" alt="..." />
             </div>
         </div>
         <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-2 gy-4 mt-5">
             <div class="col">
-                <img src="~/Images/dp3.jpg" class="img-thumbnail" alt="..."/>
+                <img src="~/Images/dp3.jpg" class="img-thumbnail" alt="..." />
             </div>
             <div class="col ps-5">
                 <h1 class="text-muted">03</h1>
@@ -277,7 +276,7 @@
                 </div>
             </div>
             <div class="col">
-                <img src="~/Images/dp4.jpg" class="img-thumbnail" alt="..."/>
+                <img src="~/Images/dp4.jpg" class="img-thumbnail" alt="..." />
             </div>
         </div>
     </div>
@@ -293,126 +292,119 @@
 <script>
 
     var myStyle = [
-    {
-        featureType: "administrative",
-        elementType: "all",
-        stylers: [
-            { visibility: "on" }
-        ]
-    }, {
-        featureType: "landscape.man_made",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.attraction",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.business",
-        elementType: "labels",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.government",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.medical",
-        elementType: "all",
-        stylers: [
-            { visibility: "on" }
-        ]
-    }, {
-        featureType: "poi.place_of_worship",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.school",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "poi.sports_complex",
-        elementType: "labels",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }, {
-        featureType: "road",
-        elementType: "all",
-        stylers: [
-            { visibility: "on" }
-        ]
-    }, {
-        featureType: "transit",
-        elementType: "all",
-        stylers: [
-            { visibility: "off" }
-        ]
-    }
+        {
+            featureType: "administrative",
+            elementType: "all",
+            stylers: [
+                { visibility: "on" }
+            ]
+        }, {
+            featureType: "landscape.man_made",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.attraction",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.business",
+            elementType: "labels",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.government",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.medical",
+            elementType: "all",
+            stylers: [
+                { visibility: "on" }
+            ]
+        }, {
+            featureType: "poi.place_of_worship",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.school",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "poi.sports_complex",
+            elementType: "labels",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }, {
+            featureType: "road",
+            elementType: "all",
+            stylers: [
+                { visibility: "on" }
+            ]
+        }, {
+            featureType: "transit",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }
     ]
 
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeControlOptions: {
+                mapTypeIds: ['mystyle', google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.TERRAIN]
+            },
+            center: new google.maps.LatLng(42.662914, 21.165503),
+            zoom: 9,
+            mapTypeId: 'mystyle'
+        });
 
-function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        mapTypeControlOptions: {
-            mapTypeIds: ['mystyle', google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.TERRAIN]
-        },
-        center: new google.maps.LatLng(42.662914, 21.165503),
-        zoom: 9,
-        mapTypeId: 'mystyle'
-    });
-
-    map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));
- 
+        map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, { name: 'My Style' }));
 
     @for (int i = 0; i < ViewBag.GetAllHospitals.Count; i++)
     {
-        @:addMarker({ lat: parseFloat('@ViewBag.GetAllHospitals[i].Location.Latitude'), lng: parseFloat('@ViewBag.GetAllHospitals[i].Location.Longitude') }, { name: ('@ViewBag.GetAllHospitals[i].HospitalName'), contact: ('@ViewBag.GetAllHospitals[i].ContactNumber')});
+        @:addMarker({ lat: parseFloat('@ViewBag.GetAllHospitals[i].Location.Latitude'), lng: parseFloat('@ViewBag.GetAllHospitals[i].Location.Longitude') }, { name: ('@ViewBag.GetAllHospitals[i].HospitalName'), contact: ('@ViewBag.GetAllHospitals[i].ContactNumber') });
     }
 
+            function addMarker(coords, contentString) {
+                contentString = '<div class="">' + "Hospital Name:" + "<h6>" + contentString.name + "</h6>" + "Contact Numer: " + "<h6>" + contentString.contact + "</h6>" + "</div>"
+                const infowindow = new google.maps.InfoWindow({ content: contentString });
 
-    function addMarker(coords, contentString) {
+                var marker = new google.maps.Marker({
+                    position: coords,
+                    map: map,
+                    title: 'Hospital',
+                    icon: "/Images/HospitalIconMarker.png"
 
+                });
 
+                marker.addListener("click", () => {
+                    infowindow.open({
+                        anchor: marker,
+                        map,
+                        shouldFocus: false,
+                    });
+                });
 
-        contentString = '<div class="">' + "Hospital Name:" + "<h6>" + contentString.name + "</h6>" + "Contact Numer: " + "<h6>" + contentString.contact + "</h6>" + "</div>"
-         const infowindow = new google.maps.InfoWindow({content: contentString});
+                closeInfoWindow = function () {
+                    infowindow.close();
+                };
 
-        var marker = new google.maps.Marker({
-            position: coords,
-            map: map,
-            title: 'Hospital',
-            icon: "/Images/HospitalIconMarker.png"
-
-        });
-
-        marker.addListener("click", () => {
-            infowindow.open({
-            anchor: marker,
-                map,
-                shouldFocus: false,
-            });
-        });
-
-        closeInfoWindow = function () {
-            infowindow.close();
-        };
-
-        google.maps.event.addListener(map, 'click', closeInfoWindow);
+                google.maps.event.addListener(map, 'click', closeInfoWindow);
+            }
     }
-}
-
 
 </script>
 <script async

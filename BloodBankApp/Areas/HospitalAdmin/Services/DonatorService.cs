@@ -13,7 +13,6 @@ using BloodBankApp.ExtensionMethods;
 using BloodBankApp.Models;
 using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
-using BloodBankApp.Areas.SuperAdmin.Services;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {

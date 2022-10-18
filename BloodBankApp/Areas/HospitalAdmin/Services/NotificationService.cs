@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BloodBankApp.Areas.HospitalAdmin.Services.Interfaces;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Areas.SuperAdmin.ViewModels;
 using BloodBankApp.Data;
 using BloodBankApp.Enums;
 using BloodBankApp.Models;
@@ -61,6 +62,17 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
                 return true;
             }
+        }
+
+        public async Task<List<Notification>> GetNotificationsForDonor(string donorId)
+        {
+            var notifications = await _context.UserNotifications
+                .Include(x=>x.Notification)
+                .Where(x => x.Id == Guid.Parse(donorId))
+                .Select(x=>x.Notification)
+                .ToListAsync();
+
+            return notifications;
         }
 
         public async Task<bool> SendNotificationToDonors(BloodReserveModel reserve, Guid hospitalId)
@@ -278,17 +290,22 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return messagesNotifications;
         }
 
-        public async Task<List<MessageNotification>> GetUnSeenHospitalMessages(Guid hospitalId)
+        public async Task<List<DonorModel>> GetUnSeenHospitalMessages(Guid hospitalId)
         {
-            /*var messages = await _context.Messages
+            var messagesNotifications = await _context.Messages
+            .Include(ms => ms.Hospital)
                 .Where(ms => ms.HospitalId == hospitalId && ms.Sender == Enums.MessageSender.SenderDonor && ms.Seen == false)
-                .Select(ms => new {
+                .OrderByDescending(ms => ms.DateSent)
+                .Select(ms => new DonorModel
+                {
                     DonorId = ms.DonorId,
-                    Content = ms.Content
+                    Name = ms.Donor.User.Name,
+                    Surname = ms.Donor.User.Surname
                 })
                 .Distinct()
-                .ToListAsync();*/
-            return null;
+                .ToListAsync();
+
+            return messagesNotifications;
         }
     }
 }

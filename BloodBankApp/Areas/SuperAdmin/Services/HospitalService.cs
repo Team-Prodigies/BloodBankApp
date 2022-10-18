@@ -108,7 +108,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
 
         public async Task<EditHospitalModel> GetHospitalForHospitalAdmin(ClaimsPrincipal principal)
         {
-            var user =await _userManager.GetUserAsync(principal);
+            var user = await _userManager.GetUserAsync(principal);
 
             var hospitalAdmin = await _context.MedicalStaffs
                 .Include(h=>h.Hospital)

@@ -14,7 +14,6 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
         private readonly IUsersService _usersService;
 
         public AvailabilityController(IAvailabilityService availabilityService,
-            IHttpContextAccessor httpContextAccessor,
             IUsersService usersService)
         {
             _availabilityService = availabilityService;
@@ -76,7 +75,6 @@ namespace BloodBankApp.API_s.SuperAdminAPI_s
         public async Task<bool> PersonalNumberIsTakenApi(long personalNumber)
         {
             var user = await _usersService.GetUser(User);
-            //  Guid id = user.Id;
             return await _availabilityService.PersonalNumberIsTaken(user.Id, personalNumber);
         }
 

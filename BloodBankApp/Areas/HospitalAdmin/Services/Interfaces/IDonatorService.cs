@@ -1,6 +1,5 @@
 ﻿using BloodBankApp.Areas.Donator.ViewModels;
 using BloodBankApp.Areas.HospitalAdmin.ViewModels;
-using BloodBankApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

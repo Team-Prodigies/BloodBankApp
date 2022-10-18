@@ -6,6 +6,8 @@ using System.Security.Claims;
 using BloodBankApp.ExtensionMethods;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using System;
+using BloodBankApp.Data;
 
 namespace BloodBankApp.Areas.HospitalAdmin.Services
 {
@@ -13,14 +15,16 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
+        private readonly ApplicationDbContext _context;
 
         public HospitalAdminService(
            UserManager<User> userManager,
-           IHttpContextAccessor httpContextAccessor)
+           IHttpContextAccessor httpContextAccessor,
+           ApplicationDbContext context)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
 
         public async Task<IdentityResult> EditHospitalAdmin(HospitalAdminModel hospitalModel)
@@ -35,6 +39,13 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             var result = await _userManager.UpdateAsync(getUser);
             return result;
+        }
+
+        public async Task<Guid> GetHospitalIdFromHospitalAdmin(Guid userId)
+        {
+            var hospitalAdmin = await _context.MedicalStaffs.FindAsync(userId);
+
+            return hospitalAdmin.HospitalId;
         }
 
         public async Task<User> GetUser(ClaimsPrincipal principal)

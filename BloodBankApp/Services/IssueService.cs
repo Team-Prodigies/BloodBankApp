@@ -40,6 +40,7 @@ namespace BloodBankApp.Services
                 DateReported = getIssue.DateReported,
                 IssueStatus = getIssue.IssueStatus
             };
+
             return postIssue;
         }
 
@@ -47,12 +48,14 @@ namespace BloodBankApp.Services
         {
             var issueDB = await GetIssue(id);
             issueDB.IssueStatus = issue.IssueStatus;
+
             if(issue != null)
             {
                 _context.Update(issueDB);
                 await _context.SaveChangesAsync();
                 return true;
             }
+
             return false;
         }
 
@@ -67,6 +70,7 @@ namespace BloodBankApp.Services
                 DateReported = getIssue.DateReported,
                 IssueStatus = getIssue.IssueStatus
             };
+
             return postIssue;
         }
 
@@ -79,6 +83,7 @@ namespace BloodBankApp.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
+
             return false;
         }
 
@@ -116,6 +121,7 @@ namespace BloodBankApp.Services
             }
 
             var result = _mapper.Map<List<Issue>>(getIssues);
+
             return result;
         }
     }
