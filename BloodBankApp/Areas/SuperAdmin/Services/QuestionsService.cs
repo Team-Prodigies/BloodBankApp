@@ -26,12 +26,11 @@ namespace BloodBankApp.Areas.SuperAdmin.Services {
 
         public async Task<bool> EditQuestion(QuestionModel questionModel, Guid questionId) {
             var getQuestion = await _context.Questions.FindAsync(questionId);
-            getQuestion.Description = questionModel.Description;
-            getQuestion.Answer = questionModel.Answer;
-
             if (getQuestion == null) {
                 return false;
             }
+            getQuestion.Description = questionModel.Description;
+            getQuestion.Answer = questionModel.Answer;
             _context.Questions.Update(getQuestion);
             await _context.SaveChangesAsync();
             return true;

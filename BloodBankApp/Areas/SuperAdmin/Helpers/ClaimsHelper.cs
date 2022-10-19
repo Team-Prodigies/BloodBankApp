@@ -7,8 +7,8 @@ public static class ClaimsHelper
 {
     public static void GetPermissions(this List<RoleClaimsViewModel> allPermissions, Type policy)
     {
-        FieldInfo[] fields = policy.GetFields(BindingFlags.Static | BindingFlags.Public);
-        foreach (FieldInfo fi in fields)
+        var fields = policy.GetFields(BindingFlags.Static | BindingFlags.Public);
+        foreach (var fi in fields)
         {
             allPermissions.Add(new RoleClaimsViewModel { Value = fi.GetValue(null).ToString(), Type = "Permission" });
         }

@@ -84,6 +84,7 @@ namespace BloodBankApp.Areas.Services
         {
             user.Name = user.Name.ToTitleCase();
             user.Surname = user.Surname.ToTitleCase();
+            if (_httpContextAccessor.HttpContext == null) return IdentityResult.Failed();
             var superAdmin = await GetUser(_httpContextAccessor.HttpContext.User);
             superAdmin.Name = user.Name;
             superAdmin.Surname = user.Surname;
@@ -94,6 +95,7 @@ namespace BloodBankApp.Areas.Services
             var result = await _userManager.UpdateAsync(superAdmin);
 
             return result;
+
         }
 
         public async Task<IdentityResult> ChangePassword(User user, string oldPassword, string newPassword)
@@ -367,7 +369,7 @@ namespace BloodBankApp.Areas.Services
             if (donorExists == null)
             {
                 return input;
-            };
+            }
 
             var userExists = await _context.Users
                 .Where(user => user.UserName == null)
@@ -376,7 +378,7 @@ namespace BloodBankApp.Areas.Services
             if (userExists == null)
             {
                 return input;
-            };
+            }
             input.Id = donorExists.DonorId;
             input.CodeId = donorExists.DonorId;
             input.DateOfBirth = userExists.DateOfBirth;

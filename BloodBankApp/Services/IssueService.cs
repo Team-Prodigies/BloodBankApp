@@ -46,17 +46,13 @@ namespace BloodBankApp.Services
 
         public async Task<bool> EditIssue(Guid id, Issue issue)
         {
-            var issueDB = await GetIssue(id);
-            issueDB.IssueStatus = issue.IssueStatus;
+            var issueDb = await GetIssue(id);
+            if (issue == null) return false;
+            issueDb.IssueStatus = issue.IssueStatus;
+            _context.Update(issueDb);
+            await _context.SaveChangesAsync();
+            return true;
 
-            if(issue != null)
-            {
-                _context.Update(issueDB);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            return false;
         }
 
         public async Task<Issue> Delete(Guid id)
@@ -95,30 +91,18 @@ namespace BloodBankApp.Services
         }
         public async Task<List<Issue>> GetIssues(string filterBy = "Date")
         {
-            List<Issue> getIssues;
-
-            switch (filterBy)
+            var getIssues = filterBy switch
             {
-                case"Date":
-                    getIssues = await _context.Issues.OrderBy(issue => issue.DateReported).ToListAsync();
-                    break;
-                case "OnHold":
-                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.ONHOLD).ToListAsync();
-                    break;
-                case "InProgres":
-                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.INPROGRES).ToListAsync();
-                    break;
-                case "Fixed":
-                    getIssues = await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.FIXED).ToListAsync();
-                    break;
-                case "Normal":
-                    getIssues = await _context.Issues.ToListAsync();
-                    break;
-
-                default:
-                    getIssues = await _context.Issues.ToListAsync();
-                    break;
-            }
+                "Date" => await _context.Issues.OrderBy(issue => issue.DateReported).ToListAsync(),
+                "OnHold" => await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.ONHOLD)
+                    .ToListAsync(),
+                "InProgres" => await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.INPROGRES)
+                    .ToListAsync(),
+                "Fixed" => await _context.Issues.Where(issue => issue.IssueStatus == Enums.IssueStatus.FIXED)
+                    .ToListAsync(),
+                "Normal" => await _context.Issues.ToListAsync(),
+                _ => await _context.Issues.ToListAsync()
+            };
 
             var result = _mapper.Map<List<Issue>>(getIssues);
 

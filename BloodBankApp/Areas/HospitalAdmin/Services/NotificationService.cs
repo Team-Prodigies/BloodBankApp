@@ -277,7 +277,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             var messagesNotifications = await _context.Messages
                 .Include(ms => ms.Hospital)
-                .Where(ms => ms.DonorId == donorId && ms.Sender == Enums.MessageSender.SenderHospitalAdmin && ms.Seen == false)
+                .Where(ms => ms.DonorId == donorId && ms.Sender == MessageSender.SenderHospitalAdmin && ms.Seen == false)
                 .OrderByDescending(ms => ms.DateSent)
                 .Select(ms => new MessageNotification
                 {
@@ -294,7 +294,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             var messagesNotifications = await _context.Messages
             .Include(ms => ms.Hospital)
-                .Where(ms => ms.HospitalId == hospitalId && ms.Sender == Enums.MessageSender.SenderDonor && ms.Seen == false)
+                .Where(ms => ms.HospitalId == hospitalId && ms.Sender == MessageSender.SenderDonor && ms.Seen == false)
                 .OrderByDescending(ms => ms.DateSent)
                 .Select(ms => new DonorModel
                 {

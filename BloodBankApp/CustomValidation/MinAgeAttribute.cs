@@ -14,9 +14,9 @@ namespace BloodBankApp.CustomValidation
         {
             if (value == null)
                 return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
-            DateTime bday = DateTime.Parse(value.ToString());
-            DateTime now = DateTime.Today;
-            int age = now.Year - bday.Year;
+            var bday = DateTime.Parse(value.ToString());
+            var now = DateTime.Today;
+            var age = now.Year - bday.Year;
 
             if (age >= 18 && (now.Month < bday.Month || now.Month == bday.Month && now.Day < bday.Day))
             {

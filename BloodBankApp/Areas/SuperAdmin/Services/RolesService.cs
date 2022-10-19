@@ -137,7 +137,9 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
             }
             try
             {
-                await _signInManager.RefreshSignInAsync(await _usersService.GetUser(_httpContextAccessor.HttpContext.User));
+                if (_httpContextAccessor.HttpContext != null)
+                    await _signInManager.RefreshSignInAsync(
+                        await _usersService.GetUser(_httpContextAccessor.HttpContext.User));
             }
             catch (Exception)
             {

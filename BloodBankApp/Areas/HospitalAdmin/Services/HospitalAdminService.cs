@@ -29,6 +29,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         public async Task<IdentityResult> EditHospitalAdmin(HospitalAdminModel hospitalModel)
         {
+            if (_httpContextAccessor.HttpContext == null) return IdentityResult.Failed();
             var getUser = await GetUser(_httpContextAccessor.HttpContext.User);
             getUser.Name = hospitalModel.Name;
             getUser.Surname = hospitalModel.Surname;
@@ -39,6 +40,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
             var result = await _userManager.UpdateAsync(getUser);
             return result;
+
         }
 
         public async Task<Guid> GetHospitalIdFromHospitalAdmin(Guid userId)

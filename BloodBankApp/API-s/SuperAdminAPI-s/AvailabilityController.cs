@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BloodBankApp.Areas.Services.Interfaces;
 using BloodBankApp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodBankApp.API_s.SuperAdminAPI_s

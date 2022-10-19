@@ -12,9 +12,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services.Interfaces {
         Task<List<PostModel>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1);
         Task<List<PostModel>> GetPostsByCity(Guid id, int pageNumber = 1);
         Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1);
-        Task<PostModel> EditPost(Guid DonationPostId);
+        Task<PostModel> EditPost(Guid donationPostId);
         Task<bool> EditPosts(PostModel post);
-        Task<bool> DeletePost(Guid DonationPostId);
+        Task<bool> DeletePost(Guid donationPostId);
         Task<QuestionnaireAnswers> GetQuestionnaireQuestions();
         Task<List<Question>> GetAllQuestions();
         Task<DonationPost> GetPost(Guid postId);

@@ -20,16 +20,18 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         {
             try
             {
-                MimeMessage emailMessage = new MimeMessage();
-                MailboxAddress emailFrom = new MailboxAddress(_emailSettings.Name, _emailSettings.EmailId);
+                var emailMessage = new MimeMessage();
+                var emailFrom = new MailboxAddress(_emailSettings.Name, _emailSettings.EmailId);
                 emailMessage.From.Add(emailFrom);
-                MailboxAddress emailTo = new MailboxAddress(emailData.EmailToName, emailData.EmailToId);
+                var emailTo = new MailboxAddress(emailData.EmailToName, emailData.EmailToId);
                 emailMessage.To.Add(emailTo);
                 emailMessage.Subject = emailData.EmailSubject;
-                BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.TextBody = emailData.EmailBody;
+                var emailBodyBuilder = new BodyBuilder
+                {
+                    TextBody = emailData.EmailBody
+                };
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
-                SmtpClient emailClient = new SmtpClient();
+                var emailClient = new SmtpClient();
                 await emailClient.ConnectAsync(_emailSettings.Host, _emailSettings.Port, false);
                 await emailClient.AuthenticateAsync(_emailSettings.EmailId, _emailSettings.Password);
                 await emailClient.SendAsync(emailMessage);

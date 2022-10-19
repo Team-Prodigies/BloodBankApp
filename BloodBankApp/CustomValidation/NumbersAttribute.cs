@@ -11,7 +11,7 @@ namespace BloodBankApp.CustomValidation
                 return new ValidationResult(validationContext.DisplayName + " cannot be empty!");
             var name = value.ToString();
 
-            if (name.Any(char.IsDigit))
+            if (name != null && name.Any(char.IsDigit))
             {
                 return new ValidationResult(validationContext.DisplayName + " cannot contain numbers!");
             }

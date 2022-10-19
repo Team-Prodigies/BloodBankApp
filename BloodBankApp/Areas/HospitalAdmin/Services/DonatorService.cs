@@ -22,7 +22,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
         private readonly IMapper _mapper;
         private readonly IUsersService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IHospitalService _hospitalService;
         private readonly INotificationService _notificationService;
         private readonly IBloodTypesService _bloodTypesService;
 
@@ -30,7 +29,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             IMapper mapper,
             IUsersService usersService,
             IHttpContextAccessor httpContextAccessor,
-            IHospitalService hospitalService,
             INotificationService notificationService,
             IBloodTypesService bloodTypesService)
         {
@@ -38,7 +36,6 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             _mapper = mapper;
             _userService = usersService;
             _httpContextAccessor = httpContextAccessor;
-            _hospitalService = hospitalService;
             _notificationService = notificationService;
             _bloodTypesService = bloodTypesService;
         }

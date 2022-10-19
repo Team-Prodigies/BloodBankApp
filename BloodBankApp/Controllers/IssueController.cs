@@ -16,7 +16,8 @@ namespace BloodBankApp.Controllers
         private readonly INotyfService _notyfService;
         private readonly IIssueService _issueService;
 
-        public IssueController(INotyfService notyfService, IIssueService issueService)
+        public IssueController(INotyfService notyfService,
+            IIssueService issueService)
         {
             _notyfService = notyfService;
             _issueService = issueService;
@@ -103,7 +104,7 @@ namespace BloodBankApp.Controllers
         [HttpPost, ActionName("Delete")]
         [AutoValidateAntiforgeryToken]
         [Authorize(Policy = Permissions.Issues.Delete)]
-        public async Task<IActionResult> DeletePOST(Guid id)
+        public async Task<IActionResult> DeletePost(Guid id)
         {
             var issue = await _issueService.DeletePost(id);
 
