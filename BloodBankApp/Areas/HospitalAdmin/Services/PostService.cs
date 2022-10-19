@@ -10,11 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BloodBankApp.Areas.SuperAdmin.Services.Interfaces;
+using BloodBankApp.Enums;
 
-namespace BloodBankApp.Areas.HospitalAdmin.Services
-{
-    public class PostService : IPostService
-    {
+namespace BloodBankApp.Areas.HospitalAdmin.Services {
+    public class PostService : IPostService {
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -22,46 +21,40 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         public PostService(ApplicationDbContext context,
             IMapper mapper,
-            IHospitalService hospitalService)
-        {
+            IHospitalService hospitalService) {
             _context = context;
             _mapper = mapper;
             _hospitalService = hospitalService;
         }
 
-        public async Task<bool> AddPost(DonationPost post, string id)
-        {
+        public async Task<bool> AddPost(DonationPost post, string id) {
             if (post == null) return false;
-            if (post.DateRequired.Day < DateTime.Now.Day)
-            {
+            if (post.DateRequired.Day < DateTime.Now.Day) {
                 return false;
             }
 
             var hospital = await _hospitalService.GetHospitalForMedicalStaff(id);
             if (hospital == null) return false;
-
+            
             post.HospitalId = hospital.HospitalId;
             await _context.DonationPosts.AddAsync(post);
             await _context.SaveChangesAsync();
-
+            
             return true;
         }
 
-        public async Task<bool> DeletePost(Guid donationPostId)
-        {
-            var deletePost = await _context.DonationPosts.FindAsync(donationPostId);
+        public async Task<bool> DeletePost(Guid DonationPostId) {
+            var deletePost = await _context.DonationPosts.FindAsync(DonationPostId);
             if (deletePost == null) return false;
             _context.DonationPosts.Remove(deletePost);
 
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<PostModel> EditPost(Guid donationPostId)
-        {
-            var getPost = await _context.DonationPosts.FindAsync(donationPostId);
+        public async Task<PostModel> EditPost(Guid DonationPostId) {
+            var getPost = await _context.DonationPosts.FindAsync(DonationPostId);
 
-            var postModel = new PostModel
-            {
+            var postModel = new PostModel {
                 DonationPostId = getPost.DonationPostId,
                 DateRequired = getPost.DateRequired,
                 Description = getPost.Description,
@@ -72,8 +65,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return postModel;
         }
 
-        public async Task<bool> EditPosts(PostModel post)
-        {
+        public async Task<bool> EditPosts(PostModel post) {
             var getPost = await _context.DonationPosts.FindAsync(post.DonationPostId);
             if (getPost == null) return false;
             getPost.PostStatus = post.PostStatus;
@@ -86,12 +78,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal")
-        {
+        public async Task<List<DonationPost>> GetPost(Hospital getHospital, string filterBy = "Normal") {
             List<DonationPost> getPost;
 
-            switch (filterBy)
-            {
+            switch (filterBy) {
                 case "Date":
                     getPost = await _context.DonationPosts
                         .Where(x => x.HospitalId == getHospital.HospitalId)
@@ -124,13 +114,11 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
-        public async Task<List<PostModel>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1)
-        {
+        public async Task<List<PostModel>> GetPostsByBloodType(string filterBy = "Normal", int pageNumber = 1) {
             List<DonationPost> getPosts;
             var skipRows = (pageNumber - 1) * 10;
 
-            switch (filterBy)
-            {
+            switch (filterBy) {
                 case "A+":
                     getPosts = await _context.DonationPosts
                         .Include(x => x.BloodType)
@@ -225,8 +213,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
-        public async Task<List<PostModel>> GetPostsByCity(Guid id, int pageNumber = 1)
-        {
+        public async Task<List<PostModel>> GetPostsByCity(Guid id, int pageNumber = 1) {
             var skipRows = (pageNumber - 1) * 10;
             var posts = await _context.DonationPosts
                 .Include(x => x.BloodType)
@@ -240,8 +227,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
 
         }
 
-        public async Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1)
-        {
+        public async Task<List<PostModel>> GetPostsBySearch(string searchTerm, int pageNumber = 1) {
             var skipRows = (pageNumber - 1) * 10;
             var posts = await _context.DonationPosts
                 .Include(x => x.Hospital)
@@ -254,32 +240,29 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
             return result;
         }
 
-        public async Task<QuestionnaireAnswers> GetQuestionnaireQuestions()
-        {
+        public async Task<QuestionnaireAnswers> GetQuestionnaireQuestions() {
             var questions = await _context.Questions
-                .Select(q => new QuestionViewModel
-                {
+                .Select(q => new QuestionViewModel {
                     QuestionId = q.QuestionId,
                     Description = q.Description
                 }).ToListAsync();
             var questionsList = new QuestionnaireAnswers(questions);
+
             return questionsList;
         }
 
-        public async Task<List<Question>> GetAllQuestions()
-        {
+        public async Task<List<Question>> GetAllQuestions() {
             var questions = await _context.Questions.ToListAsync();
             return questions;
         }
 
-        public async Task<DonationPost> GetPost(Guid postId)
-        {
+        public async Task<DonationPost> GetPost(Guid postId) {
             var getPost = await _context.DonationPosts.FindAsync(postId);
+
             return getPost;
         }
 
-        public bool GetDonationRequest(Guid postId, Guid donorId)
-        {
+        public bool GetDonationRequest(Guid postId, Guid donorId) {
             var donationRequestExists = _context.DonationRequest
                 .FirstOrDefault(x => x.DonationPostId == postId && x.DonorId == donorId);
 

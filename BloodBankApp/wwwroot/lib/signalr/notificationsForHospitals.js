@@ -20,7 +20,7 @@ notificationsConnection.on("showMessagesNotificationsFromDonors", function (data
         
         $("#messagesNotificationsBell")
             .append(
-                $('<li class="message-item"><div><h4>' + element.name +" "+ element.surname + '</h4><p>Sended a message</p></div></li><li><hr class="dropdown-divider"></li>')
+                $('<li class="message-item"><div><h4>' + element.name +" "+ element.surname + '</h4><p>Sent a message</p></div></li><li><hr class="dropdown-divider"></li>')
             );
     });
     

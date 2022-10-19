@@ -12,7 +12,7 @@
     if (User.IsInRole("HospitalAdmin"))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="HospitalAdmin" asp-controller="Home" asp-action="Index">Dashboard</a>
+            <a class="nav-link text-dark" asp-area="HospitalAdmin" asp-controller="Posts" asp-action="ManagePosts">Dashboard</a>
         </li>
     }
     if (User.IsInRole("Donor"))

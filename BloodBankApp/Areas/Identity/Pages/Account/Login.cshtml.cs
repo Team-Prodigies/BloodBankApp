@@ -92,7 +92,7 @@ namespace BloodBankApp.Areas.Identity.Pages.Account
                     }
                     if (await _usersService.UserIsInRole(user, "HospitalAdmin"))
                     {
-                        return RedirectToAction("Index", "Home", new { area = "HospitalAdmin" });
+                        return RedirectToAction("ManagePosts", "Posts", new { area = "HospitalAdmin" });
                     }
                     if (await _usersService.UserIsInRole(user, "Donor"))
                     {
