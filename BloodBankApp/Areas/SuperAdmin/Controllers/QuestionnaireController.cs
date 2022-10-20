@@ -57,7 +57,7 @@ namespace BloodBankApp.Areas.SuperAdmin.Controllers
             await _context.HealthFormQuestionnaires.AddAsync(questionnaire);
             await _context.SaveChangesAsync();
 
-            return View(nameof(CreateQuestionnaire));
+            return View(nameof(ManageQuestions));
         }
 
         [HttpGet]

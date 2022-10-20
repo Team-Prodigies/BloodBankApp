@@ -33,7 +33,9 @@ namespace BloodBankApp.Services
         public async Task<bool> PersonalNumberIsTaken(int personalNumber)
         {
             var personalNumberInUse = await _context.Donors
-                .FirstOrDefaultAsync(donor => donor.PersonalNumber == personalNumber);
+                .Include(u=>u.User)
+                .Where(donor=> donor.User.UserName != null)
+                .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
             return personalNumberInUse != null;
         }
 

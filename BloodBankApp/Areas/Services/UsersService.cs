@@ -162,8 +162,7 @@ namespace BloodBankApp.Areas.Services
         public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input)
         {
             var donorExists = await _context.Donors
-                .Where(donor => donor.User.Name.Equals(input.Name)
-                                && donor.BloodTypeId == input.BloodTypeId
+                .Where(donor => donor.BloodTypeId == input.BloodTypeId
                                 && donor.PersonalNumber == input.PersonalNumber)
                 .FirstOrDefaultAsync();
 
@@ -199,14 +198,13 @@ namespace BloodBankApp.Areas.Services
                     {
                         donor.DonorId = user.Id;
                         donor.Code = null;
+                        _context.Users.Remove(userExists);
+                        _context.Codes.Remove(code);
                         await _donorsService.AddDonor(donor);
-
                         foreach (var bloodDonation in bloodDonations)
                         {
                             bloodDonation.DonorId = donor.DonorId;
                         }
-                        _context.Users.Remove(userExists);
-                        _context.Codes.Remove(code);
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
                         await _signInManager.SignInAsync(user, isPersistent: false);

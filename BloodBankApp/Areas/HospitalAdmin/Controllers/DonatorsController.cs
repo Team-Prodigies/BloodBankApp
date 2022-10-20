@@ -81,7 +81,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Controllers
             }
 
             _notyfService.Success("Donor added successfully!");
-            return RedirectToAction(nameof(ManageDonators));
+            return RedirectToAction("AddDonation","Donations",new { personalNumber = model.PersonalNumber });
         }
 
         [Authorize(Policy = Permissions.HospitalAdmin.FindPotentialDonors)]

@@ -81,6 +81,8 @@ namespace BloodBankApp.Areas.SuperAdmin.Services
         public async Task<bool> PersonalNumberIsInUse(long personalNumber)
         {
             var donor = await _context.Donors
+                .Include(u=>u.User)
+                .Where(donor=> donor.User.UserName != null)
                 .FirstOrDefaultAsync(d => d.PersonalNumber == personalNumber);
             if (donor != null) return true;
             return false;
