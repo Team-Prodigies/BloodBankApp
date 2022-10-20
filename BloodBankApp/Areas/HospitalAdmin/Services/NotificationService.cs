@@ -145,7 +145,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                         .Include(donor => donor.BloodDonations)
                         .Include(donor => donor.User)
                         .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
-                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                     || x.BloodType.BloodTypeName.Equals("A-")
+                                     || x.BloodType.BloodTypeName.Equals("O+")
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
@@ -157,10 +159,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     var donors = await _context.Donors
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("A+")
-                                     || x.BloodType.BloodTypeName.Equals("A-")
-                                     || x.BloodType.BloodTypeName.Equals("AB+")
-                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                            .Where(x => (x.BloodType.BloodTypeName.Equals("A-")
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
@@ -173,7 +173,9 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
                             .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
-                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                     || x.BloodType.BloodTypeName.Equals("B-")
+                                     || x.BloodType.BloodTypeName.Equals("O+")
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
@@ -185,10 +187,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     var donors = await _context.Donors
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("B+")
-                                     || x.BloodType.BloodTypeName.Equals("AB+")
-                                     || x.BloodType.BloodTypeName.Equals("B-")
-                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                            .Where(x => (x.BloodType.BloodTypeName.Equals("B-")
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
@@ -201,9 +201,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
                             .Where(x => (x.BloodType.BloodTypeName.Equals("O+")
-                                     || x.BloodType.BloodTypeName.Equals("A+")
-                                     || x.BloodType.BloodTypeName.Equals("B+")
-                                     || x.BloodType.BloodTypeName.Equals("AB+"))
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
@@ -215,7 +213,8 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     var donors = await _context.Donors
                         .Include(donor => donor.BloodDonations)
                         .Include(donor => donor.User)
-                        .Where(x => x.CityId == cityId)
+                        .Where(x => (x.BloodType.BloodTypeName.Equals("O-"))
+                                    && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
                     await CheckLastDonation(donors, potentialDonors);
@@ -226,8 +225,7 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     var donors = await _context.Donors
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
-                            .Where(x => x.BloodType.BloodTypeName.Equals("AB+")
-                                    && x.CityId == cityId)
+                            .Where(x =>  x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
                     await CheckLastDonation(donors, potentialDonors);
@@ -238,8 +236,10 @@ namespace BloodBankApp.Areas.HospitalAdmin.Services
                     var donors = await _context.Donors
                             .Include(donor => donor.BloodDonations)
                             .Include(donor => donor.User)
-                            .Where(x => (x.BloodType.BloodTypeName.Equals("AB+")
-                                     || x.BloodType.BloodTypeName.Equals("AB-"))
+                            .Where(x => (x.BloodType.BloodTypeName.Equals("AB-")
+                                     || x.BloodType.BloodTypeName.Equals("A-")
+                                     || x.BloodType.BloodTypeName.Equals("B-")
+                                     || x.BloodType.BloodTypeName.Equals("O-"))
                                     && x.CityId == cityId)
                         .ToListAsync();
                     if (!donors.Any()) break;
