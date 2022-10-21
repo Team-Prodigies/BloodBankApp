@@ -9,16 +9,16 @@
                 <textarea asp-for="Description" class="form-control" style="height: 130px"></textarea>
             </div>
             <div class="col-12">
-                <label asp-for="DateRequired" class="form-label"></label>
+                <label asp-for="DateRequired" class="form-label">Date Required</label>
                 <input asp-for="DateRequired" class="form-control">
             </div>
             <div class="col-12">
-                <label asp-for="BloodTypeId" class="mb-1 mt-2"></label>
+                <label asp-for="BloodTypeId" class="mb-1 mt-2">Blood Type</label>
                 <select class="form-select" asp-items="ViewBag.BloodType" asp-for="BloodTypeId" aria-label="Default select example">
                 </select>
             </div>
             <div class="col-12">
-                <label asp-for="AmountRequested" class="form-label"></label>
+                <label asp-for="AmountRequested" class="form-label">Amount Requested</label>
                 <input type="number" asp-for="AmountRequested" class="form-control">
             </div>
             <div class="text-center">

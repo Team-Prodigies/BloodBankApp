@@ -159,8 +159,7 @@ namespace BloodBankApp.Areas.Services
             }
         }
 
-        public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input)
-        {
+        public async Task<IdentityResult> AddNonRegisteredDonor(RegisterModel.RegisterInputModel input) {
             var donorExists = await _context.Donors
                 .Where(donor => donor.BloodTypeId == input.BloodTypeId
                                 && donor.PersonalNumber == input.PersonalNumber)
@@ -189,32 +188,36 @@ namespace BloodBankApp.Areas.Services
                 user.Id = Guid.NewGuid();
                 var donor = _mapper.Map<Donor>(input);
 
-                try
-                {
+                try {
                     var result = await _userManager.CreateAsync(user, input.Password);
                     if (!result.Succeeded) return result;
                     var addToRoleResult = await _userManager.AddToRoleAsync(user, "Donor");
-                    if (addToRoleResult.Succeeded)
-                    {
+                    if (addToRoleResult.Succeeded) {
                         donor.DonorId = user.Id;
                         donor.Code = null;
+                        var randomDonor = await _context.Donors.FirstOrDefaultAsync();
+                        foreach (var bloodDonation in bloodDonations) {
+                            bloodDonation.DonorId = randomDonor.DonorId;
+                        }
+                        _context.BloodDonations.UpdateRange(bloodDonations);
+
                         _context.Users.Remove(userExists);
                         _context.Codes.Remove(code);
-                        await _donorsService.AddDonor(donor);
-                        foreach (var bloodDonation in bloodDonations)
-                        {
+                        await _context.Donors.AddAsync(donor);
+                        await _context.SaveChangesAsync();
+
+                        foreach (var bloodDonation in bloodDonations) {
                             bloodDonation.DonorId = donor.DonorId;
                         }
+                        _context.BloodDonations.UpdateRange(bloodDonations);
+
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                    }
-                    else
+                    } else
                         return addToRoleResult;
                     return result;
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     await transaction.RollbackAsync();
                     return IdentityResult.Failed();
                 }
